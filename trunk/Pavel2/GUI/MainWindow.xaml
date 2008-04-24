@@ -27,7 +27,7 @@
         <StatusBar Grid.Row="4" Name="statusBar1" Grid.ColumnSpan="5">
             <StatusBarItem>Status Bar Test</StatusBarItem>
         </StatusBar>
-        <TreeView Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" />
+        <TreeView Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" DisplayMemberPath="Name" />
         <Grid Grid.Column="4" Grid.Row="2" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition />

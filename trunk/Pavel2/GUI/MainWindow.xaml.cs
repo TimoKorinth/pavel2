@@ -79,6 +79,7 @@ namespace Pavel2.GUI
             }
         }
 
+        //TODO: Show in Data Table
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             DataGrid dataGrid = (DataGrid)projectTree.SelectedItem;
             listViewTable.ItemsSource = dataGrid.Columns[0].Points;

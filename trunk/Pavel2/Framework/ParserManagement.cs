@@ -21,7 +21,7 @@ namespace Pavel2.Framework {
             return null;
         }
 
-        //TODO: Automatisch alle die IParser implementieren holen
+        //TODO: Automatisch alle die Parser implementieren holen; Reihenfolge nach Priorität
         private static void UpdateParserList() { 
             parserList.Clear();
             parserList.Add(new CSVParser());
