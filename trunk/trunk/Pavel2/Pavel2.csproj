@@ -81,7 +81,7 @@
     <Compile Include="Framework\CSVParser.cs" />
     <Compile Include="Framework\DataGrid.cs" />
     <Compile Include="Framework\DiscretePoint.cs" />
-    <Compile Include="Framework\IParser.cs" />
+    <Compile Include="Framework\Parser.cs" />
     <Compile Include="Framework\MainData.cs" />
     <Compile Include="Framework\IPoint.cs" />
     <Compile Include="Framework\ParserManagement.cs" />

@@ -73,8 +73,10 @@ namespace Pavel2.GUI
         private void button5_Click(object sender, RoutedEventArgs e) {
             FileInfo file = (FileInfo)fileList.SelectedItem;
             DataGrid dataGrid = ParserManagement.GetDataGrid(file.OpenText());
-            dataGrid.Name = file.Name;
-            projectTree.Items.Add(dataGrid);
+            if (null != dataGrid) {
+                dataGrid.Name = file.Name;
+                projectTree.Items.Add(dataGrid);
+            }
         }
 
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
