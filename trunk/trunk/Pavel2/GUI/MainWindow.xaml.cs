@@ -72,11 +72,8 @@ namespace Pavel2.GUI
 
         private void button5_Click(object sender, RoutedEventArgs e) {
             FileInfo file = (FileInfo)fileList.SelectedItem;
-            CSVParser csv = new CSVParser();
-            csv.File = file.OpenText();
-            csv.Delimiter = ';';
-            csv.Parse();
-            DataGrid dataGrid = new DataGrid(csv.Columns, file.Name);
+            DataGrid dataGrid = ParserManagement.GetDataGrid(file.OpenText());
+            dataGrid.Name = file.Name;
             projectTree.Items.Add(dataGrid);
         }
 

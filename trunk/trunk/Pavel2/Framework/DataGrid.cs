@@ -9,6 +9,11 @@ namespace Pavel2.Framework {
         private Column[] columns;
         private String name;
 
+        public String Name {
+            get { return name; }
+            set { name = value; }
+        }
+
         public Column[] Columns {
             get { return columns; }
             set { columns = value; }
@@ -17,10 +22,6 @@ namespace Pavel2.Framework {
         public DataGrid(Column[] columns, String name) {
             this.columns = columns;
             this.name = name;
-        }
-
-        public override String ToString() {
-            return this.name;
         }
 
     }

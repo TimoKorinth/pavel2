@@ -7,12 +7,7 @@ using System.IO;
 namespace Pavel2.Framework {
     public interface IParser {
 
-        StreamReader File {
-            get;
-            set;
-        }
-
-        void Parse();
+        Column[] Parse(StreamReader stream);
 
     }
 }

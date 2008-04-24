@@ -8,54 +8,32 @@ namespace Pavel2.Framework {
     public class CSVParser : IParser {
 
         StreamReader stream;
-        Char delimiter = ',';
-        Column[] columns;
+        Char delimiter = ';';
+        List<IPoint>[] data;
 
-        public Column[] Columns {
-            get { return columns; }
-            set { columns = value; }
-        }
-        List<DiscretePoint>[] tmp;
-
-        public Char Delimiter {
-            get { return delimiter; }
-            set { delimiter = value; }
-        }
-
-        public StreamReader File {
-            get {
-                return stream;
-            }
-            set {
-                stream = value;
-            }
-        }
-
-        public void Parse() {
-            int columnNumber = NumerOfColumns();
-            columns = new Column[columnNumber];
-            tmp = new List<DiscretePoint>[columnNumber];
-            for (int i = 0; i < columnNumber; i++) {
-                tmp[i] = new List<DiscretePoint>();
-                columns[i] = new Column();
-            }
+        public Column[] Parse(StreamReader stream) {
+            this.stream = stream;
             String line;
             String[] lineSplit;
             while ((line = stream.ReadLine()) != null) {
                 lineSplit = line.Split(delimiter);
-                for (int i = 0; i < columnNumber; i++) {
-                    tmp[i].Add(new DiscretePoint(lineSplit[i]));
+                if (null == data) {
+                    data = new List<IPoint>[lineSplit.Length];
                 }
-            }
-            for (int i = 0; i < tmp.Length; i++) {
-                columns[i].Points = tmp[i].ToArray(); ;
-            }
-            MainData.AddColumns(columns);
-        }
+                for (int i = 0; i < lineSplit.Length; i++) {
+                    if (null == data[i]) {
+                        data[i] = new List<IPoint>();
+                    }
+                    data[i].Add(new DiscretePoint(lineSplit[i]));
+                }
 
-        //TODO: Erste Zeile damit schon weg!!!
-        private int NumerOfColumns() {
-            return stream.ReadLine().Split(delimiter).Length;
+            }
+            Column[] columns = new Column[data.Length];
+            for (int i = 0; i < columns.Length; i++) {
+                columns[i] = new Column();
+                columns[i].Points = data[i].ToArray();
+            }
+            return columns;
         }
 
     }

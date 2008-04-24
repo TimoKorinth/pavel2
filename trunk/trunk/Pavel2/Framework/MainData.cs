@@ -13,24 +13,26 @@ namespace Pavel2.Framework {
             set { columns = value; }
         }
 
-        public static void AddColumn(Column column) {
-            columns.Add(column);
+        //public static void AddColumn(Column column) {
+        //    columns.Add(column);
+        //}
+
+        public static DataGrid AddColumns(Column[] columns) {
+            Column[] cols = columns.Clone() as Column[];
+            MainData.columns.AddRange(cols);
+            return new DataGrid(cols, "");
         }
 
-        public static void AddColumns(Column[] columns) {
-            MainData.columns.AddRange(columns);
-        }
+        //public static void AddColumn(IPoint[] points) {
+        //    AddColumn(points, "");
+        //}
 
-        public static void AddColumn(IPoint[] points) {
-            AddColumn(points, "");
-        }
-
-        public static void AddColumn(IPoint[] points, String header) {
-            Column col = new Column();
-            col.Points = points;
-            col.Header = header;
-            columns.Add(col);
-        }
+        //public static void AddColumn(IPoint[] points, String header) {
+        //    Column col = new Column();
+        //    col.Points = points;
+        //    col.Header = header;
+        //    columns.Add(col);
+        //}
 
     }
 }
