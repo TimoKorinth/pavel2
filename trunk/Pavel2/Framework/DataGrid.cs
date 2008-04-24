@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Pavel2.Framework {
+    public class DataGrid {
+
+        private Column[] columns;
+        private String name;
+
+        public Column[] Columns {
+            get { return columns; }
+            set { columns = value; }
+        }
+
+        public DataGrid(Column[] columns, String name) {
+            this.columns = columns;
+            this.name = name;
+        }
+
+        public override String ToString() {
+            return this.name;
+        }
+
+    }
+}
