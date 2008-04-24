@@ -84,6 +84,7 @@
     <Compile Include="Framework\IParser.cs" />
     <Compile Include="Framework\MainData.cs" />
     <Compile Include="Framework\IPoint.cs" />
+    <Compile Include="Framework\ParserManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
