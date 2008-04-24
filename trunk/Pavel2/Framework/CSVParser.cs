@@ -5,13 +5,13 @@ using System.Text;
 using System.IO;
 
 namespace Pavel2.Framework {
-    public class CSVParser : IParser {
+    public class CSVParser : Parser {
 
         StreamReader stream;
         Char delimiter = ';';
         List<IPoint>[] data;
 
-        public Column[] Parse(StreamReader stream) {
+        protected override Column[] ParseAlgorithm(StreamReader stream) {
             this.stream = stream;
             String line;
             String[] lineSplit;

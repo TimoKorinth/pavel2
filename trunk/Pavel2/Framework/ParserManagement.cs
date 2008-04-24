@@ -7,12 +7,12 @@ using System.IO;
 namespace Pavel2.Framework {
     public static class ParserManagement {
 
-        private static List<IParser> parserList = new List<IParser>();
+        private static List<Parser> parserList = new List<Parser>();
 
         public static DataGrid GetDataGrid(StreamReader stream) {
             UpdateParserList();
             Column[] columns;
-            foreach (IParser parser in parserList) {
+            foreach (Parser parser in parserList) {
                 columns = parser.Parse(stream);
                 if (null != columns) {
                     return MainData.AddColumns(columns);
