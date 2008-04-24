@@ -1,0 +1,51 @@
+﻿<Window x:Class="Pavel2.GUI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Pavel²" Height="366" Width="634">
+    <Grid ShowGridLines="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="19" />
+            <RowDefinition Height="Auto" MinHeight="24" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="Auto" MinHeight="19" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" MinWidth="5" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="Auto" MinWidth="5" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Menu Grid.ColumnSpan="5" Name="menu1">
+            <MenuItem Header="Project" />
+            <MenuItem Header="Edit" />
+            <MenuItem Header="Help" />
+        </Menu>
+        <GridSplitter Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" HorizontalAlignment="Stretch" Name="gridSplitter1" Width="5" />
+        <GridSplitter Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" HorizontalAlignment="Stretch" Name="gridSplitter2" Width="5" />
+        <StatusBar Grid.Row="4" Name="statusBar1" Grid.ColumnSpan="5">
+            <StatusBarItem>Status Bar Test</StatusBarItem>
+        </StatusBar>
+        <TreeView Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" />
+        <Grid Grid.Column="4" Grid.Row="2" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Name="gridSplitter3" Height="5" />
+            <TreeView Name="directoryTree" TreeViewItem.Expanded="directoryTree_Expanded" SelectedItemChanged="directoryTree_SelectedItemChanged" />
+            <ListView Grid.Row="2" Name="fileList" />
+            <Button Grid.Row="3" Name="button5" Click="button5_Click">Import</Button>
+        </Grid>
+        <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="1" Name="stackPanel1" Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Center">
+            <Button Height="23" Name="button1" Width="75">Table</Button>
+            <Button Height="23" Name="button2" Width="75">ScatterPlot</Button>
+            <Button Height="23" Name="button3" Width="75">ParallelPlot</Button>
+            <Button Height="23" Name="button4" Width="75">Scattermatrix</Button>
+        </StackPanel>
+        <ListView Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Name="listViewTable" />
+    </Grid>
+</Window>
