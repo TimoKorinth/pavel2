@@ -9,7 +9,18 @@ namespace Pavel2.Framework {
 
         StreamReader stream;
         Char delimiter = ';';
+        Boolean hasHeaders = false;
         List<IPoint>[] data;
+
+        public Boolean HasHeaders {
+            get { return hasHeaders; }
+            set { hasHeaders = value; }
+        }
+
+        public Char Delimiter {
+            get { return delimiter; }
+            set { delimiter = value; }
+        }
 
         protected override Column[] ParseAlgorithm(StreamReader stream) {
             this.stream = stream;
@@ -29,9 +40,18 @@ namespace Pavel2.Framework {
 
             }
             Column[] columns = new Column[data.Length];
+            IPoint[] pointArray;
             for (int i = 0; i < columns.Length; i++) {
-                columns[i] = new Column();
-                columns[i].Points = data[i].ToArray();
+                if (hasHeaders) {
+                    columns[i] = new Column(data[i][0].Data);
+                    data[i].RemoveAt(0);
+                    pointArray = data[i].ToArray();
+                    columns[i].Points = pointArray;
+                } else {
+                    columns[i] = new Column();
+                    pointArray = data[i].ToArray();
+                    columns[i].Points = pointArray;
+                }
             }
             return columns;
         }

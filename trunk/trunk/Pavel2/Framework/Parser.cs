@@ -12,6 +12,7 @@ namespace Pavel2.Framework {
             try {
                 columns = ParseAlgorithm(stream);
             } catch (Exception e) {
+                e.GetType();
                 return null;
             }
             return columns;

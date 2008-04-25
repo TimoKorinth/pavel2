@@ -8,13 +8,20 @@ namespace Pavel2.Framework {
     public static class ParserManagement {
 
         private static List<Parser> parserList = new List<Parser>();
+        private static Parser currentParser;
+
+        public static Parser CurrentParser {
+            get { return currentParser; }
+        }
 
         public static DataGrid GetDataGrid(StreamReader stream) {
             UpdateParserList();
+            currentParser = null;
             Column[] columns;
             foreach (Parser parser in parserList) {
                 columns = parser.Parse(stream);
                 if (null != columns) {
+                    currentParser = parser;
                     return MainData.AddColumns(columns);
                 }
             }
