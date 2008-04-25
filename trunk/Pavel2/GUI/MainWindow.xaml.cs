@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using Pavel2.Framework;
+using System.Reflection;
 
 namespace Pavel2.GUI
 {
@@ -63,10 +64,14 @@ namespace Pavel2.GUI
 
         private void directoryTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             TreeViewItem item = (TreeViewItem)directoryTree.SelectedItem;
-            if (item.Tag is DirectoryInfo) {
-                fileList.ItemsSource = ((DirectoryInfo)item.Tag).GetFiles();
-            } else if (item.Tag is DriveInfo) {
-                fileList.ItemsSource = ((DriveInfo)item.Tag).RootDirectory.GetFiles();
+            try {
+                if (item.Tag is DirectoryInfo) {
+                    fileList.ItemsSource = ((DirectoryInfo)item.Tag).GetFiles();
+                } else if (item.Tag is DriveInfo) {
+                    fileList.ItemsSource = ((DriveInfo)item.Tag).RootDirectory.GetFiles();
+                }
+            } catch (Exception fileExeption) {
+                fileExeption.GetType();
             }
         }
 
@@ -76,6 +81,8 @@ namespace Pavel2.GUI
             if (null != dataGrid) {
                 dataGrid.Name = file.Name;
                 projectTree.Items.Add(dataGrid);
+                //Hier: Property Window für Import/Parser:
+                propertyGrid.SelectedObject = ParserManagement.CurrentParser;
             }
         }
 

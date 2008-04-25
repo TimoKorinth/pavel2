@@ -19,5 +19,12 @@ namespace Pavel2.Framework {
             set { points = value; }
         }
 
+        public Column() {
+        }
+
+        public Column(String header) {
+            this.header = header;
+        }
+
     }
 }
