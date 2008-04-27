@@ -23,6 +23,12 @@ namespace Pavel2.Framework {
             return new DataGrid(cols, "");
         }
 
+        public static void RemoveColumns(DataGrid dataGrid) {
+            for (int i = 0; i < dataGrid.Columns.Length; i++) {
+                columns.Remove(dataGrid.Columns[i]);
+            }
+        }
+
         //public static void AddColumn(IPoint[] points) {
         //    AddColumn(points, "");
         //}
