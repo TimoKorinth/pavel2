@@ -28,6 +28,16 @@ namespace Pavel2.Framework {
             return null;
         }
 
+        public static DataGrid GetDataGrid(StreamReader stream, Parser parser) {
+            currentParser = parser;
+            Column[] columns;
+            columns = parser.Parse(stream);
+            if (null != columns) {
+                return MainData.AddColumns(columns);
+            }
+            return null;
+        }
+
         //TODO: Automatisch alle die Parser implementieren holen; Reihenfolge nach Priorität
         private static void UpdateParserList() { 
             parserList.Clear();
