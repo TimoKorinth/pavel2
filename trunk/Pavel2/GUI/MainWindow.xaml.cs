@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.IO;
 using Pavel2.Framework;
 using System.Reflection;
+using System.Data;
 
 namespace Pavel2.GUI
 {
@@ -121,18 +122,19 @@ namespace Pavel2.GUI
 
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             DataGrid dataGrid = (DataGrid)projectTree.SelectedItem;
-            StackPanel tmp;
-            stackPanel2.Children.Clear();
             if (dataGrid != null) {
+                String[][] tmp = dataGrid.GetRows();
+                tableListView.ItemsSource = tmp;
+                GridView gView = new GridView();
                 for (int i = 0; i < dataGrid.Columns.Length; i++) {
-                    tmp = new StackPanel();
-                    for (int j = 0; j < dataGrid.Columns[i].Points.Length; j++) {
-                        Label lab = new Label();
-                        lab.Content = dataGrid.Columns[i].Points[j].Data;
-                        tmp.Children.Add(lab);
-                    }
-                    stackPanel2.Children.Add(tmp);
+                    GridViewColumn gColumn = new GridViewColumn();
+                    gColumn.Header = dataGrid.Columns[i].Header;
+                    Binding bind = new Binding();
+                    bind.Path = new PropertyPath("["+i+"]");
+                    gColumn.DisplayMemberBinding = bind;
+                    gView.Columns.Add(gColumn);
                 }
+                tableListView.View = gView;
             }
         }
     }
