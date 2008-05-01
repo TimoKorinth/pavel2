@@ -30,5 +30,26 @@ namespace Pavel2.Framework {
             this.name = name;
         }
 
+        public String[][] GetRows() {
+            int iMax = 0;
+            for (int i = 0; i < columns.Length; i++) {
+                if (columns[i].Points.Length > columns[iMax].Points.Length) {
+                    iMax = i;
+                }
+            }
+            String[][] tmp = new String[columns[iMax].Points.Length][];
+            for (int i = 0; i < tmp.Length; i++) {
+                tmp[i] = new String[columns.Length];
+                for (int j = 0; j < columns.Length; j++) {
+                    if (columns[j].Points.Length > i) {
+                        tmp[i][j] = columns[j].Points[i].Data;
+                    } else {
+                        tmp[i][j] = "";
+                    }
+                }
+            }
+            return tmp;
+        }
+
     }
 }
