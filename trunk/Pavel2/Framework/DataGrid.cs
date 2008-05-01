@@ -9,6 +9,12 @@ namespace Pavel2.Framework {
         private Column[] columns;
         private String name;
         private Parser parser;
+        private String[][] data;
+
+        public String[][] Data {
+            get { return data; }
+            set { data = value; }
+        }
 
         public Parser Parser {
             get { return parser; }
@@ -28,9 +34,10 @@ namespace Pavel2.Framework {
         public DataGrid(Column[] columns, String name) {
             this.columns = columns;
             this.name = name;
+            this.data = GetRows();
         }
 
-        public String[][] GetRows() {
+        private String[][] GetRows() {
             int iMax = 0;
             for (int i = 0; i < columns.Length; i++) {
                 if (columns[i].Points.Length > columns[iMax].Points.Length) {
