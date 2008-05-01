@@ -123,8 +123,7 @@ namespace Pavel2.GUI
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             DataGrid dataGrid = (DataGrid)projectTree.SelectedItem;
             if (dataGrid != null) {
-                String[][] tmp = dataGrid.GetRows();
-                tableListView.ItemsSource = tmp;
+                tableListView.ItemsSource = dataGrid.Data;
                 GridView gView = new GridView();
                 for (int i = 0; i < dataGrid.Columns.Length; i++) {
                     GridViewColumn gColumn = new GridViewColumn();
