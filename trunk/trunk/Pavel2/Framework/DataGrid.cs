@@ -8,17 +8,11 @@ namespace Pavel2.Framework {
 
         private Column[] columns;
         private String name;
-        private Parser parser;
         private String[][] data;
 
         public String[][] Data {
             get { return data; }
             set { data = value; }
-        }
-
-        public Parser Parser {
-            get { return parser; }
-            set { parser = value; }
         }
 
         public String Name {
