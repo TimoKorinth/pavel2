@@ -7,6 +7,8 @@ using System.IO;
 namespace Pavel2.Framework {
     public abstract class Parser {
 
+        public abstract String Name { get; } 
+
         public Column[] Parse(StreamReader stream) {
             Column[] columns;
             try {

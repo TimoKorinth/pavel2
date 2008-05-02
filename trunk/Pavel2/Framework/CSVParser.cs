@@ -12,6 +12,10 @@ namespace Pavel2.Framework {
         Boolean hasHeaders = false;
         List<IPoint>[] data;
 
+        public override string Name {
+            get { return "CSV Parser"; }
+        }
+
         public Boolean HasHeaders {
             get { return hasHeaders; }
             set { hasHeaders = value; }
@@ -26,6 +30,7 @@ namespace Pavel2.Framework {
             this.stream = stream;
             String line;
             String[] lineSplit;
+            this.data = null;
             while ((line = stream.ReadLine()) != null) {
                 lineSplit = line.Split(delimiter);
                 if (null == data) {

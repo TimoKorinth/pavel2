@@ -25,7 +25,10 @@ namespace Pavel2.GUI
         public MainWindow() {
             InitializeComponent();
             InitDirectoryTree();
+            propertyGridLayout.Visibility = Visibility.Collapsed;
         }
+
+        private TreeViewItem lastAddedTreeViewItem;
 
         private void InitDirectoryTree() {
             foreach (DriveInfo drive in DriveInfo.GetDrives()) {
@@ -79,28 +82,49 @@ namespace Pavel2.GUI
         private void importButton_Click(object sender, RoutedEventArgs e) {
             if (fileList.SelectedItem != null) {
                 FileInfo file = (FileInfo)fileList.SelectedItem;
-                DataGrid dataGrid = ParserManagement.GetDataGrid(file.OpenText());
+                DataGrid dataGrid = ParserManagement.GetDataGrid(file);
                 if (null != dataGrid) {
-                    dataGrid.Parser = ParserManagement.CurrentParser;
-                    dataGrid.Name = file.Name;
-                    projectTree.Items.Add(dataGrid);
-                    SetSelectedItem(ref projectTree, dataGrid);
+                    TreeViewItem tvItem = new TreeViewItem();
+                    tvItem.Header = dataGrid.Name;
+                    tvItem.Tag = dataGrid;
+                        projectTree.Items.Add(tvItem);
+                    this.lastAddedTreeViewItem = tvItem;
+                    SetSelectedItem(ref projectTree, tvItem);
                     //Hier: Property Window für Import/Parser:
-                    propertyGrid.SelectedObject = dataGrid.Parser;
+                    propertyGridLayout.Visibility = Visibility.Visible;
+                    propertyGrid.SelectedObject = ParserManagement.CurrentParser;
                     propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(propertyGrid_PropertyValueChanged);
+                    parserComboBox.ItemsSource = ParserManagement.ParserList;
+                    parserComboBox.DisplayMemberPath = "Name";
+                    parserComboBox.SelectedItem = ParserManagement.CurrentParser;
                 } 
             }
         }
 
-        void propertyGrid_PropertyValueChanged(object s, System.Windows.Forms.PropertyValueChangedEventArgs e) {
-            DataGrid dataGrid = (DataGrid)projectTree.SelectedItem;
-            FileInfo file = (FileInfo)fileList.SelectedItem;
-            MainData.RemoveColumns(dataGrid);
-            projectTree.Items.Remove(dataGrid);
-            DataGrid d = ParserManagement.GetDataGrid(file.OpenText(), dataGrid.Parser);
-            d.Name = file.Name;
-            d.Parser = ParserManagement.CurrentParser;
-            projectTree.Items.Add(d);
+        private void propertyGrid_PropertyValueChanged(object s, System.Windows.Forms.PropertyValueChangedEventArgs e) {
+            ParseAgain(parserComboBox.SelectedItem as Parser);
+        }
+
+        private void parserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (!(parserComboBox.SelectedItem as Parser).Equals(ParserManagement.CurrentParser)) {
+                ParseAgain(parserComboBox.SelectedItem as Parser);
+            }
+        }
+
+        private void ParseAgain(Parser parser) {
+            TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
+            if (item != null) {
+                DataGrid dataGrid = (DataGrid)item.Tag;
+                MainData.RemoveColumns(dataGrid);
+                    projectTree.Items.Remove(item);
+                DataGrid d = ParserManagement.GetDataGrid(parser);
+                TreeViewItem tmp = new TreeViewItem();
+                tmp.Header = d.Name;
+                tmp.Tag = d;
+                    projectTree.Items.Add(tmp);
+                this.lastAddedTreeViewItem = tmp;
+                SetSelectedItem(ref projectTree, tmp);
+            }
         }
 
         public void SetSelectedItem(ref TreeView control, object item) {
@@ -121,8 +145,14 @@ namespace Pavel2.GUI
         }
 
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            DataGrid dataGrid = (DataGrid)projectTree.SelectedItem;
-            if (dataGrid != null) {
+            TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
+            if (e.NewValue != null) {
+                if (!e.NewValue.Equals(this.lastAddedTreeViewItem)) {
+                    propertyGridLayout.Visibility = Visibility.Collapsed;
+                }
+            }
+            if (item != null) {
+                DataGrid dataGrid = (DataGrid)item.Tag;
                 tableListView.ItemsSource = dataGrid.Data;
                 GridView gView = new GridView();
                 for (int i = 0; i < dataGrid.Columns.Length; i++) {

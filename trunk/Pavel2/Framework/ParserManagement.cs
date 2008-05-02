@@ -9,31 +9,41 @@ namespace Pavel2.Framework {
 
         private static List<Parser> parserList = new List<Parser>();
         private static Parser currentParser;
+        private static FileInfo file;
+
+        public static List<Parser> ParserList {
+            get { return ParserManagement.parserList; }
+        }
 
         public static Parser CurrentParser {
             get { return currentParser; }
         }
 
-        public static DataGrid GetDataGrid(StreamReader stream) {
+        public static DataGrid GetDataGrid(FileInfo file) {
+            ParserManagement.file = file;
             UpdateParserList();
             currentParser = null;
             Column[] columns;
             foreach (Parser parser in parserList) {
-                columns = parser.Parse(stream);
+                columns = parser.Parse(ParserManagement.file.OpenText());
                 if (null != columns) {
                     currentParser = parser;
-                    return MainData.AddColumns(columns);
+                    DataGrid d = MainData.AddColumns(columns);
+                    d.Name = file.Name;
+                    return d;
                 }
             }
             return null;
         }
 
-        public static DataGrid GetDataGrid(StreamReader stream, Parser parser) {
+        public static DataGrid GetDataGrid(Parser parser) {
             currentParser = parser;
             Column[] columns;
-            columns = parser.Parse(stream);
+            columns = parser.Parse(ParserManagement.file.OpenText());
             if (null != columns) {
-                return MainData.AddColumns(columns);
+                DataGrid d = MainData.AddColumns(columns);
+                d.Name = file.Name;
+                return d;
             }
             return null;
         }
