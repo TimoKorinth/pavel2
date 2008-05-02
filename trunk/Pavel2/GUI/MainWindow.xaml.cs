@@ -116,14 +116,11 @@ namespace Pavel2.GUI
             if (item != null) {
                 DataGrid dataGrid = (DataGrid)item.Tag;
                 MainData.RemoveColumns(dataGrid);
-                    projectTree.Items.Remove(item);
                 DataGrid d = ParserManagement.GetDataGrid(parser);
-                TreeViewItem tmp = new TreeViewItem();
-                tmp.Header = d.Name;
-                tmp.Tag = d;
-                    projectTree.Items.Add(tmp);
-                this.lastAddedTreeViewItem = tmp;
-                SetSelectedItem(ref projectTree, tmp);
+                item.Header = d.Name;
+                item.Tag = d;
+                this.lastAddedTreeViewItem = item;
+                DrawTable();
             }
         }
 
@@ -145,12 +142,16 @@ namespace Pavel2.GUI
         }
 
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
             if (e.NewValue != null) {
                 if (!e.NewValue.Equals(this.lastAddedTreeViewItem)) {
                     propertyGridLayout.Visibility = Visibility.Collapsed;
                 }
             }
+            DrawTable();
+        }
+
+        private void DrawTable() {
+            TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
             if (item != null) {
                 DataGrid dataGrid = (DataGrid)item.Tag;
                 tableListView.ItemsSource = dataGrid.Data;
@@ -159,7 +160,7 @@ namespace Pavel2.GUI
                     GridViewColumn gColumn = new GridViewColumn();
                     gColumn.Header = dataGrid.Columns[i].Header;
                     Binding bind = new Binding();
-                    bind.Path = new PropertyPath("["+i+"]");
+                    bind.Path = new PropertyPath("[" + i + "]");
                     gColumn.DisplayMemberBinding = bind;
                     gView.Columns.Add(gColumn);
                 }
