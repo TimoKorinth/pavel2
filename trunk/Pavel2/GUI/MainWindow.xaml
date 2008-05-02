@@ -63,7 +63,7 @@
             </my:WindowsFormsHost>
             <Label Grid.RowSpan="1" HorizontalAlignment="Right" VerticalAlignment="Center">Parser:</Label>
             <ComboBox SelectionChanged="parserComboBox_SelectionChanged" Grid.Column="1" Name="parserComboBox" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <Button Grid.Column="2" Grid.RowSpan="1" Height="23" Name="button5" VerticalAlignment="Center" HorizontalAlignment="Right">X</Button>
+            <Button Click="button5_Click" Grid.Column="2" Grid.RowSpan="1" Height="23" Name="button5" VerticalAlignment="Center" HorizontalAlignment="Right">X</Button>
         </Grid>
     </Grid>
 </Window>

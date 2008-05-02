@@ -28,8 +28,6 @@ namespace Pavel2.GUI
             propertyGridLayout.Visibility = Visibility.Collapsed;
         }
 
-        private TreeViewItem lastAddedTreeViewItem;
-
         private void InitDirectoryTree() {
             foreach (DriveInfo drive in DriveInfo.GetDrives()) {
                 TreeViewItem item = new TreeViewItem();
@@ -84,11 +82,12 @@ namespace Pavel2.GUI
                 FileInfo file = (FileInfo)fileList.SelectedItem;
                 DataGrid dataGrid = ParserManagement.GetDataGrid(file);
                 if (null != dataGrid) {
+
                     TreeViewItem tvItem = new TreeViewItem();
                     tvItem.Header = dataGrid.Name;
                     tvItem.Tag = dataGrid;
-                        projectTree.Items.Add(tvItem);
-                    this.lastAddedTreeViewItem = tvItem;
+                    projectTree.Items.Add(tvItem);
+
                     SetSelectedItem(ref projectTree, tvItem);
                     //Hier: Property Window für Import/Parser:
                     propertyGridLayout.Visibility = Visibility.Visible;
@@ -117,10 +116,11 @@ namespace Pavel2.GUI
                 DataGrid dataGrid = (DataGrid)item.Tag;
                 MainData.RemoveColumns(dataGrid);
                 DataGrid d = ParserManagement.GetDataGrid(parser);
-                item.Header = d.Name;
-                item.Tag = d;
-                this.lastAddedTreeViewItem = item;
-                DrawTable();
+                if (d != null) {
+                    item.Header = d.Name;
+                    item.Tag = d;
+                    DrawTable();
+                }
             }
         }
 
@@ -142,11 +142,7 @@ namespace Pavel2.GUI
         }
 
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            if (e.NewValue != null) {
-                if (!e.NewValue.Equals(this.lastAddedTreeViewItem)) {
-                    propertyGridLayout.Visibility = Visibility.Collapsed;
-                }
-            }
+            propertyGridLayout.Visibility = Visibility.Collapsed;
             DrawTable();
         }
 
@@ -166,6 +162,10 @@ namespace Pavel2.GUI
                 }
                 tableListView.View = gView;
             }
+        }
+
+        private void button5_Click(object sender, RoutedEventArgs e) {
+            propertyGridLayout.Visibility = Visibility.Collapsed;
         }
     }
 }
