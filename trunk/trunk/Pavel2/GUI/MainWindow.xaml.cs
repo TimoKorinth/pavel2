@@ -15,9 +15,13 @@ using System.IO;
 using Pavel2.Framework;
 using System.Reflection;
 using System.Data;
+using System.Windows.Controls.Primitives;
 
 namespace Pavel2.GUI
 {
+
+    delegate Point GetPositionDelegate(IInputElement element);
+
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
@@ -80,24 +84,28 @@ namespace Pavel2.GUI
         private void importButton_Click(object sender, RoutedEventArgs e) {
             if (fileList.SelectedItem != null) {
                 FileInfo file = (FileInfo)fileList.SelectedItem;
-                DataGrid dataGrid = ParserManagement.GetDataGrid(file);
-                if (null != dataGrid) {
-
-                    TreeViewItem tvItem = new TreeViewItem();
-                    tvItem.Header = dataGrid.Name;
-                    tvItem.Tag = dataGrid;
-                    projectTree.Items.Add(tvItem);
-
-                    SetSelectedItem(ref projectTree, tvItem);
-                    //Hier: Property Window für Import/Parser:
-                    propertyGridLayout.Visibility = Visibility.Visible;
-                    propertyGrid.SelectedObject = ParserManagement.CurrentParser;
-                    propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(propertyGrid_PropertyValueChanged);
-                    parserComboBox.ItemsSource = ParserManagement.ParserList;
-                    parserComboBox.DisplayMemberPath = "Name";
-                    parserComboBox.SelectedItem = ParserManagement.CurrentParser;
-                } 
+                AddTreeViewItem(file);
             }
+        }
+
+        private void AddTreeViewItem(FileInfo file) {
+            DataGrid dataGrid = ParserManagement.GetDataGrid(file);
+            if (null != dataGrid) {
+
+                TreeViewItem tvItem = new TreeViewItem();
+                tvItem.Header = dataGrid.Name;
+                tvItem.Tag = dataGrid;
+                projectTree.Items.Add(tvItem);
+
+                SetSelectedItem(ref projectTree, tvItem);
+                //Hier: Property Window für Import/Parser:
+                propertyGridLayout.Visibility = Visibility.Visible;
+                propertyGrid.SelectedObject = ParserManagement.CurrentParser;
+                propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(propertyGrid_PropertyValueChanged);
+                parserComboBox.ItemsSource = ParserManagement.ParserList;
+                parserComboBox.DisplayMemberPath = "Name";
+                parserComboBox.SelectedItem = ParserManagement.CurrentParser;
+            } 
         }
 
         private void propertyGrid_PropertyValueChanged(object s, System.Windows.Forms.PropertyValueChangedEventArgs e) {
@@ -166,6 +174,43 @@ namespace Pavel2.GUI
 
         private void button5_Click(object sender, RoutedEventArgs e) {
             propertyGridLayout.Visibility = Visibility.Collapsed;
+        }
+
+        private void fileList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            int index = GetFileListIndex(e.GetPosition);
+            fileList.SelectedIndex = index;
+            FileInfo file = fileList.Items[index] as FileInfo;
+            DragDrop.DoDragDrop(fileList, file, DragDropEffects.Copy);
+        }
+
+        private void projectTree_Drop(object sender, DragEventArgs e) {
+            FileInfo file = (FileInfo)e.Data.GetData("System.IO.FileInfo");
+            AddTreeViewItem(file);
+        }
+
+        private ListViewItem GetListViewItem(int index) {
+            if (fileList.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
+                return null;
+
+            return fileList.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
+        }
+
+        private int GetFileListIndex(GetPositionDelegate getPosition) {
+            int index = -1;
+            for (int i = 0; i < fileList.Items.Count; ++i) {
+                ListViewItem item = GetListViewItem(i);
+                if (this.IsMouseOverTarget(item, getPosition)) {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        }
+
+        private bool IsMouseOverTarget(Visual target, GetPositionDelegate getPosition) {
+            Rect bounds = VisualTreeHelper.GetDescendantBounds(target);
+            Point mousePos = getPosition((IInputElement)target);
+            return bounds.Contains(mousePos);
         }
     }
 }
