@@ -28,7 +28,7 @@
         <StatusBar Grid.Row="4" Name="statusBar1" Grid.ColumnSpan="5">
             <StatusBarItem>Status Bar Test</StatusBarItem>
         </StatusBar>
-        <TreeView Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged">
+        <TreeView Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Add new Node" />
@@ -45,7 +45,7 @@
             </Grid.RowDefinitions>
             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Name="gridSplitter3" Height="5" />
             <TreeView Name="directoryTree" TreeViewItem.Expanded="directoryTree_Expanded" SelectedItemChanged="directoryTree_SelectedItemChanged" />
-            <ListView Grid.Row="2" Name="fileList" />
+            <ListView Grid.Row="2" Name="fileList" PreviewMouseLeftButtonDown="fileList_PreviewMouseLeftButtonDown" />
             <Button Grid.Row="3" Name="importButton" Click="importButton_Click">Import</Button>
         </Grid>
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="1" Name="stackPanel1" Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Center">
