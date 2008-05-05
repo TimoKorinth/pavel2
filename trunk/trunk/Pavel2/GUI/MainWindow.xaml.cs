@@ -26,10 +26,17 @@ namespace Pavel2.GUI
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+
+        private TreeViewItem root;
+
         public MainWindow() {
             InitializeComponent();
             InitDirectoryTree();
             propertyGridLayout.Visibility = Visibility.Collapsed;
+
+            root = new TreeViewItem();
+            root.Header = "Root";
+            projectTree.Items.Add(root);
         }
 
         private void InitDirectoryTree() {
@@ -95,9 +102,9 @@ namespace Pavel2.GUI
                 TreeViewItem tvItem = new TreeViewItem();
                 tvItem.Header = dataGrid.Name;
                 tvItem.Tag = dataGrid;
-                projectTree.Items.Add(tvItem);
+                this.root.Items.Add(tvItem);
 
-                SetSelectedItem(ref projectTree, tvItem);
+                tvItem.IsSelected = true;
                 //Hier: Property Window für Import/Parser:
                 propertyGridLayout.Visibility = Visibility.Visible;
                 propertyGrid.SelectedObject = ParserManagement.CurrentParser;
@@ -132,23 +139,6 @@ namespace Pavel2.GUI
             }
         }
 
-        public void SetSelectedItem(ref TreeView control, object item) {
-            try {
-                DependencyObject dObject = control
-                    .ItemContainerGenerator
-                    .ContainerFromItem(item);
-
-                //uncomment the following line if UI updates are unnecessary
-                //((TreeViewItem)dObject).IsSelected = true;                
-
-                MethodInfo selectMethod =
-                   typeof(TreeViewItem).GetMethod("Select",
-                   BindingFlags.NonPublic | BindingFlags.Instance);
-
-                selectMethod.Invoke(dObject, new object[] { true });
-            } catch { }
-        }
-
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             propertyGridLayout.Visibility = Visibility.Collapsed;
             DrawTable();
@@ -158,17 +148,19 @@ namespace Pavel2.GUI
             TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
             if (item != null) {
                 DataGrid dataGrid = (DataGrid)item.Tag;
-                tableListView.ItemsSource = dataGrid.Data;
-                GridView gView = new GridView();
-                for (int i = 0; i < dataGrid.Columns.Length; i++) {
-                    GridViewColumn gColumn = new GridViewColumn();
-                    gColumn.Header = dataGrid.Columns[i].Header;
-                    Binding bind = new Binding();
-                    bind.Path = new PropertyPath("[" + i + "]");
-                    gColumn.DisplayMemberBinding = bind;
-                    gView.Columns.Add(gColumn);
+                if (dataGrid != null) {
+                    tableListView.ItemsSource = dataGrid.Data;
+                    GridView gView = new GridView();
+                    for (int i = 0; i < dataGrid.Columns.Length; i++) {
+                        GridViewColumn gColumn = new GridViewColumn();
+                        gColumn.Header = dataGrid.Columns[i].Header;
+                        Binding bind = new Binding();
+                        bind.Path = new PropertyPath("[" + i + "]");
+                        gColumn.DisplayMemberBinding = bind;
+                        gView.Columns.Add(gColumn);
+                    }
+                    tableListView.View = gView;
                 }
-                tableListView.View = gView;
             }
         }
 
