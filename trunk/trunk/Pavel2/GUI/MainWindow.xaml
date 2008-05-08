@@ -28,11 +28,12 @@
         <StatusBar Grid.Row="4" Name="statusBar1" Grid.ColumnSpan="5">
             <StatusBarItem>Status Bar Test</StatusBarItem>
         </StatusBar>
-        <TreeView Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
+        <TreeView PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Add new Node" />
-                    <MenuItem Header="Remove Node" />
+                    <MenuItem Header="Add new Data Table" />
+                    <MenuItem Header="Add new Folder" Click="AddNewFolder" />
+                    <MenuItem Header="Remove Item" />
                 </ContextMenu>
             </TreeView.ContextMenu>
         </TreeView>
