@@ -36,6 +36,8 @@ namespace Pavel2.GUI
 
             root = new TreeViewItem();
             root.Header = "Root";
+            FolderProjectTreeItem fPTI = new FolderProjectTreeItem(root);
+            root.Tag = fPTI;
             projectTree.Items.Add(root);
         }
 
@@ -91,28 +93,31 @@ namespace Pavel2.GUI
         private void importButton_Click(object sender, RoutedEventArgs e) {
             if (fileList.SelectedItem != null) {
                 FileInfo file = (FileInfo)fileList.SelectedItem;
-                AddTreeViewItem(file);
+                TreeViewItem projItem = (TreeViewItem)projectTree.SelectedItem;
+                AddDataProjectTreeItem(file, projItem);
             }
         }
 
-        private void AddTreeViewItem(FileInfo file) {
-            DataGrid dataGrid = ParserManagement.GetDataGrid(file);
-            if (null != dataGrid) {
+        private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
+            if (rootItem.Tag is FolderProjectTreeItem) {
+                DataGrid dataGrid = ParserManagement.GetDataGrid(file);
+                if (null != dataGrid) {
 
-                TreeViewItem tvItem = new TreeViewItem();
-                tvItem.Header = dataGrid.Name;
-                tvItem.Tag = dataGrid;
-                this.root.Items.Add(tvItem);
+                    TreeViewItem tvItem = new TreeViewItem();
+                    tvItem.Header = dataGrid.Name;
+                    DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
+                    tvItem.Tag = dPTI;
+                    rootItem.Items.Add(tvItem);
+                    tvItem.IsSelected = true;
 
-                tvItem.IsSelected = true;
-                //Hier: Property Window für Import/Parser:
-                propertyGridLayout.Visibility = Visibility.Visible;
-                propertyGrid.SelectedObject = ParserManagement.CurrentParser;
-                propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(propertyGrid_PropertyValueChanged);
-                parserComboBox.ItemsSource = ParserManagement.ParserList;
-                parserComboBox.DisplayMemberPath = "Name";
-                parserComboBox.SelectedItem = ParserManagement.CurrentParser;
-            } 
+                    propertyGridLayout.Visibility = Visibility.Visible;
+                    propertyGrid.SelectedObject = ParserManagement.CurrentParser;
+                    propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(propertyGrid_PropertyValueChanged);
+                    parserComboBox.ItemsSource = ParserManagement.ParserList;
+                    parserComboBox.DisplayMemberPath = "Name";
+                    parserComboBox.SelectedItem = ParserManagement.CurrentParser;
+                } 
+            }
         }
 
         private void propertyGrid_PropertyValueChanged(object s, System.Windows.Forms.PropertyValueChangedEventArgs e) {
@@ -127,13 +132,15 @@ namespace Pavel2.GUI
 
         private void ParseAgain(Parser parser) {
             TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
-            if (item != null) {
-                DataGrid dataGrid = (DataGrid)item.Tag;
+            if (item != null && item.Tag is DataProjectTreeItem) {
+                DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
+                DataGrid dataGrid = dPTI.DataGrid;
                 MainData.RemoveColumns(dataGrid);
                 DataGrid d = ParserManagement.GetDataGrid(parser);
+                dPTI.DataGrid = d;
                 if (d != null) {
                     item.Header = d.Name;
-                    item.Tag = d;
+                    item.Tag = dPTI;
                     DrawTable();
                 }
             }
@@ -147,7 +154,8 @@ namespace Pavel2.GUI
         private void DrawTable() {
             TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
             if (item != null) {
-                DataGrid dataGrid = (DataGrid)item.Tag;
+                ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
+                DataGrid dataGrid = pTI.DataGrid;
                 if (dataGrid != null) {
                     tableListView.ItemsSource = dataGrid.Data;
                     GridView gView = new GridView();
@@ -177,7 +185,7 @@ namespace Pavel2.GUI
 
         private void projectTree_Drop(object sender, DragEventArgs e) {
             FileInfo file = (FileInfo)e.Data.GetData("System.IO.FileInfo");
-            AddTreeViewItem(file);
+            AddDataProjectTreeItem(file, this.root);
         }
 
         private ListViewItem GetListViewItem(int index) {

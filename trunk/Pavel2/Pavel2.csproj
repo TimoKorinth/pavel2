@@ -85,11 +85,14 @@
     <Compile Include="Framework\Column.cs" />
     <Compile Include="Framework\CSVParser.cs" />
     <Compile Include="Framework\DataGrid.cs" />
+    <Compile Include="Framework\DataProjectTreeItem.cs" />
     <Compile Include="Framework\DiscretePoint.cs" />
+    <Compile Include="Framework\FolderProjectTreeItem.cs" />
     <Compile Include="Framework\Parser.cs" />
     <Compile Include="Framework\MainData.cs" />
     <Compile Include="Framework\IPoint.cs" />
     <Compile Include="Framework\ParserManagement.cs" />
+    <Compile Include="Framework\ProjectTreeItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
