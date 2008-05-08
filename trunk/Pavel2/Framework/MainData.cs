@@ -20,8 +20,10 @@ namespace Pavel2.Framework {
         }
 
         public static void RemoveColumns(DataGrid dataGrid) {
-            for (int i = 0; i < dataGrid.Columns.Length; i++) {
-                columns.Remove(dataGrid.Columns[i]);
+            if (dataGrid != null) {
+                for (int i = 0; i < dataGrid.Columns.Length; i++) {
+                    columns.Remove(dataGrid.Columns[i]);
+                }
             }
         }
 
