@@ -100,6 +100,9 @@ namespace Pavel2.GUI
         }
 
         private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
+            if (rootItem.Tag is DataProjectTreeItem) {
+                rootItem = (TreeViewItem)rootItem.Parent;
+            }
             if (rootItem.Tag is FolderProjectTreeItem) {
                 DataGrid dataGrid = ParserManagement.GetDataGrid(file);
                 if (null != dataGrid) {
@@ -117,7 +120,7 @@ namespace Pavel2.GUI
                     parserComboBox.ItemsSource = ParserManagement.ParserList;
                     parserComboBox.DisplayMemberPath = "Name";
                     parserComboBox.SelectedItem = ParserManagement.CurrentParser;
-                } 
+                }
             }
         }
 
@@ -235,6 +238,9 @@ namespace Pavel2.GUI
 
         private void AddNewFolder(object sender, RoutedEventArgs e) {
             TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
+            if (item.Tag is DataProjectTreeItem) {
+                item = (TreeViewItem)item.Parent;
+            }
             if (item.Tag is FolderProjectTreeItem) {
                 TreeViewItem newItem = new TreeViewItem();
                 newItem.Header = "Folder";
