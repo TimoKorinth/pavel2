@@ -33,7 +33,7 @@
                 <ContextMenu>
                     <MenuItem Header="Add new Data Table" />
                     <MenuItem Header="Add new Folder" Click="AddNewFolder" />
-                    <MenuItem Header="Remove Item" />
+                    <MenuItem Header="Remove Item" Click="RemoveItem" />
                 </ContextMenu>
             </TreeView.ContextMenu>
         </TreeView>

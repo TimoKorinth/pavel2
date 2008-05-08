@@ -39,6 +39,7 @@ namespace Pavel2.GUI
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(root);
             root.Tag = fPTI;
             projectTree.Items.Add(root);
+            root.IsSelected = true;
         }
 
         private void InitDirectoryTree() {
@@ -241,6 +242,21 @@ namespace Pavel2.GUI
                 newItem.Tag = fPTI;
                 item.Items.Add(newItem);
             }
+        }
+
+        private void RemoveItem(object sender, RoutedEventArgs e) {
+            TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
+            ProjectTreeItem dPTI = (ProjectTreeItem)item.Tag;
+            MainData.RemoveColumns(dPTI.DataGrid);
+            dPTI.DataGrid = null;
+            RemoveProjectTreeItem(item, this.root);
+        }
+
+        private void RemoveProjectTreeItem(TreeViewItem delItem, TreeViewItem rootItem) {
+            foreach (TreeViewItem item in rootItem.Items) {
+                RemoveProjectTreeItem(delItem, item);
+            }
+            rootItem.Items.Remove(delItem);
         }
     }
 }
