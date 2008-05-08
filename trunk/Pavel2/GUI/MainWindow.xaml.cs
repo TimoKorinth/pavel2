@@ -168,6 +168,9 @@ namespace Pavel2.GUI
                         gView.Columns.Add(gColumn);
                     }
                     tableListView.View = gView;
+                } else {
+                    tableListView.ItemsSource = null;
+                    tableListView.View = null;
                 }
             }
         }
@@ -211,6 +214,33 @@ namespace Pavel2.GUI
             Rect bounds = VisualTreeHelper.GetDescendantBounds(target);
             Point mousePos = getPosition((IInputElement)target);
             return bounds.Contains(mousePos);
+        }
+
+        private TreeViewItem GetProjectTreeItem(GetPositionDelegate getPosition, TreeViewItem rootItem) {
+            if (IsMouseOverTarget(rootItem, getPosition)) {
+                foreach (TreeViewItem item in rootItem.Items) {
+                    if (IsMouseOverTarget(item, getPosition)) {
+                        return GetProjectTreeItem(getPosition, item);
+                    }
+                }
+            }
+            return rootItem;
+        }
+
+        private void projectTree_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+            TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
+            if (item != null) item.IsSelected = true;
+        }
+
+        private void AddNewFolder(object sender, RoutedEventArgs e) {
+            TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
+            if (item.Tag is FolderProjectTreeItem) {
+                TreeViewItem newItem = new TreeViewItem();
+                newItem.Header = "Folder";
+                FolderProjectTreeItem fPTI = new FolderProjectTreeItem(newItem);
+                newItem.Tag = fPTI;
+                item.Items.Add(newItem);
+            }
         }
     }
 }

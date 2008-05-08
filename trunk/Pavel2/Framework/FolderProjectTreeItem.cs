@@ -13,6 +13,7 @@ namespace Pavel2.Framework {
 
         public override DataGrid DataGrid {
             get {
+                columns.Clear();
                 GetColumns(parentItem);
                 if (columns.Count > 0) dataGrid = new DataGrid(columns.ToArray(), "");
                 return dataGrid;
