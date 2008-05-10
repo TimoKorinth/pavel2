@@ -49,7 +49,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Name="gridSplitter3" Height="5" />
-            <TreeView Name="directoryTree" TreeViewItem.Expanded="directoryTree_Expanded" SelectedItemChanged="directoryTree_SelectedItemChanged" />
+            <TreeView Name="directoryTree" TreeViewItem.Expanded="directoryTree_Expanded" SelectedItemChanged="directoryTree_SelectedItemChanged">
                 <TreeView.Resources>
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="HeaderTemplate">
