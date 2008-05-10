@@ -93,6 +93,7 @@
     <Compile Include="Framework\IPoint.cs" />
     <Compile Include="Framework\ParserManagement.cs" />
     <Compile Include="Framework\ProjectTreeItem.cs" />
+    <Compile Include="GUI\HeaderToImageConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -116,6 +117,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\Folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\HDD.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
