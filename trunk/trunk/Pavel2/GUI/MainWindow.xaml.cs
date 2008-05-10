@@ -192,7 +192,13 @@ namespace Pavel2.GUI
 
         private void projectTree_Drop(object sender, DragEventArgs e) {
             FileInfo file = (FileInfo)e.Data.GetData("System.IO.FileInfo");
-            AddDataProjectTreeItem(file, this.root);
+            TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
+            if (item.Tag is DataProjectTreeItem) {
+                item = (TreeViewItem)item.Parent;
+            }
+            if (item.Tag is FolderProjectTreeItem) {
+                AddDataProjectTreeItem(file, item);
+            }
         }
 
         private ListViewItem GetListViewItem(int index) {
@@ -220,6 +226,7 @@ namespace Pavel2.GUI
             return bounds.Contains(mousePos);
         }
 
+        //TODO: Wenn nicht im Gebiet des TreeView geklickt wird, wird immer root ausgewählt
         private TreeViewItem GetProjectTreeItem(GetPositionDelegate getPosition, TreeViewItem rootItem) {
             if (IsMouseOverTarget(rootItem, getPosition)) {
                 foreach (TreeViewItem item in rootItem.Items) {
