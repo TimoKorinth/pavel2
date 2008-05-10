@@ -28,6 +28,7 @@ namespace Pavel2.GUI
     public partial class MainWindow : Window {
 
         private TreeViewItem root;
+        private TreeViewItem lastModifiedItem;
 
         public MainWindow() {
             InitializeComponent();
@@ -100,8 +101,11 @@ namespace Pavel2.GUI
         }
 
         private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
+            int insertIndex = -1;
             if (rootItem.Tag is DataProjectTreeItem) {
+                TreeViewItem tmp = rootItem;
                 rootItem = (TreeViewItem)rootItem.Parent;
+                insertIndex = rootItem.Items.IndexOf(tmp);
             }
             if (rootItem.Tag is FolderProjectTreeItem) {
                 DataGrid dataGrid = ParserManagement.GetDataGrid(file);
@@ -111,7 +115,11 @@ namespace Pavel2.GUI
                     tvItem.Header = dataGrid.Name;
                     DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                     tvItem.Tag = dPTI;
-                    rootItem.Items.Add(tvItem);
+                    if (insertIndex < 0) {
+                        rootItem.Items.Add(tvItem);
+                    } else {
+                        rootItem.Items.Insert(insertIndex, tvItem);
+                    }
                     tvItem.IsSelected = true;
                     rootItem.IsExpanded = true;
 
@@ -192,14 +200,10 @@ namespace Pavel2.GUI
         }
 
         private void projectTree_Drop(object sender, DragEventArgs e) {
+            this.lastModifiedItem.Background = null;
             FileInfo file = (FileInfo)e.Data.GetData("System.IO.FileInfo");
             TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
-            if (item.Tag is DataProjectTreeItem) {
-                item = (TreeViewItem)item.Parent;
-            }
-            if (item.Tag is FolderProjectTreeItem) {
-                AddDataProjectTreeItem(file, item);
-            }
+            AddDataProjectTreeItem(file, item);
         }
 
         private ListViewItem GetListViewItem(int index) {
@@ -228,6 +232,7 @@ namespace Pavel2.GUI
         }
 
         //TODO: Wenn nicht im Gebiet des TreeView geklickt wird, wird immer root ausgewählt
+        //evtl. dann einfach das schon ausgewählte Object im Baum nehmen
         private TreeViewItem GetProjectTreeItem(GetPositionDelegate getPosition, TreeViewItem rootItem) {
             if (IsMouseOverTarget(rootItem, getPosition)) {
                 foreach (TreeViewItem item in rootItem.Items) {
@@ -271,6 +276,13 @@ namespace Pavel2.GUI
                 RemoveProjectTreeItem(delItem, item);
             }
             rootItem.Items.Remove(delItem);
+        }
+
+        private void projectTree_DragOver(object sender, DragEventArgs e) {
+            TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
+            if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
+            item.Background = Brushes.Turquoise;
+            this.lastModifiedItem = item;
         }
     }
 }

@@ -28,7 +28,7 @@
         <StatusBar Grid.Row="4" Name="statusBar1" Grid.ColumnSpan="5">
             <StatusBarItem>Status Bar Test</StatusBarItem>
         </StatusBar>
-        <TreeView PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
+        <TreeView DragOver="projectTree_DragOver" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Add new Data Table" />
