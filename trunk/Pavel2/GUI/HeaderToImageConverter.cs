@@ -6,7 +6,6 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
 namespace Pavel2.GUI {
-    [ValueConversion(typeof(string), typeof(bool))]
     public class HeaderToImageConverter : IValueConverter {
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {

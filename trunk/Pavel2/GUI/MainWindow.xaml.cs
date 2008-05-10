@@ -68,14 +68,16 @@ namespace Pavel2.GUI
                 foreach (DirectoryInfo subDir in dir.GetDirectories()) {
                     TreeViewItem newItem = new TreeViewItem();
                     newItem.Tag = subDir;
-                    newItem.Header = subDir.ToString();
-                    if (subDir.GetDirectories().Length != 0) newItem.Items.Add("*");
-                    item.Items.Add(newItem);
+                    newItem.Header = subDir.Name;
+                    try {
+                        if (subDir.GetDirectories().Length != 0) newItem.Items.Add("*");
+                        if (subDir.Attributes != (FileAttributes.System | FileAttributes.Hidden | FileAttributes.Directory)) {
+                            item.Items.Add(newItem);
+                        }
+                    } catch { 
+                    }
                 }
             } catch {
-                // An exception could be thrown in this code if you don't
-                // have sufficient security permissions for a file or directory.
-                // You can catch and then ignore this exception.
             }
         }
 
@@ -101,7 +103,9 @@ namespace Pavel2.GUI
                     ListViewItem l = new ListViewItem();
                     l.Content = dir.Name;
                     l.Tag = dir;
-                    listViewItems.Add(l);
+                    if (dir.Attributes != (FileAttributes.Directory | FileAttributes.Hidden | FileAttributes.System)) {
+                       listViewItems.Add(l); 
+                    } 
                 }
                 foreach (FileInfo file in files) {
                     ListViewItem l = new ListViewItem();
