@@ -113,6 +113,16 @@ namespace Pavel2.GUI
 
                     TreeViewItem tvItem = new TreeViewItem();
                     tvItem.Header = dataGrid.Name;
+                    for (int i = 0; i < dataGrid.Columns.Length; i++) {
+                        TreeViewItem tmp = new TreeViewItem();
+                        String header = dataGrid.Columns[i].Header;
+                        if (header != "") {
+                            tmp.Header = header;
+                        } else {
+                            tmp.Header = i;
+                        }
+                        tvItem.Items.Add(tmp);
+                    }
                     DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                     tvItem.Tag = dPTI;
                     if (insertIndex < 0) {
@@ -166,7 +176,7 @@ namespace Pavel2.GUI
 
         private void DrawTable() {
             TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
-            if (item != null) {
+            if (item != null && item.Tag != null) {
                 ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                 DataGrid dataGrid = pTI.DataGrid;
                 if (dataGrid != null) {
