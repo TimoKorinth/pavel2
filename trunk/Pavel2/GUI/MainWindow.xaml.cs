@@ -113,6 +113,7 @@ namespace Pavel2.GUI
                     tvItem.Tag = dPTI;
                     rootItem.Items.Add(tvItem);
                     tvItem.IsSelected = true;
+                    rootItem.IsExpanded = true;
 
                     propertyGridLayout.Visibility = Visibility.Visible;
                     propertyGrid.SelectedObject = ParserManagement.CurrentParser;
