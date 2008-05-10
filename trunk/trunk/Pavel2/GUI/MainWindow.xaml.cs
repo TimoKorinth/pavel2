@@ -270,6 +270,8 @@ namespace Pavel2.GUI
                 FolderProjectTreeItem fPTI = new FolderProjectTreeItem(newItem);
                 newItem.Tag = fPTI;
                 item.Items.Add(newItem);
+                newItem.IsSelected = true;
+                item.IsExpanded = true;
             }
         }
 
