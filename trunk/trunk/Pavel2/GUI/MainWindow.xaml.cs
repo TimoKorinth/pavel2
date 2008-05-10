@@ -69,7 +69,7 @@ namespace Pavel2.GUI
                     TreeViewItem newItem = new TreeViewItem();
                     newItem.Tag = subDir;
                     newItem.Header = subDir.ToString();
-                    newItem.Items.Add("*");
+                    if (subDir.GetDirectories().Length != 0) newItem.Items.Add("*");
                     item.Items.Add(newItem);
                 }
             } catch {
@@ -82,11 +82,34 @@ namespace Pavel2.GUI
         private void directoryTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             TreeViewItem item = (TreeViewItem)directoryTree.SelectedItem;
             try {
+                List<ListViewItem> listViewItems = new List<ListViewItem>();
+                FileInfo[] files = new FileInfo[0];
+                DirectoryInfo[] directories = new DirectoryInfo[0];
                 if (item.Tag is DirectoryInfo) {
-                    fileList.ItemsSource = ((DirectoryInfo)item.Tag).GetFiles();
+                    files = ((DirectoryInfo)item.Tag).GetFiles();
+                    directories = ((DirectoryInfo)item.Tag).GetDirectories();
+                    
+                    ListViewItem parentDir = new ListViewItem();
+                    parentDir.Content = "..";
+                    parentDir.Tag = ((DirectoryInfo)item.Tag).Parent;
+                    listViewItems.Add(parentDir);
                 } else if (item.Tag is DriveInfo) {
-                    fileList.ItemsSource = ((DriveInfo)item.Tag).RootDirectory.GetFiles();
+                    files = ((DriveInfo)item.Tag).RootDirectory.GetFiles();
+                    directories = ((DriveInfo)item.Tag).RootDirectory.GetDirectories();
                 }
+                foreach (DirectoryInfo dir in directories) {
+                    ListViewItem l = new ListViewItem();
+                    l.Content = dir.Name;
+                    l.Tag = dir;
+                    listViewItems.Add(l);
+                }
+                foreach (FileInfo file in files) {
+                    ListViewItem l = new ListViewItem();
+                    l.Content = file.Name;
+                    l.Tag = file;
+                    listViewItems.Add(l);
+                }
+                fileList.ItemsSource = listViewItems;
             } catch (Exception fileExeption) {
                 fileExeption.GetType();
             }
@@ -94,9 +117,11 @@ namespace Pavel2.GUI
 
         private void importButton_Click(object sender, RoutedEventArgs e) {
             if (fileList.SelectedItem != null) {
-                FileInfo file = (FileInfo)fileList.SelectedItem;
-                TreeViewItem projItem = (TreeViewItem)projectTree.SelectedItem;
-                AddDataProjectTreeItem(file, projItem);
+                ListViewItem lVItem = (ListViewItem)fileList.SelectedItem;
+                if (lVItem.Tag is FileInfo) {
+                    TreeViewItem projItem = (TreeViewItem)projectTree.SelectedItem;
+                    AddDataProjectTreeItem((FileInfo)lVItem.Tag, projItem);
+                }
             }
         }
 
@@ -204,9 +229,13 @@ namespace Pavel2.GUI
 
         private void fileList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             int index = GetFileListIndex(e.GetPosition);
-            fileList.SelectedIndex = index;
-            FileInfo file = fileList.Items[index] as FileInfo;
-            DragDrop.DoDragDrop(fileList, file, DragDropEffects.Copy);
+            if (index > 0) {
+                fileList.SelectedIndex = index;
+                ListViewItem lVItem = fileList.Items[index] as ListViewItem;
+                if (lVItem.Tag is FileInfo) {
+                    DragDrop.DoDragDrop(fileList, (FileInfo)lVItem.Tag, DragDropEffects.Copy);
+                }
+            }
         }
 
         private void projectTree_Drop(object sender, DragEventArgs e) {
@@ -227,7 +256,7 @@ namespace Pavel2.GUI
             int index = -1;
             for (int i = 0; i < fileList.Items.Count; ++i) {
                 ListViewItem item = GetListViewItem(i);
-                if (this.IsMouseOverTarget(item, getPosition)) {
+                if (item != null && this.IsMouseOverTarget(item, getPosition)) {
                     index = i;
                     break;
                 }
