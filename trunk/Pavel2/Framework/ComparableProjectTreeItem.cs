@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Controls;
 
 namespace Pavel2.Framework {
-    public class FolderProjectTreeItem : ProjectTreeItem {
+    public class ComparableProjectTreeItem : ProjectTreeItem {
 
         private DataGrid dataGrid;
         private TreeViewItem parentItem;
@@ -23,7 +23,7 @@ namespace Pavel2.Framework {
             }
         }
 
-        public FolderProjectTreeItem(TreeViewItem parentItem) {
+        public ComparableProjectTreeItem(TreeViewItem parentItem) {
             this.parentItem = parentItem;
         }
 
@@ -31,7 +31,7 @@ namespace Pavel2.Framework {
             foreach (TreeViewItem item in tvItem.Items) {
                 if (item.Tag is DataProjectTreeItem) {
                     DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
-                    if (dPTI.DataGrid != null) columns.AddRange(dPTI.DataGrid.Columns);
+                    columns.AddRange(dPTI.DataGrid.Columns);
                 } else if (item.Tag is FolderProjectTreeItem) {
                     GetColumns(item);
                 }
