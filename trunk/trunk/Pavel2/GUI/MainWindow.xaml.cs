@@ -132,23 +132,32 @@ namespace Pavel2.GUI
             AddDataProjectTreeItem(file, null);
         }
 
-        private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
-            DataGrid dataGrid = ParserManagement.GetDataGrid(file);
-            if (null != dataGrid) {
-                TreeViewItem tvItem = new TreeViewItem();
-                tvItem.Header = dataGrid.Name;
-                for (int i = 0; i < dataGrid.Columns.Length; i++) {
+        private void UpdateTreeViewItem(TreeViewItem item) {
+            if (item.Tag is DataProjectTreeItem) {
+                item.Items.Clear();
+                DataProjectTreeItem dPTVI = (DataProjectTreeItem)item.Tag;
+                for (int i = 0; i < dPTVI.DataGrid.Columns.Length; i++) {
                     TreeViewItem tmp = new TreeViewItem();
-                    String header = dataGrid.Columns[i].Header;
+                    String header = dPTVI.DataGrid.Columns[i].Header;
+                    tmp.Tag = dPTVI.DataGrid.Columns[i];
                     if (header != "") {
                         tmp.Header = header;
                     } else {
                         tmp.Header = i;
                     }
-                    tvItem.Items.Add(tmp);
+                    item.Items.Add(tmp);
                 }
+            }
+        }
+
+        private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
+            DataGrid dataGrid = ParserManagement.GetDataGrid(file);
+            if (null != dataGrid) {
+                TreeViewItem tvItem = new TreeViewItem();
+                tvItem.Header = dataGrid.Name;
                 DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                 tvItem.Tag = dPTI;
+                UpdateTreeViewItem(tvItem);
                 if (rootItem != null) {
                     InsertToProjectTree(tvItem, rootItem, true, true);
                 } else {
@@ -225,6 +234,7 @@ namespace Pavel2.GUI
                 MainData.RemoveColumns(dataGrid);
                 DataGrid d = ParserManagement.GetDataGrid(parser);
                 dPTI.DataGrid = d;
+                UpdateTreeViewItem(item);
                 if (d != null) {
                     item.Header = d.Name;
                     item.Tag = dPTI;
@@ -240,7 +250,7 @@ namespace Pavel2.GUI
 
         private void DrawTable() {
             TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
-            if (item != null && item.Tag != null) {
+            if (item != null && item.Tag != null && !(item.Tag is Column)) {
                 ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                 DataGrid dataGrid = pTI.DataGrid;
                 if (dataGrid != null) {
@@ -279,9 +289,12 @@ namespace Pavel2.GUI
 
         private void projectTree_Drop(object sender, DragEventArgs e) {
             this.lastModifiedItem.Background = null;
-            FileInfo file = (FileInfo)e.Data.GetData("System.IO.FileInfo");
-            TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
-            AddDataProjectTreeItem(file, item);
+            object data = e.Data.GetData("System.IO.FileInfo");
+            if (data is FileInfo) {
+                FileInfo file = (FileInfo)data;
+                TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
+                AddDataProjectTreeItem(file, item);
+            }
         }
 
         private ListViewItem GetListViewItem(int index) {
@@ -360,12 +373,25 @@ namespace Pavel2.GUI
         private void MenuItem_Click_1(object sender, RoutedEventArgs e) {
             TreeViewItem item = new TreeViewItem();
             item.Header = "DataTable";
-            item.Tag = new DataProjectTreeItem(null);
+            item.Tag = new DataProjectTreeItem(new DataGrid());
             InsertToProjectTree(item, true, true);
         }
 
         private void transitionBox_Drop(object sender, DragEventArgs e) {
-
+            object data = e.Data.GetData("Pavel2.Framework.Column");
+            this.lastModifiedItem.Background = null;
+            if (data is Column) {
+                TreeViewItem selItem = (TreeViewItem)projectTree.SelectedItem;
+                if (selItem.Tag is DataProjectTreeItem) {
+                    DataProjectTreeItem dPTI = (DataProjectTreeItem)selItem.Tag;
+                    if (dPTI.DataGrid == null) {
+                        dPTI.DataGrid = new DataGrid();
+                    }
+                    dPTI.DataGrid.AddColumn((Column)data);
+                    UpdateTreeViewItem(selItem);
+                    DrawTable();
+                }
+            }
         }
 
         private void tableButton_Click(object sender, RoutedEventArgs e) {
@@ -391,6 +417,13 @@ namespace Pavel2.GUI
             Image img = new Image();
             img.Source = source;
             transitionBox.Content = img;
+        }
+
+        private void projectTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
+            if (item.Tag is Column) {
+                DragDrop.DoDragDrop(projectTree, (Column)item.Tag, DragDropEffects.Copy);
+            }
         }
     }
 }

@@ -25,9 +25,23 @@ namespace Pavel2.Framework {
             set { columns = value; }
         }
 
+        public DataGrid() {
+            this.name = "";
+            this.columns = new Column[0];
+            this.data = new String[0][];
+        }
+
         public DataGrid(Column[] columns, String name) {
             this.columns = columns;
             this.name = name;
+            this.data = GetRows();
+        }
+
+        public void AddColumn(Column column) {
+            List<Column> listTmp = new List<Column>();
+            listTmp.AddRange(columns);
+            listTmp.Add(column);
+            this.columns = listTmp.ToArray();
             this.data = GetRows();
         }
 
