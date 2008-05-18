@@ -379,7 +379,7 @@ namespace Pavel2.GUI
 
         private void transitionBox_Drop(object sender, DragEventArgs e) {
             object data = e.Data.GetData("Pavel2.Framework.Column");
-            this.lastModifiedItem.Background = null;
+            if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
             if (data is Column) {
                 TreeViewItem selItem = (TreeViewItem)projectTree.SelectedItem;
                 if (selItem.Tag is DataProjectTreeItem) {
