@@ -123,51 +123,86 @@ namespace Pavel2.GUI
             if (fileList.SelectedItem != null) {
                 ListViewItem lVItem = (ListViewItem)fileList.SelectedItem;
                 if (lVItem.Tag is FileInfo) {
-                    TreeViewItem projItem = (TreeViewItem)projectTree.SelectedItem;
-                    AddDataProjectTreeItem((FileInfo)lVItem.Tag, projItem);
+                    AddDataProjectTreeItem((FileInfo)lVItem.Tag);
                 }
             }
         }
 
+        private void AddDataProjectTreeItem(FileInfo file) {
+            AddDataProjectTreeItem(file, null);
+        }
+
         private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
-            int insertIndex = -1;
-            if (rootItem.Tag is DataProjectTreeItem) {
-                TreeViewItem tmp = rootItem;
-                rootItem = (TreeViewItem)rootItem.Parent;
-                insertIndex = rootItem.Items.IndexOf(tmp);
-            }
-            if (rootItem.Tag is FolderProjectTreeItem) {
-                DataGrid dataGrid = ParserManagement.GetDataGrid(file);
-                if (null != dataGrid) {
-
-                    TreeViewItem tvItem = new TreeViewItem();
-                    tvItem.Header = dataGrid.Name;
-                    for (int i = 0; i < dataGrid.Columns.Length; i++) {
-                        TreeViewItem tmp = new TreeViewItem();
-                        String header = dataGrid.Columns[i].Header;
-                        if (header != "") {
-                            tmp.Header = header;
-                        } else {
-                            tmp.Header = i;
-                        }
-                        tvItem.Items.Add(tmp);
-                    }
-                    DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
-                    tvItem.Tag = dPTI;
-                    if (insertIndex < 0) {
-                        rootItem.Items.Add(tvItem);
+            DataGrid dataGrid = ParserManagement.GetDataGrid(file);
+            if (null != dataGrid) {
+                TreeViewItem tvItem = new TreeViewItem();
+                tvItem.Header = dataGrid.Name;
+                for (int i = 0; i < dataGrid.Columns.Length; i++) {
+                    TreeViewItem tmp = new TreeViewItem();
+                    String header = dataGrid.Columns[i].Header;
+                    if (header != "") {
+                        tmp.Header = header;
                     } else {
-                        rootItem.Items.Insert(insertIndex, tvItem);
+                        tmp.Header = i;
                     }
-                    tvItem.IsSelected = true;
-                    rootItem.IsExpanded = true;
+                    tvItem.Items.Add(tmp);
+                }
+                DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
+                tvItem.Tag = dPTI;
+                if (rootItem != null) {
+                    InsertToProjectTree(tvItem, rootItem, true, true);
+                } else {
+                    InsertToProjectTree(tvItem, true, true);
+                }
 
-                    propertyGridLayout.Visibility = Visibility.Visible;
-                    propertyGrid.SelectedObject = ParserManagement.CurrentParser;
-                    propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(propertyGrid_PropertyValueChanged);
-                    parserComboBox.ItemsSource = ParserManagement.ParserList;
-                    parserComboBox.DisplayMemberPath = "Name";
-                    parserComboBox.SelectedItem = ParserManagement.CurrentParser;
+                propertyGridLayout.Visibility = Visibility.Visible;
+                propertyGrid.SelectedObject = ParserManagement.CurrentParser;
+                propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(propertyGrid_PropertyValueChanged);
+                parserComboBox.ItemsSource = ParserManagement.ParserList;
+                parserComboBox.DisplayMemberPath = "Name";
+                parserComboBox.SelectedItem = ParserManagement.CurrentParser;
+            }
+        }
+
+        /// <summary>
+        /// Insert a TreeViewItem at the position of the currently selected Item.  If
+        /// no item is selected, the new Item is inserted into the root element.
+        /// </summary>
+        /// <param name="item">TreeViewItem to insert.</param>
+        /// <param name="isSelected"></param>
+        /// <param name="isExpanded"></param>
+        private void InsertToProjectTree(TreeViewItem item, bool isSelected, bool isExpanded) {
+            TreeViewItem rootItem = (TreeViewItem)projectTree.SelectedItem;
+            if (rootItem != null) {
+                InsertToProjectTree(item, rootItem, isSelected, isExpanded);
+            } else {
+                InsertToProjectTree(item, this.root, isSelected, isExpanded);
+            }
+        }
+
+        /// <summary>
+        /// Insert a TreeViewItem.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="rootItem"></param>
+        /// <param name="isSelected"></param>
+        /// <param name="isExpanded"></param>
+        private void InsertToProjectTree(TreeViewItem item, TreeViewItem rootItem, bool isSelected, bool isExpanded) {
+            if (rootItem != null) {
+                int insertIndex = -1;
+                if (rootItem.Tag is DataProjectTreeItem) {
+                    TreeViewItem tmp = rootItem;
+                    rootItem = (TreeViewItem)rootItem.Parent;
+                    insertIndex = rootItem.Items.IndexOf(tmp);
+                }
+                if (rootItem.Tag is FolderProjectTreeItem) {
+                    if (insertIndex < 0) {
+                        rootItem.Items.Add(item);
+                    } else {
+                        rootItem.Items.Insert(insertIndex, item);
+                    }
+                    item.IsSelected = isSelected;
+                    rootItem.IsExpanded = isExpanded;
                 }
             }
         }
@@ -293,19 +328,11 @@ namespace Pavel2.GUI
         }
 
         private void AddNewFolder(object sender, RoutedEventArgs e) {
-            TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
-            if (item.Tag is DataProjectTreeItem) {
-                item = (TreeViewItem)item.Parent;
-            }
-            if (item.Tag is FolderProjectTreeItem) {
-                TreeViewItem newItem = new TreeViewItem();
-                newItem.Header = "Folder";
-                FolderProjectTreeItem fPTI = new FolderProjectTreeItem(newItem);
-                newItem.Tag = fPTI;
-                item.Items.Add(newItem);
-                newItem.IsSelected = true;
-                item.IsExpanded = true;
-            }
+            TreeViewItem newItem = new TreeViewItem();
+            newItem.Header = "Folder";
+            FolderProjectTreeItem fPTI = new FolderProjectTreeItem(newItem);
+            newItem.Tag = fPTI;
+            InsertToProjectTree(newItem, true, true);
         }
 
         private void RemoveItem(object sender, RoutedEventArgs e) {
@@ -328,6 +355,13 @@ namespace Pavel2.GUI
             if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
             item.Background = Brushes.Turquoise;
             this.lastModifiedItem = item;
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e) {
+            TreeViewItem item = new TreeViewItem();
+            item.Header = "DataTable";
+            item.Tag = new DataProjectTreeItem(null);
+            InsertToProjectTree(item, true, true);
         }
     }
 }
