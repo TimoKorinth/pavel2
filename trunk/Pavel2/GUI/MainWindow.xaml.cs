@@ -363,5 +363,34 @@ namespace Pavel2.GUI
             item.Tag = new DataProjectTreeItem(null);
             InsertToProjectTree(item, true, true);
         }
+
+        private void transitionBox_Drop(object sender, DragEventArgs e) {
+
+        }
+
+        private void tableButton_Click(object sender, RoutedEventArgs e) {
+            transitionBox.Content = tableListView;
+        }
+
+        private void scatterPlotButton_Click(object sender, RoutedEventArgs e) {
+            BitmapImage source = new BitmapImage(new Uri("pack://application:,,,/GUI/Images/ScatterPlot.png"));
+            Image img = new Image();
+            img.Source = source;
+            transitionBox.Content = img;
+        }
+
+        private void parallelPlotButton_Click(object sender, RoutedEventArgs e) {
+            BitmapImage source = new BitmapImage(new Uri("pack://application:,,,/GUI/Images/ParallelPlot.png"));
+            Image img = new Image();
+            img.Source = source;
+            transitionBox.Content = img;
+        }
+
+        private void scatterMatrixButton_Click(object sender, RoutedEventArgs e) {
+            BitmapImage source = new BitmapImage(new Uri("pack://application:,,,/GUI/Images/ScatterMatrix.png"));
+            Image img = new Image();
+            img.Source = source;
+            transitionBox.Content = img;
+        }
     }
 }
