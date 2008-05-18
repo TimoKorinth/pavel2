@@ -47,6 +47,10 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Transitionals, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Transitionals.dll</HintPath>
+    </Reference>
     <Reference Include="UIAutomationProvider">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -127,6 +131,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GUI\Icons\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Images\ParallelPlot.png" />
+    <Resource Include="GUI\Images\ScatterMatrix.png" />
+    <Resource Include="GUI\Images\ScatterPlot.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,6 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
     xmlns:local="clr-namespace:Pavel2.GUI"
+    xmlns:transc="clr-namespace:Transitionals.Controls;assembly=Transitionals"
+    xmlns:transt="clr-namespace:Transitionals.Transitions;assembly=Transitionals"
     Title="Pavel²" Height="768" Width="1024" Icon="/Pavel2;component/GUI/Icons/Logo.png">
     <Window.Resources>
         <local:HeaderToImageConverter x:Key="HeaderToImageConverter"></local:HeaderToImageConverter>
@@ -70,12 +72,21 @@
             <Button Grid.Row="3" Name="importButton" Click="importButton_Click">Import</Button>
         </Grid>
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="1" Name="stackPanel1" Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Center">
-            <Button Height="23" Name="button1" Width="75">Table</Button>
-            <Button Height="23" Name="button2" Width="75">ScatterPlot</Button>
-            <Button Height="23" Name="button3" Width="75">ParallelPlot</Button>
-            <Button Height="23" Name="button4" Width="75">Scattermatrix</Button>
+            <Button Height="23" Name="tableButton" Width="75" Click="tableButton_Click">Table</Button>
+            <Button Height="23" Name="scatterPlotButton" Width="75" Click="scatterPlotButton_Click">ScatterPlot</Button>
+            <Button Height="23" Name="parallelPlotButton" Width="75" Click="parallelPlotButton_Click">ParallelPlot</Button>
+            <Button Height="23" Name="scatterMatrixButton" Width="75" Click="scatterMatrixButton_Click">Scattermatrix</Button>
         </StackPanel>
-        <ListView Grid.Column="2" Grid.Row="2" Name="tableListView" />
+        
+        <transc:TransitionElement Name="transitionBox" Grid.Column="2" Grid.Row="2" AllowDrop="True" Drop="transitionBox_Drop">
+            <transc:TransitionElement.Transition>
+                <transt:RotateTransition Angle="45" />
+            </transc:TransitionElement.Transition>
+            <transc:TransitionElement.Content>
+                <ListView Name="tableListView" />
+            </transc:TransitionElement.Content>
+        </transc:TransitionElement>
+        
         <Grid Grid.Column="2" Grid.Row="3" Grid.RowSpan="1" Name="propertyGridLayout">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
