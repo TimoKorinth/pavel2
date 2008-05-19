@@ -9,6 +9,12 @@ namespace Pavel2.Framework {
         private Column[] columns;
         private String name;
         private String[][] data;
+        private int maxColumn;
+
+        public int MaxColumn {
+            get { return maxColumn; }
+            set { maxColumn = value; }
+        }
 
         public String[][] Data {
             get { return data; }
@@ -46,13 +52,13 @@ namespace Pavel2.Framework {
         }
 
         private String[][] GetRows() {
-            int iMax = 0;
+            this.maxColumn = 0;
             for (int i = 0; i < columns.Length; i++) {
-                if (columns[i].Points.Length > columns[iMax].Points.Length) {
-                    iMax = i;
+                if (columns[i].Points.Length > columns[this.maxColumn].Points.Length) {
+                    this.maxColumn = i;
                 }
             }
-            String[][] tmp = new String[columns[iMax].Points.Length][];
+            String[][] tmp = new String[columns[this.maxColumn].Points.Length][];
             for (int i = 0; i < tmp.Length; i++) {
                 tmp[i] = new String[columns.Length];
                 for (int j = 0; j < columns.Length; j++) {
