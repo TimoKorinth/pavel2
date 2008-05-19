@@ -47,7 +47,7 @@ namespace Pavel2.GUI
             foreach (DriveInfo drive in DriveInfo.GetDrives()) {
                 TreeViewItem item = new TreeViewItem();
                 item.Tag = drive;
-                item.Header = drive.ToString();
+                item.Header = "H#"+drive.Name;
 
                 item.Items.Add("*");
                 directoryTree.Items.Add(item);
@@ -68,7 +68,7 @@ namespace Pavel2.GUI
                 foreach (DirectoryInfo subDir in dir.GetDirectories()) {
                     TreeViewItem newItem = new TreeViewItem();
                     newItem.Tag = subDir;
-                    newItem.Header = subDir.Name;
+                    newItem.Header = "D#"+subDir.Name;
                     try {
                         if (subDir.GetDirectories().Length != 0 || subDir.GetFiles().Length != 0) newItem.Items.Add("*");
                         if (subDir.Attributes != (FileAttributes.System | FileAttributes.Hidden | FileAttributes.Directory)) {
@@ -80,7 +80,7 @@ namespace Pavel2.GUI
                 foreach (FileInfo file in dir.GetFiles()) {
                     TreeViewItem tvItem = new TreeViewItem();
                     tvItem.Tag = file;
-                    tvItem.Header = file.Name;
+                    tvItem.Header = "F#"+file.Name;
                     item.Items.Add(tvItem);
                 }
             } catch {
