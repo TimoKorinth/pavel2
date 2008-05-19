@@ -70,7 +70,7 @@ namespace Pavel2.GUI
                     newItem.Tag = subDir;
                     newItem.Header = subDir.Name;
                     try {
-                        if (subDir.GetDirectories().Length != 0) newItem.Items.Add("*");
+                        if (subDir.GetDirectories().Length != 0 || subDir.GetFiles().Length != 0) newItem.Items.Add("*");
                         if (subDir.Attributes != (FileAttributes.System | FileAttributes.Hidden | FileAttributes.Directory)) {
                             item.Items.Add(newItem);
                         }
@@ -246,7 +246,7 @@ namespace Pavel2.GUI
 
         private void directoryTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = GetTreeViewItem(e.GetPosition, directoryTree);
-            if (item.Tag is FileInfo) {
+            if (item != null && item.Tag is FileInfo) {
                 DragDrop.DoDragDrop(directoryTree, (FileInfo)item.Tag, DragDropEffects.Copy);
             }
         }
