@@ -8,6 +8,7 @@
     Title="Pavel²" Height="768" Width="1024" Icon="/Pavel2;component/GUI/Icons/Logo.png">
     <Window.Resources>
         <local:HeaderToImageConverter x:Key="HeaderToImageConverter"></local:HeaderToImageConverter>
+        <local:HeaderToHeaderConverter x:Key="HeaderToHeaderConverter"></local:HeaderToHeaderConverter>
     </Window.Resources>
     <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
@@ -58,7 +59,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Header, Converter={StaticResource HeaderToImageConverter}}"/>
-                                        <TextBlock Text="{Binding}" />
+                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Header, Converter={StaticResource HeaderToHeaderConverter}}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </Setter.Value>
