@@ -40,6 +40,7 @@
                 <ContextMenu>
                     <MenuItem Header="Add new Data Table" Click="MenuItem_Click_1" />
                     <MenuItem Header="Add new Folder" Click="AddNewFolder" />
+                    <MenuItem Header="Add new Comparable" Click="CompMenuItem_Click" />
                     <MenuItem Header="Remove Item" Click="RemoveItem" />
                 </ContextMenu>
             </TreeView.ContextMenu>

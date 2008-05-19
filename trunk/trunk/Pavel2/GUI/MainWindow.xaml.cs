@@ -378,16 +378,24 @@ namespace Pavel2.GUI
         }
 
         private void transitionBox_Drop(object sender, DragEventArgs e) {
-            object data = e.Data.GetData("Pavel2.Framework.Column");
+            object column = e.Data.GetData("Pavel2.Framework.Column");
+            object dPTI = e.Data.GetData("Pavel2.Framework.DataProjectTreeItem");
             if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
-            if (data is Column) {
-                TreeViewItem selItem = (TreeViewItem)projectTree.SelectedItem;
+            TreeViewItem selItem = (TreeViewItem)projectTree.SelectedItem;
+            if (column is Column) {
                 if (selItem.Tag is DataProjectTreeItem) {
-                    DataProjectTreeItem dPTI = (DataProjectTreeItem)selItem.Tag;
-                    if (dPTI.DataGrid == null) {
-                        dPTI.DataGrid = new DataGrid();
+                    DataProjectTreeItem dPTITmp = (DataProjectTreeItem)selItem.Tag;
+                    if (dPTITmp.DataGrid == null) {
+                        dPTITmp.DataGrid = new DataGrid();
                     }
-                    dPTI.DataGrid.AddColumn((Column)data);
+                    dPTITmp.DataGrid.AddColumn((Column)column);
+                    UpdateTreeViewItem(selItem);
+                    DrawTable();
+                }
+            } else if (dPTI is DataProjectTreeItem) {
+                if (selItem.Tag is ComparableProjectTreeItem) {
+                    ComparableProjectTreeItem comp = (ComparableProjectTreeItem)selItem.Tag;
+                    comp.AddDataGrid(((DataProjectTreeItem)dPTI).DataGrid);
                     UpdateTreeViewItem(selItem);
                     DrawTable();
                 }
@@ -423,7 +431,17 @@ namespace Pavel2.GUI
             TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
             if (item.Tag is Column) {
                 DragDrop.DoDragDrop(projectTree, (Column)item.Tag, DragDropEffects.Copy);
+            } else if (item.Tag is DataProjectTreeItem) {
+                DragDrop.DoDragDrop(projectTree, (DataProjectTreeItem)item.Tag, DragDropEffects.Copy);
             }
+        }
+
+        private void CompMenuItem_Click(object sender, RoutedEventArgs e) {
+            TreeViewItem item = new TreeViewItem();
+            item.Header = "Comp. Item";
+            ComparableProjectTreeItem comp = new ComparableProjectTreeItem();
+            item.Tag = comp;
+            InsertToProjectTree(item, true, true);
         }
     }
 }
