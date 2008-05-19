@@ -77,53 +77,21 @@ namespace Pavel2.GUI
                     } catch { 
                     }
                 }
+                foreach (FileInfo file in dir.GetFiles()) {
+                    TreeViewItem tvItem = new TreeViewItem();
+                    tvItem.Tag = file;
+                    tvItem.Header = file.Name;
+                    item.Items.Add(tvItem);
+                }
             } catch {
             }
         }
 
-        private void directoryTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            TreeViewItem item = (TreeViewItem)directoryTree.SelectedItem;
-            try {
-                List<ListViewItem> listViewItems = new List<ListViewItem>();
-                FileInfo[] files = new FileInfo[0];
-                DirectoryInfo[] directories = new DirectoryInfo[0];
-                if (item.Tag is DirectoryInfo) {
-                    files = ((DirectoryInfo)item.Tag).GetFiles();
-                    directories = ((DirectoryInfo)item.Tag).GetDirectories();
-                    
-                    ListViewItem parentDir = new ListViewItem();
-                    parentDir.Content = "..";
-                    parentDir.Tag = ((DirectoryInfo)item.Tag).Parent;
-                    listViewItems.Add(parentDir);
-                } else if (item.Tag is DriveInfo) {
-                    files = ((DriveInfo)item.Tag).RootDirectory.GetFiles();
-                    directories = ((DriveInfo)item.Tag).RootDirectory.GetDirectories();
-                }
-                foreach (DirectoryInfo dir in directories) {
-                    ListViewItem l = new ListViewItem();
-                    l.Content = dir.Name;
-                    l.Tag = dir;
-                    if (dir.Attributes != (FileAttributes.Directory | FileAttributes.Hidden | FileAttributes.System)) {
-                       listViewItems.Add(l); 
-                    } 
-                }
-                foreach (FileInfo file in files) {
-                    ListViewItem l = new ListViewItem();
-                    l.Content = file.Name;
-                    l.Tag = file;
-                    listViewItems.Add(l);
-                }
-                fileList.ItemsSource = listViewItems;
-            } catch (Exception fileExeption) {
-                fileExeption.GetType();
-            }
-        }
-
         private void importButton_Click(object sender, RoutedEventArgs e) {
-            if (fileList.SelectedItem != null) {
-                ListViewItem lVItem = (ListViewItem)fileList.SelectedItem;
-                if (lVItem.Tag is FileInfo) {
-                    AddDataProjectTreeItem((FileInfo)lVItem.Tag);
+            if (directoryTree.SelectedItem != null) {
+                TreeViewItem tvItem = (TreeViewItem)directoryTree.SelectedItem;
+                if (tvItem.Tag is FileInfo) {
+                    AddDataProjectTreeItem((FileInfo)tvItem.Tag);
                 }
             }
         }
@@ -276,14 +244,10 @@ namespace Pavel2.GUI
             propertyGridLayout.Visibility = Visibility.Collapsed;
         }
 
-        private void fileList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            int index = GetFileListIndex(e.GetPosition);
-            if (index > 0) {
-                fileList.SelectedIndex = index;
-                ListViewItem lVItem = fileList.Items[index] as ListViewItem;
-                if (lVItem.Tag is FileInfo) {
-                    DragDrop.DoDragDrop(fileList, (FileInfo)lVItem.Tag, DragDropEffects.Copy);
-                }
+        private void directoryTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            TreeViewItem item = GetTreeViewItem(e.GetPosition, directoryTree);
+            if (item.Tag is FileInfo) {
+                DragDrop.DoDragDrop(directoryTree, (FileInfo)item.Tag, DragDropEffects.Copy);
             }
         }
 
@@ -292,28 +256,9 @@ namespace Pavel2.GUI
             object data = e.Data.GetData("System.IO.FileInfo");
             if (data is FileInfo) {
                 FileInfo file = (FileInfo)data;
-                TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
+                TreeViewItem item = GetTreeViewItem(e.GetPosition, this.root);
                 AddDataProjectTreeItem(file, item);
             }
-        }
-
-        private ListViewItem GetListViewItem(int index) {
-            if (fileList.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
-                return null;
-
-            return fileList.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
-        }
-
-        private int GetFileListIndex(GetPositionDelegate getPosition) {
-            int index = -1;
-            for (int i = 0; i < fileList.Items.Count; ++i) {
-                ListViewItem item = GetListViewItem(i);
-                if (item != null && this.IsMouseOverTarget(item, getPosition)) {
-                    index = i;
-                    break;
-                }
-            }
-            return index;
         }
 
         private bool IsMouseOverTarget(Visual target, GetPositionDelegate getPosition) {
@@ -322,13 +267,22 @@ namespace Pavel2.GUI
             return bounds.Contains(mousePos);
         }
 
-        //TODO: Wenn nicht im Gebiet des TreeView geklickt wird, wird immer root ausgewählt
-        //evtl. dann einfach das schon ausgewählte Object im Baum nehmen
-        private TreeViewItem GetProjectTreeItem(GetPositionDelegate getPosition, TreeViewItem rootItem) {
-            if (IsMouseOverTarget(rootItem, getPosition)) {
+        private TreeViewItem GetTreeViewItem(GetPositionDelegate getPosition, TreeView treeView) {
+            if (IsMouseOverTarget(treeView, getPosition)) {
+                foreach (TreeViewItem item in treeView.Items) {
+                    if (IsMouseOverTarget(item, getPosition)) {
+                        return GetTreeViewItem(getPosition, item);
+                    }
+                }
+            }
+            return null;
+        }
+
+        private TreeViewItem GetTreeViewItem(GetPositionDelegate getPosition, TreeViewItem rootItem) {
+            if (IsMouseOverTarget(rootItem, getPosition) && rootItem.IsExpanded) {
                 foreach (TreeViewItem item in rootItem.Items) {
                     if (IsMouseOverTarget(item, getPosition)) {
-                        return GetProjectTreeItem(getPosition, item);
+                        return GetTreeViewItem(getPosition, item);
                     }
                 }
             }
@@ -336,7 +290,7 @@ namespace Pavel2.GUI
         }
 
         private void projectTree_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
-            TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
+            TreeViewItem item = GetTreeViewItem(e.GetPosition, this.root);
             if (item != null) item.IsSelected = true;
         }
 
@@ -364,7 +318,7 @@ namespace Pavel2.GUI
         }
 
         private void projectTree_DragOver(object sender, DragEventArgs e) {
-            TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
+            TreeViewItem item = GetTreeViewItem(e.GetPosition, this.root);
             if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
             item.Background = Brushes.Turquoise;
             this.lastModifiedItem = item;
@@ -428,7 +382,7 @@ namespace Pavel2.GUI
         }
 
         private void projectTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            TreeViewItem item = GetProjectTreeItem(e.GetPosition, this.root);
+            TreeViewItem item = GetTreeViewItem(e.GetPosition, this.root);
             if (item.Tag is Column) {
                 DragDrop.DoDragDrop(projectTree, (Column)item.Tag, DragDropEffects.Copy);
             } else if (item.Tag is DataProjectTreeItem) {
