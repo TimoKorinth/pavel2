@@ -247,6 +247,7 @@ namespace Pavel2.GUI
         private void directoryTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = GetTreeViewItem(e.GetPosition, directoryTree);
             if (item != null && item.Tag is FileInfo) {
+                item.IsSelected = true;
                 DragDrop.DoDragDrop(directoryTree, (FileInfo)item.Tag, DragDropEffects.Copy);
             }
         }
