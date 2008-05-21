@@ -98,6 +98,8 @@
     <Compile Include="Framework\IPoint.cs" />
     <Compile Include="Framework\ParserManagement.cs" />
     <Compile Include="Framework\ProjectTreeItem.cs" />
+    <Compile Include="GUI\HeaderToImageConverterPT.cs" />
+    <Compile Include="GUI\HeaderToHeaderConverterPT.cs" />
     <Compile Include="GUI\HeaderToImageConverter.cs" />
     <Compile Include="GUI\HeaderToHeaderConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -140,6 +142,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GUI\Icons\Document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\DataTable.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\Folder2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\Comp.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

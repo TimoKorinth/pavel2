@@ -36,7 +36,7 @@ namespace Pavel2.GUI
             propertyGridLayout.Visibility = Visibility.Collapsed;
 
             root = new TreeViewItem();
-            root.Header = "Root";
+            root.Header = "F#Root";
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(root);
             root.Tag = fPTI;
             projectTree.Items.Add(root);
@@ -109,9 +109,9 @@ namespace Pavel2.GUI
                     String header = dPTVI.DataGrid.Columns[i].Header;
                     tmp.Tag = dPTVI.DataGrid.Columns[i];
                     if (header != "") {
-                        tmp.Header = header;
+                        tmp.Header = "C#"+header;
                     } else {
-                        tmp.Header = i;
+                        tmp.Header = "C#"+i;
                     }
                     item.Items.Add(tmp);
                 }
@@ -122,7 +122,7 @@ namespace Pavel2.GUI
             DataGrid dataGrid = ParserManagement.GetDataGrid(file);
             if (null != dataGrid) {
                 TreeViewItem tvItem = new TreeViewItem();
-                tvItem.Header = dataGrid.Name;
+                tvItem.Header = "D#"+dataGrid.Name;
                 DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                 tvItem.Tag = dPTI;
                 UpdateTreeViewItem(tvItem);
@@ -204,7 +204,7 @@ namespace Pavel2.GUI
                 dPTI.DataGrid = d;
                 UpdateTreeViewItem(item);
                 if (d != null) {
-                    item.Header = d.Name;
+                    item.Header = "D#"+d.Name;
                     item.Tag = dPTI;
                     DrawTable();
                 }
@@ -297,7 +297,7 @@ namespace Pavel2.GUI
 
         private void AddNewFolder(object sender, RoutedEventArgs e) {
             TreeViewItem newItem = new TreeViewItem();
-            newItem.Header = "Folder";
+            newItem.Header = "F#Folder";
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(newItem);
             newItem.Tag = fPTI;
             InsertToProjectTree(newItem, true, true);
@@ -327,7 +327,7 @@ namespace Pavel2.GUI
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e) {
             TreeViewItem item = new TreeViewItem();
-            item.Header = "DataTable";
+            item.Header = "D#DataTable";
             item.Tag = new DataProjectTreeItem(new DataGrid());
             InsertToProjectTree(item, true, true);
         }
@@ -393,7 +393,7 @@ namespace Pavel2.GUI
 
         private void CompMenuItem_Click(object sender, RoutedEventArgs e) {
             TreeViewItem item = new TreeViewItem();
-            item.Header = "Comp. Item";
+            item.Header = "V#Comp. Item";
             ComparableProjectTreeItem comp = new ComparableProjectTreeItem();
             item.Tag = comp;
             InsertToProjectTree(item, true, true);
