@@ -99,9 +99,7 @@
     <Compile Include="Framework\ParserManagement.cs" />
     <Compile Include="Framework\ProjectTreeItem.cs" />
     <Compile Include="GUI\HeaderToImageConverterPT.cs" />
-    <Compile Include="GUI\HeaderToHeaderConverterPT.cs" />
     <Compile Include="GUI\HeaderToImageConverter.cs" />
-    <Compile Include="GUI\HeaderToHeaderConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

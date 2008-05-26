@@ -8,9 +8,20 @@
     Title="Pavel²" Height="768" Width="1024" Icon="/Pavel2;component/GUI/Icons/Logo.png">
     <Window.Resources>
         <local:HeaderToImageConverter x:Key="HeaderToImageConverter"></local:HeaderToImageConverter>
-        <local:HeaderToHeaderConverter x:Key="HeaderToHeaderConverter"></local:HeaderToHeaderConverter>
         <local:HeaderToImageConverterPT x:Key="HeaderToImageConverterPT"></local:HeaderToImageConverterPT>
-        <local:HeaderToHeaderConverterPT x:Key="HeaderToHeaderConverterPT"></local:HeaderToHeaderConverterPT>
+        <DataTemplate x:Key="EditTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverterPT}}"/>
+                <TextBox Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Header}" Name="editTextBox"></TextBox>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DefaultTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverterPT}}"/>
+                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Header}" />
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
     <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
@@ -38,19 +49,10 @@
             <TextBlock Visibility="{Binding ElementName=progressBar, Path=Visibility}">Progress:</TextBlock>
             <ProgressBar Name="progressBar" Width="200" IsIndeterminate="False" Height="15" Visibility="Hidden"></ProgressBar>
         </StatusBar>
-        <TreeView PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" DragOver="projectTree_DragOver" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
+        <TreeView PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" DragOver="projectTree_DragOver" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="HeaderTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Header, Converter={StaticResource HeaderToImageConverterPT}}"/>
-                                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Header, Converter={StaticResource HeaderToHeaderConverterPT}}" />
-                                    </StackPanel>
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="HeaderTemplate" Value="{StaticResource DefaultTemplate}" />
                 </Style>
             </TreeView.Resources>
             <TreeView.ContextMenu>
@@ -74,8 +76,8 @@
                             <Setter.Value>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Header, Converter={StaticResource HeaderToImageConverter}}"/>
-                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Header, Converter={StaticResource HeaderToHeaderConverter}}" />
+                                        <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverter}}"/>
+                                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Header}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </Setter.Value>
