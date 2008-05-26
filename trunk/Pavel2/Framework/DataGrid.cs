@@ -7,7 +7,6 @@ namespace Pavel2.Framework {
     public class DataGrid {
 
         private Column[] columns;
-        private String name;
         private String[][] data;
         private int maxColumn;
         private List<ComparableProjectTreeItem> comparables = new List<ComparableProjectTreeItem>();
@@ -27,25 +26,18 @@ namespace Pavel2.Framework {
             set { data = value; }
         }
 
-        public String Name {
-            get { return name; }
-            set { name = value; }
-        }
-
         public Column[] Columns {
             get { return columns; }
             set { columns = value; }
         }
 
         public DataGrid() {
-            this.name = "";
             this.columns = new Column[0];
             this.data = new String[0][];
         }
 
-        public DataGrid(Column[] columns, String name) {
+        public DataGrid(Column[] columns) {
             this.columns = columns;
-            this.name = name;
             this.data = GetRows();
         }
 

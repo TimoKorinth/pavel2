@@ -16,7 +16,7 @@ namespace Pavel2.Framework {
         public static DataGrid AddColumns(Column[] columns) {
             Column[] cols = columns.Clone() as Column[];
             MainData.columns.AddRange(cols);
-            return new DataGrid(cols, "");
+            return new DataGrid(cols);
         }
 
         public static void RemoveColumns(DataGrid dataGrid) {
