@@ -29,6 +29,7 @@ namespace Pavel2.GUI
 
         private TreeViewItem root;
         private TreeViewItem lastModifiedItem;
+        private TreeViewItem editItem;
 
         public MainWindow() {
             InitializeComponent();
@@ -36,7 +37,7 @@ namespace Pavel2.GUI
             propertyGridLayout.Visibility = Visibility.Collapsed;
 
             root = new TreeViewItem();
-            root.Header = "F#Root";
+            root.Header = "Root";
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(root);
             root.Tag = fPTI;
             projectTree.Items.Add(root);
@@ -47,7 +48,7 @@ namespace Pavel2.GUI
             foreach (DriveInfo drive in DriveInfo.GetDrives()) {
                 TreeViewItem item = new TreeViewItem();
                 item.Tag = drive;
-                item.Header = "H#"+drive.Name;
+                item.Header = drive.Name;
 
                 TreeViewItem t = new TreeViewItem();
                 t.Header = "*";
@@ -70,7 +71,7 @@ namespace Pavel2.GUI
                 foreach (DirectoryInfo subDir in dir.GetDirectories()) {
                     TreeViewItem newItem = new TreeViewItem();
                     newItem.Tag = subDir;
-                    newItem.Header = "D#"+subDir.Name;
+                    newItem.Header = subDir.Name;
                     try {
                         TreeViewItem t = new TreeViewItem();
                         t.Header = "*";
@@ -84,7 +85,7 @@ namespace Pavel2.GUI
                 foreach (FileInfo file in dir.GetFiles()) {
                     TreeViewItem tvItem = new TreeViewItem();
                     tvItem.Tag = file;
-                    tvItem.Header = "F#"+file.Name;
+                    tvItem.Header = file.Name;
                     item.Items.Add(tvItem);
                 }
             } catch {
@@ -113,9 +114,9 @@ namespace Pavel2.GUI
                     String header = dPTVI.DataGrid.Columns[i].Header;
                     tmp.Tag = dPTVI.DataGrid.Columns[i];
                     if (header != "") {
-                        tmp.Header = "C#"+header;
+                        tmp.Header = header;
                     } else {
-                        tmp.Header = "C#"+i;
+                        tmp.Header = i;
                     }
                     item.Items.Add(tmp);
                 }
@@ -136,7 +137,7 @@ namespace Pavel2.GUI
             DataGrid dataGrid = ParserManagement.GetDataGrid(file);
             if (null != dataGrid) {
                 TreeViewItem tvItem = new TreeViewItem();
-                tvItem.Header = "D#"+dataGrid.Name;
+                tvItem.Header = dataGrid.Name;
                 DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                 tvItem.Tag = dPTI;
                 UpdateDataTreeViewItem(tvItem);
@@ -218,7 +219,7 @@ namespace Pavel2.GUI
                 dPTI.DataGrid = d;
                 UpdateDataTreeViewItem(item);
                 if (d != null) {
-                    item.Header = "D#"+d.Name;
+                    item.Header = d.Name;
                     item.Tag = dPTI;
                     DrawTable();
                 }
@@ -227,6 +228,8 @@ namespace Pavel2.GUI
 
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             propertyGridLayout.Visibility = Visibility.Collapsed;
+            if (editItem != null) editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
+            editItem = null;
             DrawTable();
         }
 
@@ -311,7 +314,7 @@ namespace Pavel2.GUI
 
         private void AddNewFolder(object sender, RoutedEventArgs e) {
             TreeViewItem newItem = new TreeViewItem();
-            newItem.Header = "F#Folder";
+            newItem.Header = "Folder";
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(newItem);
             newItem.Tag = fPTI;
             InsertToProjectTree(newItem, true, true);
@@ -353,7 +356,7 @@ namespace Pavel2.GUI
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e) {
             TreeViewItem item = new TreeViewItem();
-            item.Header = "D#DataTable";
+            item.Header = "DataTable";
             item.Tag = new DataProjectTreeItem(new DataGrid());
             InsertToProjectTree(item, true, true);
         }
@@ -382,7 +385,7 @@ namespace Pavel2.GUI
                         comp.AddDataGrid(dataItem.DataGrid);
                         TreeViewItem tmp = new TreeViewItem();
                         tmp.Tag = dataItem;
-                        tmp.Header = "D#"+dataItem.DataGrid.Name;
+                        tmp.Header = dataItem.DataGrid.Name;
                         selItem.Items.Add(tmp);
                         UpdateCompTreeViewItem(selItem);
                         DrawTable();
@@ -419,16 +422,22 @@ namespace Pavel2.GUI
         private void projectTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = GetTreeViewItem(e.GetPosition, this.root);
             if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
-                DragDrop.DoDragDrop(projectTree, item, DragDropEffects.Copy);
+                if (this.editItem == null) DragDrop.DoDragDrop(projectTree, item, DragDropEffects.Copy);
             }
         }
 
         private void CompMenuItem_Click(object sender, RoutedEventArgs e) {
             TreeViewItem item = new TreeViewItem();
-            item.Header = "V#Comp. Item";
+            item.Header = "Comp. Item";
             ComparableProjectTreeItem comp = new ComparableProjectTreeItem();
             item.Tag = comp;
             InsertToProjectTree(item, true, true);
+        }
+
+        private void projectTree_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
+            TreeViewItem item = GetTreeViewItem(e.GetPosition, this.root);
+            this.editItem = item;
+            item.HeaderTemplate = (DataTemplate)this.FindResource("EditTemplate");
         }
     }
 }
