@@ -49,7 +49,9 @@ namespace Pavel2.GUI
                 item.Tag = drive;
                 item.Header = "H#"+drive.Name;
 
-                item.Items.Add("*");
+                TreeViewItem t = new TreeViewItem();
+                t.Header = "*";
+                item.Items.Add(t);
                 directoryTree.Items.Add(item);
             }
         }
@@ -70,7 +72,9 @@ namespace Pavel2.GUI
                     newItem.Tag = subDir;
                     newItem.Header = "D#"+subDir.Name;
                     try {
-                        if (subDir.GetDirectories().Length != 0 || subDir.GetFiles().Length != 0) newItem.Items.Add("*");
+                        TreeViewItem t = new TreeViewItem();
+                        t.Header = "*";
+                        if (subDir.GetDirectories().Length != 0 || subDir.GetFiles().Length != 0) newItem.Items.Add(t);
                         if (subDir.Attributes != (FileAttributes.System | FileAttributes.Hidden | FileAttributes.Directory)) {
                             item.Items.Add(newItem);
                         }
@@ -290,7 +294,7 @@ namespace Pavel2.GUI
         }
 
         private TreeViewItem GetTreeViewItem(GetPositionDelegate getPosition, TreeViewItem rootItem) {
-            if (IsMouseOverTarget(rootItem, getPosition) && rootItem.IsExpanded) {
+            if (IsMouseOverTarget(rootItem, getPosition)) {
                 foreach (TreeViewItem item in rootItem.Items) {
                     if (IsMouseOverTarget(item, getPosition)) {
                         return GetTreeViewItem(getPosition, item);
