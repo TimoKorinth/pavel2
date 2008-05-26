@@ -12,19 +12,19 @@ namespace Pavel2.GUI {
             if (value is String) {
                 String header = (String)value;
                 if (header.StartsWith("F#")) {
-                    Uri uri = new Uri("pack://application:,,,/GUI/Icons/Folder2.bmp");
+                    Uri uri = new Uri("pack://application:,,,/GUI/Icons/Folder2.png");
                     BitmapImage source = new BitmapImage(uri);
                     return source;
                 } else if (header.StartsWith("D#")) {
-                    Uri uri = new Uri("pack://application:,,,/GUI/Icons/DataTable.bmp");
+                    Uri uri = new Uri("pack://application:,,,/GUI/Icons/DataTable.png");
                     BitmapImage source = new BitmapImage(uri);
                     return source;
                 } else if (header.StartsWith("V#")) {
-                    Uri uri = new Uri("pack://application:,,,/GUI/Icons/Comp.bmp");
+                    Uri uri = new Uri("pack://application:,,,/GUI/Icons/Comp.png");
                     BitmapImage source = new BitmapImage(uri);
                     return source;
                 } else if (header.StartsWith("C#")) {
-                    Uri uri = new Uri("pack://application:,,,/GUI/Icons/Comp.bmp");
+                    Uri uri = new Uri("pack://application:,,,/GUI/Icons/Column.png");
                     BitmapImage source = new BitmapImage(uri);
                     return source;
                 }
