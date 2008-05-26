@@ -137,7 +137,7 @@ namespace Pavel2.GUI
             DataGrid dataGrid = ParserManagement.GetDataGrid(file);
             if (null != dataGrid) {
                 TreeViewItem tvItem = new TreeViewItem();
-                tvItem.Header = dataGrid.Name;
+                tvItem.Header = file.Name;
                 DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                 tvItem.Tag = dPTI;
                 UpdateDataTreeViewItem(tvItem);
@@ -219,7 +219,7 @@ namespace Pavel2.GUI
                 dPTI.DataGrid = d;
                 UpdateDataTreeViewItem(item);
                 if (d != null) {
-                    item.Header = d.Name;
+                    item.Header = ParserManagement.File.Name;
                     item.Tag = dPTI;
                     DrawTable();
                 }
@@ -385,7 +385,7 @@ namespace Pavel2.GUI
                         comp.AddDataGrid(dataItem.DataGrid);
                         TreeViewItem tmp = new TreeViewItem();
                         tmp.Tag = dataItem;
-                        tmp.Header = dataItem.DataGrid.Name;
+                        tmp.Header = tvItem.Header;
                         selItem.Items.Add(tmp);
                         UpdateCompTreeViewItem(selItem);
                         DrawTable();

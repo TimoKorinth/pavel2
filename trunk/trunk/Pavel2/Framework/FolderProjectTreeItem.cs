@@ -15,7 +15,7 @@ namespace Pavel2.Framework {
             get {
                 columns.Clear();
                 GetColumns(parentItem);
-                if (columns.Count > 0) dataGrid = new DataGrid(columns.ToArray(), "");
+                if (columns.Count > 0) dataGrid = new DataGrid(columns.ToArray());
                 return dataGrid;
             }
             set {

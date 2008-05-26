@@ -11,6 +11,10 @@ namespace Pavel2.Framework {
         private static Parser currentParser;
         private static FileInfo file;
 
+        public static FileInfo File {
+            get { return ParserManagement.file; }
+        }
+
         public static List<Parser> ParserList {
             get { return ParserManagement.parserList; }
         }
@@ -29,7 +33,6 @@ namespace Pavel2.Framework {
                 if (null != columns) {
                     currentParser = parser;
                     DataGrid d = MainData.AddColumns(columns);
-                    d.Name = file.Name;
                     return d;
                 }
             }
@@ -42,7 +45,6 @@ namespace Pavel2.Framework {
             columns = parser.Parse(ParserManagement.file.OpenText());
             if (null != columns) {
                 DataGrid d = MainData.AddColumns(columns);
-                d.Name = file.Name;
                 return d;
             }
             return null;

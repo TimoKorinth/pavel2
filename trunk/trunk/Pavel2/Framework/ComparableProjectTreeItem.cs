@@ -52,7 +52,7 @@ namespace Pavel2.Framework {
                     columns[i].Header = dataGrids[0].Columns[i].Header;
                     columns[i].Points = points[i].ToArray();
                 }
-                this.dataGrid = new DataGrid(columns, dataGrids[0].Name);
+                this.dataGrid = new DataGrid(columns);
             }
         }
 
