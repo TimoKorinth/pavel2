@@ -315,17 +315,29 @@ namespace Pavel2.GUI
 
         private void RemoveItem(object sender, RoutedEventArgs e) {
             TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
-            ProjectTreeItem dPTI = (ProjectTreeItem)item.Tag;
-            MainData.RemoveColumns(dPTI.DataGrid);
-            dPTI.DataGrid = null;
-            RemoveProjectTreeItem(item, this.root);
+            if (item.Tag is DataProjectTreeItem) {
+                DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag);
+            } else if (item.Tag is ComparableProjectTreeItem) {
+                DeleteCompProjectTreeItem((ComparableProjectTreeItem)item.Tag);
+            }
+            RemoveTreeViewItem(item);
         }
 
-        private void RemoveProjectTreeItem(TreeViewItem delItem, TreeViewItem rootItem) {
-            foreach (TreeViewItem item in rootItem.Items) {
-                RemoveProjectTreeItem(delItem, item);
+        private void DeleteCompProjectTreeItem(ComparableProjectTreeItem comp) {
+            comp = null;
+        }
+
+        private void RemoveTreeViewItem(TreeViewItem item) {
+            if (item.Parent is TreeViewItem) {
+                TreeViewItem tvItem = (TreeViewItem)item.Parent;
+                tvItem.Items.Remove(item);
             }
-            rootItem.Items.Remove(delItem);
+        }
+
+        private void DeleteDataProjectTreeItem(DataProjectTreeItem dPTI) {
+            MainData.RemoveColumns(dPTI.DataGrid);
+            dPTI.DataGrid = null;
+            dPTI = null;
         }
 
         private void projectTree_DragOver(object sender, DragEventArgs e) {
