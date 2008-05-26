@@ -144,13 +144,22 @@
     <Resource Include="GUI\Icons\Document.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Icons\DataTable.bmp" />
+    <Resource Include="GUI\Icons\DataTable.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Icons\Folder2.bmp" />
+    <Resource Include="GUI\Icons\Comp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Icons\Comp.bmp" />
+    <Resource Include="GUI\Icons\Folder2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\GoToNextHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\Column.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\WindowsHS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
