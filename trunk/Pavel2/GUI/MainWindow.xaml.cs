@@ -437,7 +437,17 @@ namespace Pavel2.GUI
         private void projectTree_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = GetTreeViewItem(e.GetPosition, this.root);
             this.editItem = item;
-            item.HeaderTemplate = (DataTemplate)this.FindResource("EditTemplate");
+            DataTemplate editTemplate = (DataTemplate)this.FindResource("EditTemplate");
+            item.HeaderTemplate = editTemplate;
+        }
+
+        private void projectTree_KeyDown(object sender, KeyEventArgs e) {
+            if (editItem != null) {
+                if (e.Key == Key.Enter || e.Key == Key.Return) {
+                    editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
+                    editItem = null;
+                }
+            }
         }
     }
 }
