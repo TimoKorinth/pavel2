@@ -100,7 +100,7 @@ namespace Pavel2.GUI
             AddDataProjectTreeItem(file, null);
         }
 
-        private void UpdateTreeViewItem(TreeViewItem item) {
+        private void UpdateDataTreeViewItem(TreeViewItem item) {
             if (item.Tag is DataProjectTreeItem) {
                 item.Items.Clear();
                 DataProjectTreeItem dPTVI = (DataProjectTreeItem)item.Tag;
@@ -118,6 +118,16 @@ namespace Pavel2.GUI
             }
         }
 
+        private void UpdateCompTreeViewItem(TreeViewItem item) {
+            if (item.Tag is ComparableProjectTreeItem) {
+                for (int i = 0; i < item.Items.Count; i++) {
+                    if (item.Items[i] is TreeViewItem) {
+                        UpdateDataTreeViewItem((TreeViewItem)item.Items[i]);
+                    }
+                }
+            }
+        }
+
         private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
             DataGrid dataGrid = ParserManagement.GetDataGrid(file);
             if (null != dataGrid) {
@@ -125,7 +135,7 @@ namespace Pavel2.GUI
                 tvItem.Header = "D#"+dataGrid.Name;
                 DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                 tvItem.Tag = dPTI;
-                UpdateTreeViewItem(tvItem);
+                UpdateDataTreeViewItem(tvItem);
                 if (rootItem != null) {
                     InsertToProjectTree(tvItem, rootItem, true, true);
                 } else {
@@ -202,7 +212,7 @@ namespace Pavel2.GUI
                 MainData.RemoveColumns(dataGrid);
                 DataGrid d = ParserManagement.GetDataGrid(parser);
                 dPTI.DataGrid = d;
-                UpdateTreeViewItem(item);
+                UpdateDataTreeViewItem(item);
                 if (d != null) {
                     item.Header = "D#"+d.Name;
                     item.Tag = dPTI;
@@ -333,26 +343,34 @@ namespace Pavel2.GUI
         }
 
         private void transitionBox_Drop(object sender, DragEventArgs e) {
-            object column = e.Data.GetData("Pavel2.Framework.Column");
-            object dPTI = e.Data.GetData("Pavel2.Framework.DataProjectTreeItem");
-            if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
+            object data = e.Data.GetData("System.Windows.Controls.TreeViewItem");
             TreeViewItem selItem = (TreeViewItem)projectTree.SelectedItem;
-            if (column is Column) {
-                if (selItem.Tag is DataProjectTreeItem) {
-                    DataProjectTreeItem dPTITmp = (DataProjectTreeItem)selItem.Tag;
-                    if (dPTITmp.DataGrid == null) {
-                        dPTITmp.DataGrid = new DataGrid();
+            if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
+            if (data is TreeViewItem) {
+                TreeViewItem tvItem = (TreeViewItem)data;
+                if (tvItem.Tag is Column) {
+                    if (selItem.Tag is DataProjectTreeItem) {
+                        DataProjectTreeItem dPTITmp = (DataProjectTreeItem)selItem.Tag;
+                        if (dPTITmp.DataGrid == null) {
+                            dPTITmp.DataGrid = new DataGrid();
+                        }
+                        dPTITmp.DataGrid.AddColumn((Column)tvItem.Tag);
+                        UpdateDataTreeViewItem(selItem);
+                        DrawTable();
                     }
-                    dPTITmp.DataGrid.AddColumn((Column)column);
-                    UpdateTreeViewItem(selItem);
-                    DrawTable();
-                }
-            } else if (dPTI is DataProjectTreeItem) {
-                if (selItem.Tag is ComparableProjectTreeItem) {
-                    ComparableProjectTreeItem comp = (ComparableProjectTreeItem)selItem.Tag;
-                    comp.AddDataGrid(((DataProjectTreeItem)dPTI).DataGrid);
-                    UpdateTreeViewItem(selItem);
-                    DrawTable();
+                } else if (tvItem.Tag is DataProjectTreeItem) {
+                    if (selItem.Tag is ComparableProjectTreeItem) {
+                        ComparableProjectTreeItem comp = (ComparableProjectTreeItem)selItem.Tag;
+                        DataProjectTreeItem dataItem = (DataProjectTreeItem)tvItem.Tag;
+                        dataItem.DataGrid.Comparables.Add(comp);
+                        comp.AddDataGrid(dataItem.DataGrid);
+                        TreeViewItem tmp = new TreeViewItem();
+                        tmp.Tag = dataItem;
+                        tmp.Header = "D#"+dataItem.DataGrid.Name;
+                        selItem.Items.Add(tmp);
+                        UpdateCompTreeViewItem(selItem);
+                        DrawTable();
+                    }
                 }
             }
         }
@@ -384,10 +402,8 @@ namespace Pavel2.GUI
 
         private void projectTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = GetTreeViewItem(e.GetPosition, this.root);
-            if (item.Tag is Column) {
-                DragDrop.DoDragDrop(projectTree, (Column)item.Tag, DragDropEffects.Copy);
-            } else if (item.Tag is DataProjectTreeItem) {
-                DragDrop.DoDragDrop(projectTree, (DataProjectTreeItem)item.Tag, DragDropEffects.Copy);
+            if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
+                DragDrop.DoDragDrop(projectTree, item, DragDropEffects.Copy);
             }
         }
 
