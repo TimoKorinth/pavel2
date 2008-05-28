@@ -42,6 +42,36 @@ namespace Pavel2.GUI
             root.Tag = fPTI;
             projectTree.Items.Add(root);
             root.IsSelected = true;
+
+            Visualize(new TableView());
+        }
+
+        private void Visualize(UIElement item) {
+            visualizationStackPanel.Children.Clear();
+            visualizationStackPanel.Children.Add(item);
+        }
+
+        public static readonly RoutedEvent DataGridChangedEvent;
+        public event RoutedEventHandler DataGridChanged {
+            add { base.AddHandler(Pavel2.GUI.MainWindow.DataGridChangedEvent, value); }
+            remove { base.RemoveHandler(Pavel2.GUI.MainWindow.DataGridChangedEvent, value); }
+        }
+
+        static MainWindow() {
+            Pavel2.GUI.MainWindow.DataGridChangedEvent = EventManager.RegisterRoutedEvent("DataGridChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Pavel2.GUI.MainWindow));
+        }
+
+        private DataGrid currentDataGrid;
+
+        public DataGrid CurrentDataGrid {
+            get {
+                return currentDataGrid;
+            }
+            set {
+                currentDataGrid = value;
+                RoutedEventArgs e = new RoutedEventArgs(Pavel2.GUI.MainWindow.DataGridChangedEvent, this);
+                base.RaiseEvent(e);
+            }
         }
 
         private void InitDirectoryTree() {
@@ -217,11 +247,11 @@ namespace Pavel2.GUI
                 MainData.RemoveColumns(dataGrid);
                 DataGrid d = ParserManagement.GetDataGrid(parser);
                 dPTI.DataGrid = d;
+                this.CurrentDataGrid = d;
                 UpdateDataTreeViewItem(item);
                 if (d != null) {
                     item.Header = ParserManagement.File.Name;
                     item.Tag = dPTI;
-                    DrawTable();
                 }
             }
         }
@@ -230,30 +260,16 @@ namespace Pavel2.GUI
             propertyGridLayout.Visibility = Visibility.Collapsed;
             if (editItem != null) editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
             editItem = null;
-            DrawTable();
-        }
-
-        private void DrawTable() {
-            TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
-            if (item != null && item.Tag != null && !(item.Tag is Column)) {
-                ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
-                DataGrid dataGrid = pTI.DataGrid;
-                if (dataGrid != null) {
-                    tableListView.ItemsSource = dataGrid.Data;
-                    GridView gView = new GridView();
-                    for (int i = 0; i < dataGrid.Columns.Length; i++) {
-                        GridViewColumn gColumn = new GridViewColumn();
-                        gColumn.Header = dataGrid.Columns[i].Header;
-                        Binding bind = new Binding();
-                        bind.Path = new PropertyPath("[" + i + "]");
-                        gColumn.DisplayMemberBinding = bind;
-                        gView.Columns.Add(gColumn);
-                    }
-                    tableListView.View = gView;
+            TreeViewItem tvItem = (TreeViewItem)projectTree.SelectedItem;
+            if (tvItem != null) {
+                if (tvItem.Tag is ProjectTreeItem) {
+                    ProjectTreeItem ptItem = (ProjectTreeItem)tvItem.Tag;
+                    this.CurrentDataGrid = ptItem.DataGrid;
                 } else {
-                    tableListView.ItemsSource = null;
-                    tableListView.View = null;
+                    this.CurrentDataGrid = null;
                 }
+            } else {
+                this.CurrentDataGrid = null;
             }
         }
 
@@ -361,7 +377,7 @@ namespace Pavel2.GUI
             InsertToProjectTree(item, true, true);
         }
 
-        private void transitionBox_Drop(object sender, DragEventArgs e) {
+        private void virtualizationStackPanel_Drop(object sender, DragEventArgs e) {
             object data = e.Data.GetData("System.Windows.Controls.TreeViewItem");
             TreeViewItem selItem = (TreeViewItem)projectTree.SelectedItem;
             if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
@@ -375,7 +391,7 @@ namespace Pavel2.GUI
                         }
                         dPTITmp.DataGrid.AddColumn((Column)tvItem.Tag);
                         UpdateDataTreeViewItem(selItem);
-                        DrawTable();
+                        this.CurrentDataGrid = dPTITmp.DataGrid;
                     }
                 } else if (tvItem.Tag is DataProjectTreeItem) {
                     if (selItem.Tag is ComparableProjectTreeItem) {
@@ -388,35 +404,32 @@ namespace Pavel2.GUI
                         tmp.Header = tvItem.Header;
                         selItem.Items.Add(tmp);
                         UpdateCompTreeViewItem(selItem);
-                        DrawTable();
+                        this.CurrentDataGrid = comp.DataGrid;
                     }
                 }
             }
         }
 
         private void tableButton_Click(object sender, RoutedEventArgs e) {
-            transitionBox.Content = tableListView;
+            Visualize(new TableView());
         }
 
         private void scatterPlotButton_Click(object sender, RoutedEventArgs e) {
             BitmapImage source = new BitmapImage(new Uri("pack://application:,,,/GUI/Images/ScatterPlot.png"));
             Image img = new Image();
             img.Source = source;
-            transitionBox.Content = img;
+            Visualize(img);
         }
 
         private void parallelPlotButton_Click(object sender, RoutedEventArgs e) {
-            BitmapImage source = new BitmapImage(new Uri("pack://application:,,,/GUI/Images/ParallelPlot.png"));
-            Image img = new Image();
-            img.Source = source;
-            transitionBox.Content = img;
+            Visualize(new ParallelPlot());
         }
 
         private void scatterMatrixButton_Click(object sender, RoutedEventArgs e) {
             BitmapImage source = new BitmapImage(new Uri("pack://application:,,,/GUI/Images/ScatterMatrix.png"));
             Image img = new Image();
             img.Source = source;
-            transitionBox.Content = img;
+            Visualize(img);
         }
 
         private void projectTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
