@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace Pavel2.Framework {
     public static class MainData {
@@ -11,6 +12,17 @@ namespace Pavel2.Framework {
         public static List<Column> Columns {
             get { return columns; }
             set { columns = value; }
+        }
+
+        public static Pavel2.GUI.MainWindow MainWindow {
+            get { return (Pavel2.GUI.MainWindow)Application.Current.MainWindow; }
+        }
+
+        public static DataGrid CurrentDataGrid {
+            get {
+                Pavel2.GUI.MainWindow window = (Pavel2.GUI.MainWindow)Application.Current.MainWindow;
+                return window.CurrentDataGrid; 
+            }
         }
 
         public static DataGrid AddColumns(Column[] columns) {

@@ -76,6 +76,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="GUI\ParallelPlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\TableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -100,6 +108,12 @@
     <Compile Include="Framework\ProjectTreeItem.cs" />
     <Compile Include="GUI\HeaderToImageConverterPT.cs" />
     <Compile Include="GUI\HeaderToImageConverter.cs" />
+    <Compile Include="GUI\ParallelPlot.xaml.cs">
+      <DependentUpon>ParallelPlot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\TableView.xaml.cs">
+      <DependentUpon>TableView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
