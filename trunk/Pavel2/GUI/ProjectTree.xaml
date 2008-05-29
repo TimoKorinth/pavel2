@@ -4,6 +4,7 @@
     xmlns:gui="clr-namespace:Pavel2.GUI">
     <UserControl.Resources>
         <gui:HeaderToImageConverterPT x:Key="HeaderToImageConverterPT"></gui:HeaderToImageConverterPT>
+        
         <DataTemplate x:Key="EditTemplate">
             <StackPanel Orientation="Horizontal">
                 <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverterPT}}"/>
@@ -27,10 +28,10 @@
             </TreeView.Resources>
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Add new Data Table" Click="MenuItem_Click_1" />
-                    <MenuItem Header="Add new Folder" Click="AddNewFolder" />
-                    <MenuItem Header="Add new Comparable" Click="CompMenuItem_Click" />
-                    <MenuItem Header="Remove Item" Click="RemoveItem" />
+                    <MenuItem Header="Add new Data Table" Click="ContextMenu_AddNewDataTable" />
+                    <MenuItem Header="Add new Folder" Click="ContextMenu_AddNewFolder" />
+                    <MenuItem Header="Add new Comparable" Click="ContextMenu_AddNewComp" />
+                    <MenuItem Header="Remove Item" Click="ContextMenu_RemoveItem" />
                 </ContextMenu>
             </TreeView.ContextMenu>
         </TreeView>
