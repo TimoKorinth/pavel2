@@ -14,12 +14,14 @@ namespace Pavel2.GUI {
         private Pen axesPen = new Pen(Brushes.Black, 2);
         private Brush drawingBrush = Brushes.Black;
         private DataGrid dataGrid;
+        private double step = 0.0;
 
         private List<Visual> visuals = new List<Visual>();
 
         public void Render() {
             ClearVisuals();
             dataGrid = MainData.CurrentDataGrid;
+            step = this.ActualWidth / (dataGrid.Columns.Length - 1);
             if (dataGrid != null) {
                 DrawAxes();
                 DrawLines();
@@ -28,7 +30,6 @@ namespace Pavel2.GUI {
 
         private void DrawAxes() {
             DrawingVisual visual = new DrawingVisual();
-            double step = this.ActualWidth / dataGrid.Columns.Length;
             using (DrawingContext dc = visual.RenderOpen()) {
                 for (int i = 0; i < dataGrid.Columns.Length; i++) {
                     dc.DrawLine(axesPen, new Point(i*step, 0), new Point(i*step, this.ActualHeight));
@@ -37,8 +38,34 @@ namespace Pavel2.GUI {
             AddVisual(visual);
         }
 
-        private void DrawLines() { 
-            
+        private double Normalize(double value, Column col) {
+            if ((col.Max - col.Min) == 0) {
+                return 0.5;
+            }
+            return (value / (col.Max - col.Min));
+        }
+
+        private void DrawLines() {
+            for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
+                DrawingVisual visual = new DrawingVisual();
+                using (DrawingContext dc = visual.RenderOpen()) {
+                    Point startPoint = new Point();
+                    for (int col = 0; col < dataGrid.Columns.Length; col++) {
+                        double value = dataGrid.Columns[col].Points[row].DoubleData;
+                        if (value != double.NaN) {
+                            double nValue = Normalize(value, dataGrid.Columns[col]);
+                            if (startPoint == null) {
+                                startPoint = new Point(col * step, this.ActualHeight * nValue);
+                            } else {
+                                dc.DrawLine(drawingPen, startPoint, new Point(col * step, this.ActualHeight * nValue));
+                                startPoint = new Point(col * step, this.ActualHeight * nValue);
+                            }
+                            
+                        }
+                    }
+                }
+                AddVisual(visual);
+            }
         }
 
         protected override int VisualChildrenCount {
