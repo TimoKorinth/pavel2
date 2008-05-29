@@ -17,21 +17,17 @@ namespace Pavel2.GUI {
     /// <summary>
     /// Interaktionslogik für TableView.xaml
     /// </summary>
-    public partial class TableView : UserControl {
+    public partial class TableView : UserControl, Visualization {
 
         private DataGrid dataGrid;
         
         public TableView() {
             InitializeComponent();
-            MainData.MainWindow.DataGridChanged += MainWindow_DataGridChanged;
+            this.Render();
         }
 
-        void MainWindow_DataGridChanged(object sender, RoutedEventArgs e) {
+        public void Render() {
             dataGrid = MainData.CurrentDataGrid;
-            DrawTable();
-        }
-
-        private void DrawTable() {
             if (dataGrid != null) {
                 tableListView.ItemsSource = dataGrid.Data;
                 GridView gView = new GridView();
