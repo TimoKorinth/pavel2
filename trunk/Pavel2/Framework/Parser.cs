@@ -12,11 +12,14 @@ namespace Pavel2.Framework {
 
         private List<List<IPoint>> points;
         private List<String> headers;
+        private List<double> min, max;
 
         public Column[] Parse(StreamReader stream) {
             this.stream = stream;
             points = new List<List<IPoint>>();
             headers = new List<string>();
+            min = new List<double>();
+            max = new List<double>();
             try {
                 ParseAlgorithm();
                 Column[] columns = new Column[points.Count];
@@ -28,6 +31,8 @@ namespace Pavel2.Framework {
                         columns[i].Header = "";
                     }
                     columns[i].Points = points[i].ToArray();
+                    columns[i].Min = min[i];
+                    columns[i].Max = max[i];
                 }
                 return columns;
             } catch {
@@ -39,9 +44,15 @@ namespace Pavel2.Framework {
             if (points.Count <= col) {
                 for (int i = points.Count-1; i < col; i++) {
                     points.Add(new List<IPoint>());
+                    min.Add(double.PositiveInfinity);
+                    max.Add(double.NegativeInfinity);
                 }
             }
             points[col].Add(point);
+            if (point.DoubleData != double.NaN) {
+                if (point.DoubleData < min[col]) min[col] = point.DoubleData;
+                if (point.DoubleData > max[col]) max[col] = point.DoubleData;
+            }
         }
 
         protected void AddHeader(String header, int col) {

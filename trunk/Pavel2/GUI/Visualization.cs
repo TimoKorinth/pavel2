@@ -9,5 +9,7 @@ namespace Pavel2.GUI {
 
         void Render();
 
+        void RenderAfterResize();
+
     }
 }

@@ -4,11 +4,17 @@ using System.Linq;
 using System.Text;
 
 namespace Pavel2.Framework {
-    public interface IPoint {
+    public abstract class IPoint {
 
-        String Data {
-            get;
-            set;
+        protected double doubleData = double.NaN;
+        protected String data = "";
+
+        public String Data {
+            get { return data; }
+        }
+
+        public double DoubleData {
+            get { return doubleData; }
         }
 
     }
