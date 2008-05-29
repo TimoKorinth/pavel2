@@ -48,13 +48,14 @@ namespace Pavel2.GUI
         }
 
         private void Visualize(UIElement item) {
+            visualizationGrid.Children.Clear();
             if (item is Visualization) {
                 visualization = (Visualization)item;
+                visualizationGrid.Children.Add(item);
+                visualization.Render();
             } else {
                 visualization = null;
             }
-            visualizationGrid.Children.Clear();
-            visualizationGrid.Children.Add(item);
         }
 
         private DataGrid currentDataGrid;
@@ -456,6 +457,10 @@ namespace Pavel2.GUI
                     editItem = null;
                 }
             }
+        }
+
+        private void visualizationGrid_SizeChanged(object sender, SizeChangedEventArgs e) {
+            visualization.Render();
         }
     }
 }
