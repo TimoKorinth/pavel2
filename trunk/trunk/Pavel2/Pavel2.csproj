@@ -72,6 +72,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="GUI\ExplorerTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GUI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -102,12 +106,16 @@
     <Compile Include="Framework\IPoint.cs" />
     <Compile Include="Framework\ParserManagement.cs" />
     <Compile Include="Framework\ProjectTreeItem.cs" />
+    <Compile Include="GUI\ExplorerTree.xaml.cs">
+      <DependentUpon>ExplorerTree.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\HeaderToImageConverterPT.cs" />
     <Compile Include="GUI\HeaderToImageConverter.cs" />
     <Compile Include="GUI\ParallelPlot.cs" />
     <Compile Include="GUI\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\TreeViewHelper.cs" />
     <Compile Include="GUI\Visualization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
