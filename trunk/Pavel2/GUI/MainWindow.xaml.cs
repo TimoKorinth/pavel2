@@ -30,6 +30,7 @@ namespace Pavel2.GUI
         private TreeViewItem root;
         private TreeViewItem lastModifiedItem;
         private TreeViewItem editItem;
+        private Visualization visualization;
 
         public MainWindow() {
             InitializeComponent();
@@ -47,18 +48,13 @@ namespace Pavel2.GUI
         }
 
         private void Visualize(UIElement item) {
-            visualizationStackPanel.Children.Clear();
-            visualizationStackPanel.Children.Add(item);
-        }
-
-        public static readonly RoutedEvent DataGridChangedEvent;
-        public event RoutedEventHandler DataGridChanged {
-            add { base.AddHandler(Pavel2.GUI.MainWindow.DataGridChangedEvent, value); }
-            remove { base.RemoveHandler(Pavel2.GUI.MainWindow.DataGridChangedEvent, value); }
-        }
-
-        static MainWindow() {
-            Pavel2.GUI.MainWindow.DataGridChangedEvent = EventManager.RegisterRoutedEvent("DataGridChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Pavel2.GUI.MainWindow));
+            if (item is Visualization) {
+                visualization = (Visualization)item;
+            } else {
+                visualization = null;
+            }
+            visualizationGrid.Children.Clear();
+            visualizationGrid.Children.Add(item);
         }
 
         private DataGrid currentDataGrid;
@@ -69,8 +65,7 @@ namespace Pavel2.GUI
             }
             set {
                 currentDataGrid = value;
-                RoutedEventArgs e = new RoutedEventArgs(Pavel2.GUI.MainWindow.DataGridChangedEvent, this);
-                base.RaiseEvent(e);
+                if (visualization != null) visualization.Render();
             }
         }
 
@@ -377,7 +372,7 @@ namespace Pavel2.GUI
             InsertToProjectTree(item, true, true);
         }
 
-        private void virtualizationStackPanel_Drop(object sender, DragEventArgs e) {
+        private void virtualizationGrid_Drop(object sender, DragEventArgs e) {
             object data = e.Data.GetData("System.Windows.Controls.TreeViewItem");
             TreeViewItem selItem = (TreeViewItem)projectTree.SelectedItem;
             if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
