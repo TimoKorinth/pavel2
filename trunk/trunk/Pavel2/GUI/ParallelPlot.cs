@@ -71,5 +71,14 @@ namespace Pavel2.GUI {
             visuals.Clear();
         }
 
+
+        #region Visualization Member
+
+
+        public void RenderAfterResize() {
+            Render();
+        }
+
+        #endregion
     }
 }

@@ -460,7 +460,7 @@ namespace Pavel2.GUI
         }
 
         private void visualizationGrid_SizeChanged(object sender, SizeChangedEventArgs e) {
-            visualization.Render();
+            visualization.RenderAfterResize();
         }
     }
 }

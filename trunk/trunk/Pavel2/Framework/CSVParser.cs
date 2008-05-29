@@ -34,7 +34,12 @@ namespace Pavel2.Framework {
                     if (firstLine && hasHeaders) {
                         AddHeader(lineSplit[i], i);
                     } else {
-                        AddPoint(new DiscretePoint(lineSplit[i]), i);
+                        double d;
+                        if (double.TryParse(lineSplit[i], out d)) {
+                            AddPoint(new DiscretePoint(lineSplit[i], d), i);
+                        } else {
+                            AddPoint(new DiscretePoint(lineSplit[i]), i);
+                        }
                     }
                 }
                 firstLine = false;

@@ -44,5 +44,13 @@ namespace Pavel2.GUI {
                 tableListView.View = null;
             }
         }
+
+        #region Visualization Member
+
+
+        public void RenderAfterResize() {
+        }
+
+        #endregion
     }
 }
