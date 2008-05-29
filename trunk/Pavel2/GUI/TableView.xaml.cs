@@ -23,7 +23,6 @@ namespace Pavel2.GUI {
         
         public TableView() {
             InitializeComponent();
-            this.Render();
         }
 
         public void Render() {
