@@ -47,10 +47,6 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Transitionals, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Transitionals.dll</HintPath>
-    </Reference>
     <Reference Include="UIAutomationProvider">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -79,6 +75,10 @@
     <Page Include="GUI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\ProjectTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\TableView.xaml">
       <SubType>Designer</SubType>
@@ -112,6 +112,9 @@
     <Compile Include="GUI\HeaderToImageConverterPT.cs" />
     <Compile Include="GUI\HeaderToImageConverter.cs" />
     <Compile Include="GUI\ParallelPlot.cs" />
+    <Compile Include="GUI\ProjectTree.xaml.cs">
+      <DependentUpon>ProjectTree.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
