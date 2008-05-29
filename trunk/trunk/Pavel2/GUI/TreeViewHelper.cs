@@ -7,7 +7,10 @@ using System.Windows.Media;
 using System.Windows;
 
 namespace Pavel2.GUI {
-    static class TreeViewHelper {
+
+    delegate Point GetPositionDelegate(IInputElement element);
+
+    static class TreeViewHelper {        
 
         public static TreeViewItem GetTreeViewItem(GetPositionDelegate getPosition, TreeView treeView) {
             if (IsMouseOverTarget(treeView, getPosition)) {
