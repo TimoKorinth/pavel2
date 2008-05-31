@@ -10,19 +10,28 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Pavel2.Framework;
 
-namespace Pavel2
+namespace Pavel2.GUI
 {
 	/// <summary>
 	/// Interaction logic for Window1.xaml
 	/// </summary>
-	public partial class Window1 : Window
-	{
-		public Window1()
-		{
+	public partial class MainWindow : Window {
+        public MainWindow() {
 			this.InitializeComponent();
-			
-			// Insert code required on object creation below this point.
 		}
+
+        private DataGrid currentDataGrid;
+
+        public DataGrid CurrentDataGrid {
+            get {
+                return currentDataGrid;
+            }
+            set {
+                currentDataGrid = value;
+                //if (visualization != null) visualization.Render();
+            }
+        }
 	}
 }
