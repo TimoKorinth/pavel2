@@ -1,0 +1,78 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Pavel2.Window1"
+	Title="Pavel2"
+	Width="640" Height="480" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+
+	<Grid ShowGridLines="False">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" MinWidth="100"/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="Auto" MinWidth="100"/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="Auto" MinWidth="100"/>
+		</Grid.ColumnDefinitions>
+		<Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="7" Visibility="Visible">
+			<MenuItem Header="Project"/>
+			<MenuItem Header="Edit"/>
+			<MenuItem Header="View"/>
+		</Menu>
+		<StatusBar Grid.Row="4" Grid.ColumnSpan="7">
+			<StatusBarItem Content="StatusBarItem"/>
+		</StatusBar>
+		<Expander Grid.Row="2" HorizontalAlignment="Stretch" Width="Auto" Grid.RowSpan="2" ExpandDirection="Left" IsExpanded="True" Background="#FFADBED2" Margin="2,2,2,2">
+			<Grid Height="Auto" Width="Auto" Margin="0,25,-20,0" HorizontalAlignment="Stretch" ShowGridLines="False">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" MinHeight="50"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*" MinHeight="50"/>
+				</Grid.RowDefinitions>
+				<GridSplitter VerticalAlignment="Center" Width="Auto" Height="5" Grid.Row="1" HorizontalAlignment="Stretch"/>
+				<TreeView Background="#FFDEE3E9" BorderBrush="{x:Null}" BorderThickness="0,0,0,0"/>
+				<Expander Grid.Row="2" Header="Links" IsExpanded="True" Background="#FFADBED2">
+					<ListBox Background="#FFDEE3E9" BorderBrush="{x:Null}" BorderThickness="0,0,0,0"/>
+				</Expander>
+			</Grid>
+		</Expander>
+		<GridSplitter HorizontalAlignment="Center" Width="3" Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" Grid.RowSpan="2" ShowsPreview="False"/>
+		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2"/>
+		<StackPanel Grid.Column="0" Grid.Row="1" x:Name="toolBarPanel" Background="#FFF5F4F9" Grid.ColumnSpan="7" HorizontalAlignment="Stretch">
+			<ToggleButton Width="50" Height="50" HorizontalAlignment="Left">
+				<StackPanel>
+					<Image Width="20" Height="20" Source="Images\Move.png" Stretch="Fill"/>
+					<Label Content="Import" />
+				</StackPanel>
+			</ToggleButton>
+		</StackPanel>
+		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" IsExpanded="True" Background="#FFADBED2">
+			<Grid/>
+		</Expander>
+		<Expander Grid.Column="6" Grid.Row="2" ExpandDirection="Right" IsExpanded="True" Background="#FFADBED2" Grid.RowSpan="2">
+			<Grid>
+				<ListBox BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Margin="-20,25,0,0" Background="#FFDEE3E9"/>
+			</Grid>
+		</Expander>
+		<TabControl Grid.Column="4" Grid.Row="2" Background="#FFFFFFFF" BorderThickness="1,1,1,1" x:Name="visualizationTabControl" BorderBrush="#FFADBED2" Margin="2,2,2,2">
+			<TabItem Header="Table View">
+			</TabItem>
+			<TabItem Header="Scatterplot">
+			</TabItem>
+			<TabItem Header="Parallelplot">
+			</TabItem>
+		</TabControl>
+		<Expander Grid.Column="2" Grid.Row="2" ExpandDirection="Left" Background="#FFADBED2" Grid.RowSpan="2" Grid.ColumnSpan="1">
+			<Grid Margin="0,25,-20,0"/>
+		</Expander>
+		<GridSplitter Grid.Column="3" Grid.Row="2" Width="3" HorizontalAlignment="Center" Grid.RowSpan="2"/>
+	</Grid>
+</Window>
