@@ -33,14 +33,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="PresentationFramework.Classic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,6 +77,11 @@
     <Compile Include="GUI\ProjectTree.xaml.cs">
       <DependentUpon>ProjectTree.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Property.cs" />
+    <Compile Include="GUI\PropertyGrid.xaml.cs">
+      <DependentUpon>PropertyGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PropertyTemplateSelector.cs" />
     <Compile Include="GUI\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
@@ -84,6 +98,10 @@
     <Page Include="GUI\ProjectTree.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\PropertyGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\TableView.xaml">
       <Generator>MSBuild:Compile</Generator>
