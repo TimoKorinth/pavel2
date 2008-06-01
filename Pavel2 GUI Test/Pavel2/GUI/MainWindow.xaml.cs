@@ -23,11 +23,16 @@ namespace Pavel2.GUI
         private GridLength projectTreeExpanderWidth;
         private double linksExpanderMinHeight = double.NaN;
         private GridLength linksExpanderHeight;
-        private double previewExpanderMinWidth = 100;
+        private double previewExpanderMinWidth = double.NaN;
         private GridLength previewExpanderWidth;
+        private double explorerExpanderMinWidth = double.NaN;
+        private GridLength explorerExpanderWidth;
         
         public MainWindow() {
 			this.InitializeComponent();
+            
+            previewExpander.IsExpanded = false;
+            explorerExpander.IsExpanded = false;
 		}
 
         private DataGrid currentDataGrid;
@@ -40,26 +45,6 @@ namespace Pavel2.GUI
                 currentDataGrid = value;
                 //if (visualization != null) visualization.Render();
             }
-        }
-
-        private void importButton_Checked(object sender, RoutedEventArgs e) {
-            ShowExplorerTree();
-        }
-
-        private void importButton_Unchecked(object sender, RoutedEventArgs e) {
-            HideExplorerTree();
-        }
-
-        private void explorerCloseButton_Click(object sender, RoutedEventArgs e) {
-            importButton.IsChecked = false;
-        }
-
-        private void HideExplorerTree() {
-            explorerGrid.Visibility = Visibility.Collapsed;
-        }
-
-        private void ShowExplorerTree() {
-            explorerGrid.Visibility = Visibility.Visible;
         }
 
         private void projectTreeExpander_Collapsed(object sender, RoutedEventArgs e) {
@@ -95,6 +80,7 @@ namespace Pavel2.GUI
         }
 
         private void previewExpander_Expanded(object sender, RoutedEventArgs e) {
+            if (double.IsNaN(previewExpanderMinWidth)) return;
             windowGrid.ColumnDefinitions[6].MinWidth = previewExpanderMinWidth;
             windowGrid.ColumnDefinitions[6].Width = previewExpanderWidth;
             previewSplitter.Visibility = Visibility.Visible;
@@ -106,6 +92,27 @@ namespace Pavel2.GUI
             windowGrid.ColumnDefinitions[6].MinWidth = 0;
             windowGrid.ColumnDefinitions[6].Width = GridLength.Auto;
             previewSplitter.Visibility = Visibility.Collapsed;
+        }
+
+        private void explorerExpander_Collapsed(object sender, RoutedEventArgs e) {
+            explorerExpanderMinWidth = windowGrid.ColumnDefinitions[2].MinWidth;
+            explorerExpanderWidth = windowGrid.ColumnDefinitions[2].Width;
+            windowGrid.ColumnDefinitions[2].MinWidth = 0;
+            windowGrid.ColumnDefinitions[2].Width = GridLength.Auto;
+            explorerExpander.Visibility = Visibility.Collapsed;
+            explorerSplitter.Visibility = Visibility.Collapsed;
+        }
+
+        private void explorerExpander_Expanded(object sender, RoutedEventArgs e) {
+            if (double.IsNaN(explorerExpanderMinWidth)) return;
+            windowGrid.ColumnDefinitions[2].MinWidth = explorerExpanderMinWidth;
+            windowGrid.ColumnDefinitions[2].Width = explorerExpanderWidth;
+            explorerExpander.Visibility = Visibility.Visible;
+            explorerSplitter.Visibility = Visibility.Visible;
+        }
+
+        private void importButton_Click(object sender, RoutedEventArgs e) {
+            explorerExpander.IsExpanded = true;
         }
 	}
 }

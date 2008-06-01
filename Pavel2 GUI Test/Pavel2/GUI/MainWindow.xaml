@@ -4,9 +4,9 @@
     xmlns:gui="clr-namespace:Pavel2.GUI"
 	x:Class="Pavel2.GUI.MainWindow"
 	Title="Pavel2"
-	Width="640" Height="480" Icon="/Pavel2;component/GUI/Icons/Logo.png">
+	Width="640" Height="480" Icon="/Pavel2;component/GUI/Icons/Logo.png" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
 
-	<Grid Name="windowGrid">
+	<Grid x:Name="windowGrid">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
@@ -21,7 +21,7 @@
 			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition Width="2*"/>
 			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="Auto" MinWidth="100"/>
 		</Grid.ColumnDefinitions>
 		<Menu Grid.ColumnSpan="7">
 			<MenuItem Header="Project"/>
@@ -31,58 +31,47 @@
 		<StatusBar Grid.Row="4" Grid.ColumnSpan="7">
 			<StatusBarItem Content="StatusBar"/>
 		</StatusBar>
-        <GridSplitter HorizontalAlignment="Center" Width="3" Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" Grid.RowSpan="2" Name="projectTreeSplitter" />
-		<Expander Collapsed="projectTreeExpander_Collapsed" Expanded="projectTreeExpander_Expanded" Grid.Row="2" Width="Auto" Grid.RowSpan="2" ExpandDirection="Left" IsExpanded="True" Name="projectTreeExpander">
-			<Grid Name="projectTreeGrid">
+        <GridSplitter HorizontalAlignment="Center" Width="3" Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" Grid.RowSpan="2" x:Name="projectTreeSplitter" />
+		<Expander Collapsed="projectTreeExpander_Collapsed" Expanded="projectTreeExpander_Expanded" Grid.Row="2" Width="Auto" Grid.RowSpan="2" ExpandDirection="Left" IsExpanded="True" x:Name="projectTreeExpander" Header="Data Sets">
+			<Grid x:Name="projectTreeGrid">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="2*" MinHeight="50"/>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="*" MinHeight="50"/>
 				</Grid.RowDefinitions>
-				<GridSplitter VerticalAlignment="Center" Height="5" Grid.Row="1" HorizontalAlignment="Stretch" Name="linksSplitter" />
+				<GridSplitter VerticalAlignment="Center" Height="5" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="linksSplitter" />
 				<TreeView />
-				<Expander Collapsed="linksExpander_Collapsed" Expanded="linksExpander_Expanded" Grid.Row="2" Header="Links" IsExpanded="True" Name="linksExpander">
+				<Expander Collapsed="linksExpander_Collapsed" Expanded="linksExpander_Expanded" Grid.Row="2" Header="Links" IsExpanded="True" x:Name="linksExpander">
 					<ListBox />
 				</Expander>
 			</Grid>
 		</Expander>
 		
-		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2" Name="previewSplitter" Visibility="Collapsed" />
-		<StackPanel Grid.Column="0" Grid.Row="1" Name="toolBarPanel" Grid.ColumnSpan="7">
-			<ToggleButton Width="50" Height="50" HorizontalAlignment="Left" Name="importButton">
+		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2" Name="previewSplitter" />
+		<StackPanel Grid.Column="0" Grid.Row="1" x:Name="toolBarPanel" Grid.ColumnSpan="7">
+			<Button Click="importButton_Click" Width="50" Height="50" HorizontalAlignment="Left" Name="importButton">
 				<StackPanel>
 					<Image Width="20" Height="20" Source="Icons\Move.png" Stretch="Fill"/>
 					<Label Content="Import" />
 				</StackPanel>
-			</ToggleButton>
+			</Button>
 		</StackPanel>
-		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" Name="optionsExpander">
-            <ScrollViewer Name="optionsScrollViewer" MinHeight="100" MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"></ScrollViewer>
+		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" x:Name="optionsExpander">
+            <ScrollViewer x:Name="optionsScrollViewer" MinHeight="100" MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
         </Expander>
-		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Grid.RowSpan="2" Name="previewExpander">
+		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Grid.RowSpan="2" x:Name="previewExpander" Header="Preview" IsExpanded="True">
 			<Grid>
 				<ListBox />
 			</Grid>
 		</Expander>
 		<TabControl Grid.Column="4" Grid.Row="2" Name="visualizationTabControl">
-			<TabItem Header="Table View">
-			</TabItem>
-			<TabItem Header="Scatterplot">
-			</TabItem>
-			<TabItem Header="Parallelplot">
-			</TabItem>
+			<TabItem Header="Table View"/>
+			<TabItem Header="Scatterplot"/>
+			<TabItem Header="Parallelplot"/>
 		</TabControl>
-        <Grid Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="1" Name="explorerGrid" MinWidth="100">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" MinHeight="20" />
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight" HorizontalAlignment="Stretch">
-                <Label>Import Files:</Label>
-                <Button Click="explorerCloseButton_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="explorerCloseButton" FlowDirection="LeftToRight">X</Button>
-            </StackPanel>
-            <gui:ExplorerTree Grid.Row="1"></gui:ExplorerTree>
-        </Grid>
-		<GridSplitter Grid.Column="3" Grid.Row="2" Width="3" HorizontalAlignment="Center" Grid.RowSpan="2"/>
+		<GridSplitter Grid.Column="3" Grid.Row="2" Width="3" HorizontalAlignment="Center" Grid.RowSpan="2" Name="explorerSplitter" />
+		<Expander Collapsed="explorerExpander_Collapsed" Expanded="explorerExpander_Expanded" Grid.Column="2" Grid.Row="2" Header="Import" ExpandDirection="Left" IsExpanded="True" Grid.RowSpan="2" Name="explorerExpander">
+            <gui:ExplorerTree></gui:ExplorerTree>
+        </Expander>
 	</Grid>
 </Window>
