@@ -15,22 +15,8 @@ namespace Pavel2.GUI {
         #region Fields
 
         private TreeViewItem root;
-        private TreeViewItem lastModifiedItem;
         private TreeViewItem editItem;
-
-        #endregion
-
-        #region Routed Events
-
-        public static readonly RoutedEvent NewFileInsertedEvent;
-        static ProjectTree() {
-            NewFileInsertedEvent = EventManager.RegisterRoutedEvent(
-                "NewFileInserted", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ProjectTree));
-        }
-        public event RoutedEventHandler NewFileInserted {
-            add { AddHandler(NewFileInsertedEvent, value); }
-            remove { RemoveHandler(NewFileInsertedEvent, value); }
-        }
+        private String oldHeader;
 
         #endregion
 
@@ -53,7 +39,27 @@ namespace Pavel2.GUI {
 
         #region Public Methods
 
-        public void UpdateDataTreeViewItem(TreeViewItem item) {
+        public void ParseAgain(Parser parser) {
+            TreeViewItem item = this.SelectedItem;
+            if (item != null && item.Tag is DataProjectTreeItem) {
+                DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
+                DataGrid dataGrid = dPTI.DataGrid;
+                MainData.RemoveColumns(dataGrid);
+                DataGrid d = ParserManagement.GetDataGrid(parser);
+                if (d != null) {
+                    dPTI.DataGrid = d;
+                    item.Header = ParserManagement.File.Name;
+                    item.Tag = dPTI;
+                    UpdateDataTreeViewItem(item);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void UpdateDataTreeViewItem(TreeViewItem item) {
             if (item.Tag is DataProjectTreeItem) {
                 item.Items.Clear();
                 DataProjectTreeItem dPTVI = (DataProjectTreeItem)item.Tag;
@@ -68,16 +74,11 @@ namespace Pavel2.GUI {
                     }
                     item.Items.Add(tmp);
                 }
-            } else if (item.Tag is ComparableProjectTreeItem) {
-                for (int i = 0; i < item.Items.Count; i++) {
-                    if (item.Items[i] is TreeViewItem) {
-                        UpdateDataTreeViewItem((TreeViewItem)item.Items[i]);
-                    }
-                }
             }
         }
-        public void InsertToProjectTree(TreeViewItem item, bool isSelected, bool isExpanded) {
-            TreeViewItem rootItem = (TreeViewItem)projectTree.SelectedItem;
+
+        private void InsertToProjectTree(TreeViewItem item, bool isSelected, bool isExpanded) {
+            TreeViewItem rootItem = this.SelectedItem;
             if (rootItem != null) {
                 InsertToProjectTree(item, rootItem, isSelected, isExpanded);
             } else {
@@ -85,13 +86,13 @@ namespace Pavel2.GUI {
             }
         }
 
-        public void InsertToProjectTree(TreeViewItem item, TreeViewItem rootItem, bool isSelected, bool isExpanded) {
+        private void InsertToProjectTree(TreeViewItem item, TreeViewItem rootItem, bool isSelected, bool isExpanded) {
             if (rootItem != null) {
                 int insertIndex = -1;
                 if (rootItem.Tag is DataProjectTreeItem) {
                     TreeViewItem tmp = rootItem;
                     rootItem = (TreeViewItem)rootItem.Parent;
-                    insertIndex = rootItem.Items.IndexOf(tmp);
+                    insertIndex = rootItem.Items.IndexOf(tmp);      //TODO: Entscheiden, ob danach oder davor
                 }
                 if (rootItem.Tag is FolderProjectTreeItem) {
                     if (insertIndex < 0) {
@@ -104,11 +105,6 @@ namespace Pavel2.GUI {
                 }
             }
         }
-
-
-        #endregion
-
-        #region Private Methods
 
         private void InitProjectTree() {
             root = new TreeViewItem();
@@ -132,14 +128,9 @@ namespace Pavel2.GUI {
                 } else {
                     InsertToProjectTree(tvItem, true, true);
                 }
-
-                RoutedEventArgs args = new RoutedEventArgs(NewFileInsertedEvent, this);
-                this.RaiseEvent(args);
+            } else { 
+                //TODO: Fehlermeldung, dass nicht geparst werden konnte!
             }
-        }
-
-        private void DeleteCompProjectTreeItem(ComparableProjectTreeItem comp) {
-            comp = null;
         }
 
         private void RemoveTreeViewItem(TreeViewItem item) {
@@ -151,8 +142,8 @@ namespace Pavel2.GUI {
 
         private void DeleteDataProjectTreeItem(DataProjectTreeItem dPTI) {
             MainData.RemoveColumns(dPTI.DataGrid);
-            dPTI.DataGrid = null;
-            dPTI = null;
+            //dPTI.DataGrid = null;
+            //dPTI = null;
         }
 
         #endregion
@@ -169,22 +160,18 @@ namespace Pavel2.GUI {
             if (item != null) item.IsSelected = true;
         }
 
-        private void projectTree_DragOver(object sender, DragEventArgs e) {
-            TreeViewItem item = TreeViewHelper.GetTreeViewItem(e.GetPosition, this.root);
-            if (this.lastModifiedItem != null) this.lastModifiedItem.Background = null;
-            item.Background = Brushes.Turquoise;
-            this.lastModifiedItem = item;
-        }
         private void projectTree_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = TreeViewHelper.GetTreeViewItem(e.GetPosition, this.root);
             this.editItem = item;
             DataTemplate editTemplate = (DataTemplate)this.FindResource("EditTemplate");
             item.HeaderTemplate = editTemplate;
+            this.oldHeader = (String)item.Header;
         }
 
         private void projectTree_KeyDown(object sender, KeyEventArgs e) {
             if (editItem != null) {
-                if (e.Key == Key.Enter || e.Key == Key.Return) {
+                if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Escape) {
+                    if (e.Key == Key.Escape) editItem.Header = this.oldHeader;
                     editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
                     editItem = null;
                 }
@@ -211,33 +198,25 @@ namespace Pavel2.GUI {
 
         private void ContextMenu_AddNewFolder(object sender, RoutedEventArgs e) {
             TreeViewItem newItem = new TreeViewItem();
-            newItem.Header = "Folder";
+            newItem.Header = "new Folder";
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(newItem);
             newItem.Tag = fPTI;
             InsertToProjectTree(newItem, true, true);
         }
 
         private void ContextMenu_RemoveItem(object sender, RoutedEventArgs e) {
-            TreeViewItem item = (TreeViewItem)projectTree.SelectedItem;
+            TreeViewItem item = this.SelectedItem;
             if (item.Tag is DataProjectTreeItem) {
                 DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag);
-            } else if (item.Tag is ComparableProjectTreeItem) {
-                DeleteCompProjectTreeItem((ComparableProjectTreeItem)item.Tag);
+            } else if (item.Tag is FolderProjectTreeItem) {
+                
             }
             RemoveTreeViewItem(item);
         }
 
-        private void ContextMenu_AddNewComp(object sender, RoutedEventArgs e) {
-            TreeViewItem item = new TreeViewItem();
-            item.Header = "Comp. Item";
-            ComparableProjectTreeItem comp = new ComparableProjectTreeItem();
-            item.Tag = comp;
-            InsertToProjectTree(item, true, true);
-        }
-
         private void ContextMenu_AddNewDataTable(object sender, RoutedEventArgs e) {
             TreeViewItem item = new TreeViewItem();
-            item.Header = "DataTable";
+            item.Header = "new DataTable";
             item.Tag = new DataProjectTreeItem(new DataGrid());
             InsertToProjectTree(item, true, true);
         }

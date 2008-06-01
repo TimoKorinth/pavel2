@@ -18,10 +18,6 @@ namespace Pavel2.GUI {
                 Uri uri = new Uri("pack://application:,,,/GUI/Icons/DataTable.png");
                 BitmapImage source = new BitmapImage(uri);
                 return source;
-            } else if (value is ComparableProjectTreeItem) {
-                Uri uri = new Uri("pack://application:,,,/GUI/Icons/Comp.png");
-                BitmapImage source = new BitmapImage(uri);
-                return source;
             } else if (value is Column) {
                 Uri uri = new Uri("pack://application:,,,/GUI/Icons/Column.png");
                 BitmapImage source = new BitmapImage(uri);

@@ -20,7 +20,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <TreeView KeyDown="projectTree_KeyDown" PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" DragOver="projectTree_DragOver" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
+        <TreeView KeyDown="projectTree_KeyDown" PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="HeaderTemplate" Value="{StaticResource DefaultTemplate}" />
@@ -30,7 +30,6 @@
                 <ContextMenu>
                     <MenuItem Header="Add new Data Table" Click="ContextMenu_AddNewDataTable" />
                     <MenuItem Header="Add new Folder" Click="ContextMenu_AddNewFolder" />
-                    <MenuItem Header="Add new Comparable" Click="ContextMenu_AddNewComp" />
                     <MenuItem Header="Remove Item" Click="ContextMenu_RemoveItem" />
                 </ContextMenu>
             </TreeView.ContextMenu>
