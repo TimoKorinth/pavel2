@@ -21,7 +21,7 @@
 			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition Width="2*"/>
 			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="Auto" MinWidth="100"/>
+			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 		<Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="7" Visibility="Visible">
 			<MenuItem Header="Project"/>
@@ -47,7 +47,7 @@
 			</Grid>
 		</Expander>
 		
-		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2" Name="previewSplitter" />
+		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2" Name="previewSplitter" Visibility="Collapsed" />
 		<StackPanel Grid.Column="0" Grid.Row="1" x:Name="toolBarPanel" Background="#FFF5F4F9" Grid.ColumnSpan="7" HorizontalAlignment="Stretch">
 			<ToggleButton Checked="importButton_Checked" Unchecked="importButton_Unchecked" Width="50" Height="50" HorizontalAlignment="Left" Name="importButton">
 				<StackPanel>
@@ -56,10 +56,10 @@
 				</StackPanel>
 			</ToggleButton>
 		</StackPanel>
-		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" IsExpanded="True" Background="#FFADBED2">
-			<Grid/>
-		</Expander>
-		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" IsExpanded="True" Background="#FFADBED2" Grid.RowSpan="2" Name="previewExpander">
+		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" Background="#FFADBED2" Name="optionsExpander">
+            <ScrollViewer Name="optionsScrollViewer" MinHeight="100" MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"></ScrollViewer>
+        </Expander>
+		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Background="#FFADBED2" Grid.RowSpan="2" Name="previewExpander">
 			<Grid>
 				<ListBox BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Margin="-20,25,0,0" Background="#FFDEE3E9"/>
 			</Grid>
