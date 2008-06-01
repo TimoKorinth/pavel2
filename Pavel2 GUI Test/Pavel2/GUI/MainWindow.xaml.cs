@@ -23,7 +23,7 @@ namespace Pavel2.GUI
         private GridLength projectTreeExpanderWidth;
         private double linksExpanderMinHeight = double.NaN;
         private GridLength linksExpanderHeight;
-        private double previewExpanderMinWidth = double.NaN;
+        private double previewExpanderMinWidth = 100;
         private GridLength previewExpanderWidth;
         
         public MainWindow() {
@@ -95,7 +95,6 @@ namespace Pavel2.GUI
         }
 
         private void previewExpander_Expanded(object sender, RoutedEventArgs e) {
-            if (double.IsNaN(previewExpanderMinWidth)) return;
             windowGrid.ColumnDefinitions[6].MinWidth = previewExpanderMinWidth;
             windowGrid.ColumnDefinitions[6].Width = previewExpanderWidth;
             previewSplitter.Visibility = Visibility.Visible;
