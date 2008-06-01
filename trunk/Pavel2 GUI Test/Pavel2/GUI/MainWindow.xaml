@@ -4,7 +4,7 @@
     xmlns:gui="clr-namespace:Pavel2.GUI"
 	x:Class="Pavel2.GUI.MainWindow"
 	Title="Pavel2"
-	Width="640" Height="480">
+	Width="640" Height="480" Icon="/Pavel2;component/GUI/Icons/Logo.png">
 
 	<Grid Name="windowGrid">
 		<Grid.RowDefinitions>
@@ -17,7 +17,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" MinWidth="100"/>
 			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="Auto" MinWidth="100"/>
+			<ColumnDefinition Width="120" MinWidth="100"/>
 			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition Width="2*"/>
 			<ColumnDefinition Width="Auto"/>
