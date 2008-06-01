@@ -9,12 +9,6 @@ namespace Pavel2.Framework {
         private Column[] columns;
         private String[][] data;
         private int maxColumn;
-        private List<ComparableProjectTreeItem> comparables = new List<ComparableProjectTreeItem>();
-
-        public List<ComparableProjectTreeItem> Comparables {
-            get { return comparables; }
-            set { comparables = value; }
-        }
 
         public int MaxColumn {
             get { return maxColumn; }

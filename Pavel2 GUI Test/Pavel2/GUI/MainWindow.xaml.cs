@@ -114,5 +114,9 @@ namespace Pavel2.GUI
         private void importButton_Click(object sender, RoutedEventArgs e) {
             explorerExpander.IsExpanded = true;
         }
+
+        private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+
+        }
 	}
 }
