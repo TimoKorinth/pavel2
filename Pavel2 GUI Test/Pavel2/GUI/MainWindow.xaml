@@ -23,48 +23,48 @@
 			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
-		<Menu HorizontalAlignment="Stretch" Grid.ColumnSpan="7" Visibility="Visible">
+		<Menu Grid.ColumnSpan="7">
 			<MenuItem Header="Project"/>
 			<MenuItem Header="Edit"/>
 			<MenuItem Header="View"/>
 		</Menu>
 		<StatusBar Grid.Row="4" Grid.ColumnSpan="7">
-			<StatusBarItem Content="StatusBarItem"/>
+			<StatusBarItem Content="StatusBar"/>
 		</StatusBar>
         <GridSplitter HorizontalAlignment="Center" Width="3" Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" Grid.RowSpan="2" Name="projectTreeSplitter" />
-		<Expander Collapsed="projectTreeExpander_Collapsed" Expanded="projectTreeExpander_Expanded" Grid.Row="2" HorizontalAlignment="Stretch" Width="Auto" Grid.RowSpan="2" ExpandDirection="Left" IsExpanded="True" Background="#FFADBED2" Margin="2,2,2,2" Name="projectTreeExpander">
-			<Grid Height="Auto" Width="Auto" Margin="0,25,-20,0" Name="projectTreeGrid">
+		<Expander Collapsed="projectTreeExpander_Collapsed" Expanded="projectTreeExpander_Expanded" Grid.Row="2" Width="Auto" Grid.RowSpan="2" ExpandDirection="Left" IsExpanded="True" Name="projectTreeExpander">
+			<Grid Name="projectTreeGrid">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="2*" MinHeight="50"/>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="*" MinHeight="50"/>
 				</Grid.RowDefinitions>
-				<GridSplitter VerticalAlignment="Center" Width="Auto" Height="5" Grid.Row="1" HorizontalAlignment="Stretch" Name="linksSplitter" />
-				<TreeView Background="#FFDEE3E9" BorderBrush="{x:Null}" BorderThickness="0,0,0,0"/>
-				<Expander Collapsed="linksExpander_Collapsed" Expanded="linksExpander_Expanded" Grid.Row="2" Header="Links" IsExpanded="True" Background="#FFADBED2" Name="linksExpander">
-					<ListBox Background="#FFDEE3E9" BorderBrush="{x:Null}" BorderThickness="0,0,0,0"/>
+				<GridSplitter VerticalAlignment="Center" Height="5" Grid.Row="1" HorizontalAlignment="Stretch" Name="linksSplitter" />
+				<TreeView />
+				<Expander Collapsed="linksExpander_Collapsed" Expanded="linksExpander_Expanded" Grid.Row="2" Header="Links" IsExpanded="True" Name="linksExpander">
+					<ListBox />
 				</Expander>
 			</Grid>
 		</Expander>
 		
 		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2" Name="previewSplitter" Visibility="Collapsed" />
-		<StackPanel Grid.Column="0" Grid.Row="1" x:Name="toolBarPanel" Background="#FFF5F4F9" Grid.ColumnSpan="7" HorizontalAlignment="Stretch">
-			<ToggleButton Checked="importButton_Checked" Unchecked="importButton_Unchecked" Width="50" Height="50" HorizontalAlignment="Left" Name="importButton">
+		<StackPanel Grid.Column="0" Grid.Row="1" Name="toolBarPanel" Grid.ColumnSpan="7">
+			<ToggleButton Width="50" Height="50" HorizontalAlignment="Left" Name="importButton">
 				<StackPanel>
 					<Image Width="20" Height="20" Source="Icons\Move.png" Stretch="Fill"/>
 					<Label Content="Import" />
 				</StackPanel>
 			</ToggleButton>
 		</StackPanel>
-		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" Background="#FFADBED2" Name="optionsExpander">
+		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" Name="optionsExpander">
             <ScrollViewer Name="optionsScrollViewer" MinHeight="100" MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"></ScrollViewer>
         </Expander>
-		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Background="#FFADBED2" Grid.RowSpan="2" Name="previewExpander">
+		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Grid.RowSpan="2" Name="previewExpander">
 			<Grid>
-				<ListBox BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Margin="-20,25,0,0" Background="#FFDEE3E9"/>
+				<ListBox />
 			</Grid>
 		</Expander>
-		<TabControl Grid.Column="4" Grid.Row="2" Background="#FFFFFFFF" BorderThickness="1,1,1,1" x:Name="visualizationTabControl" BorderBrush="#FFADBED2" Margin="2,2,2,2">
+		<TabControl Grid.Column="4" Grid.Row="2" Name="visualizationTabControl">
 			<TabItem Header="Table View">
 			</TabItem>
 			<TabItem Header="Scatterplot">
@@ -72,7 +72,7 @@
 			<TabItem Header="Parallelplot">
 			</TabItem>
 		</TabControl>
-        <Grid Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="1" Background="#FFDEE3E9" Name="explorerGrid" MinWidth="100">
+        <Grid Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="1" Name="explorerGrid" MinWidth="100">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" MinHeight="20" />
                 <RowDefinition Height="*"/>
