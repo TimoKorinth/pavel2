@@ -6,7 +6,7 @@
 	Title="Pavel2"
 	Width="640" Height="480">
 
-	<Grid ShowGridLines="False">
+	<Grid Name="windowGrid">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
@@ -31,24 +31,25 @@
 		<StatusBar Grid.Row="4" Grid.ColumnSpan="7">
 			<StatusBarItem Content="StatusBarItem"/>
 		</StatusBar>
-		<Expander Grid.Row="2" HorizontalAlignment="Stretch" Width="Auto" Grid.RowSpan="2" ExpandDirection="Left" IsExpanded="True" Background="#FFADBED2" Margin="2,2,2,2">
-			<Grid Height="Auto" Width="Auto" Margin="0,25,-20,0" HorizontalAlignment="Stretch" ShowGridLines="False">
+        <GridSplitter HorizontalAlignment="Center" Width="3" Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" Grid.RowSpan="2" Name="projectTreeSplitter" />
+		<Expander Collapsed="projectTreeExpander_Collapsed" Expanded="projectTreeExpander_Expanded" Grid.Row="2" HorizontalAlignment="Stretch" Width="Auto" Grid.RowSpan="2" ExpandDirection="Left" IsExpanded="True" Background="#FFADBED2" Margin="2,2,2,2" Name="projectTreeExpander">
+			<Grid Height="Auto" Width="Auto" Margin="0,25,-20,0" Name="projectTreeGrid">
 				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" MinHeight="50"/>
+					<RowDefinition Height="2*" MinHeight="50"/>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="*" MinHeight="50"/>
 				</Grid.RowDefinitions>
-				<GridSplitter VerticalAlignment="Center" Width="Auto" Height="5" Grid.Row="1" HorizontalAlignment="Stretch"/>
+				<GridSplitter VerticalAlignment="Center" Width="Auto" Height="5" Grid.Row="1" HorizontalAlignment="Stretch" Name="linksSplitter" />
 				<TreeView Background="#FFDEE3E9" BorderBrush="{x:Null}" BorderThickness="0,0,0,0"/>
-				<Expander Grid.Row="2" Header="Links" IsExpanded="True" Background="#FFADBED2">
+				<Expander Collapsed="linksExpander_Collapsed" Expanded="linksExpander_Expanded" Grid.Row="2" Header="Links" IsExpanded="True" Background="#FFADBED2" Name="linksExpander">
 					<ListBox Background="#FFDEE3E9" BorderBrush="{x:Null}" BorderThickness="0,0,0,0"/>
 				</Expander>
 			</Grid>
 		</Expander>
-		<GridSplitter HorizontalAlignment="Center" Width="3" Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" Grid.RowSpan="2" ShowsPreview="False"/>
-		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2"/>
+		
+		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2" Name="previewSplitter" />
 		<StackPanel Grid.Column="0" Grid.Row="1" x:Name="toolBarPanel" Background="#FFF5F4F9" Grid.ColumnSpan="7" HorizontalAlignment="Stretch">
-			<ToggleButton Width="50" Height="50" HorizontalAlignment="Left">
+			<ToggleButton Checked="importButton_Checked" Unchecked="importButton_Unchecked" Width="50" Height="50" HorizontalAlignment="Left" Name="importButton">
 				<StackPanel>
 					<Image Width="20" Height="20" Source="Icons\Move.png" Stretch="Fill"/>
 					<Label Content="Import" />
@@ -58,7 +59,7 @@
 		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" IsExpanded="True" Background="#FFADBED2">
 			<Grid/>
 		</Expander>
-		<Expander Grid.Column="6" Grid.Row="2" ExpandDirection="Right" IsExpanded="True" Background="#FFADBED2" Grid.RowSpan="2">
+		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" IsExpanded="True" Background="#FFADBED2" Grid.RowSpan="2" Name="previewExpander">
 			<Grid>
 				<ListBox BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Margin="-20,25,0,0" Background="#FFDEE3E9"/>
 			</Grid>
@@ -71,11 +72,17 @@
 			<TabItem Header="Parallelplot">
 			</TabItem>
 		</TabControl>
-		<Expander Grid.Column="2" Grid.Row="2" ExpandDirection="Left" Background="#FFADBED2" Grid.RowSpan="2" Grid.ColumnSpan="1" IsExpanded="True">
-            <Grid Margin="0,25,-20,0">
-                <gui:ExplorerTree></gui:ExplorerTree>
-            </Grid>
-        </Expander>
+        <Grid Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="1" Background="#FFDEE3E9" Name="explorerGrid" MinWidth="100">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="20" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight" HorizontalAlignment="Stretch">
+                <Label>Import Files:</Label>
+                <Button Click="explorerCloseButton_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="explorerCloseButton" FlowDirection="LeftToRight">X</Button>
+            </StackPanel>
+            <gui:ExplorerTree Grid.Row="1"></gui:ExplorerTree>
+        </Grid>
 		<GridSplitter Grid.Column="3" Grid.Row="2" Width="3" HorizontalAlignment="Center" Grid.RowSpan="2"/>
 	</Grid>
 </Window>
