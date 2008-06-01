@@ -19,6 +19,8 @@ namespace Pavel2.GUI
 	/// </summary>
 	public partial class MainWindow : Window {
 
+        #region Expander Fields
+
         private double projectTreeExpanderMinWidth = double.NaN;
         private GridLength projectTreeExpanderWidth;
         private double linksExpanderMinHeight = double.NaN;
@@ -27,7 +29,9 @@ namespace Pavel2.GUI
         private GridLength previewExpanderWidth;
         private double explorerExpanderMinWidth = double.NaN;
         private GridLength explorerExpanderWidth;
-        
+
+        #endregion
+
         public MainWindow() {
 			this.InitializeComponent();
             
@@ -46,6 +50,8 @@ namespace Pavel2.GUI
                 //if (visualization != null) visualization.Render();
             }
         }
+
+        #region Expander Event Handler
 
         private void projectTreeExpander_Collapsed(object sender, RoutedEventArgs e) {
             projectTreeExpanderMinWidth = windowGrid.ColumnDefinitions[0].MinWidth;
@@ -111,12 +117,32 @@ namespace Pavel2.GUI
             explorerSplitter.Visibility = Visibility.Visible;
         }
 
+        #endregion
+
+        #region Public Methods
+
+        public void FillOptionsPanel(UIElement element, bool expand) {
+            optionsExpander.Content = element;
+            optionsExpander.IsExpanded = expand;
+        }
+
+        public void EmptyOptionsPanel() {
+            optionsExpander.Content = null;
+            optionsExpander.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
+
         private void importButton_Click(object sender, RoutedEventArgs e) {
             explorerExpander.IsExpanded = true;
         }
 
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+            
+        }
 
+        private void projectTreeView_NewFileInserted(object sender, RoutedEventArgs e) {
+            
         }
 	}
 }

@@ -40,7 +40,7 @@
 					<RowDefinition Height="*" MinHeight="50"/>
 				</Grid.RowDefinitions>
 				<GridSplitter VerticalAlignment="Center" Height="5" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="linksSplitter" />
-                <gui:ProjectTree x:Name="projectTreeView" TreeView.SelectedItemChanged="ProjectTreeView_SelectedItemChanged"></gui:ProjectTree>
+                <gui:ProjectTree x:Name="projectTreeView" NewFileInserted="projectTreeView_NewFileInserted" TreeView.SelectedItemChanged="ProjectTreeView_SelectedItemChanged"></gui:ProjectTree>
                 <Expander Collapsed="linksExpander_Collapsed" Expanded="linksExpander_Expanded" Grid.Row="2" Header="Links" IsExpanded="True" x:Name="linksExpander">
 				<ListBox />
 				</Expander>

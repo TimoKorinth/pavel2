@@ -29,6 +29,20 @@ namespace Pavel2.GUI {
 
         #endregion
 
+        #region Routed Events
+
+        public static readonly RoutedEvent NewFileInsertedEvent;
+        static ProjectTree() {
+            NewFileInsertedEvent = EventManager.RegisterRoutedEvent(
+                "NewFileInserted", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ProjectTree));
+        }
+        public event RoutedEventHandler NewFileInserted {
+            add { AddHandler(NewFileInsertedEvent, value); }
+            remove { RemoveHandler(NewFileInsertedEvent, value); }
+        }
+
+        #endregion
+
         #region Properties
 
         public TreeViewItem SelectedItem {
@@ -128,6 +142,8 @@ namespace Pavel2.GUI {
                 } else {
                     InsertToProjectTree(tvItem, true, true);
                 }
+                RoutedEventArgs args = new RoutedEventArgs(NewFileInsertedEvent, this);
+                this.RaiseEvent(args);
             } else { 
                 //TODO: Fehlermeldung, dass nicht geparst werden konnte!
             }
