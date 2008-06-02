@@ -167,14 +167,21 @@ namespace Pavel2.GUI
             optionsExpander.Content = null;
             optionsExpander.Visibility = Visibility.Collapsed;
         }
-
+        
         public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
-            previewExpander.Visibility = Visibility.Visible;
-            previewExpander.IsExpanded = expand;
+            List<DataProjectTreeItem> relData = linkListPanel.GetRelatedItems(dPTI);
+            if (relData.Count == 0) {
+                EmptyPreviewPanel();
+            } else {
+                previewList.ItemsSource = relData;
+                previewList.DisplayMemberPath = "Header";
+                previewExpander.Visibility = Visibility.Visible;
+                previewExpander.IsExpanded = expand;
+            }
         }
 
         public void EmptyPreviewPanel() {
-            previewExpander.Content = null;
+            previewList.Items.Clear();
             previewExpander.IsExpanded = false;
             previewExpander.Visibility = Visibility.Collapsed;
         }
@@ -188,6 +195,14 @@ namespace Pavel2.GUI
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             EmptyOptionsPanel();
             SetCurrentDataGrid();
+            TreeViewItem selItem = projectTreeView.SelectedItem;
+            if (selItem != null) {
+                if (selItem.Tag is DataProjectTreeItem) {
+                    FillPreviewPanel((DataProjectTreeItem)selItem.Tag, true);
+                } else {
+                    EmptyPreviewPanel();
+                }
+            }
         }
 
         private void projectTreeView_NewFileInserted(object sender, RoutedEventArgs e) {
