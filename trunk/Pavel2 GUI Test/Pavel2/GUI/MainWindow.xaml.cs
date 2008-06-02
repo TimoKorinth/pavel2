@@ -210,14 +210,13 @@ namespace Pavel2.GUI
                 EmptyPreviewPanel();
             } else {
                 previewList.ItemsSource = relData;
-                previewList.DisplayMemberPath = "Header";
                 previewExpander.Visibility = Visibility.Visible;
                 previewExpander.IsExpanded = expand;
             }
         }
 
         public void EmptyPreviewPanel() {
-            previewList.Items.Clear();
+            previewList.ItemsSource = null;
             previewExpander.IsExpanded = false;
             previewExpander.Visibility = Visibility.Collapsed;
         }

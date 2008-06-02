@@ -61,8 +61,20 @@
         </Expander>
 		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Grid.RowSpan="2" x:Name="previewExpander" Header="Preview" IsExpanded="True">
 			<Grid>
-				<ListBox Name="previewList" />
-			</Grid>
+                <ListBox Name="previewList">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Rectangle Height="80" Width="80" Margin="5">
+                                    <Rectangle.Fill>
+                                        <VisualBrush Visual="{Binding Path=LastVisualization}"></VisualBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
 		</Expander>
 		<TabControl SizeChanged="visualizationTabControl_SizeChanged" SelectionChanged="visualizationTabControl_SelectionChanged" Grid.Column="4" Grid.Row="2" Name="visualizationTabControl">
 			<TabItem Header="Table View"/>
