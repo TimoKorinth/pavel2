@@ -85,7 +85,7 @@ namespace Pavel2.GUI {
                     if (header != "") {
                         tmp.Header = header;
                     } else {
-                        tmp.Header = i;
+                        tmp.Header = i.ToString();
                     }
                     item.Items.Add(tmp);
                 }
@@ -201,7 +201,7 @@ namespace Pavel2.GUI {
             this.editItem = item;
             DataTemplate editTemplate = (DataTemplate)this.FindResource("EditTemplate");
             item.HeaderTemplate = editTemplate;
-            this.oldHeader = (String)item.Header;
+            this.oldHeader = item.Header as String;
         }
 
         private void projectTree_KeyDown(object sender, KeyEventArgs e) {
