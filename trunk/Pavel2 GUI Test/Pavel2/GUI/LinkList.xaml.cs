@@ -41,9 +41,26 @@ namespace Pavel2.GUI {
             if (tvItem == null) return;
             if (tvItem.Tag is DataProjectTreeItem) {
                 DataProjectTreeItem dPTI = tvItem.Tag as DataProjectTreeItem;
+                LinkItem lItem = new LinkItem();
+                lItem.AddDataItem(dPTI);
                 TreeViewItem newItem = new TreeViewItem();
-                newItem.Header = tvItem.Header;
+                newItem.Header = dPTI.Header;
+                newItem.Tag = lItem;
                 linkTreeView.Items.Add(newItem);
+                UpdateLinkItem(newItem);
+            }
+        }
+
+        private void UpdateLinkItem(TreeViewItem item) {
+            if (item.Tag is LinkItem) {
+                item.Items.Clear();
+                LinkItem lItem = (LinkItem)item.Tag;
+                for (int i = 0; i < lItem.DataItems.Count; i++) {
+                    TreeViewItem tmp = new TreeViewItem();
+                    tmp.Tag = lItem.DataItems[i];
+                    tmp.Header = lItem.DataItems[i].Header;
+                    item.Items.Add(tmp);
+                }
             }
         }
     }

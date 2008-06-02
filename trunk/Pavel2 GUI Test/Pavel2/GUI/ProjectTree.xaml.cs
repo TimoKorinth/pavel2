@@ -63,7 +63,7 @@ namespace Pavel2.GUI {
                 DataGrid d = ParserManagement.GetDataGrid(parser);
                 if (d != null) {
                     dPTI.DataGrid = d;
-                    item.Header = ParserManagement.File.Name;
+                    dPTI.Header = ParserManagement.File.Name;
                     item.Tag = dPTI;
                     UpdateDataTreeViewItem(item);
                 }
@@ -80,13 +80,7 @@ namespace Pavel2.GUI {
                 DataProjectTreeItem dPTVI = (DataProjectTreeItem)item.Tag;
                 for (int i = 0; i < dPTVI.DataGrid.Columns.Length; i++) {
                     TreeViewItem tmp = new TreeViewItem();
-                    String header = dPTVI.DataGrid.Columns[i].Header;
                     tmp.Tag = dPTVI.DataGrid.Columns[i];
-                    if (header != "") {
-                        tmp.Header = header;
-                    } else {
-                        tmp.Header = i.ToString();
-                    }
                     item.Items.Add(tmp);
                 }
             }
@@ -123,8 +117,8 @@ namespace Pavel2.GUI {
 
         private void InitProjectTree() {
             root = new TreeViewItem();
-            root.Header = "Root";
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(root);
+            fPTI.Header = "Root";
             root.Tag = fPTI;
             projectTree.Items.Add(root);
             root.IsSelected = true;
@@ -134,8 +128,8 @@ namespace Pavel2.GUI {
             DataGrid dataGrid = ParserManagement.GetDataGrid(file);
             if (null != dataGrid) {
                 TreeViewItem tvItem = new TreeViewItem();
-                tvItem.Header = file.Name;
                 DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
+                dPTI.Header = file.Name;
                 tvItem.Tag = dPTI;
                 UpdateDataTreeViewItem(tvItem);
                 if (rootItem != null) {
@@ -201,13 +195,23 @@ namespace Pavel2.GUI {
             this.editItem = item;
             DataTemplate editTemplate = (DataTemplate)this.FindResource("EditTemplate");
             item.HeaderTemplate = editTemplate;
-            this.oldHeader = item.Header as String;
+            if (item.Tag is ProjectTreeItem) {
+                this.oldHeader = ((ProjectTreeItem)item.Tag).Header;
+            } else if (item.Tag is Column) {
+                this.oldHeader = ((Column)item.Tag).Header;
+            }
         }
 
         private void projectTree_KeyDown(object sender, KeyEventArgs e) {
             if (editItem != null) {
                 if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Escape) {
-                    if (e.Key == Key.Escape) editItem.Header = this.oldHeader;
+                    if (e.Key == Key.Escape) {
+                        if (editItem.Tag is ProjectTreeItem) {
+                            ((ProjectTreeItem)editItem.Tag).Header = this.oldHeader;
+                        } else if (editItem.Tag is Column) {
+                            ((Column)editItem.Tag).Header = this.oldHeader;
+                        }
+                    }
                     editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
                     editItem = null;
                 }
@@ -240,8 +244,8 @@ namespace Pavel2.GUI {
 
         private void ContextMenu_AddNewFolder(object sender, RoutedEventArgs e) {
             TreeViewItem newItem = new TreeViewItem();
-            newItem.Header = "new Folder";
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(newItem);
+            fPTI.Header = "new Folder";
             newItem.Tag = fPTI;
             InsertToProjectTree(newItem, true, true);
         }
@@ -258,8 +262,9 @@ namespace Pavel2.GUI {
 
         private void ContextMenu_AddNewDataTable(object sender, RoutedEventArgs e) {
             TreeViewItem item = new TreeViewItem();
-            item.Header = "new DataTable";
-            item.Tag = new DataProjectTreeItem(new DataGrid());
+            DataProjectTreeItem dPTI = new DataProjectTreeItem(new DataGrid());
+            dPTI.Header = "new Data Set";
+            item.Tag = dPTI;
             InsertToProjectTree(item, true, true);
         }
 

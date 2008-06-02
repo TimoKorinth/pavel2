@@ -28,7 +28,7 @@ namespace Pavel2.Framework {
                     if (headers.Count > i) {
                         columns[i].Header = headers[i];
                     } else {
-                        columns[i].Header = "";
+                        columns[i].Header = "Column"+i.ToString();
                     }
                     columns[i].Points = points[i].ToArray();
                     columns[i].Min = min[i];
