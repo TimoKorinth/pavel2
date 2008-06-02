@@ -45,12 +45,7 @@ namespace Pavel2.GUI {
             }
         }
 
-        #region Visualization Member
-
-
         public void RenderAfterResize() {
         }
-
-        #endregion
     }
 }
