@@ -265,6 +265,7 @@ namespace Pavel2.GUI
         }
 
         private void visualizationTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            //TODO: komische funktion ersetzen:
             TabItem tItem = e.AddedItems[0] as TabItem;
             if (tItem == null) return;
             CurrentVisualization = (Visualization)tItem.Content;
