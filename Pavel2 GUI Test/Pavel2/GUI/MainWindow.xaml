@@ -66,11 +66,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="{Binding Path=Header}" />
-                                <Rectangle Height="100" Width="100" Margin="5">
-                                    <Rectangle.Fill>
-                                        <VisualBrush Visual="{Binding Path=LastVisualization}"></VisualBrush>
-                                    </Rectangle.Fill>
-                                </Rectangle>
+                                <Image Source="{Binding Path=Screenshot}" Height="100" Width="100"></Image>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
