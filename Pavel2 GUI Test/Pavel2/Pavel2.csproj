@@ -74,6 +74,9 @@
     </Compile>
     <Compile Include="GUI\HeaderToImageConverter.cs" />
     <Compile Include="GUI\HeaderToImageConverterPT.cs" />
+    <Compile Include="GUI\LinkList.xaml.cs">
+      <DependentUpon>LinkList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ParallelPlot.cs" />
     <Compile Include="GUI\ProjectTree.xaml.cs">
       <DependentUpon>ProjectTree.xaml</DependentUpon>
@@ -94,6 +97,10 @@
     <Page Include="GUI\ExplorerTree.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\LinkList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\ProjectTree.xaml">
       <Generator>MSBuild:Compile</Generator>
