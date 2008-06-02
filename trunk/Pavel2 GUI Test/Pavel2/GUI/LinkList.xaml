@@ -36,8 +36,9 @@
         </Label>
         <TreeView Name="linkTreeView" AllowDrop="True" 
                   Drop="linkTreeView_Drop" 
-                  DragEnter="linkTreeView_DragEnter" 
-                  DragLeave="linkTreeView_DragLeave"
+                  PreviewMouseDoubleClick="linkTreeView_PreviewMouseDoubleClick"
+                  SelectedItemChanged="linkTreeView_SelectedItemChanged"
+                  KeyDown="linkTreeView_KeyDown"
                   DragOver="linkTreeView_DragOver" Grid.Row="1">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
