@@ -64,8 +64,9 @@
                 <ListBox Name="previewList">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Rectangle Height="80" Width="80" Margin="5">
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="{Binding Path=Header}" />
+                                <Rectangle Height="100" Width="100" Margin="5">
                                     <Rectangle.Fill>
                                         <VisualBrush Visual="{Binding Path=LastVisualization}"></VisualBrush>
                                     </Rectangle.Fill>
