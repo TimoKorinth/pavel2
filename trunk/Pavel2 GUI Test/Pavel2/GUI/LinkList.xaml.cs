@@ -27,6 +27,24 @@ namespace Pavel2.GUI {
             InitializeComponent();
         }
 
+        #region Public Methods
+
+        public List<DataProjectTreeItem> GetRelatedItems(DataProjectTreeItem dPTI) {
+            List<DataProjectTreeItem> relData = new List<DataProjectTreeItem>();
+            foreach (TreeViewItem tvItem in linkTreeView.Items) {
+                if (tvItem.Tag is LinkItem) {
+                    LinkItem lItem = (LinkItem)tvItem.Tag;
+                    if (lItem.DataItems.Contains(dPTI)) {
+                        relData.AddRange(lItem.DataItems);
+                        relData.Remove(dPTI);
+                    }
+                }
+            }
+            return relData;
+        }
+
+        #endregion
+
         private void linkTreeView_Drop(object sender, DragEventArgs e) {
             TreeViewItem sendItem = e.Data.GetData(typeof(TreeViewItem)) as TreeViewItem;
             if (sendItem == null) return;
