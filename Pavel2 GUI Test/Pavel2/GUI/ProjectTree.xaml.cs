@@ -16,6 +16,7 @@ namespace Pavel2.GUI {
 
         private TreeViewItem root;
         private TreeViewItem editItem;
+        private TreeViewItem highlightedItem;
         private String oldHeader;
 
         #endregion
@@ -166,6 +167,17 @@ namespace Pavel2.GUI {
 
         #region Event Handlers
 
+        private void projectTree_DragOver(object sender, DragEventArgs e) {
+            TreeViewItem item = TreeViewHelper.GetTreeViewItem(e.GetPosition, projectTree);
+            if (item != null) {
+                item.HeaderTemplate = (DataTemplate)this.FindResource("HighlightTemplate"); ;
+                if (this.highlightedItem != null && !this.highlightedItem.Equals(item)) {
+                    this.highlightedItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
+                }
+                this.highlightedItem = item;
+            }
+        }
+
         private void projectTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             if (editItem != null) editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
             editItem = null;
@@ -203,6 +215,10 @@ namespace Pavel2.GUI {
 
         private void projectTree_Drop(object sender, DragEventArgs e) {
             object data = e.Data.GetData("System.IO.FileInfo");
+            if (this.highlightedItem != null) {
+                this.highlightedItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
+                this.highlightedItem = null;
+            }
             if (data is FileInfo) {
                 AddDataProjectTreeItem((FileInfo)data, TreeViewHelper.GetTreeViewItem(e.GetPosition, projectTree));
             }
@@ -238,6 +254,5 @@ namespace Pavel2.GUI {
         }
 
         #endregion
-
     }
 }
