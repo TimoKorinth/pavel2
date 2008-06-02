@@ -64,7 +64,7 @@
 				<ListBox />
 			</Grid>
 		</Expander>
-		<TabControl Grid.Column="4" Grid.Row="2" Name="visualizationTabControl">
+		<TabControl SizeChanged="visualizationTabControl_SizeChanged" SelectionChanged="visualizationTabControl_SelectionChanged" Grid.Column="4" Grid.Row="2" Name="visualizationTabControl">
 			<TabItem Header="Table View"/>
 			<TabItem Header="Scatterplot"/>
 			<TabItem Header="Parallelplot"/>

@@ -38,8 +38,7 @@ namespace Pavel2.GUI
 			this.InitializeComponent();
             InitVisualizationTab();
 
-            previewExpander.IsExpanded = false;
-            explorerExpander.IsExpanded = false;
+            EmptyPreviewPanel();
             EmptyOptionsPanel();
 		}
 
@@ -70,8 +69,6 @@ namespace Pavel2.GUI
                     visualizationTabControl.Items.Add(tabItem);
                 }
             }
-            visualizationTabControl.SelectedIndex = 0;
-            this.currentVisualization = (Visualization)visualizationTabControl.SelectedContent;
         }
 
         private void SetCurrentDataGrid() {
@@ -171,6 +168,17 @@ namespace Pavel2.GUI
             optionsExpander.Visibility = Visibility.Collapsed;
         }
 
+        public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
+            previewExpander.Visibility = Visibility.Visible;
+            previewExpander.IsExpanded = expand;
+        }
+
+        public void EmptyPreviewPanel() {
+            previewExpander.Content = null;
+            previewExpander.IsExpanded = false;
+            previewExpander.Visibility = Visibility.Collapsed;
+        }
+
         #endregion
 
         private void importButton_Click(object sender, RoutedEventArgs e) {
@@ -192,6 +200,17 @@ namespace Pavel2.GUI
         void pGrid_PropertyChanged(object sender, RoutedEventArgs e) {
             projectTreeView.ParseAgain(ParserManagement.CurrentParser);
             SetCurrentDataGrid();
+        }
+
+        private void visualizationTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            TabItem tItem = e.AddedItems[0] as TabItem;
+            if (tItem == null) return;
+            this.currentVisualization = (Visualization)tItem.Content;
+            this.currentVisualization.Render();
+        }
+
+        private void visualizationTabControl_SizeChanged(object sender, SizeChangedEventArgs e) {
+            this.currentVisualization.RenderAfterResize();
         }
 	}
 }
