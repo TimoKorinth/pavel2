@@ -186,6 +186,17 @@ namespace Pavel2.GUI
             previewExpander.Visibility = Visibility.Collapsed;
         }
 
+        public void UpdatePreviewPanel() {
+            TreeViewItem selItem = projectTreeView.SelectedItem;
+            if (selItem != null) {
+                if (selItem.Tag is DataProjectTreeItem) {
+                    FillPreviewPanel((DataProjectTreeItem)selItem.Tag, true);
+                } else {
+                    EmptyPreviewPanel();
+                }
+            }
+        }
+
         #endregion
 
         private void importButton_Click(object sender, RoutedEventArgs e) {
@@ -195,14 +206,7 @@ namespace Pavel2.GUI
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             EmptyOptionsPanel();
             SetCurrentDataGrid();
-            TreeViewItem selItem = projectTreeView.SelectedItem;
-            if (selItem != null) {
-                if (selItem.Tag is DataProjectTreeItem) {
-                    FillPreviewPanel((DataProjectTreeItem)selItem.Tag, true);
-                } else {
-                    EmptyPreviewPanel();
-                }
-            }
+            UpdatePreviewPanel();
         }
 
         private void projectTreeView_NewFileInserted(object sender, RoutedEventArgs e) {
