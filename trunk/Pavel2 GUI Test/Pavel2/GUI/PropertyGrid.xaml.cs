@@ -19,6 +19,16 @@ namespace Pavel2.GUI {
     /// </summary>
     public partial class PropertyGrid : UserControl {
 
+        public static readonly RoutedEvent PropertyChangedEvent;
+        static PropertyGrid() {
+            PropertyGrid.PropertyChangedEvent = EventManager.RegisterRoutedEvent(
+                "PropertyChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PropertyGrid));
+        }
+        public event RoutedEventHandler PropertyChanged {
+            add { base.AddHandler(PropertyGrid.PropertyChangedEvent, value); }
+            remove { base.RemoveHandler(PropertyGrid.PropertyChangedEvent, value); }
+        }
+
         private object selectedObject;
         private List<Property> properties;
 
@@ -39,9 +49,15 @@ namespace Pavel2.GUI {
             foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(selectedObject)) {
                 if (!property.IsBrowsable) continue;
                 Property prop = new Property(selectedObject, property);
+                prop.PropertyChanged += prop_PropertyChanged;
                 properties.Add(prop);
             }
             itemsControl.ItemsSource = properties;
+        }
+
+        void prop_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+            RoutedEventArgs args = new RoutedEventArgs(PropertyGrid.PropertyChangedEvent, this);
+            base.RaiseEvent(args);
         }
 
     }

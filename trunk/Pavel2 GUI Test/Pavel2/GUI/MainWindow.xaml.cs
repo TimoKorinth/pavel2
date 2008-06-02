@@ -144,7 +144,12 @@ namespace Pavel2.GUI
         private void projectTreeView_NewFileInserted(object sender, RoutedEventArgs e) {
             PropertyGrid pGrid = new PropertyGrid();
             pGrid.SelectedObject = ParserManagement.CurrentParser;
+            pGrid.PropertyChanged += pGrid_PropertyChanged;
             FillOptionsPanel(pGrid, true);
+        }
+
+        void pGrid_PropertyChanged(object sender, RoutedEventArgs e) {
+            
         }
 	}
 }
