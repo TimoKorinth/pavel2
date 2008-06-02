@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="Pavel2.GUI.LinkList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Name="linkGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Label Drop="newItemLabel_Drop" Background="Silver" Name="newItemLabel" AllowDrop="True">
+            -New item-
+        </Label>
+        <TreeView Name="linkTreeView" AllowDrop="True" 
+                  Drop="linkTreeView_Drop" 
+                  DragEnter="linkTreeView_DragEnter" 
+                  DragLeave="linkTreeView_DragLeave"
+                  DragOver="linkTreeView_DragOver" Grid.Row="1" />  
+    </Grid>
+</UserControl>
