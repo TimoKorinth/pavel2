@@ -37,6 +37,7 @@ namespace Pavel2.GUI
             
             previewExpander.IsExpanded = false;
             explorerExpander.IsExpanded = false;
+            EmptyOptionsPanel();
 		}
 
         private DataGrid currentDataGrid;
@@ -123,6 +124,7 @@ namespace Pavel2.GUI
 
         public void FillOptionsPanel(UIElement element, bool expand) {
             optionsExpander.Content = element;
+            optionsExpander.Visibility = Visibility.Visible;
             optionsExpander.IsExpanded = expand;
         }
 
@@ -138,7 +140,7 @@ namespace Pavel2.GUI
         }
 
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            
+            EmptyOptionsPanel();
         }
 
         private void projectTreeView_NewFileInserted(object sender, RoutedEventArgs e) {
@@ -149,7 +151,7 @@ namespace Pavel2.GUI
         }
 
         void pGrid_PropertyChanged(object sender, RoutedEventArgs e) {
-            
+            projectTreeView.ParseAgain(ParserManagement.CurrentParser);
         }
 	}
 }
