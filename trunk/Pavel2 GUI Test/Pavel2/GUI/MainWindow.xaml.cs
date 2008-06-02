@@ -32,8 +32,6 @@ namespace Pavel2.GUI
 
         #endregion
 
-        private Visualization currentVisualization;
-
         public MainWindow() {
 			this.InitializeComponent();
             InitVisualizationTab();
@@ -50,7 +48,45 @@ namespace Pavel2.GUI
             }
             set {
                 currentDataGrid = value;
-                if (currentVisualization != null) currentVisualization.Render();
+                if (CurrentVisualization != null) {
+                    VisualizationTabFocus(CurrentVisualization);
+                }
+            }
+        }
+
+        public void VisualizationTabFocus(Visualization vis) {
+            foreach (TabItem item in visualizationTabControl.Items) {
+                if (item.Content.Equals(vis)) {
+                    if (visualizationTabControl.SelectedItem.Equals(item)) {
+                        CurrentVisualization.Render();
+                    } else {
+                        item.IsSelected = true;
+                    }
+                }
+            }
+        }
+
+        public Visualization CurrentVisualization {
+            get {
+                TreeViewItem selItem = projectTreeView.SelectedItem;
+                if (selItem != null) {
+                    if (selItem.Tag is Column) selItem = (TreeViewItem)selItem.Parent;
+                    if (selItem.Tag is ProjectTreeItem) { 
+                        ProjectTreeItem pTI = (ProjectTreeItem)selItem.Tag;
+                        return pTI.LastVisualization;
+                    }
+                }
+                return null;
+            }
+            set { 
+                TreeViewItem selItem = projectTreeView.SelectedItem;
+                if (selItem != null) {
+                    if (selItem.Tag is Column) selItem = (TreeViewItem)selItem.Parent;
+                    if (selItem.Tag is ProjectTreeItem) {
+                        ProjectTreeItem pTI = (ProjectTreeItem)selItem.Tag;
+                        pTI.LastVisualization = value;
+                    }
+                }
             }
         }
 
@@ -205,6 +241,7 @@ namespace Pavel2.GUI
 
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             EmptyOptionsPanel();
+            if (CurrentVisualization == null) CurrentVisualization = (Visualization)visualizationTabControl.SelectedContent;
             SetCurrentDataGrid();
             UpdatePreviewPanel();
         }
@@ -224,12 +261,12 @@ namespace Pavel2.GUI
         private void visualizationTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             TabItem tItem = e.AddedItems[0] as TabItem;
             if (tItem == null) return;
-            this.currentVisualization = (Visualization)tItem.Content;
-            this.currentVisualization.Render();
+            CurrentVisualization = (Visualization)tItem.Content;
+            CurrentVisualization.Render();
         }
 
         private void visualizationTabControl_SizeChanged(object sender, SizeChangedEventArgs e) {
-            this.currentVisualization.RenderAfterResize();
+            CurrentVisualization.RenderAfterResize();
         }
 	}
 }

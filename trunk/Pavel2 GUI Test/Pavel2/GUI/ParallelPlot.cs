@@ -21,6 +21,7 @@ namespace Pavel2.GUI {
         public void Render() {
             ClearVisuals();
             dataGrid = MainData.CurrentDataGrid;
+            if (dataGrid == null) return;
             step = this.ActualWidth / (dataGrid.Columns.Length - 1);
             if (dataGrid != null) {
                 DrawAxes();
