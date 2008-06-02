@@ -216,7 +216,7 @@ namespace Pavel2.GUI {
 
         private void projectTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = e.Source as TreeViewItem;
-            if (item != null && e.ClickCount == 1) {
+            if (item != null) {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
                     if (this.editItem == null) DragDrop.DoDragDrop(projectTree, item, DragDropEffects.Copy);
                 }
@@ -224,16 +224,12 @@ namespace Pavel2.GUI {
         }
 
         private void projectTree_Drop(object sender, DragEventArgs e) {
-            //(e.OriginalSource as FrameworkElement).Tag.GetType();
-            //(e.OriginalSource as FrameworkElement).DataContext.GetType();
-
             object data = e.Data.GetData("System.IO.FileInfo");
             if (this.highlightedItem != null) {
                 this.highlightedItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
                 this.highlightedItem = null;
             }
             if (data is FileInfo) {
-                //AddDataProjectTreeItem((FileInfo)data, TreeViewHelper.GetTreeViewItem(e.GetPosition, this.root));
                 AddDataProjectTreeItem((FileInfo)data, e.Source as TreeViewItem);
             }
         }
