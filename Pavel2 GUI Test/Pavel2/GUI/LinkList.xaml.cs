@@ -18,7 +18,10 @@ namespace Pavel2.GUI {
     /// Interaktionslogik für LinkList.xaml
     /// </summary>
     public partial class LinkList : UserControl {
-        
+
+        private TreeViewItem editItem;
+        private String oldHeader;
+
         public LinkList() {
             InitializeComponent();
         }
@@ -34,12 +37,6 @@ namespace Pavel2.GUI {
             if (oldItem.Tag is DataProjectTreeItem) oldItem = (TreeViewItem)oldItem.Parent;
             if (oldItem.Tag is LinkItem) ((LinkItem)oldItem.Tag).AddDataItem(dPTI);
             UpdateLinkItem(oldItem);
-        }
-
-        private void linkTreeView_DragEnter(object sender, DragEventArgs e) {
-        }
-
-        private void linkTreeView_DragLeave(object sender, DragEventArgs e) {
         }
 
         private void linkTreeView_DragOver(object sender, DragEventArgs e) {
@@ -72,6 +69,35 @@ namespace Pavel2.GUI {
                     tmp.Tag = lItem.DataItems[i];
                     tmp.Header = lItem.DataItems[i].Header;
                     item.Items.Add(tmp);
+                }
+            }
+        }
+
+        private void linkTreeView_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
+            TreeViewItem item = linkTreeView.SelectedItem as TreeViewItem;
+            if (item == null) return;
+            if (!(item.Tag is LinkItem)) return;
+            this.editItem = item;
+            DataTemplate editTemplate = (DataTemplate)this.FindResource("EditTemplate");
+            item.HeaderTemplate = editTemplate;
+            this.oldHeader = ((LinkItem)item.Tag).Header;
+        }
+
+        private void linkTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+            if (editItem != null) editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
+            editItem = null;
+        }
+
+        private void linkTreeView_KeyDown(object sender, KeyEventArgs e) {
+            if (editItem != null) {
+                if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Escape) {
+                    if (e.Key == Key.Escape) {
+                        if (editItem.Tag is LinkItem) {
+                            ((LinkItem)editItem.Tag).Header = this.oldHeader;
+                        }
+                    }
+                    editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
+                    editItem = null;
                 }
             }
         }
