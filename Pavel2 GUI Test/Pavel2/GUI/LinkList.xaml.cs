@@ -20,6 +20,7 @@ namespace Pavel2.GUI {
     public partial class LinkList : UserControl {
 
         private TreeViewItem editItem;
+        private TreeViewItem highlightedItem;
         private String oldHeader;
 
         public LinkList() {
@@ -41,8 +42,13 @@ namespace Pavel2.GUI {
 
         private void linkTreeView_DragOver(object sender, DragEventArgs e) {
             TreeViewItem item = e.Source as TreeViewItem;
-            if (item == null) return;
-
+            if (item != null) {
+                item.HeaderTemplate = (DataTemplate)this.FindResource("HighlightTemplate"); ;
+                if (this.highlightedItem != null && !this.highlightedItem.Equals(item)) {
+                    this.highlightedItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
+                }
+                this.highlightedItem = item;
+            }
         }
 
         private void newItemLabel_Drop(object sender, DragEventArgs e) {
