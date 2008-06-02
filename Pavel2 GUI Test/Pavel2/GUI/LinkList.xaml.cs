@@ -58,6 +58,7 @@ namespace Pavel2.GUI {
             if (oldItem.Tag is DataProjectTreeItem) oldItem = (TreeViewItem)oldItem.Parent;
             if (oldItem.Tag is LinkItem) ((LinkItem)oldItem.Tag).AddDataItem(dPTI);
             UpdateLinkItem(oldItem);
+            MainData.MainWindow.UpdatePreviewPanel();
         }
 
         private void linkTreeView_DragOver(object sender, DragEventArgs e) {
