@@ -86,7 +86,6 @@
     <Compile Include="GUI\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\TreeViewHelper.cs" />
     <Compile Include="GUI\Visualization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GUI\MainWindow.xaml.cs">

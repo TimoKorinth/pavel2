@@ -167,8 +167,15 @@ namespace Pavel2.GUI {
 
         #region Event Handlers
 
+        private void projectTree_DragLeave(object sender, DragEventArgs e) {
+            if (this.highlightedItem != null) {
+                this.highlightedItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
+                this.highlightedItem = null;
+            }
+        }
+
         private void projectTree_DragOver(object sender, DragEventArgs e) {
-            TreeViewItem item = TreeViewHelper.GetTreeViewItem(e.GetPosition, projectTree);
+            TreeViewItem item = e.Source as TreeViewItem;
             if (item != null) {
                 item.HeaderTemplate = (DataTemplate)this.FindResource("HighlightTemplate"); ;
                 if (this.highlightedItem != null && !this.highlightedItem.Equals(item)) {
@@ -184,12 +191,13 @@ namespace Pavel2.GUI {
         }
 
         private void projectTree_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
-            TreeViewItem item = TreeViewHelper.GetTreeViewItem(e.GetPosition, this.root);
+            TreeViewItem item = e.Source as TreeViewItem;
             if (item != null) item.IsSelected = true;
         }
 
         private void projectTree_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
-            TreeViewItem item = TreeViewHelper.GetTreeViewItem(e.GetPosition, this.root);
+            TreeViewItem item = this.SelectedItem;
+            if (item == null) return;
             this.editItem = item;
             DataTemplate editTemplate = (DataTemplate)this.FindResource("EditTemplate");
             item.HeaderTemplate = editTemplate;
@@ -207,20 +215,26 @@ namespace Pavel2.GUI {
         }
 
         private void projectTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
-            TreeViewItem item = TreeViewHelper.GetTreeViewItem(e.GetPosition, this.root);
-            if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
-                if (this.editItem == null) DragDrop.DoDragDrop(projectTree, item, DragDropEffects.Copy);
+            TreeViewItem item = e.Source as TreeViewItem;
+            if (item != null && e.ClickCount == 1) {
+                if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
+                    if (this.editItem == null) DragDrop.DoDragDrop(projectTree, item, DragDropEffects.Copy);
+                }
             }
         }
 
         private void projectTree_Drop(object sender, DragEventArgs e) {
+            //(e.OriginalSource as FrameworkElement).Tag.GetType();
+            //(e.OriginalSource as FrameworkElement).DataContext.GetType();
+
             object data = e.Data.GetData("System.IO.FileInfo");
             if (this.highlightedItem != null) {
                 this.highlightedItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
                 this.highlightedItem = null;
             }
             if (data is FileInfo) {
-                AddDataProjectTreeItem((FileInfo)data, TreeViewHelper.GetTreeViewItem(e.GetPosition, projectTree));
+                //AddDataProjectTreeItem((FileInfo)data, TreeViewHelper.GetTreeViewItem(e.GetPosition, this.root));
+                AddDataProjectTreeItem((FileInfo)data, e.Source as TreeViewItem);
             }
         }
 
