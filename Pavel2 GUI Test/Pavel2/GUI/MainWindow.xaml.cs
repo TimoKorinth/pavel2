@@ -32,9 +32,12 @@ namespace Pavel2.GUI
 
         #endregion
 
+        private Visualization currentVisualization;
+
         public MainWindow() {
 			this.InitializeComponent();
-            
+            InitVisualizationTab();
+
             previewExpander.IsExpanded = false;
             explorerExpander.IsExpanded = false;
             EmptyOptionsPanel();
@@ -48,9 +51,44 @@ namespace Pavel2.GUI
             }
             set {
                 currentDataGrid = value;
-                //if (visualization != null) visualization.Render();
+                if (currentVisualization != null) currentVisualization.Render();
             }
         }
+
+        #region Private Methods
+
+        private void InitVisualizationTab() {
+            visualizationTabControl.Items.Clear();
+            Type[] types = System.Reflection.Assembly.GetAssembly(typeof(Visualization)).GetTypes();
+            foreach (Type t in types) {
+                Type tmp = t.GetInterface("Visualization");
+                if (tmp != null) {
+                    TabItem tabItem = new TabItem();
+                    tabItem.Header = t.Name;
+                    Visualization vis = (Visualization)Activator.CreateInstance(t);
+                    tabItem.Content = vis;
+                    visualizationTabControl.Items.Add(tabItem);
+                }
+            }
+            visualizationTabControl.SelectedIndex = 0;
+            this.currentVisualization = (Visualization)visualizationTabControl.SelectedContent;
+        }
+
+        private void SetCurrentDataGrid() {
+            TreeViewItem selItem = projectTreeView.SelectedItem;
+            if (selItem != null) {
+                if (selItem.Tag is ProjectTreeItem) {
+                    ProjectTreeItem ptItem = (ProjectTreeItem)selItem.Tag;
+                    this.CurrentDataGrid = ptItem.DataGrid;
+                } else {
+                    this.CurrentDataGrid = null;
+                }
+            } else {
+                this.CurrentDataGrid = null;
+            }
+        }
+
+        #endregion
 
         #region Expander Event Handler
 
@@ -141,6 +179,7 @@ namespace Pavel2.GUI
 
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             EmptyOptionsPanel();
+            SetCurrentDataGrid();
         }
 
         private void projectTreeView_NewFileInserted(object sender, RoutedEventArgs e) {
@@ -152,6 +191,7 @@ namespace Pavel2.GUI
 
         void pGrid_PropertyChanged(object sender, RoutedEventArgs e) {
             projectTreeView.ParseAgain(ParserManagement.CurrentParser);
+            SetCurrentDataGrid();
         }
 	}
 }
