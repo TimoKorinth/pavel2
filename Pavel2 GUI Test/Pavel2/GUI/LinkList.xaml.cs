@@ -24,6 +24,16 @@ namespace Pavel2.GUI {
         }
 
         private void linkTreeView_Drop(object sender, DragEventArgs e) {
+            TreeViewItem sendItem = e.Data.GetData(typeof(TreeViewItem)) as TreeViewItem;
+            if (sendItem == null) return;
+            TreeViewItem oldItem = e.Source as TreeViewItem;
+            if (oldItem == null) return;
+            DataProjectTreeItem dPTI = sendItem.Tag as DataProjectTreeItem;
+            if (dPTI == null) return;
+            if (oldItem.Tag is Column) oldItem = (TreeViewItem)oldItem.Parent; 
+            if (oldItem.Tag is DataProjectTreeItem) oldItem = (TreeViewItem)oldItem.Parent;
+            if (oldItem.Tag is LinkItem) ((LinkItem)oldItem.Tag).AddDataItem(dPTI);
+            UpdateLinkItem(oldItem);
         }
 
         private void linkTreeView_DragEnter(object sender, DragEventArgs e) {
@@ -33,6 +43,8 @@ namespace Pavel2.GUI {
         }
 
         private void linkTreeView_DragOver(object sender, DragEventArgs e) {
+            TreeViewItem item = e.Source as TreeViewItem;
+            if (item == null) return;
 
         }
 
@@ -44,7 +56,7 @@ namespace Pavel2.GUI {
                 LinkItem lItem = new LinkItem();
                 lItem.AddDataItem(dPTI);
                 TreeViewItem newItem = new TreeViewItem();
-                newItem.Header = dPTI.Header;
+                lItem.Header = dPTI.Header;
                 newItem.Tag = lItem;
                 linkTreeView.Items.Add(newItem);
                 UpdateLinkItem(newItem);

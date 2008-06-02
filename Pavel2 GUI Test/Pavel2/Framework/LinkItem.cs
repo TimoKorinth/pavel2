@@ -7,6 +7,12 @@ namespace Pavel2.Framework {
     public class LinkItem {
 
         private List<DataProjectTreeItem> dataItems;
+        private String header;
+
+        public String Header {
+            get { return header; }
+            set { header = value; }
+        }
 
         public List<DataProjectTreeItem> DataItems {
             get { return dataItems; }

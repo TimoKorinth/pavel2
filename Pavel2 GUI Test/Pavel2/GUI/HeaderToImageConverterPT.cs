@@ -10,7 +10,7 @@ namespace Pavel2.GUI {
     public class HeaderToImageConverterPT : IValueConverter {
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
-            if (value is FolderProjectTreeItem) {
+            if (value is FolderProjectTreeItem || value is LinkItem) {
                 Uri uri = new Uri("pack://application:,,,/GUI/Icons/Folder2.png");
                 BitmapImage source = new BitmapImage(uri);
                 return source;
