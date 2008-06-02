@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.ComponentModel;
 
 namespace Pavel2.Framework {
     public class CSVParser : Parser {
@@ -10,6 +11,7 @@ namespace Pavel2.Framework {
         Char delimiter = ';';
         Boolean hasHeaders = false;
 
+        [Browsable(false)]
         public override string Name {
             get { return "CSV Parser"; }
         }
