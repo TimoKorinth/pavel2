@@ -35,7 +35,9 @@ namespace Pavel2.GUI {
                 if (tvItem.Tag is LinkItem) {
                     LinkItem lItem = (LinkItem)tvItem.Tag;
                     if (lItem.DataItems.Contains(dPTI)) {
-                        relData.AddRange(lItem.DataItems);
+                        foreach (DataProjectTreeItem d in lItem.DataItems) {
+                            if (!relData.Contains(d)) relData.Add(d);
+                        }
                         relData.Remove(dPTI);
                     }
                 }

@@ -42,7 +42,7 @@
 				<GridSplitter VerticalAlignment="Center" Height="5" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="linksSplitter" />
                 <gui:ProjectTree x:Name="projectTreeView" NewFileInserted="projectTreeView_NewFileInserted" TreeView.SelectedItemChanged="ProjectTreeView_SelectedItemChanged"></gui:ProjectTree>
                 <Expander Collapsed="linksExpander_Collapsed" Expanded="linksExpander_Expanded" Grid.Row="2" Header="Links" IsExpanded="True" x:Name="linksExpander">
-                    <gui:LinkList></gui:LinkList>
+                    <gui:LinkList x:Name="linkListPanel"></gui:LinkList>
                 </Expander>
 			</Grid>
 		</Expander>
@@ -61,7 +61,7 @@
         </Expander>
 		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Grid.RowSpan="2" x:Name="previewExpander" Header="Preview" IsExpanded="True">
 			<Grid>
-				<ListBox />
+				<ListBox Name="previewList" />
 			</Grid>
 		</Expander>
 		<TabControl SizeChanged="visualizationTabControl_SizeChanged" SelectionChanged="visualizationTabControl_SelectionChanged" Grid.Column="4" Grid.Row="2" Name="visualizationTabControl">
