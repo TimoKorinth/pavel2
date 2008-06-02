@@ -32,7 +32,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Label Drop="newItemLabel_Drop" Background="Silver" Name="newItemLabel" AllowDrop="True">
-            -New item-
+            -Create new Link-
         </Label>
         <TreeView Name="linkTreeView" AllowDrop="True" 
                   Drop="linkTreeView_Drop" 
