@@ -11,15 +11,15 @@ namespace Pavel2.GUI {
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             if (value is DriveInfo) {
-                Uri uri = new Uri("pack://application:,,,/GUI/Icons/HDD.png");
+                Uri uri = new Uri("Icons/HDD.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             } else if (value is DirectoryInfo) {
-                Uri uri = new Uri("pack://application:,,,/GUI/Icons/Folder.png");
+                Uri uri = new Uri("Icons/Folder.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             } else if (value is FileInfo) {
-                Uri uri = new Uri("pack://application:,,,/GUI/Icons/Document.png");
+                Uri uri = new Uri("Icons/Document.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             }
