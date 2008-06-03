@@ -11,15 +11,15 @@ namespace Pavel2.GUI {
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             if (value is FolderProjectTreeItem || value is LinkItem) {
-                Uri uri = new Uri("pack://application:,,,/GUI/Icons/Folder2.png");
+                Uri uri = new Uri("Icons/Folder2.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             } else if (value is DataProjectTreeItem) {
-                Uri uri = new Uri("pack://application:,,,/GUI/Icons/DataTable.png");
+                Uri uri = new Uri("Icons/DataTable.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             } else if (value is Column) {
-                Uri uri = new Uri("pack://application:,,,/GUI/Icons/Column.png");
+                Uri uri = new Uri("Icons/Column.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             }
