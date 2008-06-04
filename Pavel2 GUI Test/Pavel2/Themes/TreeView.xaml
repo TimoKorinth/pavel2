@@ -19,7 +19,7 @@
             CornerRadius="1" 
             Background="{StaticResource WindowBackgroundBrush}"
             BorderBrush="{StaticResource SolidBorderBrush}"
-            BorderThickness="1" >
+            BorderThickness="{TemplateBinding BorderThickness}" >
             <ScrollViewer 
               Focusable="False"
               CanContentScroll="False"
