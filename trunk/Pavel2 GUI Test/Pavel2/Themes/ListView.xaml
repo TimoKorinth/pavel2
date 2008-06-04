@@ -8,6 +8,7 @@
 
   <!-- SimpleStyles: ListView -->
   
+  <!--
   <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}"
          TargetType="ScrollViewer">
     <Setter Property="Template">
@@ -76,7 +77,8 @@
       </Setter.Value>
     </Setter>
   </Style>
-
+    -->
+    
   <Style x:Key="GridViewColumnHeaderGripper" TargetType="Thumb">
     <Setter Property="Width" Value="18"/>
     <Setter Property="Background" Value="{StaticResource NormalBorderBrush}"/>
