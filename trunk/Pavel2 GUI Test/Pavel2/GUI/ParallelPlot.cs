@@ -43,7 +43,7 @@ namespace Pavel2.GUI {
             if ((col.Max - col.Min) == 0) {
                 return 0.5;
             }
-            return (value / (col.Max - col.Min));
+            return ((value - col.Min) / (col.Max - col.Min));
         }
 
         private void DrawLines() {
