@@ -28,7 +28,7 @@ namespace Pavel2.GUI {
         public void Render() {
             dataGrid = MainData.CurrentDataGrid;
             if (dataGrid != null) {
-                tableListView.ItemsSource = dataGrid.Data;
+                tableListView.ItemsSource = dataGrid.DataField;
                 GridView gView = new GridView();
                 for (int i = 0; i < dataGrid.Columns.Length; i++) {
                     GridViewColumn gColumn = new GridViewColumn();
