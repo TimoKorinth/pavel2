@@ -3,56 +3,6 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:gui="clr-namespace:Pavel2.GUI">
 
-    <Style x:Key="VerticalHIC" TargetType="{x:Type HeaderedItemsControl}">
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="{x:Type HeaderedItemsControl}">
-          <StackPanel Margin="20">
-            <ContentPresenter 
-              Grid.Row="0" 
-              Margin="8,20,0,0" 
-              TextBlock.Foreground="#AAA" 
-              TextBlock.FontFamily="Trebuchet MS" 
-              TextBlock.FontSize="14px" 
-              TextBlock.FontWeight="Bold" 
-              ContentSource="Header" />
-            <StackPanel
-              IsItemsHost="True"
-              Orientation="Vertical" 
-              Grid.Row="1" 
-              VerticalAlignment="Center" 
-              HorizontalAlignment="Center" />
-          </StackPanel>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  </Style>
-
-  <Style x:Key="HorizontalHIC" TargetType="{x:Type HeaderedItemsControl}">
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="{x:Type HeaderedItemsControl}">
-          <StackPanel Margin="20">
-            <ContentPresenter 
-              Grid.Row="0" 
-              Margin="8,20,0,0" 
-              TextBlock.Foreground="#AAA" 
-              TextBlock.FontFamily="Trebuchet MS" 
-              TextBlock.FontSize="14px" 
-              TextBlock.FontWeight="Bold" 
-              ContentSource="Header" />
-            <StackPanel
-              IsItemsHost="True"
-              Orientation="Horizontal" 
-              Grid.Row="1" 
-              VerticalAlignment="Center" 
-              HorizontalAlignment="Center" />
-          </StackPanel>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  </Style>
-
   <!-- Fill Brushes -->
 
   <LinearGradientBrush x:Key="NormalBrush" StartPoint="0,0" EndPoint="0,1">

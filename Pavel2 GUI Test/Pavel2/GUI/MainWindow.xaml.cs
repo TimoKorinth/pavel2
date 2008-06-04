@@ -169,7 +169,7 @@ namespace Pavel2.GUI
             previewExpanderWidth = windowGrid.ColumnDefinitions[6].Width;
             windowGrid.ColumnDefinitions[6].MinWidth = 0;
             windowGrid.ColumnDefinitions[6].Width = GridLength.Auto;
-            previewSplitter.Visibility = Visibility.Collapsed;
+            previewSplitter.Visibility = Visibility.Hidden;
         }
 
         private void explorerExpander_Collapsed(object sender, RoutedEventArgs e) {
