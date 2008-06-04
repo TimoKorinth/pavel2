@@ -47,12 +47,12 @@ namespace Pavel2.GUI {
         }
 
         private void DrawLines() {
-            for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
+            for (int row = 0; row < dataGrid.DoubleDataField.Length; row++) {
                 DrawingVisual visual = new DrawingVisual();
                 using (DrawingContext dc = visual.RenderOpen()) {
                     Point startPoint = new Point();
                     for (int col = 0; col < dataGrid.Columns.Length; col++) {
-                        double value = dataGrid.Columns[col].Points[row].DoubleData;
+                        double value = dataGrid.DoubleDataField[row][col];
                         if (value != double.NaN) {
                             double nValue = Normalize(value, dataGrid.Columns[col]);
                             if (startPoint == null) {

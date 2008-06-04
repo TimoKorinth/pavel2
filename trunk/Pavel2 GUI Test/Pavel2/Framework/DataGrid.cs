@@ -16,12 +16,12 @@ namespace Pavel2.Framework {
             set { maxColumn = value; }
         }
 
-        public String[][] Data {
+        public String[][] DataField {
             get { return data; }
             set { data = value; }
         }
 
-        public double[][] DoubleData {
+        public double[][] DoubleDataField {
             get { return dData; }
             set { dData = value; }
         }
