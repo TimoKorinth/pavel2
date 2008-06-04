@@ -28,6 +28,7 @@ namespace Pavel2.GUI {
         public void Render() {
             dataGrid = MainData.CurrentDataGrid;
             if (dataGrid != null) {
+                tableListView.Visibility = Visibility.Visible;
                 tableListView.ItemsSource = dataGrid.DataField;
                 GridView gView = new GridView();
                 for (int i = 0; i < dataGrid.Columns.Length; i++) {
@@ -40,6 +41,7 @@ namespace Pavel2.GUI {
                 }
                 tableListView.View = gView;
             } else {
+                tableListView.Visibility = Visibility.Collapsed;
                 tableListView.ItemsSource = null;
                 tableListView.View = null;
             }
