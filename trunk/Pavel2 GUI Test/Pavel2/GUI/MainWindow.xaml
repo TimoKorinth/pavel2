@@ -41,7 +41,7 @@
 				</Grid.RowDefinitions>
 				<GridSplitter VerticalAlignment="Center" Height="3" Grid.Row="1" HorizontalAlignment="Stretch" x:Name="linksSplitter" Background="Transparent" />
                 <gui:ProjectTree x:Name="projectTreeView" NewFileInserted="projectTreeView_NewFileInserted" TreeView.SelectedItemChanged="ProjectTreeView_SelectedItemChanged"></gui:ProjectTree>
-                <Expander Collapsed="linksExpander_Collapsed" Expanded="linksExpander_Expanded" Grid.Row="2" Header="Links" IsExpanded="True" x:Name="linksExpander">
+                <Expander Collapsed="linksExpander_Collapsed" Expanded="linksExpander_Expanded" Grid.Row="2" Header="Links" IsExpanded="True" x:Name="linksExpander" BorderThickness="0,1,0,0">
                     <gui:LinkList x:Name="linkListPanel"></gui:LinkList>
                 </Expander>
 			</Grid>
@@ -56,12 +56,12 @@
 				</StackPanel>
 			</Button>
 		</StackPanel>
-		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" x:Name="optionsExpander">
+		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" x:Name="optionsExpander" Margin="0,3,0,0">
             <ScrollViewer x:Name="optionsScrollViewer" MinHeight="100" MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
         </Expander>
 		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Grid.RowSpan="2" x:Name="previewExpander" Header="Preview" IsExpanded="True">
 			<Grid>
-                <ListBox Name="previewList">
+                <ListBox Name="previewList" BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
