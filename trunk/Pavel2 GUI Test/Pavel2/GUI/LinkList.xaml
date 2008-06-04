@@ -31,7 +31,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Label Drop="newItemLabel_Drop" Background="Silver" Name="newItemLabel" AllowDrop="True">
+        <Label Drop="newItemLabel_Drop" Background="Silver" Name="newItemLabel" AllowDrop="True" Padding="8">
             -Create new Link-
         </Label>
         <TreeView Name="linkTreeView" AllowDrop="True" 

@@ -13,8 +13,9 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Label">
-          <Border>
+          <Border Background="{TemplateBinding Background}">
             <ContentPresenter 
+              Margin="{TemplateBinding Padding}"
               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
               RecognizesAccessKey="True"/>
