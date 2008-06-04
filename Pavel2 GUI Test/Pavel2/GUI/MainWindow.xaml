@@ -24,8 +24,14 @@
 			<ColumnDefinition Width="Auto" MinWidth="100"/>
 		</Grid.ColumnDefinitions>
 		<Menu Grid.ColumnSpan="7">
-			<MenuItem Header="Project"/>
-			<MenuItem Header="Edit"/>
+            <MenuItem Header="Project">
+                <MenuItem Header="New..." />
+                <MenuItem Header="Open..." />
+                <MenuItem Header="Import..." />
+                <MenuItem Header="Save..." />
+                <MenuItem Header="Exit" />
+            </MenuItem>
+            <MenuItem Header="Edit"/>
 			<MenuItem Header="View"/>
 		</Menu>
 		<StatusBar Grid.Row="4" Grid.ColumnSpan="7">
