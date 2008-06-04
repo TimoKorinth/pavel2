@@ -48,7 +48,7 @@
 		</Expander>
 		
 		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2" Name="previewSplitter" Background="Transparent" />
-		<StackPanel Grid.Column="0" Grid.Row="1" x:Name="toolBarPanel" Grid.ColumnSpan="7">
+		<StackPanel Grid.Column="0" Grid.Row="1" x:Name="toolBarPanel" Grid.ColumnSpan="7" Margin="5,5,5,5">
 			<Button Click="importButton_Click" Width="50" Height="50" HorizontalAlignment="Left" Name="importButton">
 				<StackPanel>
 					<Image Width="20" Height="20" Source="Icons\Move.png" Stretch="Fill"/>
@@ -79,7 +79,7 @@
 			<TabItem Header="Parallelplot"/>
 		</TabControl>
 		<GridSplitter Grid.Column="3" Grid.Row="2" Width="3" HorizontalAlignment="Center" Grid.RowSpan="2" Name="explorerSplitter" Background="Transparent" />
-		<Expander Collapsed="explorerExpander_Collapsed" Expanded="explorerExpander_Expanded" Grid.Column="2" Grid.Row="2" Header="Import" ExpandDirection="Left" IsExpanded="True" Grid.RowSpan="2" Name="explorerExpander">
+		<Expander Collapsed="explorerExpander_Collapsed" Expanded="explorerExpander_Expanded" Grid.Column="2" Grid.Row="2" Header="Import" IsExpanded="True" Grid.RowSpan="2" Name="explorerExpander" Style="{DynamicResource ExpanderCloseStyle}">
             <gui:ExplorerTree></gui:ExplorerTree>
         </Expander>
 	</Grid>
