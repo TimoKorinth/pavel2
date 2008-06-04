@@ -39,7 +39,7 @@
                   PreviewMouseDoubleClick="linkTreeView_PreviewMouseDoubleClick"
                   SelectedItemChanged="linkTreeView_SelectedItemChanged"
                   KeyDown="linkTreeView_KeyDown"
-                  DragOver="linkTreeView_DragOver" Grid.Row="1">
+                  DragOver="linkTreeView_DragOver" Grid.Row="1" BorderThickness="0" Background="Transparent">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="HeaderTemplate" Value="{StaticResource DefaultTemplate}" />
