@@ -48,7 +48,43 @@
     </ControlTemplate.Triggers>
   </ControlTemplate>
 
-  <Style TargetType="{x:Type Expander}">
+    <ControlTemplate x:Key="ExpanderCloseButton" TargetType="{x:Type ToggleButton}">
+        <Border
+      x:Name="Border" 
+      CornerRadius="2,0,0,0"
+      Background="Transparent"
+      BorderBrush="{StaticResource NormalBorderBrush}"
+      BorderThickness="1,0,0,0">
+            <Path 
+        x:Name="Arrow"
+        Fill="{StaticResource GlyphBrush}"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Data="M1,0L5,5 4,6 0,1z M1,6L5,1 4,0 0,5z"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="Border" Property="Background"
+                Value="{StaticResource DarkBrush}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter TargetName="Border" Property="Background"
+                Value="{StaticResource PressedBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Border" Property="Background"
+                Value="{StaticResource DisabledBackgroundBrush}" />
+                <Setter TargetName="Border" Property="BorderBrush"
+                Value="{StaticResource DisabledBorderBrush}" />
+                <Setter Property="Foreground"
+                Value="{StaticResource DisabledForegroundBrush}"/>
+                <Setter TargetName="Arrow" Property="Fill"
+                Value="{StaticResource DisabledForegroundBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type Expander}">
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Expander}">
@@ -105,4 +141,62 @@
       </Setter.Value>
     </Setter>
   </Style>
+
+  <Style x:Key="ExpanderCloseStyle" TargetType="{x:Type Expander}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <DockPanel LastChildFill="True">
+                        <Border 
+      			x:Name="Border" 
+      			Background="{StaticResource LightBrush}"
+      			BorderBrush="{StaticResource NormalBorderBrush}"
+      			BorderThickness="{TemplateBinding BorderThickness}" 
+      			CornerRadius="2,2,0,0" DockPanel.Dock="Top" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="20" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton
+      					IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+      					OverridesDefaultStyle="True" 
+      					Template="{StaticResource ExpanderCloseButton}" 
+      					Background="{StaticResource NormalBrush}" Grid.Column="1" />
+                                <ContentPresenter 
+      					Grid.Column="0"
+      					Margin="4" 
+      					ContentSource="Header" 
+      					RecognizesAccessKey="True" />
+                            </Grid>
+                        </Border>
+                        <Border 
+      			x:Name="Content" 
+      			Background="{StaticResource WindowBackgroundBrush}"
+      			BorderBrush="{StaticResource SolidBorderBrush}" 
+      			BorderThickness="{TemplateBinding BorderThickness}" 
+                Visibility="Collapsed"
+      			CornerRadius="0,0,2,2" DockPanel.Dock="Bottom" >
+                            <ContentPresenter Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="Content" Property="Visibility"
+                      Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background"
+                      Value="{StaticResource DisabledBackgroundBrush}" />
+                            <Setter TargetName="Border" Property="BorderBrush"
+                      Value="{StaticResource DisabledBorderBrush}" />
+                            <Setter Property="Foreground"
+                      Value="{StaticResource DisabledForegroundBrush}"/>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
