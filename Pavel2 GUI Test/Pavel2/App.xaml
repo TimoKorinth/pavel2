@@ -20,7 +20,6 @@
 				<ResourceDictionary Source="Themes\ResizeGrip.xaml"/>
 				<ResourceDictionary Source="Themes\ScrollBar.xaml"/>
 				<ResourceDictionary Source="Themes\ScrollViewer.xaml"/>
-				<ResourceDictionary Source="Themes\Separator.xaml"/>
 				<ResourceDictionary Source="Themes\Shared.xaml"/>
 				<ResourceDictionary Source="Themes\Slider.xaml"/>
 				<ResourceDictionary Source="Themes\StatusBar.xaml"/>
