@@ -105,7 +105,7 @@ namespace Pavel2.GUI {
 
         private Popup GetPopup() {
             Popup pop = new Popup();
-            pop.StaysOpen = false;
+            pop.StaysOpen = true;
             pop.MaxWidth = 200;
             pop.PopupAnimation = PopupAnimation.Slide;
             pop.AllowsTransparency = true;
@@ -141,6 +141,7 @@ namespace Pavel2.GUI {
             editItem = null;
             linkPopup.Placement = PlacementMode.Mouse;
             linkPopup.IsOpen = true;
+            Mouse.Capture(this);
         }
 
         private void linkTreeView_KeyDown(object sender, KeyEventArgs e) {
@@ -155,6 +156,11 @@ namespace Pavel2.GUI {
                     editItem = null;
                 }
             }
+        }
+
+        private void UserControl_PreviewMouseDownOutsideCapturedElement(object sender, MouseButtonEventArgs e) {
+            linkPopup.IsOpen = false;
+            Mouse.Capture(null);
         }
     }
 }
