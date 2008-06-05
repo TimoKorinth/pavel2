@@ -32,6 +32,18 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+
+        <Popup x:Name="linkPopup" StaysOpen="True" AllowsTransparency="True" MaxWidth="200" PopupAnimation="Fade">
+            <Border Background="{StaticResource NormalBrush}" 
+                    BorderBrush="{StaticResource NormalBorderBrush}" 
+                    BorderThickness="1" Padding="5">
+                <StackPanel>
+                    <Button Margin="2">Show Combined</Button>
+                    <Button Margin="2">Show separat</Button>
+                </StackPanel>
+            </Border>
+        </Popup>
+
         <Label Drop="newItemLabel_Drop" Background="Silver" Name="newItemLabel" AllowDrop="True" Padding="8">
             -Create new Link-
         </Label>
