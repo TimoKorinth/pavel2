@@ -23,11 +23,9 @@ namespace Pavel2.GUI {
         private TreeViewItem editItem;
         private TreeViewItem highlightedItem;
         private String oldHeader;
-        private Popup linkPopup;
 
         public LinkList() {
             InitializeComponent();
-            linkPopup = GetPopup();
         }
 
         #region Public Methods
@@ -102,30 +100,7 @@ namespace Pavel2.GUI {
                 }
             }
         }
-
-        private Popup GetPopup() {
-            Popup pop = new Popup();
-            pop.StaysOpen = true;
-            pop.MaxWidth = 200;
-            pop.PopupAnimation = PopupAnimation.Slide;
-            pop.AllowsTransparency = true;
-
-            Border border = new Border();
-            border.Background = Brushes.Silver;
-            border.BorderBrush = Brushes.Black;
-            border.BorderThickness = new Thickness(2);
-
-            StackPanel stack = new StackPanel();
-
-            TextBlock text = new TextBlock();
-            text.Text = "Das ist ein Test Popup!!!";
-
-            stack.Children.Add(text);
-            border.Child = stack;
-            pop.Child = border;
-            return pop;
-        }
-
+        
         private void linkTreeView_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = linkTreeView.SelectedItem as TreeViewItem;
             if (item == null) return;
@@ -139,7 +114,12 @@ namespace Pavel2.GUI {
         private void linkTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             if (editItem != null) editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
             editItem = null;
-            linkPopup.Placement = PlacementMode.Mouse;
+            TreeViewItem item = e.NewValue as TreeViewItem;
+            if (item == null) return;
+            linkPopup.Placement = PlacementMode.Right;
+            linkPopup.PlacementTarget = linkTreeView;
+            //linkPopup.VerticalOffset = VisualTreeHelper.GetOffset(item).Y;
+            linkPopup.VerticalOffset = item.TransformToAncestor(linkTreeView).Transform(new Point(0, 0)).Y;
             linkPopup.IsOpen = true;
             Mouse.Capture(this);
         }
