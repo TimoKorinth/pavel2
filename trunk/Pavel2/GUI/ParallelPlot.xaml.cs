@@ -44,14 +44,21 @@ namespace Pavel2.GUI {
             Gl.glColor3f(0.043f, 0.729f, 0.878f);
             Gl.glEnable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(1f);
+            bool breakLine = false;
             if (dataGrid == null) return;
             for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
                 Gl.glBegin(Gl.GL_LINE_STRIP);
                 for (int col = 0; col < dataGrid.Columns.Length; col++) {
-                    double nValue = Normalize(dataGrid.Columns[col].Points[row].DoubleData, dataGrid.Columns[col]);
-                    Gl.glVertex2d(step*col, nValue);
+                    if (dataGrid.DoubleDataField[row][col] == double.NaN) {
+                        Gl.glEnd();
+                        breakLine = true;
+                    } else {
+                        if (breakLine) Gl.glBegin(Gl.GL_LINE_STRIP);
+                        double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
+                        Gl.glVertex2d(step * col, nValue);
+                    }
                 }
-                Gl.glEnd();
+                if (!breakLine) Gl.glEnd();
             }
         }
 
