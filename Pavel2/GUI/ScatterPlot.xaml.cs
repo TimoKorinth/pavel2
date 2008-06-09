@@ -11,7 +11,7 @@ namespace Pavel2.GUI {
     /// <summary>
     /// Interaktionslogik für ParallelPlot.xaml
     /// </summary>
-    public partial class ParallelPlot : UserControl, Visualization {
+    public partial class ScatterPlot : UserControl, Visualization {
 
         internal class OpenGLRenderWind : SimpleOpenGlControl {
             public OpenGLRenderWind() {
@@ -32,7 +32,7 @@ namespace Pavel2.GUI {
         DataGrid dataGrid;
         double step;
 
-        public ParallelPlot() {
+        public ScatterPlot() {
             InitializeComponent();
             wfPA = new OpenGLRenderWind();
             wfPA.Paint += DrawData;
@@ -41,25 +41,17 @@ namespace Pavel2.GUI {
         }
 
         private void DrawLines() {
-            Gl.glColor4f(0.043f, 0.729f, 0.878f, 0.2f);
-            Gl.glEnable(Gl.GL_LINE_SMOOTH);
-            Gl.glLineWidth(1f);
-            bool breakLine = false;
+            Gl.glColor4f(0.043f, 0.729f, 0.878f, 0.5f);
+            Gl.glEnable(Gl.GL_POINT_SMOOTH);
+            Gl.glPointSize(5f);
             if (dataGrid == null) return;
+            Gl.glBegin(Gl.GL_POINTS);
             for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
-                Gl.glBegin(Gl.GL_LINE_STRIP);
-                for (int col = 0; col < dataGrid.Columns.Length; col++) {
-                    if (dataGrid.DoubleDataField[row][col] == double.NaN) {
-                        Gl.glEnd();
-                        breakLine = true;
-                    } else {
-                        if (breakLine) Gl.glBegin(Gl.GL_LINE_STRIP);
-                        double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
-                        Gl.glVertex2d(step * col, nValue);
-                    }
-                }
-                if (!breakLine) Gl.glEnd();
+                double x = Normalize(dataGrid.DoubleDataField[row][0], dataGrid.Columns[0]);
+                double y = Normalize(dataGrid.DoubleDataField[row][1], dataGrid.Columns[1]);
+                Gl.glVertex2d(x, y);
             }
+            Gl.glEnd();
         }
 
         private double Normalize(double value, Column col) {
@@ -100,33 +92,11 @@ namespace Pavel2.GUI {
             Gl.glViewport(0, 0, (int)host.ActualWidth, (int)host.ActualHeight);
         }
 
-        private void SetLabelPanel() {
-            labelGrid.Children.Clear();
-            labelGrid.ColumnDefinitions.Clear();
-            if (dataGrid == null) return;
-            for (int col = 0; col < dataGrid.Columns.Length-1; col++) {
-                labelGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            }
-            for (int col = 0; col < dataGrid.Columns.Length-1; col++) {
-                Label lab = new Label();
-                lab.HorizontalAlignment = HorizontalAlignment.Left;
-                lab.Content = dataGrid.Columns[col].Header;
-                labelGrid.Children.Add(lab);
-                Grid.SetColumn(lab, col);
-            }
-            Label lastLab = new Label();
-            lastLab.HorizontalAlignment = HorizontalAlignment.Right;
-            lastLab.Content = dataGrid.Columns[dataGrid.Columns.Length - 1].Header;
-            labelGrid.Children.Add(lastLab);
-            Grid.SetColumn(lastLab, dataGrid.Columns.Length - 1);
-        }
-
         #region Visualization Member
 
         public void Render() {
             dataGrid = MainData.CurrentDataGrid;
             if (dataGrid == null) return;
-            SetLabelPanel();
             step = (double)1 / (dataGrid.Columns.Length - 1);
             SetViewPort();
             RenderScene();
