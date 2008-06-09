@@ -28,23 +28,21 @@ namespace Pavel2.GUI {
             }
         }
 
-        WindowsFormsHost host;
         System.Windows.Forms.Control wfPA;
         DataGrid dataGrid;
         double step;
 
         public ParallelPlot() {
             InitializeComponent();
-            host = new WindowsFormsHost();
             wfPA = new OpenGLRenderWind();
             wfPA.Paint += DrawData;
             host.Child = wfPA;
-            openGlCanvas.Children.Add(host);
             SetViewPort();
         }
 
         private void DrawLines() {
             Gl.glColor3f(0.043f, 0.729f, 0.878f);
+            Gl.glEnable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(1f);
             if (dataGrid == null) return;
             for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
@@ -65,7 +63,16 @@ namespace Pavel2.GUI {
         }
 
         private void DrawAxes() {
-            
+            Gl.glColor3f(0.5f, 0.5f, 0.5f);
+            Gl.glDisable(Gl.GL_LINE_SMOOTH);
+            Gl.glLineWidth(2f);
+            if (dataGrid == null) return;
+            for (int col = 0; col < dataGrid.Columns.Length; col++) {
+                Gl.glBegin(Gl.GL_LINES);
+                Gl.glVertex2d(step * col, 0);
+                Gl.glVertex2d(step * col, 1);
+                Gl.glEnd();
+            }
         }
 
         private void DrawData(object sender, System.Windows.Forms.PaintEventArgs e) {
@@ -75,26 +82,47 @@ namespace Pavel2.GUI {
         private void RenderScene() {
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
 
-            //DrawAxes();
             DrawLines();
+            DrawAxes();
 
             Gl.glFlush();
         }
 
 
         private void SetViewPort() {
-            Gl.glViewport(0, 0, (int)openGlCanvas.ActualWidth, (int)openGlCanvas.ActualHeight);
+            Gl.glViewport(0, 0, (int)host.ActualWidth, (int)host.ActualHeight);
+        }
+
+        private void SetLabelPanel() {
+            labelGrid.Children.Clear();
+            labelGrid.ColumnDefinitions.Clear();
+            if (dataGrid == null) return;
+            for (int col = 0; col < dataGrid.Columns.Length-1; col++) {
+                labelGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+            for (int col = 0; col < dataGrid.Columns.Length-1; col++) {
+                Label lab = new Label();
+                lab.HorizontalAlignment = HorizontalAlignment.Left;
+                lab.Content = dataGrid.Columns[col].Header;
+                labelGrid.Children.Add(lab);
+                Grid.SetColumn(lab, col);
+            }
+            Label lastLab = new Label();
+            lastLab.HorizontalAlignment = HorizontalAlignment.Right;
+            lastLab.Content = dataGrid.Columns[dataGrid.Columns.Length - 1].Header;
+            labelGrid.Children.Add(lastLab);
+            Grid.SetColumn(lastLab, dataGrid.Columns.Length - 1);
         }
 
         #region Visualization Member
 
         public void Render() {
-            SetViewPort();
             dataGrid = MainData.CurrentDataGrid;
             if (dataGrid == null) return;
+            SetLabelPanel();
             step = (double)1 / (dataGrid.Columns.Length - 1);
-            RenderScene();
             SetViewPort();
+            RenderScene();
         }
 
         public void RenderAfterResize() {
