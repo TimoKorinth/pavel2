@@ -92,6 +92,9 @@
     </Compile>
     <Compile Include="GUI\HeaderToImageConverter.cs" />
     <Compile Include="GUI\HeaderToImageConverterPT.cs" />
+    <Compile Include="GUI\ScatterPlot.xaml.cs">
+      <DependentUpon>ScatterPlot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\LinkList.xaml.cs">
       <DependentUpon>LinkList.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="GUI\ExplorerTree.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\ScatterPlot.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
