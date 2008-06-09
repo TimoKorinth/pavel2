@@ -43,11 +43,28 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tao.FreeGlut, Version=2.4.0.2, Culture=neutral, PublicKeyToken=6e602a6ad6c0d06d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Tao.FreeGlut.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.OpenGl, Version=2.1.0.12, Culture=neutral, PublicKeyToken=1ca010269a4501ef, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Tao.OpenGl.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.Platform.Windows, Version=1.0.0.5, Culture=neutral, PublicKeyToken=701104b2da67a104, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Tao.Platform.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="UIAutomationProvider">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsFormsIntegration">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <ApplicationDefinition Include="App.xaml">
@@ -78,7 +95,9 @@
     <Compile Include="GUI\LinkList.xaml.cs">
       <DependentUpon>LinkList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ParallelPlot.cs" />
+    <Compile Include="GUI\ParallelPlot.xaml.cs">
+      <DependentUpon>ParallelPlot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ProjectTree.xaml.cs">
       <DependentUpon>ProjectTree.xaml</DependentUpon>
     </Compile>
@@ -100,6 +119,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="GUI\LinkList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\ParallelPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
