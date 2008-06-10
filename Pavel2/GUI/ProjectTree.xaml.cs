@@ -222,7 +222,9 @@ namespace Pavel2.GUI {
             TreeViewItem item = e.Source as TreeViewItem;
             if (item != null) {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
-                    if (this.editItem == null) DragDrop.DoDragDrop(projectTree, item, DragDropEffects.Copy);
+                    if (this.editItem == null) {
+                        DragDropHelper.DoDragDrop(projectTree, item, DragDropEffects.Copy, MainData.MainWindow.linksExpander);
+                    }
                 }
             }
         }

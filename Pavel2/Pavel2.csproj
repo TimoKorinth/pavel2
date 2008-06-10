@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="GUI\HeaderToImageConverter.cs" />
     <Compile Include="GUI\HeaderToImageConverterPT.cs" />
+    <Compile Include="GUI\DragDropHelper.cs" />
     <Compile Include="GUI\ScatterPlot.xaml.cs">
       <DependentUpon>ScatterPlot.xaml</DependentUpon>
     </Compile>
