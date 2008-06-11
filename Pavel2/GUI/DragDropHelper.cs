@@ -37,13 +37,7 @@ namespace Pavel2.GUI {
         public static void DoDragDrop(DependencyObject dragSource, object data, DragDropEffects effect, UIElement target) {
             HighlightElement(target);
             DragDrop.DoDragDrop(dragSource, data, effect);
-            Mouse.AddQueryCursorHandler(target, MouseUP);
-            Mouse.Capture(target);
-        }
-
-        private static void MouseUP(object sender, MouseEventArgs args) {
             RemoveAdorners();
-            Mouse.Capture(null);
         }
 
         private class ElementAdorner : Adorner {
