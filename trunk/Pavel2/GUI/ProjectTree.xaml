@@ -27,7 +27,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <TreeView DragLeave="projectTree_DragLeave" DragOver="projectTree_DragOver" KeyDown="projectTree_KeyDown" PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" Name="projectTree" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
+        <gui:MultiTreeView x:Name="projectTree" DragLeave="projectTree_DragLeave" DragOver="projectTree_DragOver" KeyDown="projectTree_KeyDown" PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="HeaderTemplate" Value="{StaticResource DefaultTemplate}" />
@@ -40,6 +40,6 @@
                     <MenuItem Header="Remove Item" Click="ContextMenu_RemoveItem" />
                 </ContextMenu>
             </TreeView.ContextMenu>
-        </TreeView>
+        </gui:MultiTreeView>
     </Grid>
 </UserControl>
