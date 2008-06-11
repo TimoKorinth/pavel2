@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.IO;
+using Pavel2.Framework;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -65,7 +66,8 @@ namespace Pavel2.GUI {
             TreeViewItem item = e.Source as TreeViewItem;
             if (item != null && item.Tag is FileInfo) {
                 item.IsSelected = true;
-                DragDrop.DoDragDrop(directoryTree, (FileInfo)item.Tag, DragDropEffects.Copy);
+                DragDropHelper.DoDragDrop(directoryTree, (FileInfo)item.Tag, DragDropEffects.Copy, MainData.MainWindow.projectTreeView);
+                //DragDrop.DoDragDrop(directoryTree, (FileInfo)item.Tag, DragDropEffects.Copy);
             }
         }
 
