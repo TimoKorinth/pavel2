@@ -9,6 +9,19 @@ namespace Pavel2.Framework {
         private List<DataProjectTreeItem> dataItems;
         private String header;
 
+        public bool IsCombineable {
+            get {
+                int cols = -1;
+                foreach (DataProjectTreeItem item in dataItems) {
+                    if (cols == -1) cols = item.DataGrid.Columns.Length;
+                    if (cols != item.DataGrid.Columns.Length) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
         public String Header {
             get { return header; }
             set { header = value; }
