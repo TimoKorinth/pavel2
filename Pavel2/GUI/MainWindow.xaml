@@ -5,8 +5,8 @@
 	x:Class="Pavel2.GUI.MainWindow"
 	Title="Pavel2"
 	Width="1024" Height="768" Icon="/Pavel2;component/GUI/Icons/Logo.png" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
-
-	<Grid x:Name="windowGrid">
+    <AdornerDecorator x:Name="rootAdorner">
+    <Grid x:Name="windowGrid">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
@@ -89,4 +89,5 @@
             <gui:ExplorerTree></gui:ExplorerTree>
         </Expander>
 	</Grid>
+    </AdornerDecorator>
 </Window>
