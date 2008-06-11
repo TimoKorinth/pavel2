@@ -14,10 +14,15 @@ namespace Pavel2.GUI {
         static private AdornerLayer parentAdorner;
         static private UIElement elementToHighlight;
 
+        static private Color brushColor = Colors.Turquoise;
+        static private Color borderColor = Colors.Black;
+        static private double opac = 0.3;
+
         public static void HighlightElement(UIElement element) {
             elementToHighlight = element;
             parentAdorner = AdornerLayer.GetAdornerLayer(elementToHighlight);
-            parentAdorner.Add(new ElementAdorner(elementToHighlight));
+            if (parentAdorner == null) return;
+            parentAdorner.Add(new ElementAdorner(elementToHighlight, brushColor, borderColor, opac));
         }
 
         public static void RemoveAdorners() {
@@ -43,17 +48,17 @@ namespace Pavel2.GUI {
 
         private class ElementAdorner : Adorner {
 
-            SolidColorBrush renderBrush = new SolidColorBrush(Colors.Green);
-            Pen renderPen = new Pen(new SolidColorBrush(Colors.Navy), 1.5);
+            SolidColorBrush renderBrush;
+            Pen renderPen;
 
             public ElementAdorner(UIElement adornedElement) : base(adornedElement) {
-                renderBrush.Opacity = 0.2;
             }
 
-            public ElementAdorner(UIElement adornedElement, Color brush, Color border, double opac) : base(adornedElement) {
-                renderBrush.Opacity = opac;
+            public ElementAdorner(UIElement adornedElement, Color brush, Color border, double opac) : this(adornedElement) {
                 renderBrush = new SolidColorBrush(brush);
+                renderBrush.Opacity = opac;
                 renderPen = new Pen(new SolidColorBrush(border), 1.5);
+                renderPen.Brush.Opacity = opac;
             }
 
             protected override void OnRender(DrawingContext dc) {
