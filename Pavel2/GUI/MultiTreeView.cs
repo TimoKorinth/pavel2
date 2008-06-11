@@ -16,13 +16,6 @@ namespace Pavel2.GUI {
             get { return System.Windows.Input.Keyboard.IsKeyDown(Key.LeftCtrl); }
         }
 
-        public TreeViewItem SelectedTreeViewItem {
-            get {
-                if (selItems.Count > 0) return selItems[0];
-                return null; 
-            }
-        }
-
         public MultiTreeView() : base() {
             this.SelectedItemChanged += TreeView_SelectedItemChanged;
         }
