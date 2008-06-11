@@ -45,12 +45,8 @@ namespace Pavel2.GUI {
             Pen renderPen;
             UIElement element;
 
-            public ElementAdorner(UIElement adornedElement) 
-                : base(adornedElement) {
-            }
-
             public ElementAdorner(UIElement adornedElement, Color brush, Color border, double opac)
-                : this(MainData.MainWindow.windowGrid) {
+                : base(MainData.MainWindow.windowGrid) {
                 this.element = adornedElement;
                 renderBrush = new SolidColorBrush(brush);
                 renderBrush.Opacity = opac;
