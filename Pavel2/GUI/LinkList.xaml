@@ -37,8 +37,18 @@
                     BorderBrush="{StaticResource NormalBorderBrush}" 
                     BorderThickness="1" Padding="5">
                 <StackPanel>
-                    <Button Margin="2">Show Combined</Button>
-                    <Button Margin="2">Show separat</Button>
+                    <Button Margin="2" Click="Show_SeparateClick">Show separat</Button>
+                </StackPanel>
+            </Border>
+        </Popup>
+        
+        <Popup x:Name="linkPopupComp" StaysOpen="False" AllowsTransparency="True" MaxWidth="200" PopupAnimation="Fade">
+            <Border Background="{StaticResource NormalBrush}" 
+                    BorderBrush="{StaticResource NormalBorderBrush}" 
+                    BorderThickness="1" Padding="5">
+                <StackPanel>
+                    <Button Margin="2" Click="Show_CombinedClick">Show Combined</Button>
+                    <Button Margin="2" Click="Show_SeparateClick">Show separat</Button>
                 </StackPanel>
             </Border>
         </Popup>

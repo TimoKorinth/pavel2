@@ -134,10 +134,24 @@ namespace Pavel2.GUI {
             linkPopup.IsOpen = false;
             TreeViewItem item = e.Source as TreeViewItem;
             if (item == null) return;
-            linkPopup.Placement = PlacementMode.Right;
-            linkPopup.PlacementTarget = linkTreeView;
-            linkPopup.VerticalOffset = item.TransformToAncestor(linkTreeView).Transform(new Point(0, 0)).Y;
-            linkPopup.IsOpen = true;
+            LinkItem lItem = item.Tag as LinkItem;
+            if (lItem == null) return;
+            Popup popTmp = linkPopup;
+            if (lItem.IsCombineable) {
+                popTmp = linkPopupComp;
+            }
+            popTmp.Placement = PlacementMode.Right;
+            popTmp.PlacementTarget = linkTreeView;
+            popTmp.VerticalOffset = item.TransformToAncestor(linkTreeView).Transform(new Point(0, 0)).Y;
+            popTmp.IsOpen = true;
+        }
+
+        private void Show_SeparateClick(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void Show_CombinedClick(object sender, RoutedEventArgs e) {
+
         }
     }
 }
