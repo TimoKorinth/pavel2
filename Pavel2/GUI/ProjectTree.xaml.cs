@@ -223,7 +223,7 @@ namespace Pavel2.GUI {
             if (item != null) {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
                     if (this.editItem == null) {
-                        DragDropHelper.DoDragDrop(projectTree, item, DragDropEffects.Copy, MainData.MainWindow.linksExpander);
+                        DragDropHelper.DoDragDrop(projectTree, item, DragDropEffects.Copy, MainData.MainWindow.linkListPanel);
                     }
                 }
             }

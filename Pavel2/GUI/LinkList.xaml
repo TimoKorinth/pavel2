@@ -1,8 +1,7 @@
 ﻿<UserControl x:Class="Pavel2.GUI.LinkList"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:gui="clr-namespace:Pavel2.GUI"
-    Mouse.PreviewMouseDownOutsideCapturedElement="UserControl_PreviewMouseDownOutsideCapturedElement">
+    xmlns:gui="clr-namespace:Pavel2.GUI">
     <UserControl.Resources>
         <gui:HeaderToImageConverterPT x:Key="HeaderToImageConverterPT"></gui:HeaderToImageConverterPT>
         
@@ -33,7 +32,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Popup x:Name="linkPopup" StaysOpen="True" AllowsTransparency="True" MaxWidth="200" PopupAnimation="Fade">
+        <Popup x:Name="linkPopup" StaysOpen="False" AllowsTransparency="True" MaxWidth="200" PopupAnimation="Fade">
             <Border Background="{StaticResource NormalBrush}" 
                     BorderBrush="{StaticResource NormalBorderBrush}" 
                     BorderThickness="1" Padding="5">
@@ -44,12 +43,16 @@
             </Border>
         </Popup>
 
-        <Label Drop="newItemLabel_Drop" Background="Silver" Name="newItemLabel" AllowDrop="True" Padding="8">
-            -Create new Link-
-        </Label>
+        <Grid Name="newItemGrid" Drop="newItemGrid_Drop" AllowDrop="True" Visibility="Collapsed">
+            <Label Background="Silver" Padding="8">
+                -Create new Group-
+            </Label>
+        </Grid>
+        
         <TreeView Name="linkTreeView" AllowDrop="True" 
                   Drop="linkTreeView_Drop" 
                   PreviewMouseDoubleClick="linkTreeView_PreviewMouseDoubleClick"
+                  PreviewMouseUp="linkTreeView_PreviewMouseUp"
                   SelectedItemChanged="linkTreeView_SelectedItemChanged"
                   KeyDown="linkTreeView_KeyDown"
                   DragOver="linkTreeView_DragOver" Grid.Row="1" BorderThickness="0" Background="Transparent">

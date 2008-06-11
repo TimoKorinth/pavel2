@@ -73,7 +73,7 @@ namespace Pavel2.GUI {
             }
         }
 
-        private void newItemLabel_Drop(object sender, DragEventArgs e) {
+        private void newItemGrid_Drop(object sender, DragEventArgs e) {
             TreeViewItem tvItem = e.Data.GetData(typeof(TreeViewItem)) as TreeViewItem;
             if (tvItem == null) return;
             if (tvItem.Tag is DataProjectTreeItem) {
@@ -114,14 +114,6 @@ namespace Pavel2.GUI {
         private void linkTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             if (editItem != null) editItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
             editItem = null;
-            TreeViewItem item = e.NewValue as TreeViewItem;
-            if (item == null) return;
-            linkPopup.Placement = PlacementMode.Right;
-            linkPopup.PlacementTarget = linkTreeView;
-            //linkPopup.VerticalOffset = VisualTreeHelper.GetOffset(item).Y;
-            linkPopup.VerticalOffset = item.TransformToAncestor(linkTreeView).Transform(new Point(0, 0)).Y;
-            linkPopup.IsOpen = true;
-            Mouse.Capture(this);
         }
 
         private void linkTreeView_KeyDown(object sender, KeyEventArgs e) {
@@ -138,9 +130,14 @@ namespace Pavel2.GUI {
             }
         }
 
-        private void UserControl_PreviewMouseDownOutsideCapturedElement(object sender, MouseButtonEventArgs e) {
+        private void linkTreeView_PreviewMouseUp(object sender, MouseButtonEventArgs e) {
             linkPopup.IsOpen = false;
-            Mouse.Capture(null);
+            TreeViewItem item = e.Source as TreeViewItem;
+            if (item == null) return;
+            linkPopup.Placement = PlacementMode.Right;
+            linkPopup.PlacementTarget = linkTreeView;
+            linkPopup.VerticalOffset = item.TransformToAncestor(linkTreeView).Transform(new Point(0, 0)).Y;
+            linkPopup.IsOpen = true;
         }
     }
 }
