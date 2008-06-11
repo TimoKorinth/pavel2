@@ -47,7 +47,7 @@ namespace Pavel2.GUI {
         #region Properties
 
         public TreeViewItem SelectedItem {
-            get { return projectTree.SelectedTreeViewItem as TreeViewItem; }
+            get { return projectTree.SelectedItem as TreeViewItem; }
         }
 
         #endregion

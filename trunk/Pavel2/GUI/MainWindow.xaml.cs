@@ -270,10 +270,12 @@ namespace Pavel2.GUI
             TabItem tItem = e.AddedItems[0] as TabItem;
             if (tItem == null) return;
             CurrentVisualization = (Visualization)tItem.Content;
+            if (CurrentVisualization == null) return;
             CurrentVisualization.Render();
         }
 
         private void visualizationTabControl_SizeChanged(object sender, SizeChangedEventArgs e) {
+            if (CurrentVisualization == null) return;
             CurrentVisualization.RenderAfterResize();
         }
 	}
