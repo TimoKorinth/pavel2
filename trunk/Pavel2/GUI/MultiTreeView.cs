@@ -16,6 +16,7 @@ namespace Pavel2.GUI {
         private AdornerLayer adornerLayer;
         private Boolean isDrawing;
         private Point startPoint;
+        private Point endPoint;
 
         public AdornerLayer AdornerLayerLocal {
             get {
@@ -76,20 +77,21 @@ namespace Pavel2.GUI {
 
         private void MouseMoveHandler(Object sender, MouseEventArgs e) {
             if (isDrawing && e.LeftButton == MouseButtonState.Pressed) {
-                Point endPoint = e.GetPosition(this);
-                DrawRubberBand(endPoint);
+                endPoint = e.GetPosition(this);
+                DrawRubberBand();
             }
         }
 
         private void MouseUpHandler(Object sender, MouseButtonEventArgs e) {
+            SetHitItems();
             startPoint = e.GetPosition(this);
             isDrawing = false;
             RemoveAdornerArray();
         }
 
-        private void DrawRubberBand(Point end) {
+        private void DrawRubberBand() {
             RemoveAdornerArray();
-            AdornerLayerLocal.Add(new RubberBandAdorner(this, startPoint, end));
+            AdornerLayerLocal.Add(new RubberBandAdorner(this, startPoint, endPoint));
         }
 
         private void RemoveAdornerArray() {
@@ -99,6 +101,50 @@ namespace Pavel2.GUI {
                     AdornerLayerLocal.Remove(toRemoveArray[x]);
                 }
             }
+        }
+
+        private void SetHitItems() {
+            RectangleGeometry region = new RectangleGeometry(new Rect(startPoint, endPoint));
+            GeometryHitTestParameters parameters = new GeometryHitTestParameters(region);
+            HitTestResultCallback callback = new HitTestResultCallback(this.HitTestCallback);
+            VisualTreeHelper.HitTest(this, HitTestFilterFunc, callback, parameters);
+        }
+
+        public HitTestFilterBehavior HitTestFilterFunc(DependencyObject potentialHitTestTarget) {
+            if (potentialHitTestTarget is TreeViewItem) {
+                TreeViewItem item = potentialHitTestTarget as TreeViewItem;
+                //ChangeSelectedState(item);
+                return HitTestFilterBehavior.Continue;
+            }
+            return HitTestFilterBehavior.Continue;
+        }
+
+        private HitTestResultBehavior HitTestCallback(HitTestResult result) {
+            GeometryHitTestResult geoResult = (GeometryHitTestResult)result;
+            FrameworkElement visual = result.VisualHit as FrameworkElement;
+            if (visual == null) return HitTestResultBehavior.Continue;
+            //IsTreeViewItem(visual);
+            TreeViewItem item = GetTreeViewItem(visual);
+            if (item != null) {
+                ChangeSelectedState(item);
+            }
+            //object o = LogicalTreeHelper.FindLogicalNode(this, "TreeViewItem");
+            //if (result.VisualHit is TreeViewItem) {
+            //    TreeViewItem item = result.VisualHit as TreeViewItem;
+            //}
+
+            return HitTestResultBehavior.Continue;
+        }
+
+        private TreeViewItem GetTreeViewItem(FrameworkElement visual) {
+            while (visual != null) {
+                if (visual is TreeViewItem) {
+                    return visual as TreeViewItem;
+                } else {
+                    visual = VisualTreeHelper.GetParent(visual) as FrameworkElement;
+                }
+            }
+            return null;
         }
 
 
