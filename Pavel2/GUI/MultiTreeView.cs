@@ -60,6 +60,7 @@ namespace Pavel2.GUI {
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+            if (isDrawing) e.Handled = true;
             TreeViewItem item = this.SelectedItem as TreeViewItem;
             if (item == null) return;
             item.IsSelected = false;
