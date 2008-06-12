@@ -88,8 +88,8 @@ namespace Pavel2.GUI {
 
         private void ChangeSelectedState(TreeViewItem treeViewItem) {
             if (!selItems.Contains(treeViewItem)) {
-                treeViewItem.Background = Brushes.Silver;
-                treeViewItem.Foreground = Brushes.Black;
+                treeViewItem.Background = SystemColors.HighlightBrush;
+                treeViewItem.Foreground = Brushes.White;
                 selItems.Add(treeViewItem);
             } else {
                 if (!isDrawing) Deselect(treeViewItem);
