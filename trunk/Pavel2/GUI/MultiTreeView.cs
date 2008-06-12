@@ -41,36 +41,43 @@ namespace Pavel2.GUI {
             TreeViewItem item = this.SelectedItem as TreeViewItem;
             if (item == null) return;
             item.IsSelected = false;
-            if (!CtrlPressed) {
-                List<TreeViewItem> selectedTreeViewItemList = new List<TreeViewItem>();
-                foreach (TreeViewItem treeViewItem1 in selItems) {
-                    selectedTreeViewItemList.Add(treeViewItem1);
-                }
-
-                foreach (TreeViewItem treeViewItem1 in selectedTreeViewItemList) {
-                    Deselect(treeViewItem1);
-                }
+            if (!CtrlPressed && !isDrawing) {
+                DeselectAll();
             }
             ChangeSelectedState(item);
         }
 
-        void Deselect(TreeViewItem treeViewItem) {
+        private void DeselectAll() {
+            List<TreeViewItem> selectedTreeViewItemList = new List<TreeViewItem>();
+            foreach (TreeViewItem treeViewItem1 in selItems) {
+                selectedTreeViewItemList.Add(treeViewItem1);
+            }
+
+            foreach (TreeViewItem treeViewItem1 in selectedTreeViewItemList) {
+                Deselect(treeViewItem1);
+            }
+        }
+
+        private void Deselect(TreeViewItem treeViewItem) {
             treeViewItem.Background = Brushes.White;
             treeViewItem.Foreground = Brushes.Black;
             selItems.Remove(treeViewItem);
         }
 
-        void ChangeSelectedState(TreeViewItem treeViewItem) {
+        private void ChangeSelectedState(TreeViewItem treeViewItem) {
             if (!selItems.Contains(treeViewItem)) {
                 treeViewItem.Background = Brushes.Silver;
                 treeViewItem.Foreground = Brushes.Black;
                 selItems.Add(treeViewItem);
             } else {
-                Deselect(treeViewItem);
+                if (!isDrawing) Deselect(treeViewItem);
             }
         }
 
         private void MouseDownHandler(Object sender, MouseButtonEventArgs e) {
+            if (!CtrlPressed) {
+                DeselectAll();
+            }
             startPoint = e.GetPosition(this);
             isDrawing = true;
         }
@@ -79,12 +86,13 @@ namespace Pavel2.GUI {
             if (isDrawing && e.LeftButton == MouseButtonState.Pressed) {
                 endPoint = e.GetPosition(this);
                 DrawRubberBand();
+                SetHitItems();
             }
         }
 
         private void MouseUpHandler(Object sender, MouseButtonEventArgs e) {
-            SetHitItems();
             startPoint = e.GetPosition(this);
+            endPoint = startPoint;
             isDrawing = false;
             RemoveAdornerArray();
         }
@@ -113,38 +121,23 @@ namespace Pavel2.GUI {
         public HitTestFilterBehavior HitTestFilterFunc(DependencyObject potentialHitTestTarget) {
             if (potentialHitTestTarget is TreeViewItem) {
                 TreeViewItem item = potentialHitTestTarget as TreeViewItem;
-                //ChangeSelectedState(item);
+                Rect itemBounds = VisualTreeHelper.GetDescendantBounds(item);
+                GeneralTransform trans = item.TransformToAncestor(this);
+                itemBounds.Location = trans.Transform(new Point(0, 0));
+                Rect rubberBand = new Rect(startPoint, endPoint);
+                if ((rubberBand.Contains(itemBounds.BottomLeft) && rubberBand.Contains(itemBounds.TopLeft)) ||
+                    (rubberBand.Contains(itemBounds.BottomRight) && rubberBand.Contains(itemBounds.TopRight))) {
+                    item.IsSelected = true;
+                } else {
+                    Deselect(item);
+                }
                 return HitTestFilterBehavior.Continue;
             }
             return HitTestFilterBehavior.Continue;
         }
 
         private HitTestResultBehavior HitTestCallback(HitTestResult result) {
-            GeometryHitTestResult geoResult = (GeometryHitTestResult)result;
-            FrameworkElement visual = result.VisualHit as FrameworkElement;
-            if (visual == null) return HitTestResultBehavior.Continue;
-            //IsTreeViewItem(visual);
-            TreeViewItem item = GetTreeViewItem(visual);
-            if (item != null) {
-                ChangeSelectedState(item);
-            }
-            //object o = LogicalTreeHelper.FindLogicalNode(this, "TreeViewItem");
-            //if (result.VisualHit is TreeViewItem) {
-            //    TreeViewItem item = result.VisualHit as TreeViewItem;
-            //}
-
             return HitTestResultBehavior.Continue;
-        }
-
-        private TreeViewItem GetTreeViewItem(FrameworkElement visual) {
-            while (visual != null) {
-                if (visual is TreeViewItem) {
-                    return visual as TreeViewItem;
-                } else {
-                    visual = VisualTreeHelper.GetParent(visual) as FrameworkElement;
-                }
-            }
-            return null;
         }
 
 
