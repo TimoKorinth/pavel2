@@ -61,7 +61,7 @@ namespace Pavel2.GUI {
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             if (isDrawing) e.Handled = true;
-            TreeViewItem item = this.SelectedItem as TreeViewItem;
+            TreeViewItem item = base.SelectedItem as TreeViewItem;
             if (item == null) return;
             item.IsSelected = false;
             if (!CtrlPressed && !isDrawing) {
@@ -98,7 +98,7 @@ namespace Pavel2.GUI {
         }
 
         private void MouseDownHandler(Object sender, MouseButtonEventArgs e) {
-            if (!CtrlPressed) {
+            if (!CtrlPressed && e.RightButton != MouseButtonState.Pressed) {
                 DeselectAll();
             }
             startPoint = e.GetPosition(this);
