@@ -26,6 +26,28 @@ namespace Pavel2.GUI {
             set { adornerLayer = value; }
         }
 
+        public List<TreeViewItem> SelectedItems {
+            get {
+                return selItems;
+            }
+        }
+
+        new public object SelectedItem {
+            get {
+                if (base.SelectedItem != null) return base.SelectedItem;
+                return LastSelectedItem;
+            }
+        }
+
+        public TreeViewItem LastSelectedItem {
+            get {
+                if (selItems.Count > 0) {
+                    return selItems[selItems.Count-1];
+                }
+                return null;
+            }
+        }
+
         private bool CtrlPressed {
             get { return System.Windows.Input.Keyboard.IsKeyDown(Key.LeftCtrl); }
         }

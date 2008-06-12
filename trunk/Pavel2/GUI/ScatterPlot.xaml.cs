@@ -40,7 +40,7 @@ namespace Pavel2.GUI {
             SetViewPort();
         }
 
-        private void DrawLines() {
+        private void DrawPoints() {
             Gl.glColor4f(0.043f, 0.729f, 0.878f, 0.5f);
             Gl.glEnable(Gl.GL_POINT_SMOOTH);
             Gl.glPointSize(5f);
@@ -66,12 +66,14 @@ namespace Pavel2.GUI {
             Gl.glDisable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(2f);
             if (dataGrid == null) return;
-            for (int col = 0; col < dataGrid.Columns.Length; col++) {
-                Gl.glBegin(Gl.GL_LINES);
-                Gl.glVertex2d(step * col, 0);
-                Gl.glVertex2d(step * col, 1);
-                Gl.glEnd();
-            }
+            Gl.glBegin(Gl.GL_LINES);
+            Gl.glVertex2d(0, 0);
+            Gl.glVertex2d(1, 0);
+            Gl.glEnd();
+            Gl.glBegin(Gl.GL_LINES);
+            Gl.glVertex2d(0, 0);
+            Gl.glVertex2d(0, 1);
+            Gl.glEnd();
         }
 
         private void DrawData(object sender, System.Windows.Forms.PaintEventArgs e) {
@@ -81,7 +83,7 @@ namespace Pavel2.GUI {
         private void RenderScene() {
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
 
-            DrawLines();
+            DrawPoints();
             DrawAxes();
 
             Gl.glFlush();
