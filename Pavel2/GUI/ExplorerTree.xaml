@@ -6,7 +6,7 @@
         <gui:HeaderToImageConverter x:Key="HeaderToImageConverter"></gui:HeaderToImageConverter>
     </UserControl.Resources>
     <Grid>
-        <TreeView Name="directoryTree" TreeViewItem.Expanded="directoryTree_Expanded" PreviewMouseLeftButtonDown="directoryTree_PreviewMouseLeftButtonDown" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+        <gui:MultiTreeView x:Name="directoryTree" TreeViewItem.Expanded="directoryTree_Expanded" PreviewMouseLeftButtonDown="directoryTree_PreviewMouseLeftButtonDown" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="HeaderTemplate">
@@ -21,6 +21,6 @@
                     </Setter>
                 </Style>
             </TreeView.Resources>
-        </TreeView>
+        </gui:MultiTreeView>
     </Grid>
 </UserControl>

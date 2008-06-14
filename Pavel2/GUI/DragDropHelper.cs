@@ -13,10 +13,10 @@ namespace Pavel2.GUI {
 
         static private Color brushColor = Colors.Gray;
         static private Color borderColor = Colors.Turquoise;
-        static private double opac = 0.4;
+        static private double opac = 0.25;
 
-        public static void HighlightElement(UIElement element) {
-            MainData.MainWindow.rootAdorner.AdornerLayer.Add(new ElementAdorner(element, brushColor, borderColor, opac));
+        public static void HighlightElement(UIElement[] elements) {
+            MainData.MainWindow.rootAdorner.AdornerLayer.Add(new ElementAdorner(elements, brushColor, borderColor, opac));
         }
 
         public static void RemoveAdorners() {
@@ -31,11 +31,17 @@ namespace Pavel2.GUI {
             }
         }
 
-        public static void DoDragDrop(DependencyObject dragSource, object data, DragDropEffects effect, UIElement target) {
-            HighlightElement(target);
-            if (target is LinkList) ((LinkList)target).newItemGrid.Visibility = Visibility.Visible;
+        public static void DoDragDrop(DependencyObject dragSource, object data, DragDropEffects effect, params UIElement[] targets) {
+            LinkList lList = new LinkList();
+            foreach (UIElement item in targets) {
+                if (item is LinkList) {
+                    lList = (LinkList)item;
+                    lList.newItemGrid.Visibility = Visibility.Visible;
+                }
+            }
+            HighlightElement(targets);
             DragDrop.DoDragDrop(dragSource, data, effect);
-            if (target is LinkList) ((LinkList)target).newItemGrid.Visibility = Visibility.Collapsed;
+            if (lList != null) lList.newItemGrid.Visibility = Visibility.Collapsed;
             RemoveAdorners();
         }
 
@@ -43,11 +49,22 @@ namespace Pavel2.GUI {
 
             SolidColorBrush renderBrush;
             Pen renderPen;
-            UIElement element;
+            UIElement[] elements;
 
             public ElementAdorner(UIElement adornedElement, Color brush, Color border, double opac)
                 : base(MainData.MainWindow.windowGrid) {
-                this.element = adornedElement;
+                this.elements = new UIElement[1];
+                this.elements[0] = adornedElement;
+                InitBrushes(brush, border, opac);
+            }
+
+            public ElementAdorner(UIElement[] adornedElements, Color brush, Color border, double opac)
+                : base(MainData.MainWindow.windowGrid) {
+                this.elements = adornedElements;
+                InitBrushes(brush, border, opac);
+            }
+
+            private void InitBrushes(Color brush, Color border, double opac) {
                 renderBrush = new SolidColorBrush(brush);
                 renderBrush.Opacity = opac;
                 renderPen = new Pen(new SolidColorBrush(border), 10);
@@ -56,14 +73,16 @@ namespace Pavel2.GUI {
 
             protected override void OnRender(DrawingContext dc) {
                 this.IsHitTestVisible = false;
-                Rect e = new Rect(this.element.RenderSize);
-                Rect w = new Rect(MainData.MainWindow.windowGrid.RenderSize);
-                e.Location = this.element.TransformToAncestor(MainData.MainWindow.windowGrid).Transform(new Point(0,0));
+                Rect window = new Rect(MainData.MainWindow.windowGrid.RenderSize);
                 GeometryGroup group = new GeometryGroup();
-                group.Children.Add(new RectangleGeometry(w));
-                group.Children.Add(new RectangleGeometry(e));
+                group.Children.Add(new RectangleGeometry(window));
+                foreach (UIElement item in elements) {
+                    Rect e = new Rect(item.RenderSize);
+                    e.Location = item.TransformToAncestor(MainData.MainWindow.windowGrid).Transform(new Point(0, 0));
+                    group.Children.Add(new RectangleGeometry(e));
+                    dc.DrawGeometry(new SolidColorBrush(Colors.Transparent), renderPen, new RectangleGeometry(e));
+                }
                 dc.DrawGeometry(renderBrush, new Pen(renderBrush, 0), group);
-                dc.DrawGeometry(new SolidColorBrush(Colors.Transparent), renderPen, new RectangleGeometry(e));
             }
         }
 

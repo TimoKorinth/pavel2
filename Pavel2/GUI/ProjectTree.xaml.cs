@@ -5,6 +5,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Pavel2.Framework;
 using System.IO;
+using System.Windows.Documents;
+using System.Collections.Generic;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -223,7 +225,7 @@ namespace Pavel2.GUI {
             if (item != null) {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
                     if (this.editItem == null) {
-                        DragDropHelper.DoDragDrop(projectTree, item, DragDropEffects.Copy, MainData.MainWindow.linkListPanel);
+                        DragDropHelper.DoDragDrop(projectTree, item, DragDropEffects.Copy, MainData.MainWindow.linkListPanel, this);
                     }
                 }
             }
