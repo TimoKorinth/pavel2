@@ -79,12 +79,8 @@
                 </ListBox>
             </Grid>
 		</Expander>
-		<TabControl SizeChanged="visualizationTabControl_SizeChanged" SelectionChanged="visualizationTabControl_SelectionChanged" Grid.Column="4" Grid.Row="2" Name="visualizationTabControl">
-			<TabItem Header="Table View"/>
-			<TabItem Header="Scatterplot"/>
-			<TabItem Header="Parallelplot"/>
-		</TabControl>
-		<GridSplitter Grid.Column="3" Grid.Row="2" Width="3" HorizontalAlignment="Center" Grid.RowSpan="2" Name="explorerSplitter" Background="Transparent" />
+        <gui:VisualizationLayer x:Name="visualizationLayer" Grid.Column="4" Grid.Row="2"></gui:VisualizationLayer>
+        <GridSplitter Grid.Column="3" Grid.Row="2" Width="3" HorizontalAlignment="Center" Grid.RowSpan="2" Name="explorerSplitter" Background="Transparent" />
 		<Expander Collapsed="explorerExpander_Collapsed" Expanded="explorerExpander_Expanded" Grid.Column="2" Grid.Row="2" Header="Import" IsExpanded="True" Grid.RowSpan="2" Name="explorerExpander" Style="{DynamicResource ExpanderCloseStyle}">
             <gui:ExplorerTree></gui:ExplorerTree>
         </Expander>

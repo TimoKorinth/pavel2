@@ -1,0 +1,8 @@
+﻿<UserControl x:Class="Pavel2.GUI.VisualizationLayer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <TabControl SizeChanged="visualizationTabControl_SizeChanged" SelectionChanged="visualizationTabControl_SelectionChanged" Name="visualizationTabControl">
+        </TabControl>
+    </Grid>
+</UserControl>

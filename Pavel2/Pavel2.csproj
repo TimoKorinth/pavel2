@@ -115,6 +115,9 @@
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\Visualization.cs" />
+    <Compile Include="GUI\VisualizationLayer.xaml.cs">
+      <DependentUpon>VisualizationLayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GUI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -150,6 +153,10 @@
     <Page Include="GUI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\VisualizationLayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
