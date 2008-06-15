@@ -74,6 +74,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Framework\ColorManagement.cs" />
+    <Compile Include="Framework\ColorOGL.cs" />
     <Compile Include="Framework\Column.cs" />
     <Compile Include="Framework\CSVParser.cs" />
     <Compile Include="Framework\DataGrid.cs" />

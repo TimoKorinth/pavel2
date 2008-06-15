@@ -41,7 +41,7 @@ namespace Pavel2.GUI {
         }
 
         private void DrawLines() {
-            Gl.glColor4f(0.043f, 0.729f, 0.878f, 0.2f);
+            Gl.glColor4f(ColorManagement.UnselectedColor.R, ColorManagement.UnselectedColor.G, ColorManagement.UnselectedColor.B, 0.2f);
             Gl.glEnable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(1f);
             bool breakLine = false;
