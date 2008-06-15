@@ -34,94 +34,10 @@ namespace Pavel2.GUI
 
         public MainWindow() {
 			this.InitializeComponent();
-            InitVisualizationTab();
 
             EmptyPreviewPanel();
             EmptyOptionsPanel();
 		}
-
-        private DataGrid currentDataGrid;
-
-        public DataGrid CurrentDataGrid {
-            get {
-                return currentDataGrid;
-            }
-            set {
-                currentDataGrid = value;
-                if (CurrentVisualization != null) {
-                    VisualizationTabFocus(CurrentVisualization);
-                }
-            }
-        }
-
-        public void VisualizationTabFocus(Visualization vis) {
-            foreach (TabItem item in visualizationTabControl.Items) {
-                if (item.Content.Equals(vis)) {
-                    if (visualizationTabControl.SelectedItem.Equals(item)) {
-                        CurrentVisualization.Render();
-                    } else {
-                        item.IsSelected = true;
-                    }
-                }
-            }
-        }
-
-        public Visualization CurrentVisualization {
-            get {
-                TreeViewItem selItem = projectTreeView.SelectedItem;
-                if (selItem != null) {
-                    if (selItem.Tag is Column) selItem = (TreeViewItem)selItem.Parent;
-                    if (selItem.Tag is ProjectTreeItem) { 
-                        ProjectTreeItem pTI = (ProjectTreeItem)selItem.Tag;
-                        return pTI.LastVisualization;
-                    }
-                }
-                return null;
-            }
-            set { 
-                TreeViewItem selItem = projectTreeView.SelectedItem;
-                if (selItem != null) {
-                    if (selItem.Tag is Column) selItem = (TreeViewItem)selItem.Parent;
-                    if (selItem.Tag is ProjectTreeItem) {
-                        ProjectTreeItem pTI = (ProjectTreeItem)selItem.Tag;
-                        pTI.LastVisualization = value;
-                    }
-                }
-            }
-        }
-
-        #region Private Methods
-
-        private void InitVisualizationTab() {
-            visualizationTabControl.Items.Clear();
-            Type[] types = System.Reflection.Assembly.GetAssembly(typeof(Visualization)).GetTypes();
-            foreach (Type t in types) {
-                Type tmp = t.GetInterface("Visualization");
-                if (tmp != null) {
-                    TabItem tabItem = new TabItem();
-                    tabItem.Header = t.Name;
-                    Visualization vis = (Visualization)Activator.CreateInstance(t);
-                    tabItem.Content = vis;
-                    visualizationTabControl.Items.Add(tabItem);
-                }
-            }
-        }
-
-        private void SetCurrentDataGrid() {
-            TreeViewItem selItem = projectTreeView.SelectedItem;
-            if (selItem != null) {
-                if (selItem.Tag is ProjectTreeItem) {
-                    ProjectTreeItem ptItem = (ProjectTreeItem)selItem.Tag;
-                    this.CurrentDataGrid = ptItem.DataGrid;
-                } else {
-                    this.CurrentDataGrid = null;
-                }
-            } else {
-                this.CurrentDataGrid = null;
-            }
-        }
-
-        #endregion
 
         #region Expander Event Handler
 
@@ -246,9 +162,8 @@ namespace Pavel2.GUI
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                     pTI.TakeScreenShot();
                 }
+                visualizationLayer.VisualizationData = item.Tag;
             }
-            if (CurrentVisualization == null) CurrentVisualization = (Visualization)visualizationTabControl.SelectedContent;
-            SetCurrentDataGrid();
             UpdatePreviewPanel();
         }
 
@@ -261,22 +176,7 @@ namespace Pavel2.GUI
 
         void pGrid_PropertyChanged(object sender, RoutedEventArgs e) {
             projectTreeView.ParseAgain(ParserManagement.CurrentParser);
-            SetCurrentDataGrid();
-        }
-
-        private void visualizationTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (!(e.Source is TabControl)) return;
-            if (e.AddedItems.Count > 1) return;
-            TabItem tItem = e.AddedItems[0] as TabItem;
-            if (tItem == null) return;
-            CurrentVisualization = (Visualization)tItem.Content;
-            if (CurrentVisualization == null) return;
-            CurrentVisualization.Render();
-        }
-
-        private void visualizationTabControl_SizeChanged(object sender, SizeChangedEventArgs e) {
-            if (CurrentVisualization == null) return;
-            CurrentVisualization.RenderAfterResize();
+            visualizationLayer.VisualizationData = projectTreeView.SelectedItem.Tag;
         }
 	}
 }

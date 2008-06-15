@@ -21,7 +21,7 @@ namespace Pavel2.Framework {
         public static DataGrid CurrentDataGrid {
             get {
                 Pavel2.GUI.MainWindow window = (Pavel2.GUI.MainWindow)Application.Current.MainWindow;
-                return window.CurrentDataGrid; 
+                return window.visualizationLayer.CurrentDataGrid; 
             }
         }
 
