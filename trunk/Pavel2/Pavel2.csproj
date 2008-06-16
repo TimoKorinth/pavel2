@@ -77,6 +77,7 @@
     <Compile Include="Framework\ColorManagement.cs" />
     <Compile Include="Framework\ColorOGL.cs" />
     <Compile Include="Framework\Column.cs" />
+    <Compile Include="Framework\CombinedDataItem.cs" />
     <Compile Include="Framework\CSVParser.cs" />
     <Compile Include="Framework\DataGrid.cs" />
     <Compile Include="Framework\DataProjectTreeItem.cs" />

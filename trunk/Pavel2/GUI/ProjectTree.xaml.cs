@@ -153,6 +153,14 @@ namespace Pavel2.GUI {
             }
         }
 
+        private void MoveTreeViewItems(List<TreeViewItem> items, TreeViewItem target) {
+            if (!(target.Tag is FolderProjectTreeItem)) return;
+            foreach (TreeViewItem tvItem in items) {
+                RemoveTreeViewItem(tvItem);
+                target.Items.Add(tvItem);
+            }
+        }
+
         private void DeleteDataProjectTreeItem(DataProjectTreeItem dPTI) {
             MainData.RemoveColumns(dPTI.DataGrid);
             //dPTI.DataGrid = null;
@@ -225,7 +233,7 @@ namespace Pavel2.GUI {
             if (item != null) {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
                     if (this.editItem == null) {
-                        DragDropHelper.DoDragDrop(projectTree, item, DragDropEffects.Copy, MainData.MainWindow.linkListPanel, this);
+                        DragDropHelper.DoDragDrop(projectTree, projectTree.SelectedItems, DragDropEffects.Copy, MainData.MainWindow.linkListPanel, this);
                     }
                 }
             }
@@ -239,6 +247,10 @@ namespace Pavel2.GUI {
             }
             if (data is FileInfo) {
                 AddDataProjectTreeItem((FileInfo)data, e.Source as TreeViewItem);
+            }
+            data = e.Data.GetData(typeof(List<TreeViewItem>));
+            if (data is List<TreeViewItem>) {
+                MoveTreeViewItems((List<TreeViewItem>)data, e.Source as TreeViewItem);
             }
         }
 
