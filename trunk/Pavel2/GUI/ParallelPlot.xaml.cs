@@ -47,7 +47,6 @@ namespace Pavel2.GUI {
             wfPA = new OpenGLRenderWind();
             wfPA.Paint += DrawData;
             host.Child = wfPA;
-            SetViewPort();
         }
 
         private void DrawLines() {
@@ -112,11 +111,6 @@ namespace Pavel2.GUI {
             Gl.glFlush();
         }
 
-
-        private void SetViewPort() {
-            Gl.glViewport(0, 0, (int)host.ActualWidth, (int)host.ActualHeight);
-        }
-
         private void SetLabelPanel() {
             labelGrid.Children.Clear();
             labelGrid.ColumnDefinitions.Clear();
@@ -146,13 +140,10 @@ namespace Pavel2.GUI {
             if (dataGrid == null) return;
             SetLabelPanel();
             step = (double)1 / (dataGrid.Columns.Length - 1);
-            SetViewPort();
-            wfPA.Invalidate();
+            RenderScene();
         }
 
         public void RenderAfterResize() {
-            SetViewPort();
-            wfPA.Invalidate();
         }
 
         #endregion
