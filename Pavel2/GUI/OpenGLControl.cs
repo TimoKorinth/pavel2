@@ -18,11 +18,8 @@ namespace Pavel2.GUI {
     public abstract class OpenGLControl : Control {
 
         #region Fields
-        private Font baseFont = new Font("Arial", 12);
         private IntPtr deviceContext = IntPtr.Zero;
         private IntPtr renderContext = IntPtr.Zero;
-        private int fontbase;
-        private Gdi.GLYPHMETRICSFLOAT[] gmf = new Gdi.GLYPHMETRICSFLOAT[256];
 
         /// <value>
         /// Setting this to true or false controls whether the glOrtho
@@ -31,23 +28,6 @@ namespace Pavel2.GUI {
         /// keepAspect = true results in the cuboid adjusting, keeping aspect ratios in the viewport.
         /// </value>
         public bool keepAspect = true;
-
-        /// <summary>
-        /// Half-height of the glOrtho clipping cube
-        /// </summary>
-        protected const float halfHeight = 0.8f;
-
-        protected float halfEyeDistance = 0.02f;
-
-        protected bool stereoMode = false;
-
-        /// <summary>
-        /// Enumeration to determine from which position and in which direction to render
-        /// LeftEye: View of left eye in stereo mode
-        /// RightEye: View of left eye in stereo mode
-        /// Picking: Intermediate view for picking in stereo mode
-        /// </summary>
-        public enum StereoEye { LeftEye, RightEye, Picking };
 
         #endregion
 
@@ -62,64 +42,7 @@ namespace Pavel2.GUI {
         public float WindowAspect {
             get { return keepAspect ? (float)this.Width / this.Height : 1f; }
         }
-
-        /// <value>Gets the OpenGLControls half height</value>
-        public float HalfHeight { get { return halfHeight; } }
-
-        /// <value>Gets the OpenGLControls half width</value>
-        public float HalfWidth { get { return halfHeight * WindowAspect; } }
-
-        /// <value>
-        /// If windowAspect is less than 1, halfWidth is less than halfHeight.
-        /// That can lead to unwanted cropping at the left and right image borders.
-        /// To fix this, Halfwidth has to be scaled up. To keep the aspect ratio,
-        /// HalfHeight has to be scaled up as well. AspectCap provides the scaling factor for this.
-        /// </value>
-        public float AspectCap {
-            get { return WindowAspect < 1 ? HalfHeight / HalfWidth : 1; }
-        }
-
-        /// <summary>
-        /// Gets the capped HalfHeight. See AspectCap Property
-        /// </summary>
-        public float HalfHeightCapped {
-            get { return HalfHeight * AspectCap; }
-        }
-
-        /// <summary>
-        /// Gets the capped HalfWidth. See AspectCap Property
-        /// </summary>
-        public float HalfWidthCapped {
-            get { return HalfWidth * AspectCap; }
-        }
-
-        /// <summary>
-        /// Enables or disables the stereo projection
-        /// </summary>
-        public bool StereoMode {
-            get { return stereoMode; }
-            set { stereoMode = value; }
-        }
         #endregion
-
-        /// <value>Gets the baseFont or set it</value>
-        public Font BaseFont {
-            get { return baseFont; }
-            set {
-                baseFont = value;
-                BuildFont();
-                RenderScene();
-                SwapBuffers();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the EyeDistance for Stereomode
-        /// </summary>
-        public float EyeDistance {
-            get { return halfEyeDistance * 2; }
-            set { halfEyeDistance = value / 2f; }
-        }
 
         #endregion
 
@@ -171,60 +94,6 @@ namespace Pavel2.GUI {
         }
 
         /// <summary>
-        /// Sets up a projection matrix.
-        /// </summary>
-        /// <remarks>Does not alter the current matrix mode</remarks>
-        /// <param name="loadIdentityFirst">Set to true if you want LoadIdentity to be executed on
-        /// the projection Matrix before the Projection Matrix is set</param>
-        protected void SetupProjection(bool loadIdentityFirst) {
-            Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-
-            if (loadIdentityFirst) Gl.glLoadIdentity();
-
-            Gl.glOrtho(-HalfWidthCapped,
-                        HalfWidthCapped,
-                       -HalfHeightCapped,
-                        HalfHeightCapped,
-                       -1000,
-                        1000);
-
-            Gl.glPopAttrib();
-        }
-
-        /// <summary>
-        /// Setd up a flat projection matrix for drawing in 2D
-        /// </summary>
-        /// <remarks>You still have to adjust the modelview accordingly by loading the identity matrix. Does not alter the current matrix mode</remarks>
-        /// <param name="loadIdentityFirst">Set to true if you want LoadIdentity to be executed on
-        /// the projection Matrix before the Camera is set</param>
-        /// <param name="absolutePixelMode">If this is false, 0 represents the lower/left border of the drawing area
-        /// 1 the upper/right border, paying respect to the keepAspect setting.
-        /// If you set this to true, the drawing coordinates match the control's width/height
-        /// in pixel, this.Width being the right, this,Height the top border. keepAspect has no effect in this mode.</param>
-        /// <param name="flipVertical">If you set this to true, the projection is flipped vertical, allowing for Windows-based
-        /// coordinates (0=top) instead of OpenGL based (0=bottom)</param>
-        protected void SetupProjectionFlat(bool loadIdentityFirst, bool absolutePixelMode, bool flipVertical) {
-            Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
-
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-            if (loadIdentityFirst)
-                Gl.glLoadIdentity();
-            if (flipVertical) {
-                if (absolutePixelMode)
-                    Gl.glOrtho(0, this.Width, this.Height, 0, -100, +100);
-                else
-                    Gl.glOrtho(0, WindowAspect * AspectCap, AspectCap, 0, -100, +100);
-            } else {
-                if (absolutePixelMode)
-                    Gl.glOrtho(0, this.Width, 0, this.Height, -100, +100);
-                else
-                    Gl.glOrtho(0, WindowAspect * AspectCap, 0, AspectCap, -100, +100);
-            }
-            Gl.glPopAttrib();
-        }
-
-        /// <summary>
         /// Sets up the modelview matrix
         /// </summary>
         /// <remarks>Does not change the current matrix mode</remarks>
@@ -240,50 +109,6 @@ namespace Pavel2.GUI {
 
             SetupModelViewMatrixOperations();
 
-            Gl.glPopAttrib();
-        }
-
-        /// <summary>
-        /// Sets up the projection matrix for stereo viewing or picking
-        /// </summary>
-        /// <param name="mode">Selects matrix creation for left eye, right eye or picking</param>
-        protected void SetupProjectionStereo(StereoEye mode) {
-            Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
-
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-            //Prevent a loaded Pickmatrix from being overwritten:
-            //TODO: Bad bad BAD Design! Making assumptions about things outside of the functions scope. No dinner for you!
-            if (mode != StereoEye.Picking) { Gl.glLoadIdentity(); }
-            double zNear = 0.5;
-            double zFar = 1000;
-
-            float viewPaneCorrection = 0.4f;
-            float focus = (float)(zNear / (2 * halfHeight));
-
-            //Create asymmetric viewing-frustrums
-            double left = viewPaneCorrection * (-HalfWidthCapped);
-            double right = viewPaneCorrection * (HalfWidthCapped);
-            double bottom = viewPaneCorrection * (-HalfHeightCapped);
-            double top = viewPaneCorrection * (HalfHeightCapped);
-
-            if (mode == StereoEye.LeftEye) {
-                left = left + halfEyeDistance * focus;
-                right = right + halfEyeDistance * focus;
-            } else if (mode == StereoEye.RightEye) {
-                left = left - halfEyeDistance * focus;
-                right = right - halfEyeDistance * focus;
-            }
-
-            //Projection
-            Gl.glFrustum(left, right, bottom, top, zNear, zFar);
-
-            //Eye Position
-            Gl.glTranslatef(0, 0, -(2 * halfHeight));
-            if (mode == StereoEye.LeftEye) {
-                Gl.glTranslatef(+halfEyeDistance, 0, 0);
-            } else if (mode == StereoEye.RightEye) {
-                Gl.glTranslatef(-halfEyeDistance, 0, 0);
-            }
             Gl.glPopAttrib();
         }
 
@@ -308,12 +133,6 @@ namespace Pavel2.GUI {
             Gl.glLoadIdentity();
             // create picking region near cursor location
             Glu.gluPickMatrix(x, (viewport[3] - y), w, h, viewport);
-
-            if (!this.stereoMode) {
-                SetupProjection(false);
-            } else {
-                SetupProjectionStereo(StereoEye.Picking);
-            }
         }
 
         #endregion
@@ -391,7 +210,6 @@ namespace Pavel2.GUI {
             }
 
             this.MakeCurrentContext();
-            this.BuildFont();
         }
 
         /// <summary>
@@ -501,110 +319,7 @@ namespace Pavel2.GUI {
         /// This method works only properly if the model is renderend into a normalized
         /// coordinate system
         /// </remarks>
-        protected virtual void RenderScene() {
-            Gl.glDrawBuffer(Gl.GL_BACK);
-            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
-
-            SetupModelView(true);
-            if (!stereoMode) {
-                SetupProjection(true);
-                RenderContent();
-            } else {
-                SetupProjectionStereo(StereoEye.LeftEye);
-                Gl.glColorMask(0, 1, 1, 1);
-
-                RenderContent();
-
-                SetupProjectionStereo(StereoEye.RightEye);
-                Gl.glDrawBuffer(Gl.GL_BACK);
-                Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT);
-                Gl.glColorMask(1, 0, 0, 1);
-
-                RenderContent();
-                Gl.glColorMask(1, 1, 1, 1);
-            }
-        }
-
-        /// <summary>
-        /// Put the content to be rendered here
-        /// </summary>
-        protected virtual void RenderContent() { }
-
-        /// <summary>
-        /// Builds a font for OpenGL.
-        /// </summary>
-        private void BuildFont() {
-            IntPtr font;                                                        // Windows Font ID
-            fontbase = Gl.glGenLists(256);                                      // Storage For 256 Characters
-
-            font = Gdi.CreateFont(                                              // Create The Font
-                -(int)(BaseFont.Size),                                                            // Height Of Font
-                0,                                                              // Width Of Font
-                0,                                                              // Angle Of Escapement
-                0,                                                              // Orientation Angle
-                300,                                                            // Font Weight
-                false,                                                          // Italic
-                false,                                                          // Underline
-                false,                                                          // Strikeout
-                Gdi.ANSI_CHARSET,                                               // Character Set Identifier
-                Gdi.OUT_TT_PRECIS,                                              // Output Precision
-                Gdi.CLIP_DEFAULT_PRECIS,                                        // Clipping Precision
-                Gdi.ANTIALIASED_QUALITY,                                        // Output Quality
-                Gdi.FF_DONTCARE | Gdi.DEFAULT_PITCH,                            // Family And Pitch
-                BaseFont.FontFamily.Name);                                                       // Font Name
-            IntPtr hDC = User.GetDC(this.Handle);
-            Gdi.SelectObject(hDC, font);                                        // Selects The Font We Created
-            //Wgl.wglUseFontOutlines(
-            //    hDC,                                                            // Select The Current DC
-            //    0,                                                              // Starting Character
-            //    255,                                                            // Number Of Display Lists To Build
-            //    fontbase,                                                       // Starting Display Lists
-            //    0,                                                              // Deviation From The True Outlines
-            //    2f,                                                             // Font Thickness In The Z Direction
-            //    Wgl.WGL_FONT_POLYGONS,                                          // Use Polygons, Not Lines
-            //    gmf);                                                           // Address Of Buffer To Receive Data
-        }
-
-        /// <summary>
-        /// This method draws a string with OpenGl. It needs the coordinates to draw the String at, a 
-        /// degree for rotating the String counter clockwise, a size modifier and the string to be drawn.
-        /// </summary>
-        /// <param name="x">x-coordinate</param>
-        /// <param name="y">y-coordinate</param>
-        /// <param name="degree">Degree for rotating counter clockwise</param>
-        /// <param name="scaling">Size modifier for scaling</param>
-        /// <param name="text">String to be drawn</param>
-        protected void PrintText(float x, float y, float degree, float scaling, string text) {
-            //TODO Sowas aehnliches bauen das unter ProjectionFlat arbeitet und keepAspect beruecksichtigt
-            if (text == null || text.Length == 0) {                             // If There's No Text
-                return;                                                         // Do Nothing
-            }
-            float length = 0;                                                   // Used To Find The Length Of The Text
-            char[] chars = text.ToCharArray();                                  // Holds Our String
-
-            for (int loop = 0; loop < text.Length; loop++) {                    // Loop To Find Text Length
-                length += gmf[chars[loop]].gmfCellIncX;                         // Increase Length By Each Characters Width
-            }
-
-            Gl.glPushMatrix();
-            Gl.glPushAttrib(Gl.GL_LIST_BIT);                                    // Pushes The Display List Bits
-            Gl.glEnable(Gl.GL_POLYGON_SMOOTH);
-            Gl.glHint(Gl.GL_POLYGON_SMOOTH_HINT, Gl.GL_NICEST);
-
-            Gl.glListBase(fontbase);
-
-            Gl.glTranslatef(x, y, 0);
-            Gl.glRotatef(degree, 0.0F, 0.0F, 1.0F);
-            Gl.glScalef(scaling, scaling, 0.0F);
-
-            byte[] textbytes = new byte[text.Length];
-            for (int i = 0; i < text.Length; i++)
-                textbytes[i] = (byte)text[i];
-            Gl.glCallLists(text.Length, Gl.GL_UNSIGNED_BYTE, textbytes);        // Draws The Display List Text
-            Gl.glPopMatrix();
-            Gl.glPopAttrib();
-            Gl.glDisable(Gl.GL_POLYGON_SMOOTH);
-        }
+        protected virtual void RenderScene() { }
 
         #endregion
 
@@ -681,52 +396,6 @@ namespace Pavel2.GUI {
             Gl.glMatrixMode(Gl.GL_PROJECTION);
             Gl.glPopMatrix();
 
-            Gl.glPopAttrib();
-        }
-
-        /// <summary>
-        /// Converts absolute window coordinates to relative coordinates.
-        /// Useful when working with ProjectionFlat, wishing to mix relative and absolute coordinates.
-        /// </summary>
-        /// <param name="absolute">Absolute window coordinates</param>
-        protected VectorF RelFromAbs(VectorF absolute) {
-            absolute.X /= this.Width;
-            absolute.Y /= this.Height;
-            return absolute;
-        }
-
-        /// <summary>
-        /// Converts relative coordinates to absolute window coordinates.
-        /// Useful when working with ProjectionFlat, wishing to mix relative and absolute coordinates.
-        /// </summary>
-        /// <param name="relative">Relative coordinates</param>
-        protected VectorF AbsFromRel(VectorF relative) {
-            relative.X *= this.Width;
-            relative.Y *= this.Height;
-            return relative;
-        }
-
-        /// <summary>
-        /// Copies pixels from one buffer to another.
-        /// </summary>
-        /// <param name="fromBuffer">The source buffer. Use one of the OpenGL buffer constants (GL_FRONT, GL_BACK, ...)</param>
-        /// <param name="toBuffer">The destination buffer. Use one of the OpenGL buffer constants (GL_FRONT, GL_BACK, ...)</param>
-        /// <param name="x">The x-coordinate of the lower left corner of the area to be copied (pixel coordinates, 0 is left, this.Width is right)</param>
-        /// <param name="y">The y-coordinate of the lower left corner of the area to be copied (pixel coordinates, 0 is bottom, this.Height is top)</param>
-        /// <param name="width">The width of the area to be copied (in pixels)</param>
-        /// <param name="height">The height of the area to be copied (in pixels)</param>
-        protected void CopyPixels(int fromBuffer, int toBuffer, int x, int y, int width, int height) {
-            Gl.glPushAttrib(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_PIXEL_MODE_BIT | Gl.GL_CURRENT_BIT | Gl.GL_TRANSFORM_BIT);
-            Gl.glDisable(Gl.GL_BLEND);
-            PushMatrices();
-            Gl.glMatrixMode(Gl.GL_MODELVIEW);
-            Gl.glLoadIdentity();
-            SetupProjectionFlat(true, true, false);
-            Gl.glReadBuffer(fromBuffer);
-            Gl.glDrawBuffer(toBuffer);
-            Gl.glRasterPos2i(x, y);
-            Gl.glCopyPixels(x, y, width, height, Gl.GL_COLOR);
-            PopMatrices();
             Gl.glPopAttrib();
         }
 
