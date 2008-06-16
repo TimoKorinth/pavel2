@@ -30,6 +30,7 @@ namespace Pavel2.GUI {
 
         System.Windows.Forms.Control wfPA;
         DataGrid dataGrid;
+        CombinedDataItem comp;
         double step;
 
         public ParallelPlot() {
@@ -41,12 +42,19 @@ namespace Pavel2.GUI {
         }
 
         private void DrawLines() {
-            Gl.glColor4f(ColorManagement.UnselectedColor.R, ColorManagement.UnselectedColor.G, ColorManagement.UnselectedColor.B, 0.2f);
+            Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.2f));
             Gl.glEnable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(1f);
             bool breakLine = false;
             if (dataGrid == null) return;
+            int index = -1;
             for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
+                if (comp != null) {
+                    if (comp.GetDataItemIndex(row) != index) {
+                        index = comp.GetDataItemIndex(row);
+                        Gl.glColor4fv(ColorManagement.GetColor(index).RGBwithA(0.2f));
+                    }
+                }
                 Gl.glBegin(Gl.GL_LINE_STRIP);
                 for (int col = 0; col < dataGrid.Columns.Length; col++) {
                     if (dataGrid.DoubleDataField[row][col] == double.NaN) {
@@ -125,6 +133,7 @@ namespace Pavel2.GUI {
 
         public void Render() {
             dataGrid = MainData.CurrentDataGrid;
+            comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
             if (dataGrid == null) return;
             SetLabelPanel();
             step = (double)1 / (dataGrid.Columns.Length - 1);
