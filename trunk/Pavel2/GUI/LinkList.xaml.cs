@@ -49,15 +49,18 @@ namespace Pavel2.GUI {
         #endregion
 
         private void linkTreeView_Drop(object sender, DragEventArgs e) {
-            TreeViewItem sendItem = e.Data.GetData(typeof(TreeViewItem)) as TreeViewItem;
-            if (sendItem == null) return;
+            List<TreeViewItem> sendItems = e.Data.GetData(typeof(List<TreeViewItem>)) as List<TreeViewItem>;
+            if (sendItems == null) return;
             TreeViewItem oldItem = e.Source as TreeViewItem;
             if (oldItem == null) return;
-            DataProjectTreeItem dPTI = sendItem.Tag as DataProjectTreeItem;
-            if (dPTI == null) return;
-            if (oldItem.Tag is Column) oldItem = (TreeViewItem)oldItem.Parent; 
+            if (oldItem.Tag is Column) oldItem = (TreeViewItem)oldItem.Parent;
             if (oldItem.Tag is DataProjectTreeItem) oldItem = (TreeViewItem)oldItem.Parent;
-            if (oldItem.Tag is LinkItem) ((LinkItem)oldItem.Tag).AddDataItem(dPTI);
+            
+            foreach (TreeViewItem tvItem in sendItems) {
+                if (tvItem.Tag is DataProjectTreeItem) {
+                    if (oldItem.Tag is LinkItem) ((LinkItem)oldItem.Tag).AddDataItem(tvItem.Tag as DataProjectTreeItem);
+                }
+            }
             UpdateLinkItem(oldItem);
             MainData.MainWindow.UpdatePreviewPanel();
         }
@@ -74,18 +77,20 @@ namespace Pavel2.GUI {
         }
 
         private void newItemGrid_Drop(object sender, DragEventArgs e) {
-            TreeViewItem tvItem = e.Data.GetData(typeof(TreeViewItem)) as TreeViewItem;
-            if (tvItem == null) return;
-            if (tvItem.Tag is DataProjectTreeItem) {
-                DataProjectTreeItem dPTI = tvItem.Tag as DataProjectTreeItem;
-                LinkItem lItem = new LinkItem();
-                lItem.AddDataItem(dPTI);
-                TreeViewItem newItem = new TreeViewItem();
-                lItem.Header = dPTI.Header;
-                newItem.Tag = lItem;
-                linkTreeView.Items.Add(newItem);
-                UpdateLinkItem(newItem);
+            List<TreeViewItem> tvItems = e.Data.GetData(typeof(List<TreeViewItem>)) as List<TreeViewItem>;
+            if (tvItems == null) return;
+            LinkItem lItem = new LinkItem();
+            TreeViewItem newItem = new TreeViewItem();
+            foreach (TreeViewItem tvItem in tvItems) {
+                if (tvItem.Tag is DataProjectTreeItem) {
+                    DataProjectTreeItem dPTI = tvItem.Tag as DataProjectTreeItem;
+                    lItem.AddDataItem(dPTI);
+                    if (lItem.Header == null) lItem.Header = dPTI.Header;
+                } 
             }
+            newItem.Tag = lItem;
+            linkTreeView.Items.Add(newItem);
+            UpdateLinkItem(newItem);
         }
 
         private void UpdateLinkItem(TreeViewItem item) {
