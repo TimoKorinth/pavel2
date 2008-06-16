@@ -38,5 +38,16 @@ namespace Pavel2.Framework {
             this.header = header;
         }
 
+        public void CalcMinMax() {
+            min = double.PositiveInfinity;
+            max = double.NegativeInfinity;
+            for (int i = 0; i < points.Length; i++) {
+            if (points[i].DoubleData != double.NaN) {
+                if (points[i].DoubleData < min) min = points[i].DoubleData;
+                if (points[i].DoubleData > max) max = points[i].DoubleData;
+            }
+            }
+        }
+
     }
 }

@@ -33,6 +33,7 @@ namespace Pavel2.Framework {
             for (int i = 0; i < cols.Length; i++) {
                 cols[i] = new Column(dataItems[0].DataGrid.Columns[i].Header);
                 cols[i].Points = points[i].ToArray();
+                cols[i].CalcMinMax();
             }
             this.dataGrid = new DataGrid(cols);
         }
