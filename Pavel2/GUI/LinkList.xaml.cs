@@ -151,7 +151,12 @@ namespace Pavel2.GUI {
         }
 
         private void Show_CombinedClick(object sender, RoutedEventArgs e) {
-
+            TreeViewItem tvItem = linkTreeView.SelectedItem as TreeViewItem;
+            if (tvItem == null) return;
+            LinkItem lItem = tvItem.Tag as LinkItem;
+            if (lItem == null) return;
+            CombinedDataItem comp = new CombinedDataItem(lItem.DataItems);
+            MainData.MainWindow.visualizationLayer.VisualizationData = comp;
         }
     }
 }
