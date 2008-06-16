@@ -89,6 +89,7 @@
     <Compile Include="Framework\Parser.cs" />
     <Compile Include="Framework\ParserManagement.cs" />
     <Compile Include="Framework\ProjectTreeItem.cs" />
+    <Compile Include="Framework\Vector.cs" />
     <Compile Include="GUI\EnumTypeConverter.cs" />
     <Compile Include="GUI\ExplorerTree.xaml.cs">
       <DependentUpon>ExplorerTree.xaml</DependentUpon>
@@ -97,6 +98,9 @@
     <Compile Include="GUI\HeaderToImageConverterPT.cs" />
     <Compile Include="GUI\DragDropHelper.cs" />
     <Compile Include="GUI\MultiTreeView.cs" />
+    <Compile Include="GUI\OpenGLControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GUI\ScatterPlot.xaml.cs">
       <DependentUpon>ScatterPlot.xaml</DependentUpon>
     </Compile>
