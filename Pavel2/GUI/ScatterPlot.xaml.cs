@@ -13,9 +13,13 @@ namespace Pavel2.GUI {
     /// </summary>
     public partial class ScatterPlot : UserControl, Visualization {
 
-        internal class OpenGLRenderWind : SimpleOpenGlControl {
-            public OpenGLRenderWind() {
-                this.InitializeContexts();
+        internal class OpenGLRenderWind : OpenGLControl {
+
+            public OpenGLRenderWind()
+                : base() {
+            }
+
+            protected override void InitOpenGL() {
                 Gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
                 Gl.glShadeModel(Gl.GL_FLAT);
                 Gl.glEnable(Gl.GL_LINE_SMOOTH);
@@ -23,8 +27,15 @@ namespace Pavel2.GUI {
                 Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
                 Gl.glDisable(Gl.GL_CULL_FACE);
                 Gl.glMatrixMode(Gl.GL_PROJECTION);
-                Gl.glLoadIdentity();
                 Gl.glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+            }
+
+            protected override void SetupModelViewMatrixOperations() {
+                Gl.glLoadIdentity();
+            }
+
+            protected override void RenderScene() {
+                this.Invalidate();
             }
         }
 
