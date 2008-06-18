@@ -82,15 +82,15 @@ namespace Pavel2.GUI {
         }
 
         private void Deselect(TreeViewItem treeViewItem) {
-            treeViewItem.Background = Brushes.White;
+            treeViewItem.Background = Brushes.Transparent;
             treeViewItem.Foreground = Brushes.Black;
             selItems.Remove(treeViewItem);
         }
 
         private void ChangeSelectedState(TreeViewItem treeViewItem) {
             if (!selItems.Contains(treeViewItem)) {
-                treeViewItem.Background = SystemColors.HighlightBrush;
-                treeViewItem.Foreground = Brushes.White;
+                treeViewItem.Background = Brushes.Silver;
+                treeViewItem.Foreground = Brushes.Black;
                 selItems.Add(treeViewItem);
             } else {
                 if (!isDrawing) Deselect(treeViewItem);
