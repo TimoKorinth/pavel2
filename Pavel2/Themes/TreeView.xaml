@@ -17,7 +17,7 @@
           <Border 
             Name="Border" 
             CornerRadius="1" 
-            Background="{StaticResource WindowBackgroundBrush}"
+            Background="#d9d9d9"
             BorderBrush="{StaticResource SolidBorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}" >
             <ScrollViewer 
