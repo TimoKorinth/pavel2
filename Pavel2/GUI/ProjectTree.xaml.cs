@@ -211,6 +211,13 @@ namespace Pavel2.GUI {
 
         //TODO: Dispose für alle
         private void DeleteLinkTreeItem(LinkItem lItem) {
+            List<TreeViewItem> tmp = new List<TreeViewItem>();
+            foreach (TreeViewItem tvItem in linkTreeViewItems) {
+                if ((tvItem.Tag as LinkItem).Equals(lItem)) tmp.Add(tvItem);
+            }
+            foreach (TreeViewItem item in tmp) {
+                linkTreeViewItems.Remove(item);
+            }
             lItem.DataItems = null;
             lItem = null;
         }
