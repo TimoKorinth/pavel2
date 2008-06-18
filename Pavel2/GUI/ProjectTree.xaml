@@ -33,7 +33,7 @@
         </Grid.RowDefinitions>
         <gui:MultiTreeView x:Name="projectTree" DragLeave="projectTree_DragLeave" DragOver="projectTree_DragOver" KeyDown="projectTree_KeyDown" PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True" BorderThickness="0">
             <TreeView.Resources>
-                <Style TargetType="{x:Type TreeViewItem}">
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <Setter Property="HeaderTemplate" Value="{StaticResource DefaultTemplate}" />
                 </Style>
             </TreeView.Resources>

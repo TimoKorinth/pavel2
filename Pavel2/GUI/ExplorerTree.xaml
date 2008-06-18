@@ -8,7 +8,7 @@
     <Grid>
         <gui:MultiTreeView x:Name="directoryTree" TreeViewItem.Expanded="directoryTree_Expanded" PreviewMouseLeftButtonDown="directoryTree_PreviewMouseLeftButtonDown" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
             <TreeView.Resources>
-                <Style TargetType="{x:Type TreeViewItem}">
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>
