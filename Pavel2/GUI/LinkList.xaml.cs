@@ -114,34 +114,5 @@ namespace Pavel2.GUI {
                 }
             }
         }
-
-        private void linkTreeView_PreviewMouseUp(object sender, MouseButtonEventArgs e) {
-            linkPopup.IsOpen = false;
-            TreeViewItem item = e.Source as TreeViewItem;
-            if (item == null) return;
-            LinkItem lItem = item.Tag as LinkItem;
-            if (lItem == null) return;
-            Popup popTmp = linkPopup;
-            if (lItem.IsCombineable) {
-                popTmp = linkPopupComp;
-            }
-            popTmp.Placement = PlacementMode.Right;
-            popTmp.PlacementTarget = linkTreeView;
-            popTmp.VerticalOffset = item.TransformToAncestor(linkTreeView).Transform(new Point(0, 0)).Y;
-            popTmp.IsOpen = true;
-        }
-
-        private void Show_SeparateClick(object sender, RoutedEventArgs e) {
-
-        }
-
-        private void Show_CombinedClick(object sender, RoutedEventArgs e) {
-            TreeViewItem tvItem = linkTreeView.SelectedItem as TreeViewItem;
-            if (tvItem == null) return;
-            LinkItem lItem = tvItem.Tag as LinkItem;
-            if (lItem == null) return;
-            CombinedDataItem comp = new CombinedDataItem(lItem.DataItems);
-            MainData.MainWindow.visualizationLayer.VisualizationData = comp;
-        }
     }
 }
