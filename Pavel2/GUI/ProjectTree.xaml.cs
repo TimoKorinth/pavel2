@@ -20,6 +20,7 @@ namespace Pavel2.GUI {
         private TreeViewItem editItem;
         private TreeViewItem highlightedItem;
         private String oldHeader;
+        private List<TreeViewItem> linkTreeViewItems = new List<TreeViewItem>();
 
         #endregion
 
@@ -72,6 +73,22 @@ namespace Pavel2.GUI {
             }
         }
 
+        public List<DataProjectTreeItem> GetRelatedItems(DataProjectTreeItem dPTI) {
+            List<DataProjectTreeItem> relData = new List<DataProjectTreeItem>();
+            foreach (TreeViewItem tvItem in linkTreeViewItems) {
+                if (tvItem.Tag is LinkItem) {
+                    LinkItem lItem = (LinkItem)tvItem.Tag;
+                    if (lItem.DataItems.Contains(dPTI)) {
+                        foreach (DataProjectTreeItem d in lItem.DataItems) {
+                            if (!relData.Contains(d)) relData.Add(d);
+                        }
+                        relData.Remove(dPTI);
+                    }
+                }
+            }
+            return relData;
+        }
+
         #endregion
 
         #region Private Methods
@@ -88,6 +105,19 @@ namespace Pavel2.GUI {
             }
         }
 
+        private void UpdateLinkItem(TreeViewItem item) {
+            if (item.Tag is LinkItem) {
+                item.Items.Clear();
+                LinkItem lItem = (LinkItem)item.Tag;
+                for (int i = 0; i < lItem.DataItems.Count; i++) {
+                    TreeViewItem tmp = new TreeViewItem();
+                    tmp.Tag = lItem.DataItems[i];
+                    item.Items.Add(tmp);
+                    UpdateDataTreeViewItem(tmp);
+                }
+            }
+        }
+
         private void InsertToProjectTree(TreeViewItem item, bool isSelected, bool isExpanded) {
             TreeViewItem rootItem = this.SelectedItem;
             if (rootItem != null) {
@@ -100,7 +130,7 @@ namespace Pavel2.GUI {
         private void InsertToProjectTree(TreeViewItem item, TreeViewItem rootItem, bool isSelected, bool isExpanded) {
             if (rootItem != null) {
                 int insertIndex = -1;
-                if (rootItem.Tag is DataProjectTreeItem) {
+                if (rootItem.Tag is DataProjectTreeItem || rootItem.Tag is LinkItem) {
                     TreeViewItem tmp = rootItem;
                     rootItem = (TreeViewItem)rootItem.Parent;
                     insertIndex = rootItem.Items.IndexOf(tmp);      //TODO: Entscheiden, ob danach oder davor
@@ -163,8 +193,25 @@ namespace Pavel2.GUI {
 
         private void DeleteDataProjectTreeItem(DataProjectTreeItem dPTI) {
             MainData.RemoveColumns(dPTI.DataGrid);
-            //dPTI.DataGrid = null;
-            //dPTI = null;
+            dPTI.DataGrid = null;
+            dPTI = null;
+        }
+
+        //TODO: Dispose für alle
+        private void DeleteLinkTreeItem(LinkItem lItem) {
+            lItem.DataItems = null;
+            lItem = null;
+        }
+
+        private void DeleteFolderProjectTreeItem(TreeViewItem item) { 
+            if (!(item.Tag is FolderProjectTreeItem)) return;
+            foreach (TreeViewItem tvItem in item.Items) {
+                if (tvItem.Tag is FolderProjectTreeItem) {
+                    DeleteFolderProjectTreeItem(tvItem);
+                } else if (tvItem.Tag is DataProjectTreeItem) {
+                    DeleteDataProjectTreeItem(tvItem.Tag as DataProjectTreeItem);
+                }
+            }
         }
 
         #endregion
@@ -271,7 +318,9 @@ namespace Pavel2.GUI {
             if (item.Tag is DataProjectTreeItem) {
                 DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag);
             } else if (item.Tag is FolderProjectTreeItem) {
-                
+                DeleteFolderProjectTreeItem(item);
+            } else if (item.Tag is LinkItem) {
+                DeleteLinkTreeItem(item.Tag as LinkItem);
             }
             RemoveTreeViewItem(item);
         }
@@ -285,7 +334,19 @@ namespace Pavel2.GUI {
         }
 
         private void ContextMenu_CreateNewGroup(object sender, RoutedEventArgs e) {
-
+            TreeViewItem newItem = new TreeViewItem();
+            LinkItem lItem = new LinkItem();
+            foreach (TreeViewItem tvItem in projectTree.SelectedItems) {
+                if (tvItem.Tag is DataProjectTreeItem) {
+                    DataProjectTreeItem dPTI = tvItem.Tag as DataProjectTreeItem;
+                    lItem.AddDataItem(dPTI);
+                    if (lItem.Header == null) lItem.Header = dPTI.Header;
+                }
+            }
+            newItem.Tag = lItem;
+            InsertToProjectTree(newItem, true, true);
+            UpdateLinkItem(newItem);
+            linkTreeViewItems.Add(newItem);
         }
 
         #endregion

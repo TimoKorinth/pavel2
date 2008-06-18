@@ -121,7 +121,7 @@ namespace Pavel2.GUI
         }
         
         public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
-            List<DataProjectTreeItem> relData = linkListPanel.GetRelatedItems(dPTI);
+            List<DataProjectTreeItem> relData = projectTreeView.GetRelatedItems(dPTI);
             if (relData.Count == 0) {
                 EmptyPreviewPanel();
             } else {
