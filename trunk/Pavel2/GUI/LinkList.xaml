@@ -32,27 +32,6 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Popup x:Name="linkPopup" StaysOpen="False" AllowsTransparency="True" MaxWidth="200" PopupAnimation="Fade">
-            <Border Background="{StaticResource NormalBrush}" 
-                    BorderBrush="{StaticResource NormalBorderBrush}" 
-                    BorderThickness="1" Padding="5">
-                <StackPanel>
-                    <Button Margin="2" Click="Show_SeparateClick">Show separat</Button>
-                </StackPanel>
-            </Border>
-        </Popup>
-        
-        <Popup x:Name="linkPopupComp" StaysOpen="False" AllowsTransparency="True" MaxWidth="200" PopupAnimation="Fade">
-            <Border Background="{StaticResource NormalBrush}" 
-                    BorderBrush="{StaticResource NormalBorderBrush}" 
-                    BorderThickness="1" Padding="5">
-                <StackPanel>
-                    <Button Margin="2" Click="Show_CombinedClick">Show Combined</Button>
-                    <Button Margin="2" Click="Show_SeparateClick">Show separat</Button>
-                </StackPanel>
-            </Border>
-        </Popup>
-
         <Grid Name="newItemGrid" Drop="newItemGrid_Drop" AllowDrop="True" Visibility="Collapsed">
             <Label Background="Silver" Padding="8">
                 -Create new Group-
@@ -62,7 +41,6 @@
         <TreeView Name="linkTreeView" AllowDrop="True" 
                   Drop="linkTreeView_Drop" 
                   PreviewMouseDoubleClick="linkTreeView_PreviewMouseDoubleClick"
-                  PreviewMouseUp="linkTreeView_PreviewMouseUp"
                   SelectedItemChanged="linkTreeView_SelectedItemChanged"
                   KeyDown="linkTreeView_KeyDown"
                   DragOver="linkTreeView_DragOver" Grid.Row="1" BorderThickness="0" Background="Transparent">
