@@ -184,10 +184,22 @@ namespace Pavel2.GUI {
         }
 
         private void MoveTreeViewItems(List<TreeViewItem> items, TreeViewItem target) {
-            if (!(target.Tag is FolderProjectTreeItem)) return;
-            foreach (TreeViewItem tvItem in items) {
-                RemoveTreeViewItem(tvItem);
-                target.Items.Add(tvItem);
+            if (target.Tag is FolderProjectTreeItem) {
+                foreach (TreeViewItem tvItem in items) {
+                    if (tvItem.Tag is DataProjectTreeItem) {
+                        RemoveTreeViewItem(tvItem);
+                        target.Items.Add(tvItem);
+                    }
+                }
+            }
+            if (target.Tag is LinkItem) {
+                LinkItem lItem = target.Tag as LinkItem;
+                foreach (TreeViewItem tvItem in items) {
+                    if (tvItem.Tag is DataProjectTreeItem) {
+                        lItem.AddDataItem(tvItem.Tag as DataProjectTreeItem);
+                    }
+                }
+                UpdateLinkItem(target);
             }
         }
 
@@ -280,6 +292,7 @@ namespace Pavel2.GUI {
             if (item != null) {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
                     if (this.editItem == null) {
+                        if (!projectTree.SelectedItems.Contains(item)) item.IsSelected = true;
                         DragDropHelper.DoDragDrop(projectTree, projectTree.SelectedItems, DragDropEffects.Copy, MainData.MainWindow.linkListPanel, this);
                     }
                 }
