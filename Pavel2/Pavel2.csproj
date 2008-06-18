@@ -271,16 +271,23 @@
     <Resource Include="GUI\Icons\Move.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="GUI\Icons\Column.png" />
-    <Resource Include="GUI\Icons\Comp.png" />
-    <Resource Include="GUI\Icons\DataTable.png" />
     <Resource Include="GUI\Icons\Document.png" />
     <Resource Include="GUI\Icons\Folder.png" />
-    <Resource Include="GUI\Icons\Folder2.png" />
-    <Resource Include="GUI\Icons\GoToNextHS.png" />
     <Resource Include="GUI\Icons\HDD.png" />
     <Resource Include="GUI\Icons\Logo.png" />
-    <Resource Include="GUI\Icons\WindowsHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\package.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_multiple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\control_stop.png" />
+    <Resource Include="GUI\Icons\control_stop_blue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

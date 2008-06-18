@@ -10,16 +10,20 @@ namespace Pavel2.GUI {
     public class HeaderToImageConverterPT : IValueConverter {
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
-            if (value is FolderProjectTreeItem || value is LinkItem) {
-                Uri uri = new Uri("Icons/Folder2.png", UriKind.Relative);
+            if (value is FolderProjectTreeItem) {
+                Uri uri = new Uri("Icons/table_multiple.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             } else if (value is DataProjectTreeItem) {
-                Uri uri = new Uri("Icons/DataTable.png", UriKind.Relative);
+                Uri uri = new Uri("Icons/table.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             } else if (value is Column) {
-                Uri uri = new Uri("Icons/Column.png", UriKind.Relative);
+                Uri uri = new Uri("Icons/control_stop_blue.png", UriKind.Relative);
+                BitmapImage source = new BitmapImage(uri);
+                return source;
+            } else if (value is LinkItem) {
+                Uri uri = new Uri("Icons/package.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             }
