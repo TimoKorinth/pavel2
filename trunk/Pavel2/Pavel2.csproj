@@ -289,5 +289,8 @@
     <Resource Include="GUI\Icons\control_stop.png" />
     <Resource Include="GUI\Icons\control_stop_blue.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\delete.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

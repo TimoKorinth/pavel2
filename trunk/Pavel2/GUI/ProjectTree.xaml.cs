@@ -284,6 +284,10 @@ namespace Pavel2.GUI {
             InsertToProjectTree(item, true, true);
         }
 
+        private void ContextMenu_CreateNewGroup(object sender, RoutedEventArgs e) {
+
+        }
+
         #endregion
     }
 }

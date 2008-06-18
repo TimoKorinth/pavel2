@@ -27,7 +27,11 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <gui:MultiTreeView x:Name="projectTree" DragLeave="projectTree_DragLeave" DragOver="projectTree_DragOver" KeyDown="projectTree_KeyDown" PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" Grid.Row="2" Grid.RowSpan="2" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True" BorderThickness="0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <gui:MultiTreeView x:Name="projectTree" DragLeave="projectTree_DragLeave" DragOver="projectTree_DragOver" KeyDown="projectTree_KeyDown" PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True" BorderThickness="0">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="HeaderTemplate" Value="{StaticResource DefaultTemplate}" />
@@ -35,11 +39,26 @@
             </TreeView.Resources>
             <TreeView.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Create new Group" Click="ContextMenu_CreateNewGroup" />
                     <MenuItem Header="Add new Data Table" Click="ContextMenu_AddNewDataTable" />
                     <MenuItem Header="Add new Folder" Click="ContextMenu_AddNewFolder" />
                     <MenuItem Header="Remove Item" Click="ContextMenu_RemoveItem" />
                 </ContextMenu>
             </TreeView.ContextMenu>
         </gui:MultiTreeView>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Margin="1" Click="ContextMenu_CreateNewGroup">
+                <Image Source="/Pavel2;component/GUI/Icons/package.png"></Image>
+            </Button>
+            <Button Margin="1" Click="ContextMenu_AddNewFolder">
+                <Image Source="/Pavel2;component/GUI/Icons/table_multiple.png"></Image>
+            </Button>
+            <Button Margin="1" Click="ContextMenu_AddNewDataTable">
+                <Image Source="/Pavel2;component/GUI/Icons/table.png"></Image>
+            </Button>
+            <Button Margin="1" Click="ContextMenu_RemoveItem">
+                <Image Source="/Pavel2;component/GUI/Icons/delete.png"></Image>
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>
