@@ -7,6 +7,7 @@ using Pavel2.Framework;
 using System.IO;
 using System.Windows.Documents;
 using System.Collections.Generic;
+using System.Windows.Data;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -233,9 +234,35 @@ namespace Pavel2.GUI {
             }
         }
 
+        private void ChangeItemsVisibility(TreeViewItem rootItem, Type typeToChange, bool visible) {
+            foreach (TreeViewItem tvItem in rootItem.Items) {
+                if (tvItem.Tag is FolderProjectTreeItem) ChangeItemsVisibility(tvItem, typeToChange, visible);
+                if (tvItem.Tag.GetType().Equals(typeToChange)) {
+                    if (visible) tvItem.Visibility = Visibility.Visible;
+                    else tvItem.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
         #endregion
 
         #region Event Handlers
+
+        private void viewPackageButton_Checked(object sender, RoutedEventArgs e) {
+            ChangeItemsVisibility(this.root, typeof(LinkItem), true);
+        }
+
+        private void viewPackageButton_Unchecked(object sender, RoutedEventArgs e) {
+            ChangeItemsVisibility(this.root, typeof(LinkItem), false);
+        }
+
+        private void viewAllButton_Checked(object sender, RoutedEventArgs e) {
+            ChangeItemsVisibility(this.root, typeof(DataProjectTreeItem), true);
+        }
+
+        private void viewAllButton_Unchecked(object sender, RoutedEventArgs e) {
+            ChangeItemsVisibility(this.root, typeof(DataProjectTreeItem), false);
+        }
 
         private void projectTree_DragLeave(object sender, DragEventArgs e) {
             if (this.highlightedItem != null) {
