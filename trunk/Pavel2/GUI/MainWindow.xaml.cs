@@ -23,8 +23,6 @@ namespace Pavel2.GUI
 
         private double projectTreeExpanderMinWidth = double.NaN;
         private GridLength projectTreeExpanderWidth;
-        private double linksExpanderMinHeight = double.NaN;
-        private GridLength linksExpanderHeight;
         private double previewExpanderMinWidth = double.NaN;
         private GridLength previewExpanderWidth;
         private double explorerExpanderMinWidth = double.NaN;
