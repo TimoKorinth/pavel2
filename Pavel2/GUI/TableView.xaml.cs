@@ -25,8 +25,8 @@ namespace Pavel2.GUI {
             InitializeComponent();
         }
 
-        public void Render() {
-            dataGrid = MainData.CurrentDataGrid;
+        public void Render(DataGrid dataGrid) {
+            this.dataGrid = dataGrid;
             if (dataGrid != null) {
                 tableListView.Visibility = Visibility.Visible;
                 tableListView.ItemsSource = dataGrid.DataField;

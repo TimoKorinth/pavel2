@@ -18,13 +18,6 @@ namespace Pavel2.Framework {
             get { return (Pavel2.GUI.MainWindow)Application.Current.MainWindow; }
         }
 
-        public static DataGrid CurrentDataGrid {
-            get {
-                Pavel2.GUI.MainWindow window = (Pavel2.GUI.MainWindow)Application.Current.MainWindow;
-                return window.visualizationLayer.CurrentDataGrid; 
-            }
-        }
-
         public static DataGrid AddColumns(Column[] columns) {
             Column[] cols = columns.Clone() as Column[];
             MainData.columns.AddRange(cols);

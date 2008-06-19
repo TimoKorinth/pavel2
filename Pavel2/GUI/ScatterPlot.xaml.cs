@@ -107,8 +107,8 @@ namespace Pavel2.GUI {
 
         #region Visualization Member
 
-        public void Render() {
-            dataGrid = MainData.CurrentDataGrid;
+        public void Render(DataGrid dataGrid) {
+            this.dataGrid = dataGrid;
             if (dataGrid == null) return;
             step = (double)1 / (dataGrid.Columns.Length - 1);
             SetViewPort();

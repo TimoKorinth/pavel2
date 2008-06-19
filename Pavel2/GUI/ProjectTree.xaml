@@ -64,10 +64,10 @@
         </ToolBar>
         
         <ToolBar Grid.Row="2">
-            <ToggleButton Margin="1" Name="viewAllButton" Checked="viewAllButton_Checked" Unchecked="viewAllButton_Unchecked">
+            <ToggleButton IsChecked="True" Margin="1" Name="viewAllButton" Checked="viewAllButton_Checked" Unchecked="viewAllButton_Unchecked">
                 <Image Source="/Pavel2;component/GUI/Icons/table_multiple.png"></Image>
             </ToggleButton>
-            <ToggleButton Margin="1" Name="viewPackageButton" Checked="viewPackageButton_Checked" Unchecked="viewPackageButton_Unchecked">
+            <ToggleButton IsChecked="True" Margin="1" Name="viewPackageButton" Checked="viewPackageButton_Checked" Unchecked="viewPackageButton_Unchecked">
                 <Image Source="/Pavel2;component/GUI/Icons/package.png"></Image>
             </ToggleButton>
         </ToolBar>

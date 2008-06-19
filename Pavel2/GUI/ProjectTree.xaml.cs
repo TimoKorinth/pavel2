@@ -235,6 +235,7 @@ namespace Pavel2.GUI {
         }
 
         private void ChangeItemsVisibility(TreeViewItem rootItem, Type typeToChange, bool visible) {
+            if (rootItem == null) return;
             foreach (TreeViewItem tvItem in rootItem.Items) {
                 if (tvItem.Tag is FolderProjectTreeItem) ChangeItemsVisibility(tvItem, typeToChange, visible);
                 if (tvItem.Tag.GetType().Equals(typeToChange)) {
