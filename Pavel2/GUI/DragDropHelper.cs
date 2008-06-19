@@ -32,16 +32,8 @@ namespace Pavel2.GUI {
         }
 
         public static void DoDragDrop(DependencyObject dragSource, object data, DragDropEffects effect, params UIElement[] targets) {
-            LinkList lList = new LinkList();
-            foreach (UIElement item in targets) {
-                if (item is LinkList) {
-                    lList = (LinkList)item;
-                    lList.newItemGrid.Visibility = Visibility.Visible;
-                }
-            }
             HighlightElement(targets);
             DragDrop.DoDragDrop(dragSource, data, effect);
-            if (lList != null) lList.newItemGrid.Visibility = Visibility.Collapsed;
             RemoveAdorners();
         }
 
