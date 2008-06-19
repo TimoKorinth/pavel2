@@ -20,98 +20,31 @@ namespace Pavel2.GUI {
     public partial class VisualizationLayer : UserControl {
 
         private object visualizationData;
-        private DataGrid currentDataGrid;
-
-        public DataGrid CurrentDataGrid {
-            get { return currentDataGrid; }
-            set {
-                currentDataGrid = value;
-                if (CurrentVisualization != null) {
-                    VisualizationTabFocus(CurrentVisualization);
-                }
-            }
-        }
 
         public object VisualizationData {
             get { return visualizationData; }
             set { 
                 visualizationData = value;
-                if (CurrentVisualization == null) CurrentVisualization = (Visualization)visualizationTabControl.SelectedContent;
-                SetCurrentDataGrid();
+                Display();
+            }
+        }
+
+        private void Display() {
+            if (visualizationData == null) {
+                visStackPanel.Children.Clear();
+            }
+            if (visualizationData is ProjectTreeItem) {
+                ProjectTreeItem ptItem = (ProjectTreeItem)visualizationData;
+                visStackPanel.Children.Clear();
+                visStackPanel.Children.Add(new VisTab(ptItem));
+            }
+            if (visualizationData is LinkItem) {
+                
             }
         }
 
         public VisualizationLayer() {
             InitializeComponent();
-            InitVisualizationTab();
-        }
-
-        public Visualization CurrentVisualization {
-            get {
-                if (visualizationData is ProjectTreeItem) {
-                    ProjectTreeItem pTI = (ProjectTreeItem)visualizationData;
-                    return pTI.LastVisualization;
-                }
-                return null;
-            }
-            set {
-                if (visualizationData is ProjectTreeItem) {
-                    ProjectTreeItem pTI = (ProjectTreeItem)visualizationData;
-                    pTI.LastVisualization = value;
-                }
-            }
-        }
-
-        public void VisualizationTabFocus(Visualization vis) {
-            foreach (TabItem item in visualizationTabControl.Items) {
-                if (item.Content.Equals(vis)) {
-                    CurrentVisualization.Render();
-                    item.IsSelected = true;
-                }
-            }
-        }
-
-        private void SetCurrentDataGrid() {
-            if (visualizationData != null) {
-                if (visualizationData is ProjectTreeItem) {
-                    ProjectTreeItem ptItem = (ProjectTreeItem)visualizationData;
-                    this.CurrentDataGrid = ptItem.DataGrid;
-                } else {
-                    this.CurrentDataGrid = null;
-                }
-            } else {
-                this.CurrentDataGrid = null;
-            }
-        }
-
-        private void InitVisualizationTab() {
-            visualizationTabControl.Items.Clear();
-            Type[] types = System.Reflection.Assembly.GetAssembly(typeof(Visualization)).GetTypes();
-            foreach (Type t in types) {
-                Type tmp = t.GetInterface("Visualization");
-                if (tmp != null) {
-                    TabItem tabItem = new TabItem();
-                    tabItem.Header = t.Name;
-                    Visualization vis = (Visualization)Activator.CreateInstance(t);
-                    tabItem.Content = vis;
-                    visualizationTabControl.Items.Add(tabItem);
-                }
-            }
-        }
-
-        private void visualizationTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (!(e.Source is TabControl)) return;
-            if (e.AddedItems.Count > 1) return;
-            TabItem tItem = e.AddedItems[0] as TabItem;
-            if (tItem == null) return;
-            CurrentVisualization = (Visualization)tItem.Content;
-            if (CurrentVisualization == null) return;
-            CurrentVisualization.Render();
-        }
-
-        private void visualizationTabControl_SizeChanged(object sender, SizeChangedEventArgs e) {
-            if (CurrentVisualization == null) return;
-            CurrentVisualization.RenderAfterResize();
         }
     }
 }

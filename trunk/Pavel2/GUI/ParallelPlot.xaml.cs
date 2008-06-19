@@ -134,8 +134,8 @@ namespace Pavel2.GUI {
 
         #region Visualization Member
 
-        public void Render() {
-            dataGrid = MainData.CurrentDataGrid;
+        public void Render(DataGrid dataGrid) {
+            this.dataGrid = dataGrid;
             comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
             if (dataGrid == null) return;
             SetLabelPanel();

@@ -117,6 +117,9 @@
     <Compile Include="GUI\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\VisTab.xaml.cs">
+      <DependentUpon>VisTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Visualization.cs" />
     <Compile Include="GUI\VisualizationLayer.xaml.cs">
       <DependentUpon>VisualizationLayer.xaml</DependentUpon>
@@ -152,6 +155,10 @@
     <Page Include="GUI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\VisTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\VisualizationLayer.xaml">
       <SubType>Designer</SubType>
