@@ -33,11 +33,12 @@ namespace Pavel2.GUI {
             }
 
             protected override void RenderScene() {
+                this.MakeCurrentContext();
                 this.Invalidate();
             }
         }
 
-        System.Windows.Forms.Control wfPA;
+        OpenGLRenderWind wfPA;
         DataGrid dataGrid;
         CombinedDataItem comp;
         double step;
@@ -103,6 +104,7 @@ namespace Pavel2.GUI {
         }
 
         private void RenderScene() {
+            wfPA.MakeCurrentContext();
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
 
             DrawLines();
