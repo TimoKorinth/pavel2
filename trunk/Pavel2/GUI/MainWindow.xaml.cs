@@ -56,23 +56,6 @@ namespace Pavel2.GUI
             projectTreeSplitter.Visibility = Visibility.Visible;
         }
 
-        private void linksExpander_Collapsed(object sender, RoutedEventArgs e) {
-            linksExpanderMinHeight = projectTreeGrid.RowDefinitions[2].MinHeight;
-            linksExpanderHeight = projectTreeGrid.RowDefinitions[2].Height;
-            projectTreeGrid.RowDefinitions[2].MinHeight = 0;
-            projectTreeGrid.RowDefinitions[2].Height = GridLength.Auto;
-            linksSplitter.Visibility = Visibility.Collapsed;
-            e.Handled = true;
-        }
-
-        private void linksExpander_Expanded(object sender, RoutedEventArgs e) {
-            if (double.IsNaN(linksExpanderMinHeight)) return;
-            projectTreeGrid.RowDefinitions[2].MinHeight = linksExpanderMinHeight;
-            projectTreeGrid.RowDefinitions[2].Height = linksExpanderHeight;
-            linksSplitter.Visibility = Visibility.Visible;
-            e.Handled = true;
-        }
-
         private void previewExpander_Expanded(object sender, RoutedEventArgs e) {
             if (double.IsNaN(previewExpanderMinWidth)) return;
             windowGrid.ColumnDefinitions[6].MinWidth = previewExpanderMinWidth;

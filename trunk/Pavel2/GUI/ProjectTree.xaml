@@ -28,10 +28,11 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <gui:MultiTreeView Style="{StaticResource {x:Type TreeView}}" x:Name="projectTree" DragLeave="projectTree_DragLeave" DragOver="projectTree_DragOver" KeyDown="projectTree_KeyDown" PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True" BorderThickness="0">
+        <gui:MultiTreeView Grid.Row="1" Style="{StaticResource {x:Type TreeView}}" x:Name="projectTree" DragLeave="projectTree_DragLeave" DragOver="projectTree_DragOver" KeyDown="projectTree_KeyDown" PreviewMouseDoubleClick="projectTree_PreviewMouseDoubleClick" PreviewMouseLeftButtonDown="projectTree_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="projectTree_PreviewMouseRightButtonDown" Drop="projectTree_Drop" SelectedItemChanged="projectTree_SelectedItemChanged" AllowDrop="True" BorderThickness="0">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <Setter Property="HeaderTemplate" Value="{StaticResource DefaultTemplate}" />
@@ -46,19 +47,29 @@
                 </ContextMenu>
             </TreeView.ContextMenu>
         </gui:MultiTreeView>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+        
+        <ToolBar Grid.Row="0" Style="{StaticResource simpleToolBar}">
             <Button Margin="1" Click="ContextMenu_CreateNewGroup">
-                <Image Source="/Pavel2;component/GUI/Icons/package.png"></Image>
+                <Image Source="/Pavel2;component/GUI/Icons/package_add.png"></Image>
             </Button>
             <Button Margin="1" Click="ContextMenu_AddNewFolder">
                 <Image Source="/Pavel2;component/GUI/Icons/table_multiple.png"></Image>
             </Button>
             <Button Margin="1" Click="ContextMenu_AddNewDataTable">
-                <Image Source="/Pavel2;component/GUI/Icons/table.png"></Image>
+                <Image Source="/Pavel2;component/GUI/Icons/table_add.png"></Image>
             </Button>
             <Button Margin="1" Click="ContextMenu_RemoveItem">
                 <Image Source="/Pavel2;component/GUI/Icons/delete.png"></Image>
             </Button>
-        </StackPanel>
+        </ToolBar>
+        
+        <ToolBar Grid.Row="2" Style="{StaticResource simpleToolBar}">
+            <ToggleButton Margin="1">
+                <Image Source="/Pavel2;component/GUI/Icons/table_multiple.png"></Image>
+            </ToggleButton>
+            <ToggleButton Margin="1">
+                <Image Source="/Pavel2;component/GUI/Icons/package.png"></Image>
+            </ToggleButton>
+        </ToolBar>
     </Grid>
 </UserControl>

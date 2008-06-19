@@ -103,9 +103,6 @@
     <Compile Include="GUI\ScatterPlot.xaml.cs">
       <DependentUpon>ScatterPlot.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\LinkList.xaml.cs">
-      <DependentUpon>LinkList.xaml</DependentUpon>
-    </Compile>
     <Compile Include="GUI\ParallelPlot.xaml.cs">
       <DependentUpon>ParallelPlot.xaml</DependentUpon>
     </Compile>
@@ -135,10 +132,6 @@
     <Page Include="GUI\ScatterPlot.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="GUI\LinkList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\ParallelPlot.xaml">
       <SubType>Designer</SubType>
@@ -291,6 +284,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GUI\Icons\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\package_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_add.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

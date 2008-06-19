@@ -300,7 +300,7 @@ namespace Pavel2.GUI {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
                     if (this.editItem == null) {
                         if (!projectTree.SelectedItems.Contains(item)) item.IsSelected = true;
-                        DragDropHelper.DoDragDrop(projectTree, projectTree.SelectedItems, DragDropEffects.Copy, MainData.MainWindow.linkListPanel, this);
+                        DragDropHelper.DoDragDrop(projectTree, projectTree.SelectedItems, DragDropEffects.Copy, this);
                     }
                 }
             }
