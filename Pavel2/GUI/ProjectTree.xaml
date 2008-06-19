@@ -48,7 +48,7 @@
             </TreeView.ContextMenu>
         </gui:MultiTreeView>
         
-        <ToolBar Grid.Row="0" Style="{StaticResource simpleToolBar}">
+        <ToolBar Grid.Row="0">
             <Button Margin="1" Click="ContextMenu_CreateNewGroup">
                 <Image Source="/Pavel2;component/GUI/Icons/package_add.png"></Image>
             </Button>
@@ -63,7 +63,7 @@
             </Button>
         </ToolBar>
         
-        <ToolBar Grid.Row="2" Style="{StaticResource simpleToolBar}">
+        <ToolBar Grid.Row="2">
             <ToggleButton Margin="1">
                 <Image Source="/Pavel2;component/GUI/Icons/table_multiple.png"></Image>
             </ToggleButton>
