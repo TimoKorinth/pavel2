@@ -30,16 +30,23 @@ namespace Pavel2.GUI {
         }
 
         private void Display() {
-            if (visualizationData == null) {
-                visStackPanel.Children.Clear();
-            }
+            visStackPanel.Children.Clear();
+            visStackPanel.RowDefinitions.Clear();
+            visStackPanel.ColumnDefinitions.Clear();
             if (visualizationData is ProjectTreeItem) {
                 ProjectTreeItem ptItem = (ProjectTreeItem)visualizationData;
-                visStackPanel.Children.Clear();
                 visStackPanel.Children.Add(new VisTab(ptItem));
             }
             if (visualizationData is LinkItem) {
-                
+                LinkItem lItem = (LinkItem)visualizationData;
+                int i = 0;
+                foreach (DataProjectTreeItem item in lItem.DataItems) {
+                    visStackPanel.RowDefinitions.Add(new RowDefinition());
+                    VisTab visTab = new VisTab(item);
+                    Grid.SetRow(visTab, i);
+                    visStackPanel.Children.Add(visTab);
+                    i++;
+                }
             }
         }
 
