@@ -17,7 +17,7 @@ namespace Pavel2.GUI {
 
         #region Fields
 
-        private TreeViewItem root;
+        public TreeViewItem root;
         private TreeViewItem editItem;
         private TreeViewItem highlightedItem;
         private String oldHeader;

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
+using System.Runtime.Serialization;
 
 namespace Pavel2.Framework {
+    [Serializable()]
     public class FolderProjectTreeItem : ProjectTreeItem {
 
         private DataGrid dataGrid;
@@ -25,6 +27,10 @@ namespace Pavel2.Framework {
 
         public FolderProjectTreeItem(TreeViewItem parentItem) {
             this.parentItem = parentItem;
+        }
+
+        public FolderProjectTreeItem(SerializationInfo info, StreamingContext ctxt)
+            : base(info, ctxt) {
         }
 
         private void GetColumns(TreeViewItem tvItem) {

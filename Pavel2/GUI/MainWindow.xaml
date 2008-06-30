@@ -26,9 +26,9 @@
 		<Menu Grid.ColumnSpan="7">
             <MenuItem Header="Project">
                 <MenuItem Header="New..." />
-                <MenuItem Header="Open..." />
+                <MenuItem Header="Open..." Name="openMenu" Click="openMenu_Click" />
                 <MenuItem Header="Import..." />
-                <MenuItem Header="Save..." />
+                <MenuItem Header="Save..." Name="saveMenu" Click="saveMenu_Click" />
                 <MenuItem Header="Exit" />
             </MenuItem>
             <MenuItem Header="Edit"/>

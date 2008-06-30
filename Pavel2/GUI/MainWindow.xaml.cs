@@ -159,5 +159,33 @@ namespace Pavel2.GUI
             projectTreeView.ParseAgain(ParserManagement.CurrentParser);
             visualizationLayer.VisualizationData = projectTreeView.SelectedItem.Tag;
         }
+
+        private void saveMenu_Click(object sender, RoutedEventArgs e) {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "PavelProject";
+            dlg.DefaultExt = ".pav2";
+            dlg.Filter = "Pavel 2 documents (.pav2)|*.pav2";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true) {
+                string filename = dlg.FileName;
+                ProjectHelper.SaveProject(filename);
+            }
+        }
+
+        private void openMenu_Click(object sender, RoutedEventArgs e) {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.FileName = "PavelProject";
+            dlg.DefaultExt = ".pav2";
+            dlg.Filter = "Pavel 2 documents (.pav2)|*.pav2";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true) {
+                string filename = dlg.FileName;
+                ProjectHelper.OpenProject(filename);
+            }
+        }
 	}
 }

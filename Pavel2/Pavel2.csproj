@@ -88,7 +88,9 @@
     <Compile Include="Framework\MainData.cs" />
     <Compile Include="Framework\Parser.cs" />
     <Compile Include="Framework\ParserManagement.cs" />
+    <Compile Include="Framework\ProjectHelper.cs" />
     <Compile Include="Framework\ProjectTreeItem.cs" />
+    <Compile Include="Framework\SerializeObject.cs" />
     <Compile Include="GUI\EnumTypeConverter.cs" />
     <Compile Include="GUI\ExplorerTree.xaml.cs">
       <DependentUpon>ExplorerTree.xaml</DependentUpon>
