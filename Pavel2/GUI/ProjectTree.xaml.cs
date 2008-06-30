@@ -90,11 +90,7 @@ namespace Pavel2.GUI {
             return relData;
         }
 
-        #endregion
-
-        #region Private Methods
-
-        private void UpdateDataTreeViewItem(TreeViewItem item) {
+        public void UpdateDataTreeViewItem(TreeViewItem item) {
             if (item.Tag is DataProjectTreeItem) {
                 item.Items.Clear();
                 DataProjectTreeItem dPTVI = (DataProjectTreeItem)item.Tag;
@@ -106,7 +102,7 @@ namespace Pavel2.GUI {
             }
         }
 
-        private void UpdateLinkItem(TreeViewItem item) {
+        public void UpdateLinkItem(TreeViewItem item) {
             if (item.Tag is LinkItem) {
                 item.Items.Clear();
                 LinkItem lItem = (LinkItem)item.Tag;
@@ -118,6 +114,10 @@ namespace Pavel2.GUI {
                 }
             }
         }
+
+        #endregion
+
+        #region Private Methods
 
         private void InsertToProjectTree(TreeViewItem item, bool isSelected, bool isExpanded) {
             TreeViewItem rootItem = this.SelectedItem;
