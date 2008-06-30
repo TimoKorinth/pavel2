@@ -146,6 +146,7 @@ namespace Pavel2.GUI {
         }
 
         public void RenderAfterResize() {
+            wfPA.Refresh();
         }
 
         #endregion
