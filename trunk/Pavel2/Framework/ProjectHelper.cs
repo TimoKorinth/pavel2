@@ -23,13 +23,14 @@ namespace Pavel2.Framework {
         }
 
         private static void FillSerTree(SerializeObject ser, TreeViewItem item) {
-            if (!(item.Tag is ProjectTreeItem)) return;
+            if (!(item.Tag is ProjectTreeItem) && !(item.Tag is LinkItem)) return;
             if (ser.Items == null) ser.Items = new List<SerializeObject>();
-            ser.Item = item.Tag as ProjectTreeItem;
+            ser.Item = item.Tag;
+            if (item.Tag is LinkItem) return;
             foreach (TreeViewItem tvItem in item.Items) {
-                if (!(tvItem.Tag is ProjectTreeItem)) continue;
+                if (!(tvItem.Tag is ProjectTreeItem) && !(tvItem.Tag is LinkItem)) continue;
                 SerializeObject serTmp = new SerializeObject();
-                serTmp.Item = tvItem.Tag as ProjectTreeItem;
+                serTmp.Item = tvItem.Tag;
                 ser.Items.Add(serTmp);
                 FillSerTree(serTmp, tvItem);
             }
@@ -53,6 +54,8 @@ namespace Pavel2.Framework {
                 item.Items.Add(tvItem);
                 RecoverTree(serItem, tvItem);
             }
+            if (item.Tag is DataProjectTreeItem) MainData.MainWindow.projectTreeView.UpdateDataTreeViewItem(item);
+            if (item.Tag is LinkItem) MainData.MainWindow.projectTreeView.UpdateLinkItem(item);
         }
 
         public static void OpenProject(String file) {

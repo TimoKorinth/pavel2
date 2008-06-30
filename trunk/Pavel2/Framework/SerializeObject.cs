@@ -8,9 +8,9 @@ namespace Pavel2.Framework {
     [Serializable()]
     public class SerializeObject {
 
-        ProjectTreeItem item;
+        Object item;
 
-        public ProjectTreeItem Item {
+        public Object Item {
             get { return item; }
             set { item = value; }
         }
