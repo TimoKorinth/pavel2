@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Pavel2.Framework {
+    [Serializable()]
     class DiscretePoint : IPoint {
 
         public DiscretePoint(String data) {

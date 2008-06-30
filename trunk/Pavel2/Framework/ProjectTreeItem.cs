@@ -6,9 +6,11 @@ using Pavel2.GUI;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows;
+using System.Runtime.Serialization;
 
 namespace Pavel2.Framework {
-    public abstract class ProjectTreeItem {
+    [Serializable()]
+    public abstract class ProjectTreeItem : ISerializable {
 
         private String header;
         private Visualization lastVisualization;
@@ -17,6 +19,10 @@ namespace Pavel2.Framework {
         public RenderTargetBitmap Screenshot {
             get { return screenshot; }
             set { screenshot = value; }
+        }
+
+        public ProjectTreeItem() { 
+            
         }
 
         public void TakeScreenShot() {
@@ -39,5 +45,18 @@ namespace Pavel2.Framework {
 
         public abstract DataGrid DataGrid { get; set; }
 
+        public ProjectTreeItem(SerializationInfo info, StreamingContext ctxt) {
+            this.DataGrid = (DataGrid)info.GetValue("DataGrid", typeof(DataGrid));
+            this.Header = (String)info.GetValue("Header", typeof(String));
+            Visualization vis = (Visualization)Activator.CreateInstance((Type)info.GetValue("Visualization", typeof(Type)));
+            this.lastVisualization = vis;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context) {
+            info.AddValue("DataGrid", DataGrid);
+            info.AddValue("Header", header);
+            if (lastVisualization != null) info.AddValue("Visualization", lastVisualization.GetType());
+            else info.AddValue("Visualization", typeof(TableView));
+        }
     }
 }

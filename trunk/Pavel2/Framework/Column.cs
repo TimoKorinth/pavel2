@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Pavel2.Framework {
+    [Serializable()]
     public class Column {
 
         private IPoint[] points = new IPoint[0];

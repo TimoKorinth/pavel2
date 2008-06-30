@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Pavel2.Framework {
+    [Serializable()]
     public abstract class IPoint {
 
         protected double doubleData = double.NaN;
