@@ -35,6 +35,26 @@ namespace Pavel2.Framework {
             }
         }
 
+        private static void RecoverTree(SerializeObject ser, TreeViewItem item) {
+            item.Tag = ser.Item;
+            if (ser.Item is FolderProjectTreeItem) {
+                FolderProjectTreeItem fPTI = ser.Item as FolderProjectTreeItem;
+                fPTI.ParentItem = item;
+                item.Tag = fPTI;
+            }
+            foreach (SerializeObject serItem in ser.Items) {
+                TreeViewItem tvItem = new TreeViewItem();
+                tvItem.Tag = serItem.Item;
+                if (serItem.Item is FolderProjectTreeItem) {
+                    FolderProjectTreeItem fPTI = serItem.Item as FolderProjectTreeItem;
+                    fPTI.ParentItem = tvItem;
+                    tvItem.Tag = fPTI;
+                }
+                item.Items.Add(tvItem);
+                RecoverTree(serItem, tvItem);
+            }
+        }
+
         public static void OpenProject(String file) {
             serRoot = null;
 
@@ -42,6 +62,8 @@ namespace Pavel2.Framework {
             BinaryFormatter bformatter = new BinaryFormatter();
 
             serRoot = (SerializeObject)bformatter.Deserialize(stream);
+            MainData.MainWindow.projectTreeView.root.Items.Clear();
+            RecoverTree(serRoot, MainData.MainWindow.projectTreeView.root);
             stream.Close();
         }
 

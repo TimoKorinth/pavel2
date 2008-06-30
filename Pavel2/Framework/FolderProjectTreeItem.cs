@@ -25,6 +25,11 @@ namespace Pavel2.Framework {
             }
         }
 
+        public TreeViewItem ParentItem {
+            get { return parentItem; }
+            set { parentItem = value; }
+        }
+
         public FolderProjectTreeItem(TreeViewItem parentItem) {
             this.parentItem = parentItem;
         }
