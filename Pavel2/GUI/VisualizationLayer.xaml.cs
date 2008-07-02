@@ -19,12 +19,14 @@ namespace Pavel2.GUI {
     /// </summary>
     public partial class VisualizationLayer : UserControl {
 
+        private LinkItem lastLinkItem;
         private object visualizationData;
 
         public object VisualizationData {
             get { return visualizationData; }
             set { 
                 visualizationData = value;
+                if (visualizationData is LinkItem) lastLinkItem = visualizationData as LinkItem;
                 Display();
             }
         }
@@ -33,13 +35,37 @@ namespace Pavel2.GUI {
             visStackPanel.Children.Clear();
             visStackPanel.RowDefinitions.Clear();
             visStackPanel.ColumnDefinitions.Clear();
+            if ((visualizationData is CombinedDataItem) || (visualizationData is LinkItem)) {
+                RowDefinition row = new RowDefinition();
+                row.Height = GridLength.Auto;
+                visStackPanel.RowDefinitions.Add(row);
+                Button sep = new Button();
+                sep.Content = "Separate";
+                sep.Click += sep_Click;
+                Button tog = new Button();
+                tog.Content = "Combined";
+                tog.Click += tog_Click;
+                if (lastLinkItem != null) {
+                    if (!lastLinkItem.IsCombineable) tog.IsEnabled = false;
+                }
+                ToolBar bar = new ToolBar();
+                bar.Items.Add(sep);
+                bar.Items.Add(tog);
+                Grid.SetRow(bar, 0);
+                visStackPanel.Children.Add(bar);
+            }
             if (visualizationData is ProjectTreeItem) {
                 ProjectTreeItem ptItem = (ProjectTreeItem)visualizationData;
-                visStackPanel.Children.Add(new VisTab(ptItem));
+                VisTab visTab = new VisTab(ptItem);
+                if (visualizationData is CombinedDataItem) {
+                    visStackPanel.RowDefinitions.Add(new RowDefinition());
+                    Grid.SetRow(visTab, 1);
+                }
+                visStackPanel.Children.Add(visTab);
             }
             if (visualizationData is LinkItem) {
                 LinkItem lItem = (LinkItem)visualizationData;
-                int i = 0;
+                int i = 1;
                 foreach (DataProjectTreeItem item in lItem.DataItems) {
                     visStackPanel.RowDefinitions.Add(new RowDefinition());
                     VisTab visTab = new VisTab(item);
@@ -47,6 +73,19 @@ namespace Pavel2.GUI {
                     visStackPanel.Children.Add(visTab);
                     i++;
                 }
+            }
+        }
+
+        void sep_Click(object sender, RoutedEventArgs e) {
+            if (lastLinkItem != null) {
+                this.VisualizationData = lastLinkItem;
+            }
+        }
+
+        void tog_Click(object sender, RoutedEventArgs e) {
+            if (lastLinkItem != null) {
+                CombinedDataItem item = new CombinedDataItem(lastLinkItem.DataItems);
+                this.VisualizationData = item;
             }
         }
 
