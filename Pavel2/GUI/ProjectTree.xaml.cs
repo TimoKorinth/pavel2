@@ -412,6 +412,7 @@ namespace Pavel2.GUI {
                         DataProjectTreeItem dPTI = (DataProjectTreeItem)dataTreeItem.Tag;
                         dPTI.DataGrid.SetDataFields();
                     }
+                    dataTreeItem.IsSelected = true;
                 }
             }
         }
