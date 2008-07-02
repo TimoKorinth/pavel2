@@ -28,7 +28,13 @@ namespace Pavel2.Framework {
         }
 
         public Column[] Columns {
-            get { return columns; }
+            get { 
+                List<Column> tmp = new List<Column>();
+                foreach (Column col in columns) {
+                    if (col.Visible) tmp.Add(col);
+                }
+                return tmp.ToArray(); ; 
+            }
             set { columns = value; }
         }
 
@@ -51,20 +57,24 @@ namespace Pavel2.Framework {
             SetDataFields();
         }
 
-        private void SetDataFields() {
+        public void SetDataFields() {
             SetMaxColumn();
             double[][] dData = new double[columns[this.maxColumn].Points.Length][];
             String[][] data = new String[columns[this.maxColumn].Points.Length][];
             for (int i = 0; i < dData.Length; i++) {
-                dData[i] = new double[columns.Length];
-                data[i] = new String[columns.Length];
+                dData[i] = new double[VisibleColumns()];
+                data[i] = new String[VisibleColumns()];
+                int index = 0;
                 for (int j = 0; j < columns.Length; j++) {
-                    if (columns[j].Points.Length > i) {
-                        dData[i][j] = columns[j].Points[i].DoubleData;
-                        data[i][j] = columns[j].Points[i].Data;
-                    } else {
-                        dData[i][j] = double.NaN;
-                        data[i][j] = "";
+                    if (columns[j].Visible) {
+                        if (columns[j].Points.Length > i) {
+                            dData[i][index] = columns[j].Points[i].DoubleData;
+                            data[i][index] = columns[j].Points[i].Data;
+                        } else {
+                            dData[i][index] = double.NaN;
+                            data[i][index] = "";
+                        }
+                        index++;
                     }
                 }
             }
@@ -76,9 +86,17 @@ namespace Pavel2.Framework {
             this.maxColumn = 0;
             for (int i = 0; i < columns.Length; i++) {
                 if (columns[i].Points.Length > columns[this.maxColumn].Points.Length) {
-                    this.maxColumn = i;
+                    if (columns[i].Visible) this.maxColumn = i;
                 }
             }
+        }
+
+        private int VisibleColumns() {
+            int i = 0;
+            for (int x = 0; x < columns.Length; x++) {
+                if (columns[x].Visible) i++;
+            }
+            return i;
         }
 
     }

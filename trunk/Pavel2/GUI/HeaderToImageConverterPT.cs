@@ -19,7 +19,11 @@ namespace Pavel2.GUI {
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             } else if (value is Column) {
-                Uri uri = new Uri("Icons/control_stop_blue.png", UriKind.Relative);
+                Column col = (Column)value;
+                Uri uri = new Uri("Icons/control_stop.png", UriKind.Relative);
+                if (col.Visible) {
+                    uri = new Uri("Icons/control_stop_blue.png", UriKind.Relative);
+                }
                 BitmapImage source = new BitmapImage(uri);
                 return source;
             } else if (value is LinkItem) {

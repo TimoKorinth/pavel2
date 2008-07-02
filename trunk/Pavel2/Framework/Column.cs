@@ -11,6 +11,12 @@ namespace Pavel2.Framework {
         private String header = "";
         private double min;
         private double max;
+        private bool visible = true;
+
+        public bool Visible {
+            get { return visible; }
+            set { visible = value; }
+        }
 
         public double Max {
             get { return max; }

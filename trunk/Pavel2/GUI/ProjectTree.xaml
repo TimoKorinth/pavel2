@@ -14,7 +14,7 @@
 
         <DataTemplate x:Key="DefaultTemplate">
             <StackPanel Orientation="Horizontal">
-                <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverterPT}}"/>
+                <Image PreviewMouseDown="img_PreviewMouseDown" Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverterPT}}"/>
                 <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag.Header}" />
             </StackPanel>
         </DataTemplate>

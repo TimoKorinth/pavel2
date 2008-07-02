@@ -398,5 +398,22 @@ namespace Pavel2.GUI {
         }
 
         #endregion
+
+        private void img_PreviewMouseDown(object sender, MouseButtonEventArgs e) {
+            if (SelectedItem.Tag is Column) {
+                Column col = (Column)SelectedItem.Tag;
+                col.Visible = !col.Visible;
+                DataTemplate template = (DataTemplate)this.FindResource("DefaultTemplate");
+                SelectedItem.HeaderTemplate = null;
+                SelectedItem.HeaderTemplate = template;
+                if (SelectedItem.Parent is TreeViewItem) {
+                    TreeViewItem dataTreeItem = (TreeViewItem)SelectedItem.Parent;
+                    if (dataTreeItem.Tag is DataProjectTreeItem) {
+                        DataProjectTreeItem dPTI = (DataProjectTreeItem)dataTreeItem.Tag;
+                        dPTI.DataGrid.SetDataFields();
+                    }
+                }
+            }
+        }
     }
 }
