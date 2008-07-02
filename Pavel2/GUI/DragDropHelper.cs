@@ -60,7 +60,7 @@ namespace Pavel2.GUI {
                 renderBrush = new SolidColorBrush(brush);
                 renderBrush.Opacity = opac;
                 renderPen = new Pen(new SolidColorBrush(border), 10);
-                renderPen.Brush.Opacity = opac;
+                renderPen.Brush.Opacity = opac+0.25;
             }
 
             protected override void OnRender(DrawingContext dc) {
