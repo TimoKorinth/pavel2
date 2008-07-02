@@ -53,7 +53,7 @@
                 <Image Source="/Pavel2;component/GUI/Icons/package_add.png"></Image>
             </Button>
             <Button Margin="1" Click="ContextMenu_AddNewFolder">
-                <Image Source="/Pavel2;component/GUI/Icons/table_multiple.png"></Image>
+                <Image Source="/Pavel2;component/GUI/Icons/table_multiple_add.png"></Image>
             </Button>
             <Button Margin="1" Click="ContextMenu_AddNewDataTable">
                 <Image Source="/Pavel2;component/GUI/Icons/table_add.png"></Image>

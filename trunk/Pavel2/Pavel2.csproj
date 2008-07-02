@@ -300,5 +300,8 @@
   <ItemGroup>
     <Resource Include="GUI\Icons\table_add.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_multiple_add.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
