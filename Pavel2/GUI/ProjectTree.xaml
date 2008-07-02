@@ -49,25 +49,27 @@
         </gui:MultiTreeView>
         
         <ToolBar Grid.Row="0">
-            <Button Margin="1" Click="ContextMenu_CreateNewGroup">
+            <Button Margin="1" Click="ContextMenu_CreateNewGroup" ToolTip="Create new Group">
                 <Image Source="/Pavel2;component/GUI/Icons/package_add.png"></Image>
             </Button>
-            <Button Margin="1" Click="ContextMenu_AddNewFolder">
+            <Button Margin="1" Click="ContextMenu_AddNewFolder" ToolTip="Add new Folder">
                 <Image Source="/Pavel2;component/GUI/Icons/table_multiple_add.png"></Image>
             </Button>
-            <Button Margin="1" Click="ContextMenu_AddNewDataTable">
+            <Button Margin="1" Click="ContextMenu_AddNewDataTable" ToolTip="Add new DataSet">
                 <Image Source="/Pavel2;component/GUI/Icons/table_add.png"></Image>
             </Button>
-            <Button Margin="1" Click="ContextMenu_RemoveItem">
+            <Button Margin="1" Click="ContextMenu_RemoveItem" ToolTip="Delete Item">
                 <Image Source="/Pavel2;component/GUI/Icons/delete.png"></Image>
             </Button>
         </ToolBar>
         
         <ToolBar Grid.Row="2">
-            <ToggleButton IsChecked="True" Margin="1" Name="viewAllButton" Checked="viewAllButton_Checked" Unchecked="viewAllButton_Unchecked">
+            <ToggleButton IsChecked="True" Margin="1" Name="viewAllButton" ToolTip="View DataSets"
+                          Checked="viewAllButton_Checked" Unchecked="viewAllButton_Unchecked">
                 <Image Source="/Pavel2;component/GUI/Icons/table_multiple.png"></Image>
             </ToggleButton>
-            <ToggleButton IsChecked="True" Margin="1" Name="viewPackageButton" Checked="viewPackageButton_Checked" Unchecked="viewPackageButton_Unchecked">
+            <ToggleButton IsChecked="True" Margin="1" Name="viewPackageButton" ToolTip="View Groups"
+                          Checked="viewPackageButton_Checked" Unchecked="viewPackageButton_Unchecked">
                 <Image Source="/Pavel2;component/GUI/Icons/package.png"></Image>
             </ToggleButton>
         </ToolBar>
