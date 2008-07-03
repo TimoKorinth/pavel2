@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows;
 using System.Runtime.Serialization;
+using System.Drawing;
 
 namespace Pavel2.Framework {
     [Serializable()]
@@ -14,9 +15,9 @@ namespace Pavel2.Framework {
 
         private String header;
         private Visualization lastVisualization;
-        RenderTargetBitmap screenshot;
+        ImageSource screenshot;
 
-        public RenderTargetBitmap Screenshot {
+        public ImageSource Screenshot {
             get { return screenshot; }
             set { screenshot = value; }
         }
@@ -27,10 +28,15 @@ namespace Pavel2.Framework {
 
         public void TakeScreenShot() {
             if (lastVisualization == null) return;
-            FrameworkElement vis = (FrameworkElement)lastVisualization;
-            if (vis.ActualWidth == 0 || vis.ActualHeight == 0) return;
-            screenshot = new RenderTargetBitmap((int)vis.ActualWidth, (int)vis.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            screenshot.Render(vis);
+            if (lastVisualization.OwnScreenshot()) {
+                screenshot = lastVisualization.GetScreenshot();
+            } else {
+                FrameworkElement vis = (FrameworkElement)lastVisualization;
+                if (vis.ActualWidth == 0 || vis.ActualHeight == 0) return;
+                RenderTargetBitmap scr = new RenderTargetBitmap((int)vis.ActualWidth, (int)vis.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+                scr.Render(vis);
+                screenshot = scr;
+            }
         }
 
         public Visualization LastVisualization {

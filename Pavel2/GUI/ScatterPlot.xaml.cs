@@ -120,5 +120,18 @@ namespace Pavel2.GUI {
         }
 
         #endregion
+
+        #region Visualization Member
+
+
+        public bool OwnScreenshot() {
+            return true;
+        }
+
+        public ImageSource GetScreenshot() {
+            return null; ;
+        }
+
+        #endregion
     }
 }
