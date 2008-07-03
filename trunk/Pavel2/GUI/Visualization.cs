@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using Pavel2.Framework;
+using System.Windows.Media;
 
 namespace Pavel2.GUI {
     public interface Visualization {
@@ -11,6 +12,10 @@ namespace Pavel2.GUI {
         void Render(DataGrid dataGrid);
 
         void RenderAfterResize();
+
+        bool OwnScreenshot();
+
+        ImageSource GetScreenshot();
 
     }
 }

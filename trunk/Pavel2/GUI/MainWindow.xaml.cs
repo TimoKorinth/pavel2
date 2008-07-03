@@ -137,7 +137,7 @@ namespace Pavel2.GUI
 
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             EmptyOptionsPanel();
-            TreeViewItem item = e.OldValue as TreeViewItem;
+            TreeViewItem item = projectTreeView.SelectedItem as TreeViewItem;
             if (item != null) {
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;

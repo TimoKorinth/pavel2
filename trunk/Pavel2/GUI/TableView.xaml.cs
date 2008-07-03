@@ -49,5 +49,18 @@ namespace Pavel2.GUI {
 
         public void RenderAfterResize() {
         }
+
+        #region Visualization Member
+
+
+        public bool OwnScreenshot() {
+            return false;
+        }
+
+        public ImageSource GetScreenshot() {
+            return null;
+        }
+
+        #endregion
     }
 }

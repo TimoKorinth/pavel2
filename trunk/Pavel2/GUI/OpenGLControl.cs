@@ -258,6 +258,12 @@ namespace Pavel2.GUI {
             // Get size from viewport
             int[] viewport = new int[4];
             Gl.glGetIntegerv(Gl.GL_VIEWPORT, viewport);
+            if (viewport[0] == 0 && viewport[1] == 0 && viewport[2] == 0 && viewport[3] == 0) {
+                viewport[0] = 10;
+                viewport[1] = 10;
+                viewport[2] = 10;
+                viewport[3] = 10;
+            }
 
             // array for pixeldata
             byte[] read_data = new byte[4 * viewport[2] * viewport[3]];
