@@ -112,6 +112,11 @@ namespace Pavel2.GUI {
                     item.Items.Add(tmp);
                     UpdateDataTreeViewItem(tmp);
                 }
+                for (int i = 0; i < lItem.Images.Count; i++) {
+                    TreeViewItem tmp = new TreeViewItem();
+                    tmp.Tag = lItem.Images[i];
+                    item.Items.Add(tmp);
+                }
             }
         }
 
@@ -210,6 +215,9 @@ namespace Pavel2.GUI {
                 foreach (TreeViewItem tvItem in items) {
                     if (tvItem.Tag is DataProjectTreeItem) {
                         lItem.AddDataItem(tvItem.Tag as DataProjectTreeItem);
+                    }
+                    if (tvItem.Tag is ImageTreeItem) {
+                        lItem.AddImage(tvItem.Tag as ImageTreeItem);
                     }
                 }
                 UpdateLinkItem(target);
@@ -401,6 +409,11 @@ namespace Pavel2.GUI {
                     DataProjectTreeItem dPTI = tvItem.Tag as DataProjectTreeItem;
                     lItem.AddDataItem(dPTI);
                     if (lItem.Header == null) lItem.Header = dPTI.Header;
+                }
+                if (tvItem.Tag is ImageTreeItem) {
+                    ImageTreeItem img = (ImageTreeItem)tvItem.Tag;
+                    lItem.AddImage(img);
+                    if (lItem.Header == null) lItem.Header = img.Header;
                 }
             }
             newItem.Tag = lItem;

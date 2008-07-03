@@ -73,6 +73,14 @@ namespace Pavel2.GUI {
                     visStackPanel.Children.Add(visTab);
                     i++;
                 }
+                foreach (ImageTreeItem imgItem in lItem.Images) {
+                    visStackPanel.RowDefinitions.Add(new RowDefinition());
+                    Image img = new Image();
+                    img.Source = imgItem.ImageSource;
+                    Grid.SetRow(img, i);
+                    visStackPanel.Children.Add(img);
+                    i++;
+                }
             }
             if (visualizationData is ImageTreeItem) {
                 ImageTreeItem imgItem = (ImageTreeItem)visualizationData;
