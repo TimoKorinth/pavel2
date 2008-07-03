@@ -8,6 +8,7 @@ namespace Pavel2.Framework {
     public class LinkItem {
 
         private List<DataProjectTreeItem> dataItems;
+        private List<ImageTreeItem> images;
         private String header;
 
         public bool IsCombineable {
@@ -33,8 +34,14 @@ namespace Pavel2.Framework {
             set { dataItems = value; }
         }
 
+        public List<ImageTreeItem> Images {
+            get { return images; }
+            set { images = value; }
+        }
+
         public LinkItem() {
             dataItems = new List<DataProjectTreeItem>();
+            images = new List<ImageTreeItem>();
         }
 
         public void AddDataItem(DataProjectTreeItem dataItem) {
@@ -43,6 +50,14 @@ namespace Pavel2.Framework {
 
         public void RemoveDataItem(DataProjectTreeItem dataItem) {
             this.dataItems.Remove(dataItem);
+        }
+
+        public void AddImage(ImageTreeItem img) {
+            this.images.Add(img);
+        }
+
+        public void RemoveImage(ImageTreeItem img) {
+            this.images.Remove(img);
         }
 
     }
