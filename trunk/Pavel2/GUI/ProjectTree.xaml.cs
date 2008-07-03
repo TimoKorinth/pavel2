@@ -131,7 +131,7 @@ namespace Pavel2.GUI {
         private void InsertToProjectTree(TreeViewItem item, TreeViewItem rootItem, bool isSelected, bool isExpanded) {
             if (rootItem != null) {
                 int insertIndex = -1;
-                if (rootItem.Tag is DataProjectTreeItem || rootItem.Tag is LinkItem) {
+                if (!(rootItem.Tag is FolderProjectTreeItem)) {
                     TreeViewItem tmp = rootItem;
                     rootItem = (TreeViewItem)rootItem.Parent;
                     insertIndex = rootItem.Items.IndexOf(tmp);      //TODO: Entscheiden, ob danach oder davor
@@ -199,7 +199,7 @@ namespace Pavel2.GUI {
         private void MoveTreeViewItems(List<TreeViewItem> items, TreeViewItem target) {
             if (target.Tag is FolderProjectTreeItem) {
                 foreach (TreeViewItem tvItem in items) {
-                    if (tvItem.Tag is DataProjectTreeItem) {
+                    if (tvItem.Tag is DataProjectTreeItem || tvItem.Tag is ImageTreeItem) {
                         RemoveTreeViewItem(tvItem);
                         target.Items.Add(tvItem);
                     }
@@ -337,7 +337,7 @@ namespace Pavel2.GUI {
         private void projectTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = e.Source as TreeViewItem;
             if (item != null) {
-                if (item.Tag is Column || item.Tag is DataProjectTreeItem) {
+                if (item.Tag is Column || item.Tag is DataProjectTreeItem || item.Tag is ImageTreeItem) {
                     if (this.editItem == null) {
                         if (!projectTree.SelectedItems.Contains(item)) item.IsSelected = true;
                         DragDropHelper.DoDragDrop(projectTree, projectTree.SelectedItems, DragDropEffects.Copy, this);
