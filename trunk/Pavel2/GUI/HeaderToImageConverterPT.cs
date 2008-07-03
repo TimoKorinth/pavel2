@@ -30,6 +30,10 @@ namespace Pavel2.GUI {
                 Uri uri = new Uri("Icons/package.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 return source;
+            } else if (value is ImageTreeItem) {
+                Uri uri = new Uri("Icons/image.png", UriKind.Relative);
+                BitmapImage source = new BitmapImage(uri);
+                return source;
             }
             return value;
         }

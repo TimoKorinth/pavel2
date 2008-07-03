@@ -74,6 +74,16 @@ namespace Pavel2.GUI {
                     i++;
                 }
             }
+            if (visualizationData is ImageTreeItem) {
+                ImageTreeItem imgItem = (ImageTreeItem)visualizationData;
+                Image img = new Image();
+                img.Source = imgItem.ImageSource;
+                img.Stretch = Stretch.None;
+                if (imgItem.ImageSource.Height > visStackPanel.ActualHeight || imgItem.ImageSource.Width > visStackPanel.ActualWidth) {
+                    img.Stretch = Stretch.Uniform;
+                }
+                visStackPanel.Children.Add(img);
+            }
         }
 
         void sep_Click(object sender, RoutedEventArgs e) {

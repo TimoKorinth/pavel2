@@ -158,22 +158,34 @@ namespace Pavel2.GUI {
         }
 
         private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
-            DataGrid dataGrid = ParserManagement.GetDataGrid(file);
-            if (null != dataGrid) {
+            if (ImageParser.IsImage(file)) {
+                ImageTreeItem imgItem = new ImageTreeItem(ImageParser.GetImage(file));
                 TreeViewItem tvItem = new TreeViewItem();
-                DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
-                dPTI.Header = file.Name;
-                tvItem.Tag = dPTI;
-                UpdateDataTreeViewItem(tvItem);
+                imgItem.Header = file.Name;
+                tvItem.Tag = imgItem;
                 if (rootItem != null) {
                     InsertToProjectTree(tvItem, rootItem, true, true);
                 } else {
                     InsertToProjectTree(tvItem, true, true);
                 }
-                RoutedEventArgs args = new RoutedEventArgs(NewFileInsertedEvent, this);
-                this.RaiseEvent(args);
-            } else { 
-                //TODO: Fehlermeldung, dass nicht geparst werden konnte!
+            } else {
+                DataGrid dataGrid = ParserManagement.GetDataGrid(file);
+                if (null != dataGrid) {
+                    TreeViewItem tvItem = new TreeViewItem();
+                    DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
+                    dPTI.Header = file.Name;
+                    tvItem.Tag = dPTI;
+                    UpdateDataTreeViewItem(tvItem);
+                    if (rootItem != null) {
+                        InsertToProjectTree(tvItem, rootItem, true, true);
+                    } else {
+                        InsertToProjectTree(tvItem, true, true);
+                    }
+                    RoutedEventArgs args = new RoutedEventArgs(NewFileInsertedEvent, this);
+                    this.RaiseEvent(args);
+                } else {
+                    //TODO: Fehlermeldung, dass nicht geparst werden konnte!
+                }
             }
         }
 

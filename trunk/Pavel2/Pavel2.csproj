@@ -83,6 +83,8 @@
     <Compile Include="Framework\DataProjectTreeItem.cs" />
     <Compile Include="Framework\DiscretePoint.cs" />
     <Compile Include="Framework\FolderProjectTreeItem.cs" />
+    <Compile Include="Framework\ImageParser.cs" />
+    <Compile Include="Framework\ImageTreeItem.cs" />
     <Compile Include="Framework\IPoint.cs" />
     <Compile Include="Framework\LinkItem.cs" />
     <Compile Include="Framework\MainData.cs" />
@@ -302,6 +304,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GUI\Icons\table_multiple_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
