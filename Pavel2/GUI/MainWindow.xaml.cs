@@ -35,7 +35,7 @@ namespace Pavel2.GUI
 			this.InitializeComponent();
 
             EmptyPreviewPanel();
-            EmptyOptionsPanel();
+            RemoveOptionsPanel();
 		}
 
         #region Expander Event Handler
@@ -91,19 +91,40 @@ namespace Pavel2.GUI
 
         #region Public Methods
 
-        public void FillOptionsPanel(UIElement element, bool expand) {
-            optionsExpander.Content = element;
+        public void CreateOptionsPanel(UIElement element, bool expand) {
+            StackPanel stack = new StackPanel();
+            stack.Children.Add(element);
+            optionsExpander.Content = stack;
             optionsExpander.Visibility = Visibility.Visible;
             optionsExpander.IsExpanded = expand;
         }
 
-        public void EmptyOptionsPanel() {
-            if (optionsExpander.Content is PropertyGrid) {
-                PropertyGrid pGrid = (PropertyGrid)optionsExpander.Content;
-                pGrid.PropertyChanged -= pGrid_PropertyChanged;
-            } 
+        public void RemoveOptionsPanel() {
+            StackPanel stack = optionsExpander.Content as StackPanel;
+            if (stack == null) {
+                optionsExpander.Content = null;
+                optionsExpander.Visibility = Visibility.Collapsed;
+                return;
+            }
+            foreach (UIElement el in stack.Children) {
+                if (el is ParserOptions) {
+                    ParserOptions pOpt = (ParserOptions)el;
+                    pOpt.parserPropertyGrid.PropertyChanged -= pGrid_PropertyChanged;
+                    pOpt.parserList.SelectionChanged -= parserList_PropertyChanged;
+                } 
+            }
             optionsExpander.Content = null;
             optionsExpander.Visibility = Visibility.Collapsed;
+        }
+
+        public void AddToOptionsPanel(UIElement element) {
+            StackPanel stack = optionsExpander.Content as StackPanel;
+            if (stack == null) {
+                CreateOptionsPanel(element, true);
+                stack = optionsExpander.Content as StackPanel;
+                if (stack == null) return;
+            }
+            stack.Children.Add(element);
         }
         
         public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
@@ -141,7 +162,7 @@ namespace Pavel2.GUI
         }
 
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            EmptyOptionsPanel();
+            RemoveOptionsPanel();
             TreeViewItem item = projectTreeView.SelectedItem;
             if (item != null) {
                 if (item.Tag is ProjectTreeItem) {
@@ -157,10 +178,11 @@ namespace Pavel2.GUI
         private void ShowParserProperties() {
             if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
                 DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
-                PropertyGrid pGrid = new PropertyGrid();
-                pGrid.SelectedObject = dPTI.Parser;
-                pGrid.PropertyChanged += pGrid_PropertyChanged;
-                FillOptionsPanel(pGrid, true);
+                ParserOptions pOpts = new ParserOptions();
+                pOpts.SelectedObject = dPTI.Parser;
+                pOpts.parserPropertyGrid.PropertyChanged += pGrid_PropertyChanged;
+                pOpts.parserList.SelectionChanged += parserList_PropertyChanged;
+                CreateOptionsPanel(pOpts, true);
             }
         }
 
@@ -170,6 +192,21 @@ namespace Pavel2.GUI
                 try {
                     FileInfo file = new FileInfo(dPTI.Filename);
                     projectTreeView.ParseAgain(dPTI.Parser, file);
+                } catch (Exception) {
+                    //TODO: Fehlermeldung und automatische Anzeige eines File Open Dialoges
+                }
+                visualizationLayer.VisualizationData = dPTI;
+            }
+        }
+
+        void parserList_PropertyChanged(object sender, RoutedEventArgs e) {
+            ComboBox parserList = sender as ComboBox;
+            if (parserList == null) return;
+            if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
+                DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
+                try {
+                    FileInfo file = new FileInfo(dPTI.Filename);
+                    projectTreeView.ParseAgain(parserList.SelectedItem as Parser, file); //Hier Parser aus Liste holen
                 } catch (Exception) {
                     //TODO: Fehlermeldung und automatische Anzeige eines File Open Dialoges
                 }

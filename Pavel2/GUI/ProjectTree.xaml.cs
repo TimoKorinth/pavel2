@@ -45,6 +45,7 @@ namespace Pavel2.GUI {
         #region Public Methods
 
         public void ParseAgain(Parser parser, FileInfo file) {
+            if (parser == null) return;
             TreeViewItem item = this.SelectedItem;
             if (item != null && item.Tag is DataProjectTreeItem) {
                 DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
