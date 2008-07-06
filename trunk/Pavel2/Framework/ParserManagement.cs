@@ -39,7 +39,8 @@ namespace Pavel2.Framework {
             return null;
         }
 
-        public static DataGrid GetDataGrid(Parser parser) {
+        public static DataGrid GetDataGrid(Parser parser, FileInfo file) {
+            ParserManagement.file = file;
             currentParser = parser;
             Column[] columns;
             columns = parser.Parse(ParserManagement.file.OpenText());

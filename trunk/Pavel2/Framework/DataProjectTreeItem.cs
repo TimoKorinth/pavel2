@@ -9,6 +9,18 @@ namespace Pavel2.Framework {
     public class DataProjectTreeItem : ProjectTreeItem {
 
         private DataGrid dataGrid;
+        private String filename;
+        private Parser parser;
+
+        public Parser Parser {
+            get { return parser; }
+            set { parser = value; }
+        }
+
+        public String Filename {
+            get { return filename; }
+            set { filename = value; }
+        }
 
         public override DataGrid DataGrid {
             get {

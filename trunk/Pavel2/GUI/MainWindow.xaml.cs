@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Pavel2.Framework;
+using System.IO;
 
 namespace Pavel2.GUI
 {
@@ -97,6 +98,10 @@ namespace Pavel2.GUI
         }
 
         public void EmptyOptionsPanel() {
+            if (optionsExpander.Content is PropertyGrid) {
+                PropertyGrid pGrid = (PropertyGrid)optionsExpander.Content;
+                pGrid.PropertyChanged -= pGrid_PropertyChanged;
+            } 
             optionsExpander.Content = null;
             optionsExpander.Visibility = Visibility.Collapsed;
         }
@@ -137,27 +142,39 @@ namespace Pavel2.GUI
 
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             EmptyOptionsPanel();
-            TreeViewItem item = projectTreeView.SelectedItem as TreeViewItem;
+            TreeViewItem item = projectTreeView.SelectedItem;
             if (item != null) {
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                     pTI.TakeScreenShot();
                 }
                 visualizationLayer.VisualizationData = item.Tag;
+                ShowParserProperties();
             }
             UpdatePreviewPanel();
         }
 
-        private void projectTreeView_NewFileInserted(object sender, RoutedEventArgs e) {
-            PropertyGrid pGrid = new PropertyGrid();
-            pGrid.SelectedObject = ParserManagement.CurrentParser;
-            pGrid.PropertyChanged += pGrid_PropertyChanged;
-            FillOptionsPanel(pGrid, true);
+        private void ShowParserProperties() {
+            if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
+                DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
+                PropertyGrid pGrid = new PropertyGrid();
+                pGrid.SelectedObject = dPTI.Parser;
+                pGrid.PropertyChanged += pGrid_PropertyChanged;
+                FillOptionsPanel(pGrid, true);
+            }
         }
 
         void pGrid_PropertyChanged(object sender, RoutedEventArgs e) {
-            projectTreeView.ParseAgain(ParserManagement.CurrentParser);
-            visualizationLayer.VisualizationData = projectTreeView.SelectedItem.Tag;
+            if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
+                DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
+                try {
+                    FileInfo file = new FileInfo(dPTI.Filename);
+                    projectTreeView.ParseAgain(dPTI.Parser, file);
+                } catch (Exception) {
+                    //TODO: Fehlermeldung und automatische Anzeige eines File Open Dialoges
+                }
+                visualizationLayer.VisualizationData = dPTI;
+            }
         }
 
         private void saveMenu_Click(object sender, RoutedEventArgs e) {
