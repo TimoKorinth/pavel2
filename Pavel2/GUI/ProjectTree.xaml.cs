@@ -34,20 +34,6 @@ namespace Pavel2.GUI {
 
         #endregion
 
-        #region Routed Events
-
-        public static readonly RoutedEvent NewFileInsertedEvent;
-        static ProjectTree() {
-            NewFileInsertedEvent = EventManager.RegisterRoutedEvent(
-                "NewFileInserted", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ProjectTree));
-        }
-        public event RoutedEventHandler NewFileInserted {
-            add { AddHandler(NewFileInsertedEvent, value); }
-            remove { RemoveHandler(NewFileInsertedEvent, value); }
-        }
-
-        #endregion
-
         #region Properties
 
         public TreeViewItem SelectedItem {
@@ -58,13 +44,13 @@ namespace Pavel2.GUI {
 
         #region Public Methods
 
-        public void ParseAgain(Parser parser) {
+        public void ParseAgain(Parser parser, FileInfo file) {
             TreeViewItem item = this.SelectedItem;
             if (item != null && item.Tag is DataProjectTreeItem) {
                 DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
                 DataGrid dataGrid = dPTI.DataGrid;
                 MainData.RemoveColumns(dataGrid);
-                DataGrid d = ParserManagement.GetDataGrid(parser);
+                DataGrid d = ParserManagement.GetDataGrid(parser, file);
                 if (d != null) {
                     dPTI.DataGrid = d;
                     dPTI.Header = ParserManagement.File.Name;
@@ -179,6 +165,8 @@ namespace Pavel2.GUI {
                     TreeViewItem tvItem = new TreeViewItem();
                     DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                     dPTI.Header = file.Name;
+                    dPTI.Filename = file.FullName;
+                    dPTI.Parser = ParserManagement.CurrentParser;
                     tvItem.Tag = dPTI;
                     UpdateDataTreeViewItem(tvItem);
                     if (rootItem != null) {
@@ -186,8 +174,6 @@ namespace Pavel2.GUI {
                     } else {
                         InsertToProjectTree(tvItem, true, true);
                     }
-                    RoutedEventArgs args = new RoutedEventArgs(NewFileInsertedEvent, this);
-                    this.RaiseEvent(args);
                 } else {
                     //TODO: Fehlermeldung, dass nicht geparst werden konnte!
                 }
