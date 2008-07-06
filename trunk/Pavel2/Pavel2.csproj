@@ -104,6 +104,9 @@
     <Compile Include="GUI\OpenGLControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GUI\ParserOptions.xaml.cs">
+      <DependentUpon>ParserOptions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ScatterPlot.xaml.cs">
       <DependentUpon>ScatterPlot.xaml</DependentUpon>
     </Compile>
@@ -135,6 +138,10 @@
     <Page Include="GUI\ExplorerTree.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\ParserOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\ScatterPlot.xaml">
       <Generator>MSBuild:Compile</Generator>
