@@ -346,12 +346,16 @@ namespace Pavel2.GUI {
                 this.highlightedItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
                 this.highlightedItem = null;
             }
-            if (data is FileInfo) {
-                AddDataProjectTreeItem((FileInfo)data, e.Source as TreeViewItem);
-            }
             data = e.Data.GetData(typeof(List<TreeViewItem>));
             if (data is List<TreeViewItem>) {
-                MoveTreeViewItems((List<TreeViewItem>)data, e.Source as TreeViewItem);
+                List<TreeViewItem> items = (List<TreeViewItem>)data;
+                if (items.Count > 0 && items[0].Tag is FileInfo) {
+                    foreach (TreeViewItem tvItem in items) {
+                        AddDataProjectTreeItem((FileInfo)tvItem.Tag, e.Source as TreeViewItem);
+                    }
+                } else {
+                    MoveTreeViewItems(items, e.Source as TreeViewItem);
+                }
             }
         }
 
