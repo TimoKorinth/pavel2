@@ -57,17 +57,18 @@ namespace Pavel2.GUI {
             this.MouseDown += MouseDownHandler;
             this.MouseUp += MouseUpHandler;
             this.MouseMove += MouseMoveHandler;
+            this.PreviewMouseLeftButtonDown += MultiTreeView_PreviewMouseLeftButtonDown;
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             if (isDrawing) e.Handled = true;
             TreeViewItem item = base.SelectedItem as TreeViewItem;
             if (item == null) return;
-            item.IsSelected = false;
             if (!CtrlPressed && !isDrawing) {
                 DeselectAll();
             }
             ChangeSelectedState(item);
+            item.IsSelected = false;
         }
 
         private void DeselectAll() {
@@ -89,12 +90,16 @@ namespace Pavel2.GUI {
 
         private void ChangeSelectedState(TreeViewItem treeViewItem) {
             if (!selItems.Contains(treeViewItem)) {
-                treeViewItem.Background = Brushes.Silver;
-                treeViewItem.Foreground = Brushes.Black;
-                selItems.Add(treeViewItem);
+                Select(treeViewItem);
             } else {
                 if (!isDrawing) Deselect(treeViewItem);
             }
+        }
+
+        private void Select(TreeViewItem treeViewItem) {
+            treeViewItem.Background = Brushes.Silver;
+            treeViewItem.Foreground = Brushes.Black;
+            selItems.Add(treeViewItem);
         }
 
         private void MouseDownHandler(Object sender, MouseButtonEventArgs e) {
@@ -103,6 +108,18 @@ namespace Pavel2.GUI {
             }
             startPoint = e.GetPosition(this);
             isDrawing = true;
+        }
+
+        void MultiTreeView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            TreeViewItem tvItem = e.Source as TreeViewItem;
+            if (tvItem == null) return;
+            if (!selItems.Contains(tvItem)) {
+                if (!CtrlPressed) {
+                    DeselectAll();
+                }
+                Select(tvItem);
+                tvItem.IsSelected = true;
+            }
         }
 
         private void MouseMoveHandler(Object sender, MouseEventArgs e) {
