@@ -29,6 +29,7 @@ namespace Pavel2.GUI {
 
         private void directoryTree_Expanded(object sender, RoutedEventArgs e) {
             TreeViewItem item = (TreeViewItem)e.OriginalSource;
+            if (item.Items.Count == 0) return;
             item.Items.Clear();
             DirectoryInfo dir;
             if (item.Tag is DriveInfo) {
@@ -65,7 +66,7 @@ namespace Pavel2.GUI {
         private void directoryTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = e.Source as TreeViewItem;
             if (item != null && item.Tag is FileInfo) {
-                if (!directoryTree.SelectedItems.Contains(item)) item.IsSelected = true;
+                //if (!directoryTree.SelectedItems.Contains(item)) item.IsSelected = true;
                 DragDropHelper.DoDragDrop(directoryTree, directoryTree.SelectedItems, DragDropEffects.Copy, MainData.MainWindow.projectTreeView);
             }
         }
