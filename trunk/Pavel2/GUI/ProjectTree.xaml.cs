@@ -151,6 +151,24 @@ namespace Pavel2.GUI {
             root.IsSelected = true;
         }
 
+        private void AddDirectory(DirectoryInfo dir, TreeViewItem root) {
+            TreeViewItem tmp = new TreeViewItem();
+            FolderProjectTreeItem fPTI = new FolderProjectTreeItem(tmp);
+            tmp.Tag = fPTI;
+            fPTI.Header = dir.Name;
+            foreach (FileInfo file in dir.GetFiles()) {
+                AddDataProjectTreeItem(file, tmp);
+            }
+            if (root != null) {
+                InsertToProjectTree(tmp, root, false, false);
+            } else {
+                InsertToProjectTree(tmp, false, false);
+            }
+            foreach (DirectoryInfo directory in dir.GetDirectories()) {
+                AddDirectory(directory, tmp);
+            }
+        }
+
         private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
             if (ImageParser.IsImage(file)) {
                 ImageTreeItem imgItem = new ImageTreeItem(ImageParser.GetImage(file));
@@ -373,6 +391,7 @@ namespace Pavel2.GUI {
                 foreach (TreeViewItem tvItem in items) {
                     if (tvItem.Tag is FileInfo) AddDataProjectTreeItem(tvItem.Tag as FileInfo, e.Source as TreeViewItem);
                     if (tvItem.Tag is ProjectTreeItem || tvItem.Tag is ImageTreeItem) MoveTreeViewItem(tvItem, e.Source as TreeViewItem);
+                    if (tvItem.Tag is DirectoryInfo) AddDirectory((DirectoryInfo)tvItem.Tag, e.Source as TreeViewItem);
                 }
             }
         }
