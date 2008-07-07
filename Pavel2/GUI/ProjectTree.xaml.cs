@@ -213,6 +213,25 @@ namespace Pavel2.GUI {
             }
         }
 
+        private void MoveTreeViewItem(TreeViewItem tvItem, TreeViewItem target) {
+            if (target.Tag is FolderProjectTreeItem) {
+                if (tvItem.Tag is DataProjectTreeItem || tvItem.Tag is ImageTreeItem) {
+                    RemoveTreeViewItem(tvItem);
+                    target.Items.Add(tvItem);
+                }
+            }
+            if (target.Tag is LinkItem) {
+                LinkItem lItem = target.Tag as LinkItem;
+                if (tvItem.Tag is DataProjectTreeItem) {
+                    lItem.AddDataItem(tvItem.Tag as DataProjectTreeItem);
+                }
+                if (tvItem.Tag is ImageTreeItem) {
+                    lItem.AddImage(tvItem.Tag as ImageTreeItem);
+                }
+                UpdateLinkItem(target);
+            }
+        }
+
         private void DeleteDataProjectTreeItem(DataProjectTreeItem dPTI) {
             MainData.RemoveColumns(dPTI.DataGrid);
             dPTI.DataGrid = null;
@@ -344,20 +363,16 @@ namespace Pavel2.GUI {
         }
 
         private void projectTree_Drop(object sender, DragEventArgs e) {
-            object data = e.Data.GetData("System.IO.FileInfo");
             if (this.highlightedItem != null) {
                 this.highlightedItem.HeaderTemplate = (DataTemplate)this.FindResource("DefaultTemplate");
                 this.highlightedItem = null;
             }
-            data = e.Data.GetData(typeof(List<TreeViewItem>));
+            object data = e.Data.GetData(typeof(List<TreeViewItem>));
             if (data is List<TreeViewItem>) {
                 List<TreeViewItem> items = (List<TreeViewItem>)data;
-                if (items.Count > 0 && items[0].Tag is FileInfo) {
-                    foreach (TreeViewItem tvItem in items) {
-                        AddDataProjectTreeItem((FileInfo)tvItem.Tag, e.Source as TreeViewItem);
-                    }
-                } else {
-                    MoveTreeViewItems(items, e.Source as TreeViewItem);
+                foreach (TreeViewItem tvItem in items) {
+                    if (tvItem.Tag is FileInfo) AddDataProjectTreeItem(tvItem.Tag as FileInfo, e.Source as TreeViewItem);
+                    if (tvItem.Tag is ProjectTreeItem || tvItem.Tag is ImageTreeItem) MoveTreeViewItem(tvItem, e.Source as TreeViewItem);
                 }
             }
         }
