@@ -65,7 +65,7 @@ namespace Pavel2.GUI {
 
         private void directoryTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = e.Source as TreeViewItem;
-            if (item != null && item.Tag is FileInfo) {
+            if (item != null && (item.Tag is FileInfo || item.Tag is DirectoryInfo)) {
                 //if (!directoryTree.SelectedItems.Contains(item)) item.IsSelected = true;
                 DragDropHelper.DoDragDrop(directoryTree, directoryTree.SelectedItems, DragDropEffects.Copy, MainData.MainWindow.projectTreeView);
             }
