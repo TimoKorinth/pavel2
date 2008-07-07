@@ -61,9 +61,10 @@ namespace Pavel2.Framework {
             SetMaxColumn();
             double[][] dData = new double[columns[this.maxColumn].Points.Length][];
             String[][] data = new String[columns[this.maxColumn].Points.Length][];
+            int visCols = VisibleColumns();
             for (int i = 0; i < dData.Length; i++) {
-                dData[i] = new double[VisibleColumns()];
-                data[i] = new String[VisibleColumns()];
+                dData[i] = new double[visCols];
+                data[i] = new String[visCols];
                 int index = 0;
                 for (int j = 0; j < columns.Length; j++) {
                     if (columns[j].Visible) {
