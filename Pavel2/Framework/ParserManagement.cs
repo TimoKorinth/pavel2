@@ -29,12 +29,14 @@ namespace Pavel2.Framework {
             currentParser = null;
             Column[] columns;
             foreach (Parser parser in parserList) {
-                columns = parser.Parse(ParserManagement.file.OpenText());
-                if (null != columns) {
-                    currentParser = parser;
-                    DataGrid d = MainData.AddColumns(columns);
-                    return d;
-                }
+                try {
+                    columns = parser.Parse(ParserManagement.file.OpenText());
+                    if (null != columns) {
+                        currentParser = parser;
+                        DataGrid d = MainData.AddColumns(columns);
+                        return d;
+                    }
+                } catch { }
             }
             return null;
         }
