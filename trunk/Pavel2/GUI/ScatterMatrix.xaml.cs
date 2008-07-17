@@ -42,6 +42,7 @@ namespace Pavel2.GUI {
         System.Windows.Forms.Control wfPA;
         DataGrid dataGrid;
         double step;
+        CombinedDataItem comp;
 
         public ScatterMatrix() {
             InitializeComponent();
@@ -52,16 +53,23 @@ namespace Pavel2.GUI {
         }
 
         private void DrawPoints() {
-            Gl.glColor4f(0.043f, 0.729f, 0.878f, 0.5f);
+            Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.7f));
             Gl.glEnable(Gl.GL_POINT_SMOOTH);
-            Gl.glPointSize(5f);
+            Gl.glPointSize(1f);
             if (dataGrid == null) return;
             double step = (double)1 / dataGrid.Columns.Length;
+            int index = -1;
             for (int x = 0; x < dataGrid.Columns.Length; x++) {
                 for (int y = 0; y < dataGrid.Columns.Length; y++) {
                     if (x == y) continue;
                     Gl.glBegin(Gl.GL_POINTS);
                     for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
+                        if (comp != null) {
+                            if (comp.GetDataItemIndex(row) != index) {
+                                index = comp.GetDataItemIndex(row);
+                                Gl.glColor4fv(ColorManagement.GetColor(index+2).RGBwithA(0.7f));
+                            }
+                        }
                         double xCo = Normalize(dataGrid.DoubleDataField[row][x], dataGrid.Columns[x]);
                         double yCo = Normalize(dataGrid.DoubleDataField[row][y], dataGrid.Columns[y]);
                         xCo = (xCo * step) + step * x;
@@ -122,6 +130,7 @@ namespace Pavel2.GUI {
 
         public void Render(DataGrid dataGrid) {
             this.dataGrid = dataGrid;
+            comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
             if (dataGrid == null) return;
             step = (double)1 / (dataGrid.Columns.Length - 1);
             SetViewPort();
