@@ -6,6 +6,8 @@ using Tao.Platform.Windows;
 using System.Windows.Forms.Integration;
 using Pavel2.Framework;
 using System.Windows.Media;
+using System.Drawing;
+using System.Windows.Interop;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -39,7 +41,7 @@ namespace Pavel2.GUI {
             }
         }
 
-        System.Windows.Forms.Control wfPA;
+        OpenGLRenderWind wfPA;
         DataGrid dataGrid;
         double step;
         CombinedDataItem comp;
@@ -151,7 +153,10 @@ namespace Pavel2.GUI {
         }
 
         public ImageSource GetScreenshot() {
-            return null; ;
+            Bitmap bmp = wfPA.Screenshot();
+            if (bmp == null) return null;
+            return Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
+                System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
         }
 
         #endregion
