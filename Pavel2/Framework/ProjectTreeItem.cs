@@ -29,7 +29,8 @@ namespace Pavel2.Framework {
         public void TakeScreenShot() {
             if (lastVisualization == null) return;
             if (lastVisualization.OwnScreenshot()) {
-                screenshot = lastVisualization.GetScreenshot();
+                ImageSource tmp = lastVisualization.GetScreenshot();
+                if (tmp != null) screenshot = tmp;
             } else {
                 FrameworkElement vis = (FrameworkElement)lastVisualization;
                 if (vis.ActualWidth == 0 || vis.ActualHeight == 0) return;
