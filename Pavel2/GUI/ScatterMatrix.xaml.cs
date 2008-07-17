@@ -11,7 +11,7 @@ namespace Pavel2.GUI {
     /// <summary>
     /// Interaktionslogik für ParallelPlot.xaml
     /// </summary>
-    public partial class ScatterPlot : UserControl, Visualization {
+    public partial class ScatterMatrix : UserControl, Visualization {
 
         internal class OpenGLRenderWind : OpenGLControl {
 
@@ -43,7 +43,7 @@ namespace Pavel2.GUI {
         DataGrid dataGrid;
         double step;
 
-        public ScatterPlot() {
+        public ScatterMatrix() {
             InitializeComponent();
             wfPA = new OpenGLRenderWind();
             wfPA.Paint += DrawData;
@@ -56,13 +56,21 @@ namespace Pavel2.GUI {
             Gl.glEnable(Gl.GL_POINT_SMOOTH);
             Gl.glPointSize(5f);
             if (dataGrid == null) return;
-            Gl.glBegin(Gl.GL_POINTS);
-            for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
-                double x = Normalize(dataGrid.DoubleDataField[row][0], dataGrid.Columns[0]);
-                double y = Normalize(dataGrid.DoubleDataField[row][1], dataGrid.Columns[1]);
-                Gl.glVertex2d(x, y);
+            double step = (double)1 / dataGrid.Columns.Length;
+            for (int x = 0; x < dataGrid.Columns.Length; x++) {
+                for (int y = 0; y < dataGrid.Columns.Length; y++) {
+                    if (x == y) continue;
+                    Gl.glBegin(Gl.GL_POINTS);
+                    for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
+                        double xCo = Normalize(dataGrid.DoubleDataField[row][x], dataGrid.Columns[x]);
+                        double yCo = Normalize(dataGrid.DoubleDataField[row][y], dataGrid.Columns[y]);
+                        xCo = (xCo * step) + step * x;
+                        yCo = (yCo * step) + step * y;
+                        Gl.glVertex2d(xCo, yCo);
+                    }
+                    Gl.glEnd();
+                }
             }
-            Gl.glEnd();
         }
 
         private double Normalize(double value, Column col) {
@@ -77,14 +85,19 @@ namespace Pavel2.GUI {
             Gl.glDisable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(2f);
             if (dataGrid == null) return;
-            Gl.glBegin(Gl.GL_LINES);
-            Gl.glVertex2d(0, 0);
-            Gl.glVertex2d(1, 0);
-            Gl.glEnd();
-            Gl.glBegin(Gl.GL_LINES);
-            Gl.glVertex2d(0, 0);
-            Gl.glVertex2d(0, 1);
-            Gl.glEnd();
+            double step = (double)1 / dataGrid.Columns.Length;
+            for (int x = 0; x < dataGrid.Columns.Length; x++) {
+                for (int y = 0; y < dataGrid.Columns.Length; y++) {
+                    Gl.glBegin(Gl.GL_LINES);
+                    Gl.glVertex2d(step * x, step * y);
+                    Gl.glVertex2d(step * x, step * (y + 1));
+                    Gl.glEnd();
+                    Gl.glBegin(Gl.GL_LINES);
+                    Gl.glVertex2d(step * x, step * y);
+                    Gl.glVertex2d(step * (x + 1), step * y);
+                    Gl.glEnd();
+                }
+            }
         }
 
         private void DrawData(object sender, System.Windows.Forms.PaintEventArgs e) {
