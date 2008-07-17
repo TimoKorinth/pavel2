@@ -63,7 +63,7 @@ namespace Pavel2.GUI {
                 if (comp != null) {
                     if (comp.GetDataItemIndex(row) != index) {
                         index = comp.GetDataItemIndex(row);
-                        Gl.glColor4fv(ColorManagement.GetColor(index).RGBwithA(0.2f));
+                        Gl.glColor4fv(ColorManagement.GetColor(index+2).RGBwithA(0.2f));
                     }
                 }
                 Gl.glBegin(Gl.GL_LINE_STRIP);
