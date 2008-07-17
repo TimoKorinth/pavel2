@@ -107,8 +107,8 @@
     <Compile Include="GUI\ParserOptions.xaml.cs">
       <DependentUpon>ParserOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ScatterPlot.xaml.cs">
-      <DependentUpon>ScatterPlot.xaml</DependentUpon>
+    <Compile Include="GUI\ScatterMatrix.xaml.cs">
+      <DependentUpon>ScatterMatrix.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\ParallelPlot.xaml.cs">
       <DependentUpon>ParallelPlot.xaml</DependentUpon>
@@ -143,7 +143,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\ScatterPlot.xaml">
+    <Page Include="GUI\ScatterMatrix.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
