@@ -107,6 +107,7 @@ namespace Pavel2.GUI {
                     Gl.glVertex2d(step * (x + 1), step * y);
                     Gl.glEnd();
                 }
+                wfPA.PrintText((float)(x*step), (float)((x*step)+(step/2)), 0.0f, 0.03f, dataGrid.Columns[x].Header);
             }
         }
 
