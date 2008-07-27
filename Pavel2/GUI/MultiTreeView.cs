@@ -17,6 +17,8 @@ namespace Pavel2.GUI {
         private Boolean isDrawing;
         private Point startPoint;
         private Point endPoint;
+        private bool unselect = false;
+        private bool clickFirst = false;
 
         public AdornerLayer AdornerLayerLocal {
             get {
@@ -61,14 +63,19 @@ namespace Pavel2.GUI {
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            if (isDrawing) e.Handled = true;
+            if (isDrawing || unselect) e.Handled = true;
             TreeViewItem item = base.SelectedItem as TreeViewItem;
             if (item == null) return;
-            if (!CtrlPressed && !isDrawing) {
-                DeselectAll();
+            if (!clickFirst) {
+                if (!CtrlPressed && !isDrawing) {
+                    DeselectAll();
+                }
+                ChangeSelectedState(item);
             }
-            ChangeSelectedState(item);
+            unselect = true;
             item.IsSelected = false;
+            unselect = false;
+            clickFirst = false;
         }
 
         private void DeselectAll() {
@@ -112,13 +119,13 @@ namespace Pavel2.GUI {
 
         void MultiTreeView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem tvItem = e.Source as TreeViewItem;
+            clickFirst = true;
             if (tvItem == null) return;
             if (!selItems.Contains(tvItem)) {
-                if (!CtrlPressed) {
+                if (!CtrlPressed && !isDrawing) {
                     DeselectAll();
                 }
-                Select(tvItem);
-                tvItem.IsSelected = true;
+                ChangeSelectedState(tvItem);
             }
         }
 
@@ -167,7 +174,7 @@ namespace Pavel2.GUI {
                 Rect rubberBand = new Rect(startPoint, endPoint);
                 if ((rubberBand.Contains(itemBounds.BottomLeft) && rubberBand.Contains(itemBounds.TopLeft)) ||
                     (rubberBand.Contains(itemBounds.BottomRight) && rubberBand.Contains(itemBounds.TopRight))) {
-                    item.IsSelected = true;
+                    ChangeSelectedState(item);
                 } else {
                     Deselect(item);
                 }
