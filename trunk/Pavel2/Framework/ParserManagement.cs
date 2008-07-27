@@ -30,7 +30,8 @@ namespace Pavel2.Framework {
             Column[] columns;
             foreach (Parser parser in parserList) {
                 try {
-                    columns = parser.Parse(ParserManagement.file.OpenText());
+                    StreamReader st = new StreamReader(ParserManagement.file.OpenRead(), System.Text.Encoding.Default);
+                    columns = parser.Parse(st);
                     if (null != columns) {
                         currentParser = parser;
                         DataGrid d = MainData.AddColumns(columns);
@@ -45,7 +46,8 @@ namespace Pavel2.Framework {
             ParserManagement.file = file;
             currentParser = parser;
             Column[] columns;
-            columns = parser.Parse(ParserManagement.file.OpenText());
+            StreamReader st = new StreamReader(ParserManagement.file.OpenRead(), System.Text.Encoding.Default);
+            columns = parser.Parse(st);
             if (null != columns) {
                 DataGrid d = MainData.AddColumns(columns);
                 return d;
