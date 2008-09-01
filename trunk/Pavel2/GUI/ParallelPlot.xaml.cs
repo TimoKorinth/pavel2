@@ -33,11 +33,6 @@ namespace Pavel2.GUI {
             protected override void SetupModelViewMatrixOperations() {
                 Gl.glLoadIdentity();
             }
-
-            protected override void RenderScene() {
-                this.MakeCurrentContext();
-                //this.Invalidate();
-            }
         }
 
         OpenGLRenderWind wfPA;
@@ -144,20 +139,22 @@ namespace Pavel2.GUI {
             if (dataGrid == null) return;
             SetLabelPanel();
             step = (double)1 / (dataGrid.Columns.Length - 1);
-            RenderScene();
-            //System.Windows.Controls.Image img = new System.Windows.Controls.Image();
-            //img.Source = GetScreenshot();
-            //openGlCanvas.Children.Add(img);
-            visImage.Source = GetScreenshot();
+            //Abfrage ob sich was geändert hat, sonst einfach den evtl. schon
+            //vorhandenen Screenshot nehmen:
+            if (this.dataGrid.Changed || !dataGrid.Cache.ContainsKey(this.GetType())) {
+                this.dataGrid.Changed = false;
+                RenderScene();
+                visImage.Source = GetScreenshot();
+                dataGrid.Cache[this.GetType()] = visImage.Source;
+            } else {
+                visImage.Source = dataGrid.Cache[this.GetType()];
+            }
         }
 
         public void RenderAfterResize() {
             wfPA.Height = (int)this.ActualHeight;
             wfPA.Width = (int)this.ActualWidth;
             RenderScene();
-            //System.Windows.Controls.Image img = new System.Windows.Controls.Image();
-            //img.Source = GetScreenshot();
-            //openGlCanvas.Children.Add(img);
             visImage.Source = GetScreenshot();
         }
 
