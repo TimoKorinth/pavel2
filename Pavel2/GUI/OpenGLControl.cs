@@ -179,7 +179,7 @@ namespace Pavel2.GUI {
         /// <summary>
         /// Sets up the viewport.
         /// </summary>
-        private void SetupViewPort() {
+        public void SetupViewPort() {
             Gl.glViewport(0, 0, this.Width, this.Height);
         }
 

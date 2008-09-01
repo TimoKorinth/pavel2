@@ -36,7 +36,7 @@ namespace Pavel2.GUI {
 
             protected override void RenderScene() {
                 this.MakeCurrentContext();
-                this.Invalidate();
+                //this.Invalidate();
             }
         }
 
@@ -44,12 +44,15 @@ namespace Pavel2.GUI {
         DataGrid dataGrid;
         CombinedDataItem comp;
         double step;
+        WindowsFormsHost host = new WindowsFormsHost();
 
         public ParallelPlot() {
             InitializeComponent();
             wfPA = new OpenGLRenderWind();
-            wfPA.Paint += DrawData;
             host.Child = wfPA;
+            wfPA.Height = 400;
+            wfPA.Width = 800;
+            wfPA.SetupViewPort();
         }
 
         private void DrawLines() {
@@ -101,12 +104,9 @@ namespace Pavel2.GUI {
             }
         }
 
-        private void DrawData(object sender, System.Windows.Forms.PaintEventArgs e) {
-            RenderScene();
-        }
-
         private void RenderScene() {
             wfPA.MakeCurrentContext();
+            wfPA.SetupViewPort();
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
 
             DrawLines();
@@ -145,6 +145,9 @@ namespace Pavel2.GUI {
             SetLabelPanel();
             step = (double)1 / (dataGrid.Columns.Length - 1);
             RenderScene();
+            System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+            img.Source = GetScreenshot();
+            openGlCanvas.Children.Add(img);
         }
 
         public void RenderAfterResize() {
