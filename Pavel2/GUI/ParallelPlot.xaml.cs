@@ -50,8 +50,8 @@ namespace Pavel2.GUI {
             InitializeComponent();
             wfPA = new OpenGLRenderWind();
             host.Child = wfPA;
-            wfPA.Height = 400;
-            wfPA.Width = 800;
+            wfPA.Width = 1000;
+            wfPA.Height = 800;
             wfPA.SetupViewPort();
         }
 
@@ -145,13 +145,20 @@ namespace Pavel2.GUI {
             SetLabelPanel();
             step = (double)1 / (dataGrid.Columns.Length - 1);
             RenderScene();
-            System.Windows.Controls.Image img = new System.Windows.Controls.Image();
-            img.Source = GetScreenshot();
-            openGlCanvas.Children.Add(img);
+            //System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+            //img.Source = GetScreenshot();
+            //openGlCanvas.Children.Add(img);
+            visImage.Source = GetScreenshot();
         }
 
         public void RenderAfterResize() {
-            wfPA.Refresh();
+            wfPA.Height = (int)this.ActualHeight;
+            wfPA.Width = (int)this.ActualWidth;
+            RenderScene();
+            //System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+            //img.Source = GetScreenshot();
+            //openGlCanvas.Children.Add(img);
+            visImage.Source = GetScreenshot();
         }
 
         #endregion
