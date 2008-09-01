@@ -129,7 +129,7 @@ namespace Pavel2.GUI {
             step = (double)1 / (dataGrid.Columns.Length - 1);
             //Abfrage ob sich was geändert hat, sonst einfach den evtl. schon
             //vorhandenen Screenshot nehmen:
-            if (this.dataGrid.Changed || !dataGrid.Cache.ContainsKey(this.GetType())) {
+            if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed) {
                 this.dataGrid.Changed = false;
                 RenderScene();
                 visImage.Source = GetScreenshot();
