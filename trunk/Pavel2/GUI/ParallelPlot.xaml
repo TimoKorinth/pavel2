@@ -6,7 +6,6 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <WindowsFormsHost Name="host" Grid.Row="0" />
         <Grid Grid.Row="1" Name="labelGrid">
         </Grid>
     </Grid>
