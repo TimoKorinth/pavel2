@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
+using Pavel2.GUI;
 
 namespace Pavel2.Framework {
     [Serializable()]
@@ -11,6 +13,18 @@ namespace Pavel2.Framework {
         private String[][] data;
         private double[][] dData;
         private int maxColumn;
+        private bool changed;
+        private Dictionary<Type, ImageSource> cache = new Dictionary<Type,ImageSource>();
+
+        public Dictionary<Type, ImageSource> Cache {
+            get { return cache; }
+            set { cache = value; }
+        }
+
+        public bool Changed {
+            get { return changed; }
+            set { changed = value; }
+        }
 
         public int MaxColumn {
             get { return maxColumn; }
@@ -42,11 +56,13 @@ namespace Pavel2.Framework {
             this.columns = new Column[0];
             this.data = new String[0][];
             this.dData = new double[0][];
+            changed = true;
         }
 
         public DataGrid(Column[] columns) {
             this.columns = columns;
             SetDataFields();
+            changed = true;
         }
 
         public void AddColumn(Column column) {
@@ -55,6 +71,7 @@ namespace Pavel2.Framework {
             listTmp.Add(column);
             this.columns = listTmp.ToArray();
             SetDataFields();
+            changed = true;
         }
 
         public void SetDataFields() {

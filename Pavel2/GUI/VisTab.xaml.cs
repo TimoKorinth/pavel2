@@ -71,7 +71,7 @@ namespace Pavel2.GUI {
             if (CurrentVisualization == null) return;
             foreach (TabItem item in visualizationTabControl.Items) {
                 if (item.Content.GetType().Equals(CurrentVisualization.GetType())) {
-                    CurrentVisualization.Render(this.pTI.DataGrid);
+                    //CurrentVisualization.Render(this.pTI.DataGrid);
                     item.IsSelected = true;
                 }
             }
@@ -106,11 +106,6 @@ namespace Pavel2.GUI {
                     }
             }
             return result;
-        }
-
-        private void visualizationTabControl_SizeChanged(object sender, SizeChangedEventArgs e) {
-            //if (CurrentVisualization == null) return;
-            //CurrentVisualization.RenderAfterResize();
         }
     }
 }

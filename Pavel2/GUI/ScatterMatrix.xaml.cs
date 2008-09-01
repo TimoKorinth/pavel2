@@ -35,23 +35,21 @@ namespace Pavel2.GUI {
             protected override void SetupModelViewMatrixOperations() {
                 Gl.glLoadIdentity();
             }
-
-            protected override void RenderScene() {
-                this.Invalidate();
-            }
         }
 
         OpenGLRenderWind wfPA;
         DataGrid dataGrid;
         double step;
         CombinedDataItem comp;
+        WindowsFormsHost host = new WindowsFormsHost();
 
         public ScatterMatrix() {
             InitializeComponent();
             wfPA = new OpenGLRenderWind();
-            wfPA.Paint += DrawData;
-            host.Child = wfPA;
-            SetViewPort();
+            host.Child = wfPA; 
+            wfPA.Width = 1000;
+            wfPA.Height = 800;
+            wfPA.SetupViewPort();
         }
 
         private void DrawPoints() {
@@ -111,22 +109,15 @@ namespace Pavel2.GUI {
             }
         }
 
-        private void DrawData(object sender, System.Windows.Forms.PaintEventArgs e) {
-            RenderScene();
-        }
-
         private void RenderScene() {
+            wfPA.MakeCurrentContext();
+            wfPA.SetupViewPort();
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
 
             DrawPoints();
             DrawAxes();
 
             Gl.glFlush();
-        }
-
-
-        private void SetViewPort() {
-            Gl.glViewport(0, 0, (int)host.ActualWidth, (int)host.ActualHeight);
         }
 
         #region Visualization Member
@@ -136,12 +127,23 @@ namespace Pavel2.GUI {
             comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
             if (dataGrid == null) return;
             step = (double)1 / (dataGrid.Columns.Length - 1);
-            SetViewPort();
-            RenderScene();
+            //Abfrage ob sich was geändert hat, sonst einfach den evtl. schon
+            //vorhandenen Screenshot nehmen:
+            if (this.dataGrid.Changed || !dataGrid.Cache.ContainsKey(this.GetType())) {
+                this.dataGrid.Changed = false;
+                RenderScene();
+                visImage.Source = GetScreenshot();
+                dataGrid.Cache[this.GetType()] = visImage.Source;
+            } else {
+                visImage.Source = dataGrid.Cache[this.GetType()];
+            }
         }
 
         public void RenderAfterResize() {
-            SetViewPort();
+            wfPA.Height = (int)this.ActualHeight;
+            wfPA.Width = (int)this.ActualWidth;
+            RenderScene();
+            visImage.Source = GetScreenshot();
         }
 
         #endregion
