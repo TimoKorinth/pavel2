@@ -6,6 +6,7 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Image Grid.Row="0" Name="visImage" Stretch="Fill" />
         <Grid Grid.Row="1" Name="labelGrid">
         </Grid>
     </Grid>
