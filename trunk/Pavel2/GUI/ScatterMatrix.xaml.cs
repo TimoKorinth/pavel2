@@ -132,7 +132,7 @@ namespace Pavel2.GUI {
             if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed) {
                 this.dataGrid.Changed = false;
                 RenderScene();
-                visImage.Source = GetScreenshot();
+                visImage.Source = TakeScreenshot();
                 dataGrid.Cache[this.GetType()] = visImage.Source;
             } else {
                 visImage.Source = dataGrid.Cache[this.GetType()];
@@ -143,7 +143,7 @@ namespace Pavel2.GUI {
             wfPA.Height = (int)this.ActualHeight;
             wfPA.Width = (int)this.ActualWidth;
             RenderScene();
-            visImage.Source = GetScreenshot();
+            visImage.Source = TakeScreenshot();
         }
 
         #endregion
@@ -156,6 +156,16 @@ namespace Pavel2.GUI {
         }
 
         public ImageSource GetScreenshot() {
+            if (this.dataGrid != null && this.dataGrid.Cache.ContainsKey(this.GetType())) {
+                return this.dataGrid.Cache[this.GetType()];
+            }
+            Bitmap bmp = wfPA.Screenshot();
+            if (bmp == null) return null;
+            return Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
+                System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+        }
+
+        public ImageSource TakeScreenshot() {
             Bitmap bmp = wfPA.Screenshot();
             if (bmp == null) return null;
             return Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
