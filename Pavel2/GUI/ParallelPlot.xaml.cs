@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Drawing;
 using System.Windows.Interop;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -134,31 +135,23 @@ namespace Pavel2.GUI {
 
         private void SetThumbPanel() {
             thumbGrid.Children.Clear();
-            thumbGrid.ColumnDefinitions.Clear();
-            if (dataGrid == null) return;
-            for (int col = 0; col < dataGrid.Columns.Length - 1; col++) {
-                thumbGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            }
-            for (int col = 0; col < dataGrid.Columns.Length - 1; col++) {
+            for (int col = 0; col < dataGrid.Columns.Length; col++) {
                 Thumb t = new Thumb();
                 t.DragStarted += DragStarted;
                 t.DragCompleted += DragCompleted;
                 t.DragDelta += DragDelta;
                 t.Width = 10;
                 t.Height = 15;
+                t.Tag = col;
                 t.HorizontalAlignment = HorizontalAlignment.Left;
+                
+                Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
+                    t.Margin = new Thickness(step * (int)t.Tag * (thumbGrid.ActualWidth-10), 2, t.Margin.Right, 2);
+                    return null;
+                }), null);
+
                 thumbGrid.Children.Add(t);
-                Grid.SetColumn(t, col);
             }
-            Thumb lastT = new Thumb();
-            lastT.DragStarted += DragStarted;
-            lastT.DragCompleted += DragCompleted;
-            lastT.DragDelta += DragDelta;
-            lastT.Width = 10;
-            lastT.Height = 15;
-            lastT.HorizontalAlignment = HorizontalAlignment.Right;
-            thumbGrid.Children.Add(lastT);
-            Grid.SetColumn(lastT, dataGrid.Columns.Length - 1);
         }
 
         void DragDelta(object sender, DragDeltaEventArgs e) {
