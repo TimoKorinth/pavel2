@@ -12,6 +12,12 @@ namespace Pavel2.Framework {
         private double min;
         private double max;
         private bool visible = true;
+        private bool dirUp = true;
+
+        public bool DirUp {
+            get { return dirUp; }
+            set { dirUp = value; }
+        }
 
         public bool Visible {
             get { return visible; }

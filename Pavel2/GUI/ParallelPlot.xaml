@@ -3,11 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Name="openGlCanvas" Margin="5">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Name="visImage" Stretch="Fill" />
-        <Grid Grid.Row="1" Name="labelGrid">
+        <Grid Grid.Row="0" Name="thumbGrid">
+        </Grid>
+        <Image Grid.Row="1" Name="visImage" Stretch="Fill" />
+        <Grid Grid.Row="2" Name="labelGrid">
         </Grid>
     </Grid>
 </UserControl>
