@@ -140,18 +140,26 @@ namespace Pavel2.GUI {
                 t.DragStarted += DragStarted;
                 t.DragCompleted += DragCompleted;
                 t.DragDelta += DragDelta;
-                t.Width = 10;
+                t.MouseDoubleClick += thumb_MouseDoubleClick;
+                t.Width = 12;
                 t.Height = 15;
-                t.Tag = col;
+                t.Background = System.Windows.Media.Brushes.Gray;
+                t.Tag = dataGrid.Columns[col].DirUp;
                 t.HorizontalAlignment = HorizontalAlignment.Left;
                 
                 Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
-                    t.Margin = new Thickness(step * (int)t.Tag * (thumbGrid.ActualWidth-10), 2, t.Margin.Right, 2);
+                    t.Margin = new Thickness(step * (int)state * (thumbGrid.ActualWidth-10), 2, t.Margin.Right, 2);
                     return null;
-                }), null);
+                }), col);
 
                 thumbGrid.Children.Add(t);
             }
+        }
+
+        void thumb_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            t.Tag = !(bool)t.Tag;
         }
 
         void DragDelta(object sender, DragDeltaEventArgs e) {
@@ -161,9 +169,7 @@ namespace Pavel2.GUI {
         }
 
         void DragCompleted(object sender, DragCompletedEventArgs e) {
-            Thumb t = sender as Thumb;
-            if (t == null) return;
-            t.Background = System.Windows.Media.Brushes.Gray;
+            //SetThumbPanel();
         }
 
         void DragStarted(object sender, DragStartedEventArgs e) {
@@ -196,6 +202,7 @@ namespace Pavel2.GUI {
         public void RenderAfterResize() {
             wfPA.Height = (int)this.ActualHeight;
             wfPA.Width = (int)this.ActualWidth;
+            SetThumbPanel();
             RenderScene();
             visImage.Source = TakeScreenshot();
         }
