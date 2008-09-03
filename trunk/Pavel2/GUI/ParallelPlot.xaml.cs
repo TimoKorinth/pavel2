@@ -8,6 +8,7 @@ using Pavel2.Framework;
 using System.Windows.Media;
 using System.Drawing;
 using System.Windows.Interop;
+using System.Windows.Controls.Primitives;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -131,14 +132,62 @@ namespace Pavel2.GUI {
             Grid.SetColumn(lastLab, dataGrid.Columns.Length - 1);
         }
 
+        private void SetThumbPanel() {
+            thumbGrid.Children.Clear();
+            thumbGrid.ColumnDefinitions.Clear();
+            if (dataGrid == null) return;
+            for (int col = 0; col < dataGrid.Columns.Length - 1; col++) {
+                thumbGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+            for (int col = 0; col < dataGrid.Columns.Length - 1; col++) {
+                Thumb t = new Thumb();
+                t.DragStarted += DragStarted;
+                t.DragCompleted += DragCompleted;
+                t.DragDelta += DragDelta;
+                t.Width = 10;
+                t.Height = 15;
+                t.HorizontalAlignment = HorizontalAlignment.Left;
+                thumbGrid.Children.Add(t);
+                Grid.SetColumn(t, col);
+            }
+            Thumb lastT = new Thumb();
+            lastT.DragStarted += DragStarted;
+            lastT.DragCompleted += DragCompleted;
+            lastT.DragDelta += DragDelta;
+            lastT.Width = 10;
+            lastT.Height = 15;
+            lastT.HorizontalAlignment = HorizontalAlignment.Right;
+            thumbGrid.Children.Add(lastT);
+            Grid.SetColumn(lastT, dataGrid.Columns.Length - 1);
+        }
+
+        void DragDelta(object sender, DragDeltaEventArgs e) {
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            t.Margin = new Thickness(t.Margin.Left + e.HorizontalChange, t.Margin.Top, t.Margin.Right, t.Margin.Bottom);
+        }
+
+        void DragCompleted(object sender, DragCompletedEventArgs e) {
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            t.Background = System.Windows.Media.Brushes.Gray;
+        }
+
+        void DragStarted(object sender, DragStartedEventArgs e) {
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            t.Background = System.Windows.Media.Brushes.Turquoise;
+        }
+
         #region Visualization Member
 
         public void Render(DataGrid dataGrid) {
             this.dataGrid = dataGrid;
             comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
             if (dataGrid == null) return;
-            SetLabelPanel();
             step = (double)1 / (dataGrid.Columns.Length - 1);
+            SetLabelPanel();
+            SetThumbPanel();
             //Abfrage ob sich was geändert hat, sonst einfach den evtl. schon
             //vorhandenen Screenshot nehmen:
             if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed) {
