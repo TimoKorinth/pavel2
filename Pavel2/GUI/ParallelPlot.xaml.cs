@@ -62,9 +62,19 @@ namespace Pavel2.GUI {
         }
 
         private void DrawLines() {
-            Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.2f));
             Gl.glEnable(Gl.GL_LINE_SMOOTH);
-            Gl.glLineWidth(1f);
+            if (dataGrid.Columns[dataGrid.MaxColumn].Points.Length < 100) {
+                Gl.glLineWidth(6f);
+                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.5f));
+            }
+            if (dataGrid.Columns[dataGrid.MaxColumn].Points.Length > 100) {
+                Gl.glLineWidth(3f);
+                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.2f));
+            }
+            if (dataGrid.Columns[dataGrid.MaxColumn].Points.Length > 1000) {
+                Gl.glLineWidth(1f);
+                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.02f));
+            }
             bool breakLine = false;
             if (dataGrid == null) return;
             int index = -1;
