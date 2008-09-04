@@ -31,6 +31,7 @@ namespace Pavel2.GUI {
                 tableListView.Visibility = Visibility.Visible;
                 tableListView.ItemsSource = dataGrid.DataField;
                 GridView gView = new GridView();
+                gView.Columns.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Columns_CollectionChanged);
                 for (int i = 0; i < dataGrid.Columns.Length; i++) {
                     GridViewColumn gColumn = new GridViewColumn();
                     gColumn.Header = dataGrid.Columns[i].Header;
@@ -44,6 +45,12 @@ namespace Pavel2.GUI {
                 tableListView.Visibility = Visibility.Collapsed;
                 tableListView.ItemsSource = null;
                 tableListView.View = null;
+            }
+        }
+
+        void Columns_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Move) {
+                dataGrid.ChangeColOrder(dataGrid.Columns[e.OldStartingIndex], e.NewStartingIndex);
             }
         }
 
