@@ -69,6 +69,9 @@
             </Grid.Resources>
         </Grid>
         <Image Grid.Row="1" Name="visImage" Stretch="Fill" />
+        <Rectangle Grid.Row="1" Fill="Gray" Stroke="Black" 
+                   Height="{Binding ElementName=visImage, Path=Height}" 
+                   Width="5" HorizontalAlignment="Left" Name="line" Visibility="Collapsed"/>
         <Grid Grid.Row="2" Name="labelGrid">
         </Grid>
     </Grid>

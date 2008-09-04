@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Windows.Interop;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
+using System.Windows.Shapes;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -141,12 +142,14 @@ namespace Pavel2.GUI {
                 t.DragCompleted += DragCompleted;
                 t.DragDelta += DragDelta;
                 t.MouseDoubleClick += thumb_MouseDoubleClick;
-                t.Width = 12;
-                t.Height = 15;
                 t.Background = System.Windows.Media.Brushes.Gray;
                 t.Tag = dataGrid.Columns[col];
                 t.HorizontalAlignment = HorizontalAlignment.Left;
-                t.Style = (Style)thumbGrid.FindResource("Up");
+                if (dataGrid.Columns[col].DirUp) {
+                    t.Style = (Style)thumbGrid.FindResource("Up");
+                } else {
+                    t.Style = (Style)thumbGrid.FindResource("Down");
+                }
                 Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
                     t.Margin = new Thickness(step * (int)state * (thumbGrid.ActualWidth-10), 2, t.Margin.Right, 2);
                     return null;
@@ -172,16 +175,21 @@ namespace Pavel2.GUI {
             Thumb t = sender as Thumb;
             if (t == null) return;
             t.Margin = new Thickness(t.Margin.Left + e.HorizontalChange, t.Margin.Top, t.Margin.Right, t.Margin.Bottom);
+
+            line.Visibility = Visibility.Visible;
+            line.Margin = new Thickness(line.Margin.Left + e.HorizontalChange, line.Margin.Top, line.Margin.Right, line.Margin.Bottom);
         }
 
         void DragCompleted(object sender, DragCompletedEventArgs e) {
-            //SetThumbPanel();
+            SetThumbPanel();
+            line.Visibility = Visibility.Collapsed;
         }
 
         void DragStarted(object sender, DragStartedEventArgs e) {
             Thumb t = sender as Thumb;
             if (t == null) return;
             t.Background = System.Windows.Media.Brushes.Turquoise;
+            line.Margin = new Thickness(t.Margin.Left, line.Margin.Top, line.Margin.Right, line.Margin.Bottom);
         }
 
         #region Visualization Member
