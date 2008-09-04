@@ -41,6 +41,14 @@ namespace Pavel2.Framework {
             set { dData = value; }
         }
 
+        public void ChangeColOrder(Column col, int position) {
+            List<Column> colList = new List<Column>(columns);
+            colList.Remove(col);
+            colList.Insert(position, col);
+            columns = colList.ToArray();
+            SetDataFields();
+        }
+
         public Column[] Columns {
             get { 
                 List<Column> tmp = new List<Column>();

@@ -157,7 +157,6 @@ namespace Pavel2.GUI {
                     t.Margin = new Thickness(step * (int)state * (thumbGrid.ActualWidth-10), 2, t.Margin.Right, 2);
                     return null;
                 }), col);
-
                 thumbGrid.Children.Add(t);
             }
         }
@@ -165,6 +164,7 @@ namespace Pavel2.GUI {
         void DragDelta(object sender, DragDeltaEventArgs e) {
             Thumb t = sender as Thumb;
             if (t == null) return;
+            if ((t.Margin.Left + e.HorizontalChange) < -1) return;
             t.Margin = new Thickness(t.Margin.Left + e.HorizontalChange, t.Margin.Top, t.Margin.Right, t.Margin.Bottom);
 
             line.Visibility = Visibility.Visible;
@@ -172,22 +172,31 @@ namespace Pavel2.GUI {
         }
 
         void DragCompleted(object sender, DragCompletedEventArgs e) {
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            Column col = (Column)t.Tag;
+
             if (e.HorizontalChange == 0) {
-                Thumb t = sender as Thumb;
-                if (t == null) return;
-                Column col = (Column)t.Tag;
                 col.DirUp = !col.DirUp;
                 if (col.DirUp) {
                     t.Style = (Style)thumbGrid.FindResource("Up");
                 } else {
                     t.Style = (Style)thumbGrid.FindResource("Down");
                 }
-                RenderScene();
-                visImage.Source = TakeScreenshot();
             } else {
+                int pos = 0;
+                if (e.HorizontalChange < 0) {
+                    pos = (int)Math.Ceiling((t.Margin.Left / (step * thumbGrid.ActualWidth)));
+                } else {
+                    pos = (int)((t.Margin.Left / (step * thumbGrid.ActualWidth)));
+                }
+                dataGrid.ChangeColOrder(col, pos);
                 SetThumbPanel();
                 line.Visibility = Visibility.Collapsed;
             }
+
+            RenderScene();
+            visImage.Source = TakeScreenshot();
         }
 
         void DragStarted(object sender, DragStartedEventArgs e) {
