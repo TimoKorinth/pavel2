@@ -8,6 +8,7 @@ using Pavel2.Framework;
 using System.Windows.Media;
 using System.Drawing;
 using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -46,10 +47,22 @@ namespace Pavel2.GUI {
         public ScatterMatrix() {
             InitializeComponent();
             wfPA = new OpenGLRenderWind();
+            this.SizeChanged += ScatterMatrix_SizeChanged;
             host.Child = wfPA; 
             wfPA.Width = 1000;
             wfPA.Height = 800;
             wfPA.SetupViewPort();
+        }
+
+        void ScatterMatrix_SizeChanged(object sender, SizeChangedEventArgs e) {
+            for (int i = 0; i < labels.Children.Count; i++) {
+                Label l = (Label)labels.Children[i];
+                l.Width = step * labels.ActualWidth;
+                double x = (double)(i * step * (labels.ActualWidth - 10) + 5);
+                double y = (double)((i * step * labels.ActualHeight) + (step * labels.ActualHeight / 2));
+                Canvas.SetLeft(l, x);
+                Canvas.SetBottom(l, y);
+            }
         }
 
         private void DrawPoints() {
@@ -57,7 +70,6 @@ namespace Pavel2.GUI {
             Gl.glEnable(Gl.GL_POINT_SMOOTH);
             Gl.glPointSize(1f);
             if (dataGrid == null) return;
-            double step = (double)1 / dataGrid.Columns.Length;
             int index = -1;
             for (int x = 0; x < dataGrid.Columns.Length; x++) {
                 for (int y = 0; y < dataGrid.Columns.Length; y++) {
@@ -93,7 +105,7 @@ namespace Pavel2.GUI {
             Gl.glDisable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(2f);
             if (dataGrid == null) return;
-            double step = (double)1 / dataGrid.Columns.Length;
+            labels.Children.Clear();
             for (int x = 0; x < dataGrid.Columns.Length; x++) {
                 for (int y = 0; y < dataGrid.Columns.Length; y++) {
                     Gl.glBegin(Gl.GL_LINES);
@@ -105,7 +117,18 @@ namespace Pavel2.GUI {
                     Gl.glVertex2d(step * (x + 1), step * y);
                     Gl.glEnd();
                 }
-                wfPA.PrintText((float)(x*step), (float)((x*step)+(step/2)), 0.0f, 0.03f, dataGrid.Columns[x].Header);
+                Label l = new Label();
+                l.Content = dataGrid.Columns[x].Header;
+                labels.Children.Add(l);
+                l.HorizontalContentAlignment = HorizontalAlignment.Center;
+                Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
+                    l.Width = step * labels.ActualWidth;
+                    double xs = (double)((int)state * step * (labels.ActualWidth-10)+5);
+                    double y = (double)(((int)state * step * labels.ActualHeight) + (step * labels.ActualHeight / 2));
+                    Canvas.SetLeft(l, xs);
+                    Canvas.SetBottom(l, y);
+                    return null;
+                }), x);
             }
         }
 
@@ -126,7 +149,7 @@ namespace Pavel2.GUI {
             this.dataGrid = dataGrid;
             comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
             if (dataGrid == null) return;
-            step = (double)1 / (dataGrid.Columns.Length - 1);
+            step = (double)1 / dataGrid.Columns.Length;
             //Abfrage ob sich was geändert hat, sonst einfach den evtl. schon
             //vorhandenen Screenshot nehmen:
             if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed) {

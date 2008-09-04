@@ -3,5 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Name="openGlCanvas">
         <Image Margin="5" Name="visImage" Stretch="Fill" />
+        <Canvas Name="labels" />
     </Grid>
 </UserControl>
