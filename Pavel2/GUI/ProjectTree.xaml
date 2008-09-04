@@ -8,21 +8,21 @@
         <DataTemplate x:Key="EditTemplate">
             <StackPanel Orientation="Horizontal">
                 <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverterPT}}"/>
-                <TextBox Style="{x:Null}" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag.Header, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Margin="3,0,0,0" VerticalAlignment="Center" Style="{x:Null}" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag.Header, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="DefaultTemplate">
             <StackPanel Orientation="Horizontal">
                 <Image PreviewMouseDown="img_PreviewMouseDown" Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverterPT}}"/>
-                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag.Header}" />
+                <TextBlock Margin="3,0,0,0" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag.Header}" />
             </StackPanel>
         </DataTemplate>
         
         <DataTemplate x:Key="HighlightTemplate">
             <StackPanel Orientation="Horizontal" Background="Silver">
                 <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverterPT}}"/>
-                <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag.Header}" />
+                <TextBlock Margin="3,0,0,0" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag.Header}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
