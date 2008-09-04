@@ -183,6 +183,7 @@ namespace Pavel2.GUI {
             } else {
                 DataGrid dataGrid = ParserManagement.GetDataGrid(file);
                 if (null != dataGrid) {
+                    dataGrid.ColumnChanged += dataGrid_ColumnChanged;
                     TreeViewItem tvItem = new TreeViewItem();
                     DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                     dPTI.Header = file.Name;
@@ -199,6 +200,26 @@ namespace Pavel2.GUI {
                     //TODO: Fehlermeldung, dass nicht geparst werden konnte!
                 }
             }
+        }
+
+        private void dataGrid_ColumnChanged(object sender, EventArgs e) {
+            DataGrid d = (DataGrid)sender;
+            TreeViewItem tvItem = GetRelatedItem(d, root);
+            if (tvItem == null) return;
+            UpdateDataTreeViewItem(tvItem);
+        }
+
+        public TreeViewItem GetRelatedItem(DataGrid d, TreeViewItem root) {
+            foreach (TreeViewItem item in root.Items) {
+                if (item.Tag is DataProjectTreeItem) {
+                    DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
+                    if (dPTI.DataGrid.Equals(d)) return item;
+                } else if (item.Tag is FolderProjectTreeItem) {
+                    TreeViewItem tVI = GetRelatedItem(d, item);
+                    if (tVI != null) return tVI;
+                }
+            }
+            return null;
         }
 
         private void RemoveTreeViewItem(TreeViewItem item) {
@@ -463,6 +484,7 @@ namespace Pavel2.GUI {
                     if (dataTreeItem.Tag is DataProjectTreeItem) {
                         DataProjectTreeItem dPTI = (DataProjectTreeItem)dataTreeItem.Tag;
                         dPTI.DataGrid.SetDataFields();
+                        dPTI.DataGrid.Changed = true;
                     }
                     dataTreeItem.IsSelected = true;
                 }

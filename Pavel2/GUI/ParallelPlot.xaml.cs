@@ -209,6 +209,7 @@ namespace Pavel2.GUI {
                     pos = (int)((t.Margin.Left / (step * thumbGrid.ActualWidth)));
                 }
                 dataGrid.ChangeColOrder(col, pos);
+                SetLabelPanel();
                 SetThumbPanel();
                 line.Visibility = Visibility.Collapsed;
             }
