@@ -11,9 +11,9 @@ using System.Windows.Input;
 namespace Pavel2.GUI {
     static class DragDropHelper {
 
-        static private Color brushColor = Colors.Cyan;
+        static private Color brushColor = Colors.Black;
         static private Color borderColor = Colors.Turquoise;
-        static private double opac = 0.35;
+        static private double opac = 0.45;
 
         public static void HighlightElement(UIElement[] elements) {
             MainData.MainWindow.rootAdorner.AdornerLayer.Add(new ElementAdorner(elements, brushColor, borderColor, opac));
