@@ -23,7 +23,7 @@
             <ScrollViewer 
               Focusable="False"
               CanContentScroll="False"
-              Padding="4">
+              Padding="0">
               <ItemsPresenter/>
             </ScrollViewer>
           </Border>
@@ -112,7 +112,7 @@
             <Border Grid.Column="0" Grid.ColumnSpan="3" Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"
                 BorderThickness="{TemplateBinding BorderThickness}"
-                Padding="5" />
+                Padding="8" />
                             <ToggleButton x:Name="Expander"
                     Style="{StaticResource ExpandCollapseToggleStyle}"
                     IsChecked="{Binding Path=IsExpanded,

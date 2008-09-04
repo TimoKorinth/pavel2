@@ -92,6 +92,7 @@ namespace Pavel2.GUI {
         private void Deselect(TreeViewItem treeViewItem) {
             treeViewItem.Background = Brushes.Transparent;
             treeViewItem.Foreground = Brushes.Black;
+            treeViewItem.FontWeight = FontWeights.Normal;
             selItems.Remove(treeViewItem);
         }
 
@@ -104,8 +105,12 @@ namespace Pavel2.GUI {
         }
 
         private void Select(TreeViewItem treeViewItem) {
-            treeViewItem.Background = Brushes.Silver;
-            treeViewItem.Foreground = Brushes.Black;
+            Color c1 = Color.FromRgb(157, 173, 204);
+            Color c2 = Color.FromRgb(120, 138, 176);
+            LinearGradientBrush b = new LinearGradientBrush(c1, c2, 90);
+            treeViewItem.Background = b;
+            treeViewItem.Foreground = Brushes.White;
+            treeViewItem.FontWeight = FontWeights.Bold;
             selItems.Add(treeViewItem);
         }
 
@@ -192,8 +197,8 @@ namespace Pavel2.GUI {
 
         private class RubberBandAdorner : Adorner {
 
-            SolidColorBrush renderBrush = new SolidColorBrush(Colors.Transparent);
-            Pen renderPen = new Pen(new SolidColorBrush(Colors.Silver), 1);
+            SolidColorBrush renderBrush = new SolidColorBrush(Colors.Turquoise);
+            Pen renderPen = new Pen(new SolidColorBrush(Colors.Turquoise), 1);
             Point start;
             Point end;
 
@@ -205,6 +210,7 @@ namespace Pavel2.GUI {
             protected override void OnRender(DrawingContext dc) {
                 this.IsHitTestVisible = false;
                 Rect e = new Rect(start, end);
+                renderBrush.Opacity = 0.2;
                 dc.DrawRectangle(renderBrush, renderPen, e);
             }
         }
