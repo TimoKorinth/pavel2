@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using Pavel2.GUI;
+using System.Windows;
 
 namespace Pavel2.Framework {
     [Serializable()]
@@ -15,6 +16,8 @@ namespace Pavel2.Framework {
         private int maxColumn;
         private bool changed;
         private Dictionary<Type, ImageSource> cache = new Dictionary<Type,ImageSource>();
+
+        public event EventHandler ColumnChanged;
 
         public Dictionary<Type, ImageSource> Cache {
             get { return cache; }
@@ -47,6 +50,10 @@ namespace Pavel2.Framework {
             colList.Insert(position, col);
             columns = colList.ToArray();
             SetDataFields();
+            if (ColumnChanged != null) {
+                ColumnChanged(this, new EventArgs());
+            }
+            changed = true;
         }
 
         public Column[] Columns {
