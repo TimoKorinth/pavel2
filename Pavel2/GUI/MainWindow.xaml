@@ -58,7 +58,7 @@
         </Expander>
 		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Grid.RowSpan="2" x:Name="previewExpander" Header="Preview" IsExpanded="True">
 			<Grid>
-                <ListBox Name="previewList" BorderThickness="0">
+                <ListBox Name="previewList" BorderThickness="0" MouseDoubleClick="previewList_MouseDoubleClick">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
