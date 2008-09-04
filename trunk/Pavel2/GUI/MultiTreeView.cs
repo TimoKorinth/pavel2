@@ -179,7 +179,7 @@ namespace Pavel2.GUI {
                 Rect rubberBand = new Rect(startPoint, endPoint);
                 if ((rubberBand.Contains(itemBounds.BottomLeft) && rubberBand.Contains(itemBounds.TopLeft)) ||
                     (rubberBand.Contains(itemBounds.BottomRight) && rubberBand.Contains(itemBounds.TopRight)) ||
-                    (rubberBand.Contains(new Point((itemBounds.BottomRight.X - itemBounds.BottomLeft.X) / 2 + itemBounds.BottomLeft.X, itemBounds.BottomLeft.Y)) && rubberBand.Contains(new Point((itemBounds.TopRight.X - itemBounds.TopLeft.X) / 2 + itemBounds.TopLeft.X, itemBounds.TopLeft.Y)))) {
+                    (rubberBand.Contains(new Point((this.ActualWidth) / 2, itemBounds.BottomLeft.Y)) && rubberBand.Contains(new Point((this.ActualWidth) / 2, itemBounds.TopLeft.Y)))) {
                     ChangeSelectedState(item);
                 } else {
                     Deselect(item);
