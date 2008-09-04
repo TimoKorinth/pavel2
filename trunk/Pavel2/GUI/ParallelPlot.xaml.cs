@@ -145,7 +145,6 @@ namespace Pavel2.GUI {
                 t.DragStarted += DragStarted;
                 t.DragCompleted += DragCompleted;
                 t.DragDelta += DragDelta;
-                t.MouseDoubleClick += thumb_MouseDoubleClick;
                 t.Background = System.Windows.Media.Brushes.Gray;
                 t.Tag = dataGrid.Columns[col];
                 t.HorizontalAlignment = HorizontalAlignment.Left;
@@ -163,20 +162,6 @@ namespace Pavel2.GUI {
             }
         }
 
-        void thumb_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            Thumb t = sender as Thumb;
-            if (t == null) return;
-            Column col = (Column)t.Tag;
-            col.DirUp = !col.DirUp;
-            if (col.DirUp) {
-                t.Style = (Style)thumbGrid.FindResource("Up");
-            } else {
-                t.Style = (Style)thumbGrid.FindResource("Down");
-            }
-            RenderScene();
-            visImage.Source = TakeScreenshot();
-        }
-
         void DragDelta(object sender, DragDeltaEventArgs e) {
             Thumb t = sender as Thumb;
             if (t == null) return;
@@ -187,8 +172,22 @@ namespace Pavel2.GUI {
         }
 
         void DragCompleted(object sender, DragCompletedEventArgs e) {
-            SetThumbPanel();
-            line.Visibility = Visibility.Collapsed;
+            if (e.HorizontalChange == 0) {
+                Thumb t = sender as Thumb;
+                if (t == null) return;
+                Column col = (Column)t.Tag;
+                col.DirUp = !col.DirUp;
+                if (col.DirUp) {
+                    t.Style = (Style)thumbGrid.FindResource("Up");
+                } else {
+                    t.Style = (Style)thumbGrid.FindResource("Down");
+                }
+                RenderScene();
+                visImage.Source = TakeScreenshot();
+            } else {
+                SetThumbPanel();
+                line.Visibility = Visibility.Collapsed;
+            }
         }
 
         void DragStarted(object sender, DragStartedEventArgs e) {
