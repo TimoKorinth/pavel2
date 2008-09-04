@@ -17,6 +17,7 @@ namespace Pavel2.GUI {
         private void InitDirectoryTree() {
             foreach (DriveInfo drive in DriveInfo.GetDrives()) {
                 TreeViewItem item = new TreeViewItem();
+                item.FontWeight = FontWeights.Normal;
                 item.Tag = drive;
                 item.Header = drive.Name;
 
@@ -41,6 +42,7 @@ namespace Pavel2.GUI {
             try {
                 foreach (DirectoryInfo subDir in dir.GetDirectories()) {
                     TreeViewItem newItem = new TreeViewItem();
+                    newItem.FontWeight = FontWeights.Normal;
                     newItem.Tag = subDir;
                     newItem.Header = subDir.Name;
                     try {
@@ -55,6 +57,7 @@ namespace Pavel2.GUI {
                 }
                 foreach (FileInfo file in dir.GetFiles()) {
                     TreeViewItem tvItem = new TreeViewItem();
+                    tvItem.FontWeight = FontWeights.Normal;
                     tvItem.Tag = file;
                     tvItem.Header = file.Name;
                     item.Items.Add(tvItem);

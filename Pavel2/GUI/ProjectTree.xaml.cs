@@ -83,6 +83,7 @@ namespace Pavel2.GUI {
                 DataProjectTreeItem dPTVI = (DataProjectTreeItem)item.Tag;
                 for (int i = 0; i < dPTVI.DataGrid.Columns.Length; i++) {
                     TreeViewItem tmp = new TreeViewItem();
+                    tmp.FontWeight = FontWeights.Normal;
                     tmp.Tag = dPTVI.DataGrid.Columns[i];
                     item.Items.Add(tmp);
                 }
@@ -95,6 +96,7 @@ namespace Pavel2.GUI {
                 LinkItem lItem = (LinkItem)item.Tag;
                 for (int i = 0; i < lItem.DataItems.Count; i++) {
                     TreeViewItem tmp = new TreeViewItem();
+                    tmp.FontWeight = FontWeights.Normal;
                     tmp.Opacity = 0.6;
                     tmp.Tag = lItem.DataItems[i];
                     item.Items.Add(tmp);
@@ -102,6 +104,7 @@ namespace Pavel2.GUI {
                 }
                 for (int i = 0; i < lItem.Images.Count; i++) {
                     TreeViewItem tmp = new TreeViewItem();
+                    tmp.FontWeight = FontWeights.Normal;
                     tmp.Opacity = 0.6;
                     tmp.Tag = lItem.Images[i];
                     item.Items.Add(tmp);
