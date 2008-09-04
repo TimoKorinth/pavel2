@@ -209,6 +209,12 @@ namespace Pavel2.GUI {
             UpdateDataTreeViewItem(tvItem);
         }
 
+        public void Select(DataProjectTreeItem d) {
+            TreeViewItem tvItem = GetRelatedItem(d.DataGrid, root);
+            if (tvItem == null) return;
+            tvItem.IsSelected = true;
+        }
+
         public TreeViewItem GetRelatedItem(DataGrid d, TreeViewItem root) {
             foreach (TreeViewItem item in root.Items) {
                 if (item.Tag is DataProjectTreeItem) {

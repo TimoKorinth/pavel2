@@ -241,5 +241,11 @@ namespace Pavel2.GUI
                 ProjectHelper.OpenProject(filename);
             }
         }
+
+        private void previewList_MouseDoubleClick(object sender, MouseButtonEventArgs e) {
+            DataProjectTreeItem dPTI = previewList.SelectedItem as DataProjectTreeItem;
+            if (dPTI == null) return;
+            projectTreeView.Select(dPTI);
+        }
 	}
 }
