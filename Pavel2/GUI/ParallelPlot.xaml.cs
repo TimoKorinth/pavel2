@@ -75,7 +75,11 @@ namespace Pavel2.GUI {
                     } else {
                         if (breakLine) Gl.glBegin(Gl.GL_LINE_STRIP);
                         double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
-                        Gl.glVertex2d(step * col, nValue);
+                        if (dataGrid.Columns[col].DirUp) {
+                            Gl.glVertex2d(step * col, nValue);
+                        } else {
+                            Gl.glVertex2d(step * col, 1-nValue);
+                        }
                     }
                 }
                 if (!breakLine) Gl.glEnd();
@@ -169,6 +173,8 @@ namespace Pavel2.GUI {
             } else {
                 t.Style = (Style)thumbGrid.FindResource("Down");
             }
+            RenderScene();
+            visImage.Source = TakeScreenshot();
         }
 
         void DragDelta(object sender, DragDeltaEventArgs e) {
