@@ -109,7 +109,11 @@
               <RowDefinition Height="Auto"/>
               <RowDefinition/>
             </Grid.RowDefinitions>
-            <ToggleButton x:Name="Expander"
+            <Border Grid.Column="0" Grid.ColumnSpan="3" Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Padding="5" />
+                            <ToggleButton x:Name="Expander"
                     Style="{StaticResource ExpandCollapseToggleStyle}"
                     IsChecked="{Binding Path=IsExpanded,
                                 RelativeSource={RelativeSource TemplatedParent}}"
