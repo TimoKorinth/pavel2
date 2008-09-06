@@ -129,6 +129,7 @@ namespace Pavel2.GUI {
                 }
                 Label l = new Label();
                 l.Content = dataGrid.Columns[x].Header;
+                l.ToolTip = dataGrid.Columns[x].Header;
                 labels.Children.Add(l);
                 l.HorizontalContentAlignment = HorizontalAlignment.Center;
                 Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {

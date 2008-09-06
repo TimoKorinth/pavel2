@@ -159,6 +159,7 @@ namespace Pavel2.GUI {
                     Grid.SetColumn(lab, col-1);
                 }
                 lab.Content = dataGrid.Columns[col].Header;
+                lab.ToolTip = dataGrid.Columns[col].Header;
                 labelGrid.Children.Add(lab);
 
                 double scaleStep = (dataGrid.Columns[col].Max-dataGrid.Columns[col].Min) / (scaleNumber-1);
@@ -185,6 +186,7 @@ namespace Pavel2.GUI {
                     scale.Margin = new Thickness(2, 0, 0, 0);
                     String sText = scaleText.ToString();
                     if (sText.Length > 10) {
+                        border.ToolTip = sText;
                         sText = sText.Substring(0, 10)+"...";
                     }
                     scale.Text = sText;
