@@ -41,6 +41,7 @@ namespace Pavel2.GUI {
         OpenGLRenderWind wfPA;
         DataGrid dataGrid;
         CombinedDataItem comp;
+        WrapPanel lastPanel;
         private double step;
         private int scaleNumber = 5;
         WindowsFormsHost host = new WindowsFormsHost();
@@ -172,8 +173,10 @@ namespace Pavel2.GUI {
             WrapPanel wPanel = cGrid.Tag as WrapPanel;
             if (wPanel == null) return;
             if ((bool)e.NewValue) {
+                if (lastPanel != null) lastPanel.Visibility = Visibility.Collapsed;
                 wPanel.Visibility = Visibility.Visible;
             } else {
+                lastPanel = wPanel;
                 if (!wPanel.IsMouseOver) wPanel.Visibility = Visibility.Collapsed;
             }
         }
