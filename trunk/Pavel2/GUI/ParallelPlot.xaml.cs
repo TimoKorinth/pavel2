@@ -136,6 +136,45 @@ namespace Pavel2.GUI {
             Gl.glFlush();
         }
 
+        private void SetOverlayControls() {
+            overlayControls.ColumnDefinitions.Clear();
+            overlayControls.Children.Clear();
+            for (int col = 0; col < dataGrid.Columns.Length-1; col++) {
+                ColumnDefinition colDef = new ColumnDefinition();
+                overlayControls.ColumnDefinitions.Add(colDef);
+
+                Canvas cGrid = new Canvas();
+                cGrid.IsMouseDirectlyOverChanged += cGrid_IsMouseDirectlyOverChanged;
+                cGrid.Background = System.Windows.Media.Brushes.Transparent;
+                overlayControls.Children.Add(cGrid);
+                Grid.SetColumn(cGrid, col);
+
+                WrapPanel wPanel = new WrapPanel();
+                Button b1 = new Button();
+                b1.Content = "But1";
+                wPanel.Children.Add(b1);
+                Button b2 = new Button();
+                b2.Content = "But2";
+                wPanel.Children.Add(b2);
+
+                cGrid.Tag = wPanel;
+                cGrid.Children.Add(wPanel);
+                wPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        void cGrid_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            Canvas cGrid = sender as Canvas;
+            if (cGrid == null) return;
+            WrapPanel wPanel = cGrid.Tag as WrapPanel;
+            if (wPanel == null) return;
+            if ((bool)e.NewValue) {
+                wPanel.Visibility = Visibility.Visible;
+            } else {
+                if (!wPanel.IsMouseOver) wPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
         private void SetLabelPanel() {
             scaleGrid.Children.Clear();
             scaleGrid.ColumnDefinitions.Clear();
@@ -284,6 +323,7 @@ namespace Pavel2.GUI {
             step = (double)1 / (dataGrid.Columns.Length - 1);
             SetLabelPanel();
             SetThumbPanel();
+            SetOverlayControls();
             //Abfrage ob sich was geändert hat, sonst einfach den evtl. schon
             //vorhandenen Screenshot nehmen:
             if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed) {
