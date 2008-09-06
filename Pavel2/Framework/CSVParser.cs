@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace Pavel2.Framework {
     public class CSVParser : Parser {
@@ -30,6 +31,8 @@ namespace Pavel2.Framework {
             String line;
             String[] lineSplit;
             Boolean firstLine = true;
+            //TODO: Trennzeichen richtig finden
+            CultureInfo ci = new CultureInfo("en-US", false);
             while ((line = stream.ReadLine()) != null) {
                 lineSplit = line.Split(delimiter);
                 for (int i = 0; i < lineSplit.Length; i++) {
@@ -37,7 +40,7 @@ namespace Pavel2.Framework {
                         AddHeader(lineSplit[i], i);
                     } else {
                         double d;
-                        if (double.TryParse(lineSplit[i], out d)) {
+                        if (double.TryParse(lineSplit[i], NumberStyles.Float | NumberStyles.AllowThousands, ci, out d)) {
                             AddPoint(new DiscretePoint(lineSplit[i], d), i);
                         } else {
                             AddPoint(new DiscretePoint(lineSplit[i]), i);
