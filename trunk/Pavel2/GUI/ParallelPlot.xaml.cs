@@ -183,7 +183,11 @@ namespace Pavel2.GUI {
                     }
                     border.Child = scale;
                     scale.Margin = new Thickness(2, 0, 0, 0);
-                    scale.Text = scaleText.ToString();
+                    String sText = scaleText.ToString();
+                    if (sText.Length > 10) {
+                        sText = sText.Substring(0, 10)+"...";
+                    }
+                    scale.Text = sText;
                     if (dataGrid.Columns[col].DirUp) {
                         scaleText -= scaleStep;
                     } else {
