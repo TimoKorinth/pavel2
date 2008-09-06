@@ -41,7 +41,8 @@ namespace Pavel2.GUI {
         OpenGLRenderWind wfPA;
         DataGrid dataGrid;
         CombinedDataItem comp;
-        double step;
+        private double step;
+        private int scaleNumber = 5;
         WindowsFormsHost host = new WindowsFormsHost();
 
         public ParallelPlot() {
@@ -136,24 +137,64 @@ namespace Pavel2.GUI {
         }
 
         private void SetLabelPanel() {
+            scaleGrid.Children.Clear();
+            scaleGrid.ColumnDefinitions.Clear();
+            scaleGrid.RowDefinitions.Clear();
             labelGrid.Children.Clear();
             labelGrid.ColumnDefinitions.Clear();
             if (dataGrid == null) return;
             for (int col = 0; col < dataGrid.Columns.Length-1; col++) {
                 labelGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                scaleGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
-            for (int col = 0; col < dataGrid.Columns.Length-1; col++) {
+            for (int row = 0; row < scaleNumber-1; row++) {
+                scaleGrid.RowDefinitions.Add(new RowDefinition());
+            }
+            for (int col = 0; col < dataGrid.Columns.Length; col++) {
                 Label lab = new Label();
                 lab.HorizontalAlignment = HorizontalAlignment.Left;
+                Grid.SetColumn(lab, col);
+                if (col == dataGrid.Columns.Length-1) {
+                    lab.HorizontalAlignment = HorizontalAlignment.Right;
+                    Grid.SetColumn(lab, col-1);
+                }
                 lab.Content = dataGrid.Columns[col].Header;
                 labelGrid.Children.Add(lab);
-                Grid.SetColumn(lab, col);
+
+                double scaleStep = (dataGrid.Columns[col].Max-dataGrid.Columns[col].Min) / (scaleNumber-1);
+                double scaleText;
+                if (dataGrid.Columns[col].DirUp) {
+                    scaleText = dataGrid.Columns[col].Max;
+                } else {
+                    scaleText = dataGrid.Columns[col].Min;
+                }
+                for (int i = 0; i < scaleNumber; i++) {
+                    TextBlock scale = new TextBlock();
+                    Border border = new Border();
+                    border.BorderBrush = System.Windows.Media.Brushes.Gray;
+                    border.BorderThickness = new Thickness(0, 2, 0, 0);
+                    if (i == scaleNumber-1) {
+                        border.BorderThickness = new Thickness(0, 0, 0, 2);
+                        border.VerticalAlignment = VerticalAlignment.Bottom;
+                    }
+                    border.HorizontalAlignment = HorizontalAlignment.Left;
+                    if (col== dataGrid.Columns.Length-1) {
+                        border.HorizontalAlignment = HorizontalAlignment.Right;
+                    }
+                    border.Child = scale;
+                    scale.Margin = new Thickness(2, 0, 0, 0);
+                    scale.Text = scaleText.ToString();
+                    if (dataGrid.Columns[col].DirUp) {
+                        scaleText -= scaleStep;
+                    } else {
+                        scaleText += scaleStep;
+                    }
+                    scale.Foreground = System.Windows.Media.Brushes.Gray;
+                    scaleGrid.Children.Add(border);
+                    Grid.SetColumn(border, col);
+                    Grid.SetRow(border, i);
+                }
             }
-            Label lastLab = new Label();
-            lastLab.HorizontalAlignment = HorizontalAlignment.Right;
-            lastLab.Content = dataGrid.Columns[dataGrid.Columns.Length - 1].Header;
-            labelGrid.Children.Add(lastLab);
-            Grid.SetColumn(lastLab, dataGrid.Columns.Length - 1);
         }
 
         private void SetThumbPanel() {
@@ -201,6 +242,7 @@ namespace Pavel2.GUI {
                 } else {
                     t.Style = (Style)thumbGrid.FindResource("Down");
                 }
+                SetLabelPanel();
             } else {
                 int pos = 0;
                 if (e.HorizontalChange < 0) {
