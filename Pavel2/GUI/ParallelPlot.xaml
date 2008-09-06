@@ -72,7 +72,7 @@
         <Rectangle Grid.Row="1" Fill="Gray" Stroke="Black" 
                    Height="{Binding ElementName=visImage, Path=Height}" 
                    Width="5" HorizontalAlignment="Left" Name="line" Visibility="Collapsed"/>
-        <Grid ShowGridLines="True" Grid.Row="0" Grid.RowSpan="3" Name="overlayControls" />
+        <Grid Grid.Row="0" Grid.RowSpan="3" Name="overlayControls" />
         <Grid Grid.Row="1" Name="scaleGrid" />
         <Grid Grid.Row="2" Name="labelGrid">
         </Grid>

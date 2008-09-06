@@ -81,10 +81,10 @@ namespace Pavel2.GUI {
             if (item.Tag is DataProjectTreeItem) {
                 item.Items.Clear();
                 DataProjectTreeItem dPTVI = (DataProjectTreeItem)item.Tag;
-                for (int i = 0; i < dPTVI.DataGrid.Columns.Length; i++) {
+                for (int i = 0; i < dPTVI.DataGrid.RealColumns.Length; i++) {
                     TreeViewItem tmp = new TreeViewItem();
                     tmp.FontWeight = FontWeights.Normal;
-                    tmp.Tag = dPTVI.DataGrid.Columns[i];
+                    tmp.Tag = dPTVI.DataGrid.RealColumns[i];
                     item.Items.Add(tmp);
                 }
             }
@@ -187,6 +187,7 @@ namespace Pavel2.GUI {
                 DataGrid dataGrid = ParserManagement.GetDataGrid(file);
                 if (null != dataGrid) {
                     dataGrid.ColumnChanged += dataGrid_ColumnChanged;
+                    dataGrid.ColumnVisChanged += dataGrid_ColumnVisChanged;
                     TreeViewItem tvItem = new TreeViewItem();
                     DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                     dPTI.Header = file.Name;
@@ -203,6 +204,13 @@ namespace Pavel2.GUI {
                     //TODO: Fehlermeldung, dass nicht geparst werden konnte!
                 }
             }
+        }
+
+        void dataGrid_ColumnVisChanged(object sender, EventArgs e) {
+            DataGrid d = (DataGrid)sender;
+            TreeViewItem tvItem = GetRelatedItem(d, root);
+            if (tvItem == null) return;
+            UpdateDataTreeViewItem(tvItem);
         }
 
         private void dataGrid_ColumnChanged(object sender, EventArgs e) {
@@ -484,16 +492,11 @@ namespace Pavel2.GUI {
         private void img_PreviewMouseDown(object sender, MouseButtonEventArgs e) {
             if (SelectedItem.Tag is Column) {
                 Column col = (Column)SelectedItem.Tag;
-                col.Visible = !col.Visible;
-                DataTemplate template = (DataTemplate)this.FindResource("DefaultTemplate");
-                SelectedItem.HeaderTemplate = null;
-                SelectedItem.HeaderTemplate = template;
                 if (SelectedItem.Parent is TreeViewItem) {
                     TreeViewItem dataTreeItem = (TreeViewItem)SelectedItem.Parent;
                     if (dataTreeItem.Tag is DataProjectTreeItem) {
                         DataProjectTreeItem dPTI = (DataProjectTreeItem)dataTreeItem.Tag;
-                        dPTI.DataGrid.SetDataFields();
-                        dPTI.DataGrid.Changed = true;
+                        dPTI.DataGrid.ColIsVisible(col, !col.Visible);
                     }
                     dataTreeItem.IsSelected = true;
                 }

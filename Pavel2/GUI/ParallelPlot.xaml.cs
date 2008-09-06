@@ -11,6 +11,7 @@ using System.Windows.Interop;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 using System.Windows.Shapes;
+using System.Windows.Media.Imaging;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -153,6 +154,7 @@ namespace Pavel2.GUI {
                 Grid.SetColumn(cGrid, col);
 
                 WrapPanel wPanel = new WrapPanel();
+
                 Thumb t = new Thumb();
                 t.DragCompleted += DragCompleted;
                 t.DragDelta += DragDelta;
@@ -166,11 +168,37 @@ namespace Pavel2.GUI {
                 }
                 wPanel.Children.Add(t);
 
+                Button delButton = new Button();
+                delButton.Tag = dataGrid.Columns[col];
+                System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+                Uri uri = new Uri("Icons/cross.png", UriKind.Relative);
+                BitmapImage source = new BitmapImage(uri);
+                img.Source = source;
+                img.Width = 10;
+                img.Height = 10;
+                delButton.Content = img;
+                delButton.Click += delButton_Click;
+                wPanel.Children.Add(delButton);
+
                 if (col == dataGrid.Columns.Length - 1) Canvas.SetRight(wPanel, 0);
                 cGrid.Tag = wPanel;
                 cGrid.Children.Add(wPanel);
                 wPanel.Visibility = Visibility.Collapsed;
             }
+        }
+
+        void delButton_Click(object sender, RoutedEventArgs e) {
+            Button btn = sender as Button;
+            if (btn == null) return;
+            Column col = btn.Tag as Column;
+            if (col == null) return;
+            dataGrid.ColIsVisible(col, false);
+            step = (double)1 / (dataGrid.Columns.Length - 1);
+            SetLabelPanel();
+            SetOverlayControls();
+            RenderScene();
+            visImage.Source = TakeScreenshot();
+            dataGrid.Cache[this.GetType()] = visImage.Source;
         }
 
         void cGrid_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e) {
@@ -256,9 +284,6 @@ namespace Pavel2.GUI {
             }
         }
 
-        private void SetThumbPanel() {
-        }
-
         void DragDelta(object sender, DragDeltaEventArgs e) {
             Thumb t = sender as Thumb;
             if (t == null) return;
@@ -309,7 +334,6 @@ namespace Pavel2.GUI {
             if (dataGrid == null) return;
             step = (double)1 / (dataGrid.Columns.Length - 1);
             SetLabelPanel();
-            SetThumbPanel();
             SetOverlayControls();
             //Abfrage ob sich was geändert hat, sonst einfach den evtl. schon
             //vorhandenen Screenshot nehmen:
@@ -326,7 +350,6 @@ namespace Pavel2.GUI {
         public void RenderAfterResize() {
             wfPA.Height = (int)this.ActualHeight;
             wfPA.Width = (int)this.ActualWidth;
-            SetThumbPanel();
             RenderScene();
             visImage.Source = TakeScreenshot();
         }

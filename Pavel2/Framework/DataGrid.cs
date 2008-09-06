@@ -18,6 +18,7 @@ namespace Pavel2.Framework {
         private Dictionary<Type, ImageSource> cache = new Dictionary<Type,ImageSource>();
 
         public event EventHandler ColumnChanged;
+        public event EventHandler ColumnVisChanged;
 
         public Dictionary<Type, ImageSource> Cache {
             get { return cache; }
@@ -61,15 +62,28 @@ namespace Pavel2.Framework {
             changed = true;
         }
 
+        public void ColIsVisible(Column col, bool isVis) {
+            col.Visible = isVis;
+            SetDataFields();
+            changed = true;
+            if (ColumnVisChanged != null) {
+                ColumnVisChanged(this, new EventArgs());
+            }
+        }
+
         public Column[] Columns {
             get { 
                 List<Column> tmp = new List<Column>();
                 foreach (Column col in columns) {
                     if (col.Visible) tmp.Add(col);
                 }
-                return tmp.ToArray(); ; 
+                return tmp.ToArray(); 
             }
             set { columns = value; }
+        }
+
+        public Column[] RealColumns {
+            get { return columns; }
         }
 
         public DataGrid() {
