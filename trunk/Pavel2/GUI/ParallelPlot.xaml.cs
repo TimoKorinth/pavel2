@@ -139,10 +139,12 @@ namespace Pavel2.GUI {
         private void SetOverlayControls() {
             overlayControls.ColumnDefinitions.Clear();
             overlayControls.Children.Clear();
-            for (int col = 0; col < dataGrid.Columns.Length-1; col++) {
+            for (int col = 0; col < dataGrid.Columns.Length; col++) {
                 ColumnDefinition colDef = new ColumnDefinition();
                 overlayControls.ColumnDefinitions.Add(colDef);
-
+                if (col >= dataGrid.Columns.Length - 2) {
+                    colDef.Width = new GridLength(0.5, GridUnitType.Star);
+                }
                 Canvas cGrid = new Canvas();
                 cGrid.IsMouseDirectlyOverChanged += cGrid_IsMouseDirectlyOverChanged;
                 cGrid.Background = System.Windows.Media.Brushes.Transparent;
@@ -157,6 +159,7 @@ namespace Pavel2.GUI {
                 b2.Content = "But2";
                 wPanel.Children.Add(b2);
 
+                if (col == dataGrid.Columns.Length - 1) Canvas.SetRight(wPanel, 0);
                 cGrid.Tag = wPanel;
                 cGrid.Children.Add(wPanel);
                 wPanel.Visibility = Visibility.Collapsed;
@@ -211,6 +214,8 @@ namespace Pavel2.GUI {
                 for (int i = 0; i < scaleNumber; i++) {
                     TextBlock scale = new TextBlock();
                     Border border = new Border();
+                    border.HorizontalAlignment = HorizontalAlignment.Left;
+                    border.VerticalAlignment = VerticalAlignment.Top;
                     border.BorderBrush = System.Windows.Media.Brushes.Gray;
                     border.BorderThickness = new Thickness(0, 2, 0, 0);
                     if (i == scaleNumber-1) {
