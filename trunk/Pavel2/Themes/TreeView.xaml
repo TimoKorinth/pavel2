@@ -109,7 +109,7 @@
               <RowDefinition Height="Auto"/>
               <RowDefinition/>
             </Grid.RowDefinitions>
-            <Border Margin="-2000,0,0,0"
+            <Border Margin="-2000,0,0,0" x:Name="bgBorder"
                 Grid.Column="0" Grid.ColumnSpan="3" Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"
                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -176,6 +176,11 @@
                   Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
               <Setter Property="Foreground"
                   Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+            </Trigger>
+            <Trigger Property="IsTextSearchEnabled" Value="true">
+                <Setter TargetName="bgBorder"
+                  Property="IsHitTestVisible"
+                  Value="true"/>
             </Trigger>
             <MultiTrigger>
               <MultiTrigger.Conditions>

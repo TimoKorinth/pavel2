@@ -93,6 +93,8 @@ namespace Pavel2.GUI {
             treeViewItem.Background = Brushes.Transparent;
             treeViewItem.Foreground = Brushes.Black;
             treeViewItem.FontWeight = FontWeights.Normal;
+            //Hack to enable drag and drop on background of item:
+            treeViewItem.IsTextSearchEnabled = false;
             selItems.Remove(treeViewItem);
         }
 
@@ -109,6 +111,8 @@ namespace Pavel2.GUI {
             Color c2 = Color.FromRgb(120, 138, 176);
             LinearGradientBrush b = new LinearGradientBrush(c1, c2, 90);
             treeViewItem.Background = b;
+            //Hack to enable drag and drop on background of item:
+            treeViewItem.IsTextSearchEnabled = true;
             treeViewItem.Foreground = Brushes.White;
             treeViewItem.FontWeight = FontWeights.Bold;
             selItems.Add(treeViewItem);
