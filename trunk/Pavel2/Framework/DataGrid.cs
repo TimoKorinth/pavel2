@@ -44,6 +44,11 @@ namespace Pavel2.Framework {
             set { dData = value; }
         }
 
+        public int IndexOf(Column col) {
+            List<Column> colList = new List<Column>(columns);
+            return colList.IndexOf(col);
+        }
+
         public void ChangeColOrder(Column col, int position) {
             List<Column> colList = new List<Column>(columns);
             colList.Remove(col);

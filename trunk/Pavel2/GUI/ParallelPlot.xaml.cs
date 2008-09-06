@@ -153,12 +153,18 @@ namespace Pavel2.GUI {
                 Grid.SetColumn(cGrid, col);
 
                 WrapPanel wPanel = new WrapPanel();
-                Button b1 = new Button();
-                b1.Content = "But1";
-                wPanel.Children.Add(b1);
-                Button b2 = new Button();
-                b2.Content = "But2";
-                wPanel.Children.Add(b2);
+                Thumb t = new Thumb();
+                t.DragCompleted += DragCompleted;
+                t.DragDelta += DragDelta;
+                t.Background = System.Windows.Media.Brushes.Gray;
+                t.Tag = dataGrid.Columns[col];
+                t.HorizontalAlignment = HorizontalAlignment.Left;
+                if (dataGrid.Columns[col].DirUp) {
+                    t.Style = (Style)thumbGrid.FindResource("Up");
+                } else {
+                    t.Style = (Style)thumbGrid.FindResource("Down");
+                }
+                wPanel.Children.Add(t);
 
                 if (col == dataGrid.Columns.Length - 1) Canvas.SetRight(wPanel, 0);
                 cGrid.Tag = wPanel;
@@ -251,36 +257,16 @@ namespace Pavel2.GUI {
         }
 
         private void SetThumbPanel() {
-            thumbGrid.Children.Clear();
-            for (int col = 0; col < dataGrid.Columns.Length; col++) {
-                Thumb t = new Thumb();
-                t.DragStarted += DragStarted;
-                t.DragCompleted += DragCompleted;
-                t.DragDelta += DragDelta;
-                t.Background = System.Windows.Media.Brushes.Gray;
-                t.Tag = dataGrid.Columns[col];
-                t.HorizontalAlignment = HorizontalAlignment.Left;
-                if (dataGrid.Columns[col].DirUp) {
-                    t.Style = (Style)thumbGrid.FindResource("Up");
-                } else {
-                    t.Style = (Style)thumbGrid.FindResource("Down");
-                }
-                Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
-                    t.Margin = new Thickness(step * (int)state * (thumbGrid.ActualWidth-10), 2, t.Margin.Right, 2);
-                    return null;
-                }), col);
-                thumbGrid.Children.Add(t);
-            }
         }
 
         void DragDelta(object sender, DragDeltaEventArgs e) {
             Thumb t = sender as Thumb;
             if (t == null) return;
-            if ((t.Margin.Left + e.HorizontalChange) < -1) return;
+            //if ((t.Margin.Left + e.HorizontalChange) < -1) return;
             t.Margin = new Thickness(t.Margin.Left + e.HorizontalChange, t.Margin.Top, t.Margin.Right, t.Margin.Bottom);
 
             line.Visibility = Visibility.Visible;
-            line.Margin = new Thickness(line.Margin.Left + e.HorizontalChange, line.Margin.Top, line.Margin.Right, line.Margin.Bottom);
+            line.Margin = new Thickness(t.Margin.Left + ((overlayControls.ActualWidth * step) * dataGrid.IndexOf((Column)t.Tag)) + e.HorizontalChange, line.Margin.Top, line.Margin.Right, line.Margin.Bottom);
         }
 
         void DragCompleted(object sender, DragCompletedEventArgs e) {
@@ -299,13 +285,13 @@ namespace Pavel2.GUI {
             } else {
                 int pos = 0;
                 if (e.HorizontalChange < 0) {
-                    pos = (int)Math.Ceiling((t.Margin.Left / (step * thumbGrid.ActualWidth)));
+                    pos = (int)Math.Ceiling(((t.Margin.Left + ((overlayControls.ActualWidth * step) * dataGrid.IndexOf((Column)t.Tag))) / (step * thumbGrid.ActualWidth)));
                 } else {
-                    pos = (int)((t.Margin.Left / (step * thumbGrid.ActualWidth)));
+                    pos = (int)(((t.Margin.Left + ((overlayControls.ActualWidth * step) * dataGrid.IndexOf((Column)t.Tag))) / (step * thumbGrid.ActualWidth)));
                 }
                 dataGrid.ChangeColOrder(col, pos);
                 SetLabelPanel();
-                SetThumbPanel();
+                SetOverlayControls();
                 line.Visibility = Visibility.Collapsed;
             }
 
@@ -313,13 +299,6 @@ namespace Pavel2.GUI {
             wfPA.Width = (int)this.ActualWidth;
             RenderScene();
             visImage.Source = TakeScreenshot();
-        }
-
-        void DragStarted(object sender, DragStartedEventArgs e) {
-            Thumb t = sender as Thumb;
-            if (t == null) return;
-            t.Background = System.Windows.Media.Brushes.Turquoise;
-            line.Margin = new Thickness(t.Margin.Left, line.Margin.Top, line.Margin.Right, line.Margin.Bottom);
         }
 
         #region Visualization Member
