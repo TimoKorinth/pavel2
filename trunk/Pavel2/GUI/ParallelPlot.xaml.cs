@@ -262,7 +262,7 @@ namespace Pavel2.GUI {
         void DragDelta(object sender, DragDeltaEventArgs e) {
             Thumb t = sender as Thumb;
             if (t == null) return;
-            //if ((t.Margin.Left + e.HorizontalChange) < -1) return;
+            if ((t.Margin.Left + ((overlayControls.ActualWidth * step) * dataGrid.IndexOf((Column)t.Tag)) + e.HorizontalChange) < -5) return;
             t.Margin = new Thickness(t.Margin.Left + e.HorizontalChange, t.Margin.Top, t.Margin.Right, t.Margin.Bottom);
 
             line.Visibility = Visibility.Visible;
