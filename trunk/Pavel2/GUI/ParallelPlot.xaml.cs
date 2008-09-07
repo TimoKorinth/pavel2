@@ -237,10 +237,13 @@ namespace Pavel2.GUI {
             Thumb t = sender as Thumb;
             if (t == null) return;
             double tmp = Canvas.GetTop(t);
+            double newPos;
             if (double.IsNaN(tmp)) {
-                Canvas.SetBottom(t, Canvas.GetBottom(t) - e.VerticalChange);
+                newPos = Canvas.GetBottom(t) - e.VerticalChange;
+                if ((newPos > 20) && (newPos < overlayControls.ActualHeight - 23)) Canvas.SetBottom(t, newPos);
             } else {
-                Canvas.SetTop(t, Canvas.GetTop(t) + e.VerticalChange);
+                newPos = Canvas.GetTop(t) + e.VerticalChange;
+                if ((newPos > 15) && (newPos < overlayControls.ActualHeight - 28)) Canvas.SetTop(t, newPos);
             }
         }
 
