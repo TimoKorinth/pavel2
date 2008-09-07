@@ -182,6 +182,21 @@ namespace Pavel2.GUI {
                 delButton.Click += delButton_Click;
                 wPanel.Children.Add(delButton);
 
+                Thumb tDown = new Thumb();
+                Thumb tUp = new Thumb();
+                tDown.Tag = dataGrid.Columns[col];
+                tUp.Tag = dataGrid.Columns[col];
+                tUp.Width = 20;
+                tDown.Width = 20;
+                tUp.Height = 8;
+                tDown.Height = 8;
+                tUp.DragDelta += tZoom_DragDelta;
+                tDown.DragDelta += tZoom_DragDelta;
+                wPanel.Children.Add(tUp);
+                wPanel.Children.Add(tDown);
+                Canvas.SetTop(tUp, 15);
+                Canvas.SetBottom(tDown, 20);
+
                 wPanel.HorizontalAlignment = HorizontalAlignment.Left;
                 if (col == dataGrid.Columns.Length - 1) {
                     wPanel.HorizontalAlignment = HorizontalAlignment.Right;
@@ -189,6 +204,17 @@ namespace Pavel2.GUI {
                 cGrid.Tag = wPanel;
                 cGrid.Children.Add(wPanel);
                 wPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        void tZoom_DragDelta(object sender, DragDeltaEventArgs e) {
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            double tmp = Canvas.GetTop(t);
+            if (double.IsNaN(tmp)) {
+                Canvas.SetBottom(t, Canvas.GetBottom(t) - e.VerticalChange);
+            } else {
+                Canvas.SetTop(t, Canvas.GetTop(t) + e.VerticalChange);
             }
         }
 
