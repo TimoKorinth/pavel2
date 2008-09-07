@@ -42,7 +42,7 @@ namespace Pavel2.GUI {
         OpenGLRenderWind wfPA;
         DataGrid dataGrid;
         CombinedDataItem comp;
-        WrapPanel lastPanel;
+        Canvas lastPanel;
         private double step;
         private int scaleNumber = 5;
         WindowsFormsHost host = new WindowsFormsHost();
@@ -147,13 +147,14 @@ namespace Pavel2.GUI {
                 if (col >= dataGrid.Columns.Length - 2) {
                     colDef.Width = new GridLength(0.5, GridUnitType.Star);
                 }
-                Canvas cGrid = new Canvas();
+                Grid cGrid = new Grid();
                 cGrid.IsMouseDirectlyOverChanged += cGrid_IsMouseDirectlyOverChanged;
                 cGrid.Background = System.Windows.Media.Brushes.Transparent;
                 overlayControls.Children.Add(cGrid);
                 Grid.SetColumn(cGrid, col);
 
-                WrapPanel wPanel = new WrapPanel();
+                Canvas wPanel = new Canvas();
+                wPanel.Width = 35;
 
                 Thumb t = new Thumb();
                 t.DragCompleted += DragCompleted;
@@ -177,10 +178,14 @@ namespace Pavel2.GUI {
                 img.Width = 10;
                 img.Height = 10;
                 delButton.Content = img;
+                Canvas.SetLeft(delButton, 15);
                 delButton.Click += delButton_Click;
                 wPanel.Children.Add(delButton);
 
-                if (col == dataGrid.Columns.Length - 1) Canvas.SetRight(wPanel, 0);
+                wPanel.HorizontalAlignment = HorizontalAlignment.Left;
+                if (col == dataGrid.Columns.Length - 1) {
+                    wPanel.HorizontalAlignment = HorizontalAlignment.Right;
+                }
                 cGrid.Tag = wPanel;
                 cGrid.Children.Add(wPanel);
                 wPanel.Visibility = Visibility.Collapsed;
@@ -202,9 +207,9 @@ namespace Pavel2.GUI {
         }
 
         void cGrid_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e) {
-            Canvas cGrid = sender as Canvas;
+            Grid cGrid = sender as Grid;
             if (cGrid == null) return;
-            WrapPanel wPanel = cGrid.Tag as WrapPanel;
+            Canvas wPanel = cGrid.Tag as Canvas;
             if (wPanel == null) return;
             if ((bool)e.NewValue) {
                 if (lastPanel != null) lastPanel.Visibility = Visibility.Collapsed;
