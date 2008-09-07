@@ -66,22 +66,22 @@ namespace Pavel2.GUI {
 
         private void DrawLines() {
             Gl.glEnable(Gl.GL_LINE_SMOOTH);
-            if (dataGrid.Columns[dataGrid.MaxColumn].Points.Length < 100) {
+            if (dataGrid.MaxPoints < 100) {
                 Gl.glLineWidth(6f);
                 Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.5f));
             }
-            if (dataGrid.Columns[dataGrid.MaxColumn].Points.Length > 100) {
+            if (dataGrid.MaxPoints > 100) {
                 Gl.glLineWidth(3f);
                 Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.2f));
             }
-            if (dataGrid.Columns[dataGrid.MaxColumn].Points.Length > 1000) {
+            if (dataGrid.MaxPoints > 1000) {
                 Gl.glLineWidth(1f);
                 Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.02f));
             }
             bool breakLine = false;
             if (dataGrid == null) return;
             int index = -1;
-            for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
+            for (int row = 0; row < dataGrid.MaxPoints; row++) {
                 if (comp != null) {
                     if (comp.GetDataItemIndex(row) != index) {
                         index = comp.GetDataItemIndex(row);

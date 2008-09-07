@@ -39,7 +39,7 @@ namespace Pavel2.Framework {
             for (int i = 0; i < dataItems.Count; i++) {
                 index[i] = new int[2];
                 index[i][0] = rowIndex;
-                rowIndex += dataItems[i].DataGrid.Columns[dataItems[i].DataGrid.MaxColumn].Points.Length;
+                rowIndex += dataItems[i].DataGrid.MaxPoints;
                 index[i][1] = rowIndex-1;
                 for (int j = 0; j < points.Length; j++) {
                     if (points[j] == null) points[j] = new List<IPoint>();

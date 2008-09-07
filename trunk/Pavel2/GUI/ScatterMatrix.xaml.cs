@@ -67,15 +67,15 @@ namespace Pavel2.GUI {
 
         private void DrawPoints() {
             Gl.glEnable(Gl.GL_POINT_SMOOTH);
-            if (dataGrid.Columns[dataGrid.MaxColumn].Points.Length < 100) {
+            if (dataGrid.MaxPoints < 100) {
                 Gl.glPointSize(6f);
                 Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.9f));
             }
-            if (dataGrid.Columns[dataGrid.MaxColumn].Points.Length > 100) {
+            if (dataGrid.MaxPoints > 100) {
                 Gl.glPointSize(3f);
                 Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.6f));
             }
-            if (dataGrid.Columns[dataGrid.MaxColumn].Points.Length > 1000) {
+            if (dataGrid.MaxPoints > 1000) {
                 Gl.glPointSize(1f);
                 Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.3f));
             }
@@ -85,7 +85,7 @@ namespace Pavel2.GUI {
                 for (int y = 0; y < dataGrid.Columns.Length; y++) {
                     if (x == y) continue;
                     Gl.glBegin(Gl.GL_POINTS);
-                    for (int row = 0; row < dataGrid.Columns[dataGrid.MaxColumn].Points.Length; row++) {
+                    for (int row = 0; row < dataGrid.MaxPoints; row++) {
                         if (comp != null) {
                             if (comp.GetDataItemIndex(row) != index) {
                                 index = comp.GetDataItemIndex(row);
