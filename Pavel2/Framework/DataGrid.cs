@@ -72,6 +72,9 @@ namespace Pavel2.Framework {
         }
 
         public void ChangeColZoom(Column col, double min, double max) {
+            col.Max = max;
+            col.Min = min;
+            changed = true;
         }
 
         public Column[] Columns {
