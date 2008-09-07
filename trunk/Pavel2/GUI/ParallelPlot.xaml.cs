@@ -220,17 +220,25 @@ namespace Pavel2.GUI {
             if (double.IsNaN(tmp)) {
                 if (col.DirUp) {
                     newVal = col.Min - pixVal * e.VerticalChange;
+                    dataGrid.ChangeColZoom(col, newVal, col.Max);
                 } else {
                     newVal = col.Max + pixVal * e.VerticalChange;
+                    dataGrid.ChangeColZoom(col, col.Min, newVal);
                 }
             } else {
                 if (col.DirUp) {
                     newVal = col.Max - pixVal * e.VerticalChange;
+                    dataGrid.ChangeColZoom(col, col.Min, newVal);
                 } else {
                     newVal = col.Min + pixVal * e.VerticalChange;
+                    dataGrid.ChangeColZoom(col, newVal, col.Max);
                 }
             }
+            SetLabelPanel();
             SetOverlayControls();
+            RenderScene();
+            visImage.Source = TakeScreenshot();
+            dataGrid.Cache[this.GetType()] = visImage.Source;
         }
 
         void tZoom_DragDelta(object sender, DragDeltaEventArgs e) {
