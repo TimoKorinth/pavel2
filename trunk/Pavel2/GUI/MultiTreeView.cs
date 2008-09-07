@@ -135,6 +135,7 @@ namespace Pavel2.GUI {
                     DeselectAll();
                 }
                 ChangeSelectedState(tvItem);
+                tvItem.IsSelected = true;
             }
         }
 
