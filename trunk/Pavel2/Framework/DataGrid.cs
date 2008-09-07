@@ -23,6 +23,7 @@ namespace Pavel2.Framework {
         public event EventHandler ColumnChanged;
         public event EventHandler ColumnVisChanged;
 
+        [Description("Show filtered points")]
         public bool ShowAll {
             get { return showAll; }
             set { 
