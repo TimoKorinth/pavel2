@@ -169,7 +169,6 @@ namespace Pavel2.GUI
             if (item != null) {
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
-                    pTI.TakeScreenShot();
                     AddDataGridOptions(pTI.DataGrid);
                 }
                 visualizationLayer.VisualizationData = item.Tag;
