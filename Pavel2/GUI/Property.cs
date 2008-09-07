@@ -56,7 +56,10 @@ namespace Pavel2.GUI {
         }
 
         public string Name {
-            get { return property.Name; }
+            get {
+                if (property.Description.Length > 0) return property.Description;
+                return property.Name; 
+            }
         }
 
         public bool IsWriteable {
