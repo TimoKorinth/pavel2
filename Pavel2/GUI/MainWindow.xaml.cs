@@ -31,6 +31,8 @@ namespace Pavel2.GUI
 
         #endregion
 
+        private bool optionsExpanded = true;
+
         public MainWindow() {
 			this.InitializeComponent();
 
@@ -91,12 +93,12 @@ namespace Pavel2.GUI
 
         #region Public Methods
 
-        public void CreateOptionsPanel(UIElement element, bool expand) {
+        public void CreateOptionsPanel(UIElement element) {
             StackPanel stack = new StackPanel();
             stack.Children.Add(element);
             optionsExpander.Content = stack;
             optionsExpander.Visibility = Visibility.Visible;
-            optionsExpander.IsExpanded = expand;
+            optionsExpander.IsExpanded = optionsExpanded;
         }
 
         public void RemoveOptionsPanel() {
@@ -115,16 +117,16 @@ namespace Pavel2.GUI
             }
             optionsExpander.Content = null;
             optionsExpander.Visibility = Visibility.Collapsed;
+            optionsExpanded = optionsExpander.IsExpanded;
         }
 
         public void AddToOptionsPanel(UIElement element) {
             StackPanel stack = optionsExpander.Content as StackPanel;
             if (stack == null) {
-                CreateOptionsPanel(element, true);
-                stack = optionsExpander.Content as StackPanel;
-                if (stack == null) return;
+                CreateOptionsPanel(element);
+            } else {
+                stack.Children.Add(element);
             }
-            stack.Children.Add(element);
         }
         
         public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
@@ -168,6 +170,9 @@ namespace Pavel2.GUI
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                     pTI.TakeScreenShot();
+                    Label l = new Label();
+                    l.Content = "Test";
+                    AddToOptionsPanel(l);
                 }
                 visualizationLayer.VisualizationData = item.Tag;
                 ShowParserProperties();
@@ -182,7 +187,7 @@ namespace Pavel2.GUI
                 pOpts.SelectedObject = dPTI.Parser;
                 pOpts.parserPropertyGrid.PropertyChanged += pGrid_PropertyChanged;
                 pOpts.parserList.SelectionChanged += parserList_PropertyChanged;
-                CreateOptionsPanel(pOpts, true);
+                AddToOptionsPanel(pOpts);
             }
         }
 
