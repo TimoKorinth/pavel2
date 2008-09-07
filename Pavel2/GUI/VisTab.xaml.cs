@@ -85,6 +85,7 @@ namespace Pavel2.GUI {
             CurrentVisualization = (Visualization)tItem.Content;
             if (CurrentVisualization == null) return;
             CurrentVisualization.Render(this.pTI.DataGrid);
+            this.pTI.TakeScreenShot();
         }
 
         protected override void OnInitialized(EventArgs e) {

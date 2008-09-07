@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows;
 using System.Runtime.Serialization;
 using System.Drawing;
+using System.Windows.Threading;
+
 
 namespace Pavel2.Framework {
     [Serializable()]
@@ -33,10 +35,14 @@ namespace Pavel2.Framework {
                 if (tmp != null) screenshot = tmp;
             } else {
                 FrameworkElement vis = (FrameworkElement)lastVisualization;
-                if (vis.ActualWidth == 0 || vis.ActualHeight == 0) return;
-                RenderTargetBitmap scr = new RenderTargetBitmap((int)vis.ActualWidth, (int)vis.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-                scr.Render(vis);
-                screenshot = scr;
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
+                    if (vis.ActualWidth > 0 && vis.ActualHeight > 0) {
+                        RenderTargetBitmap scr = new RenderTargetBitmap((int)vis.ActualWidth, (int)vis.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+                        scr.Render(vis);
+                        screenshot = scr;
+                    }
+                    return null;
+                }), null);
             }
         }
 
