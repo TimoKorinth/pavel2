@@ -115,7 +115,6 @@ namespace Pavel2.GUI {
             Gl.glDisable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(2f);
             if (dataGrid == null) return;
-            labels.Children.Clear();
             for (int x = 0; x < dataGrid.Columns.Length; x++) {
                 for (int y = 0; y < dataGrid.Columns.Length; y++) {
                     Gl.glBegin(Gl.GL_LINES);
@@ -127,6 +126,13 @@ namespace Pavel2.GUI {
                     Gl.glVertex2d(step * (x + 1), step * y);
                     Gl.glEnd();
                 }
+            }
+        }
+
+        private void SetLabels() {
+            if (dataGrid == null) return;
+            labels.Children.Clear();
+            for (int x = 0; x < dataGrid.Columns.Length; x++) {
                 Label l = new Label();
                 l.Content = dataGrid.Columns[x].Header;
                 l.ToolTip = dataGrid.Columns[x].Header;
@@ -134,7 +140,7 @@ namespace Pavel2.GUI {
                 l.HorizontalContentAlignment = HorizontalAlignment.Center;
                 Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
                     l.Width = step * labels.ActualWidth;
-                    double xs = (double)((int)state * step * (labels.ActualWidth-10)+5);
+                    double xs = (double)((int)state * step * (labels.ActualWidth - 10) + 5);
                     double y = (double)(((int)state * step * labels.ActualHeight) + (step * labels.ActualHeight / 2));
                     Canvas.SetLeft(l, xs);
                     Canvas.SetBottom(l, y);
@@ -161,6 +167,7 @@ namespace Pavel2.GUI {
             comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
             if (dataGrid == null) return;
             step = (double)1 / dataGrid.Columns.Length;
+            SetLabels();
             //Abfrage ob sich was geändert hat, sonst einfach den evtl. schon
             //vorhandenen Screenshot nehmen:
             if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed) {
