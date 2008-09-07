@@ -32,9 +32,11 @@ namespace Pavel2.GUI {
         }
 
         private void Display() {
-            visStackPanel.Children.Clear();
-            visStackPanel.RowDefinitions.Clear();
-            visStackPanel.ColumnDefinitions.Clear();
+            if (!(visualizationData is Column)) {
+                visStackPanel.Children.Clear();
+                visStackPanel.RowDefinitions.Clear();
+                visStackPanel.ColumnDefinitions.Clear();
+            }
             if ((visualizationData is CombinedDataItem) || (visualizationData is LinkItem)) {
                 RowDefinition row = new RowDefinition();
                 row.Height = GridLength.Auto;
