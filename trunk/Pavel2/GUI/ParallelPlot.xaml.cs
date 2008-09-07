@@ -192,6 +192,8 @@ namespace Pavel2.GUI {
                 tDown.Height = 8;
                 tUp.DragDelta += tZoom_DragDelta;
                 tDown.DragDelta += tZoom_DragDelta;
+                tUp.DragCompleted += tZoom_DragCompleted;
+                tDown.DragCompleted += tZoom_DragCompleted;
                 wPanel.Children.Add(tUp);
                 wPanel.Children.Add(tDown);
                 Canvas.SetTop(tUp, 15);
@@ -205,6 +207,30 @@ namespace Pavel2.GUI {
                 cGrid.Children.Add(wPanel);
                 wPanel.Visibility = Visibility.Collapsed;
             }
+        }
+
+        void tZoom_DragCompleted(object sender, DragCompletedEventArgs e) {
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            Column col = t.Tag as Column;
+            if (col == null) return;
+            double tmp = Canvas.GetTop(t);
+            double pixVal = (col.Max - col.Min) / scaleGrid.ActualHeight;
+            double newVal;
+            if (double.IsNaN(tmp)) {
+                if (col.DirUp) {
+                    newVal = col.Min - pixVal * e.VerticalChange;
+                } else {
+                    newVal = col.Max + pixVal * e.VerticalChange;
+                }
+            } else {
+                if (col.DirUp) {
+                    newVal = col.Max - pixVal * e.VerticalChange;
+                } else {
+                    newVal = col.Min + pixVal * e.VerticalChange;
+                }
+            }
+            SetOverlayControls();
         }
 
         void tZoom_DragDelta(object sender, DragDeltaEventArgs e) {
