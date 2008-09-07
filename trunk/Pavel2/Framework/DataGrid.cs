@@ -25,7 +25,16 @@ namespace Pavel2.Framework {
 
         public bool ShowAll {
             get { return showAll; }
-            set { showAll = value; }
+            set { 
+                if (showAll == value) return;
+                showAll = value;
+                changed = true;
+                if (showAll) {
+                    SetDataFields();
+                } else {
+                    SetDataFieldsAfterZoom();
+                }
+            }
         }
 
         [Browsable(false)]
@@ -94,7 +103,7 @@ namespace Pavel2.Framework {
             col.Max = max;
             col.Min = min;
             changed = true;
-            SetDataFieldsAfterZoom();
+            if (!showAll) SetDataFieldsAfterZoom();
         }
 
         [Browsable(false)]

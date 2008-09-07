@@ -181,6 +181,7 @@ namespace Pavel2.GUI
         private void AddDataGridOptions(DataGrid d) {
             PropertyGrid pGrid = new PropertyGrid();
             pGrid.SelectedObject = d;
+            pGrid.PropertyChanged += pGridDataGrid_PropertyChanged;
             AddToOptionsPanel(pGrid);
         }
 
@@ -192,6 +193,13 @@ namespace Pavel2.GUI
                 pOpts.parserPropertyGrid.PropertyChanged += pGrid_PropertyChanged;
                 pOpts.parserList.SelectionChanged += parserList_PropertyChanged;
                 AddToOptionsPanel(pOpts);
+            }
+        }
+
+        void pGridDataGrid_PropertyChanged(object sender, RoutedEventArgs e) {
+            if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
+                DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
+                visualizationLayer.VisualizationData = dPTI;
             }
         }
 
