@@ -170,14 +170,18 @@ namespace Pavel2.GUI
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                     pTI.TakeScreenShot();
-                    Label l = new Label();
-                    l.Content = "Test";
-                    AddToOptionsPanel(l);
+                    AddDataGridOptions(pTI.DataGrid);
                 }
                 visualizationLayer.VisualizationData = item.Tag;
                 ShowParserProperties();
             }
             UpdatePreviewPanel();
+        }
+
+        private void AddDataGridOptions(DataGrid d) {
+            PropertyGrid pGrid = new PropertyGrid();
+            pGrid.SelectedObject = d;
+            AddToOptionsPanel(pGrid);
         }
 
         private void ShowParserProperties() {
