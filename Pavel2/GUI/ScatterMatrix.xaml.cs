@@ -86,6 +86,8 @@ namespace Pavel2.GUI {
                     if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
                         continue;
                     }
+                    if (!dataGrid.Columns[0].DirUp) xCo = 1 - xCo;
+                    if (!dataGrid.Columns[1].DirUp) yCo = 1 - yCo;
                     Gl.glVertex2d(xCo, yCo);
                 }
                 Gl.glEnd();
@@ -119,8 +121,10 @@ namespace Pavel2.GUI {
                             if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
                                 continue;
                             }
-                            xCo = (xCo * step) + step * x;
-                            yCo = (yCo * step) + step * y;
+                            if (!dataGrid.Columns[x].DirUp) xCo = step - (xCo * step) + step * x;
+                                else xCo = (xCo * step) + step * x;
+                            if (!dataGrid.Columns[y].DirUp) yCo = step - (yCo * step) + step * y;
+                                else yCo = (yCo * step) + step * y;
                             Gl.glVertex2d(xCo, yCo);
                         }
                         Gl.glEnd();
@@ -212,12 +216,12 @@ namespace Pavel2.GUI {
                 double scaleTextX;
                 double scaleTextY;
                 if (dataGrid.Columns[0].DirUp) {
-                    scaleTextX = dataGrid.Columns[0].Max;
-                } else {
                     scaleTextX = dataGrid.Columns[0].Min;
+                } else {
+                    scaleTextX = dataGrid.Columns[0].Max;
                 }
                 if (dataGrid.Columns[1].DirUp) {
-                    scaleTextY = dataGrid.Columns[1].Max;   //DREHEN????!!!!
+                    scaleTextY = dataGrid.Columns[1].Max;
                 } else {
                     scaleTextY = dataGrid.Columns[1].Min;
                 }
@@ -235,9 +239,9 @@ namespace Pavel2.GUI {
                     }
                     scaleX.Text = sTextX;
                     if (dataGrid.Columns[0].DirUp) {
-                        scaleTextX -= scaleStepX;
-                    } else {
                         scaleTextX += scaleStepX;
+                    } else {
+                        scaleTextX -= scaleStepX;
                     }
                     String sTextY = scaleTextY.ToString();
                     if (sTextY.Length > 10) {
