@@ -330,8 +330,5 @@
   <ItemGroup>
     <Resource Include="GUI\Icons\timeline_marker.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="GUI\Icons\arrow_switch.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -170,37 +170,6 @@ namespace Pavel2.GUI {
             }
         }
 
-        private void SetupSwitchButton() {
-            Button btn = new Button();
-            btn.Margin = new Thickness(5);
-            System.Windows.Controls.Image img = new System.Windows.Controls.Image();
-            img.Source = new BitmapImage(new Uri("Icons/arrow_switch.png", UriKind.Relative));
-            btn.Content = img;
-            btn.ToolTip = "Switch columns";
-            switchColPanel.Children.Add(btn);
-            switchColPanel.Tag = btn;
-            switchColPanel.Background = System.Windows.Media.Brushes.Transparent;
-            btn.Visibility = Visibility.Collapsed;
-            switchColPanel.MouseLeave += switchColPanel_MouseLeave;
-            switchColPanel.MouseEnter += switchColPanel_MouseEnter;
-        }
-
-        void switchColPanel_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
-            Grid cGrid = sender as Grid;
-            if (cGrid == null) return;
-            Button btn = cGrid.Tag as Button;
-            if (btn == null) return;
-            btn.Visibility = Visibility.Visible;
-        }
-
-        void switchColPanel_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
-            Grid cGrid = sender as Grid;
-            if (cGrid == null) return;
-            Button btn = cGrid.Tag as Button;
-            if (btn == null) return;
-            btn.Visibility = Visibility.Collapsed;
-        }
-
         private void SetLabels() {
             if (dataGrid == null) return;
             labels.Children.Clear();
@@ -209,7 +178,6 @@ namespace Pavel2.GUI {
             xLabels.Children.Clear();
             yLabels.Children.Clear();
             if (dataGrid.Columns.Length == 2) {
-                SetupSwitchButton();
                 xLabels.ColumnDefinitions.Clear();
                 yLabels.RowDefinitions.Clear();
                 xLabels.RowDefinitions.Clear();
