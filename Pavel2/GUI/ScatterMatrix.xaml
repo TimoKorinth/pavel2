@@ -2,7 +2,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Name="openGlCanvas">
-        <Image Margin="5" Name="visImage" Stretch="Fill" />
-        <Grid Margin="5" Name="labels" />
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="1" Grid.Row="0" Margin="5" Name="visImage" Stretch="Fill" />
+        <Grid Grid.Column="1" Grid.Row="0" Margin="5" Name="labels" />
+        <Grid ShowGridLines="True" Name="xLabels" Grid.Column="1" Grid.Row="1" />
+        <Grid ShowGridLines="True" Name="yLabels" Grid.Column="0" Grid.Row="0" />
     </Grid>
 </UserControl>

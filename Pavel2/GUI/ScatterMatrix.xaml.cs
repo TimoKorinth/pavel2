@@ -45,6 +45,7 @@ namespace Pavel2.GUI {
         CombinedDataItem comp;
         WindowsFormsHost host = new WindowsFormsHost();
         Button lastBtn;
+        int scaleNumber = 5;
 
         public ScatterMatrix() {
             InitializeComponent();
@@ -170,63 +171,133 @@ namespace Pavel2.GUI {
             labels.Children.Clear();
             labels.ColumnDefinitions.Clear();
             labels.RowDefinitions.Clear();
-            for (int x = 0; x < dataGrid.Columns.Length; x++) {
-                labels.RowDefinitions.Add(new RowDefinition());
-                labels.ColumnDefinitions.Add(new ColumnDefinition());
-
-                Canvas rect = new Canvas();
-                Grid.SetColumn(rect, x);
-                Grid.SetRow(rect, dataGrid.Columns.Length - 1 - x);
-                Button btn = new Button();
-                Canvas.SetTop(btn, 2);
-                Canvas.SetRight(btn, 2);
-                btn.Tag = dataGrid.Columns[x];
-                btn.Click += btn_Click;
-                System.Windows.Controls.Image img = new System.Windows.Controls.Image();
-                img.Source = new BitmapImage(new Uri("Icons/cross.png", UriKind.Relative));
-                btn.Content = img;
-                rect.Children.Add(btn);
-                labels.Children.Add(rect);
-                rect.IsMouseDirectlyOverChanged += rect_IsMouseDirectlyOverChanged;
-                btn.Visibility = Visibility.Collapsed;
-                rect.Tag = btn;
-                rect.Background = System.Windows.Media.Brushes.Transparent;
-
-                Label l = new Label();
-                l.Content = dataGrid.Columns[x].Header;
-                l.ToolTip = dataGrid.Columns[x].Header;
-                labels.Children.Add(l);
-                l.HorizontalContentAlignment = HorizontalAlignment.Center;
-                l.VerticalAlignment = VerticalAlignment.Center;
-                Grid.SetColumn(l, x);
-                Grid.SetRow(l, dataGrid.Columns.Length - 1 - x);
-            }
-            for (int col = 0; col < dataGrid.Columns.Length; col++) {
-                for (int row = 0; row < dataGrid.Columns.Length; row++) {
-                    if (row != col) {
-                        Canvas rect = new Canvas();
-                        Grid.SetColumn(rect, col);
-                        Grid.SetRow(rect, dataGrid.Columns.Length - 1 - row);
-                        Button btn = new Button();
-                        Canvas.SetTop(btn, 2);
-                        Canvas.SetRight(btn, 2);
-                        Column[] cols = new Column[2];
-                        cols[0] = dataGrid.Columns[col];
-                        cols[1] = dataGrid.Columns[row];
-                        btn.Tag = cols;
-                        btn.Click += btnZoom_Click;
-                        System.Windows.Controls.Image img = new System.Windows.Controls.Image();
-                        img.Source = new BitmapImage(new Uri("Icons/zoom_in.png", UriKind.Relative));
-                        btn.Content = img;
-                        rect.Children.Add(btn);
-                        labels.Children.Add(rect);
-                        rect.IsMouseDirectlyOverChanged += rect_IsMouseDirectlyOverChanged;
-                        btn.Visibility = Visibility.Collapsed;
-                        rect.Tag = btn;
-                        rect.Background = System.Windows.Media.Brushes.Transparent;
+            if (dataGrid.Columns.Length == 2) {
+                xLabels.ColumnDefinitions.Clear();
+                yLabels.RowDefinitions.Clear();
+                xLabels.RowDefinitions.Clear();
+                yLabels.ColumnDefinitions.Clear();
+                xLabels.RowDefinitions.Add(new RowDefinition());
+                xLabels.RowDefinitions.Add(new RowDefinition());
+                yLabels.ColumnDefinitions.Add(new ColumnDefinition());
+                yLabels.ColumnDefinitions.Add(new ColumnDefinition());
+                TextBlock xCol = new TextBlock();
+                xCol.Text = dataGrid.Columns[0].Header;
+                xLabels.Children.Add(xCol);
+                Grid.SetRow(xCol, 1);
+                Grid.SetColumn(xCol, scaleNumber - 1);
+                TextBlock yCol = new TextBlock();
+                //yCol.RenderTransform = new RotateTransform(-90);
+                yCol.Text = dataGrid.Columns[1].Header;
+                yLabels.Children.Add(yCol);
+                Grid.SetRow(yCol, 0);
+                Grid.SetColumn(yCol, 0);
+                double scaleStepX = (dataGrid.Columns[0].Max - dataGrid.Columns[0].Min) / (this.scaleNumber - 1);
+                double scaleStepY = (dataGrid.Columns[1].Max - dataGrid.Columns[1].Min) / (this.scaleNumber - 1);
+                double scaleTextX;
+                double scaleTextY;
+                if (dataGrid.Columns[0].DirUp) {
+                    scaleTextX = dataGrid.Columns[0].Max;
+                } else {
+                    scaleTextX = dataGrid.Columns[0].Min;
+                }
+                if (dataGrid.Columns[1].DirUp) {
+                    scaleTextY = dataGrid.Columns[1].Max;
+                } else {
+                    scaleTextY = dataGrid.Columns[1].Min;
+                }
+                for (int i = 0; i < this.scaleNumber; i++) {
+                    xLabels.ColumnDefinitions.Add(new ColumnDefinition());
+                    yLabels.RowDefinitions.Add(new RowDefinition());
+                    TextBlock scaleX = new TextBlock();
+                    TextBlock scaleY = new TextBlock();
+                    String sTextX = scaleTextX.ToString();
+                    if (sTextX.Length > 10) {
+                        //border.ToolTip = sText;
+                        sTextX = sTextX.Substring(0, 10) + "...";
                     }
-                }                
+                    scaleX.Text = sTextX;
+                    if (dataGrid.Columns[0].DirUp) {
+                        scaleTextX -= scaleStepX;
+                    } else {
+                        scaleTextX += scaleStepX;
+                    }
+                    String sTextY = scaleTextY.ToString();
+                    if (sTextY.Length > 10) {
+                        //border.ToolTip = sText;
+                        sTextY = sTextY.Substring(0, 10) + "...";
+                    }
+                    scaleY.Text = sTextY;
+                    if (dataGrid.Columns[1].DirUp) {
+                        scaleTextY -= scaleStepY;
+                    } else {
+                        scaleTextY += scaleStepY;
+                    }
+                    xLabels.Children.Add(scaleX);
+                    Grid.SetColumn(scaleX, i);
+                    yLabels.Children.Add(scaleY);
+                    Grid.SetRow(scaleY, i);
+                    Grid.SetColumn(scaleY, 1);
+                }
+            } else { 
+                    for (int x = 0; x < dataGrid.Columns.Length; x++) {
+                    labels.RowDefinitions.Add(new RowDefinition());
+                    labels.ColumnDefinitions.Add(new ColumnDefinition());
+
+                    Canvas rect = new Canvas();
+                    Grid.SetColumn(rect, x);
+                    Grid.SetRow(rect, dataGrid.Columns.Length - 1 - x);
+                    Button btn = new Button();
+                    Canvas.SetTop(btn, 2);
+                    Canvas.SetRight(btn, 2);
+                    btn.Tag = dataGrid.Columns[x];
+                    btn.Click += btn_Click;
+                    System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+                    img.Source = new BitmapImage(new Uri("Icons/cross.png", UriKind.Relative));
+                    btn.Content = img;
+                    rect.Children.Add(btn);
+                    labels.Children.Add(rect);
+                    rect.IsMouseDirectlyOverChanged += rect_IsMouseDirectlyOverChanged;
+                    btn.Visibility = Visibility.Collapsed;
+                    rect.Tag = btn;
+                    rect.Background = System.Windows.Media.Brushes.Transparent;
+
+                    Label l = new Label();
+                    l.Content = dataGrid.Columns[x].Header;
+                    l.ToolTip = dataGrid.Columns[x].Header;
+                    labels.Children.Add(l);
+                    l.HorizontalContentAlignment = HorizontalAlignment.Center;
+                    l.VerticalAlignment = VerticalAlignment.Center;
+                    Grid.SetColumn(l, x);
+                    Grid.SetRow(l, dataGrid.Columns.Length - 1 - x);
+                }
+                for (int col = 0; col < dataGrid.Columns.Length; col++) {
+                    for (int row = 0; row < dataGrid.Columns.Length; row++) {
+                        if (row != col) {
+                            Canvas rect = new Canvas();
+                            Grid.SetColumn(rect, col);
+                            Grid.SetRow(rect, dataGrid.Columns.Length - 1 - row);
+                            Button btn = new Button();
+                            Canvas.SetTop(btn, 2);
+                            Canvas.SetRight(btn, 2);
+                            Column[] cols = new Column[2];
+                            cols[0] = dataGrid.Columns[col];
+                            cols[1] = dataGrid.Columns[row];
+                            btn.Tag = cols;
+                            btn.Click += btnZoom_Click;
+                            System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+                            img.Source = new BitmapImage(new Uri("Icons/zoom_in.png", UriKind.Relative));
+                            btn.Content = img;
+                            rect.Children.Add(btn);
+                            labels.Children.Add(rect);
+                            rect.IsMouseDirectlyOverChanged += rect_IsMouseDirectlyOverChanged;
+                            btn.Visibility = Visibility.Collapsed;
+                            rect.Tag = btn;
+                            rect.Background = System.Windows.Media.Brushes.Transparent;
+                        }
+                    }                
+                }
             }
+            
         }
 
         void btnZoom_Click(object sender, RoutedEventArgs e) {
