@@ -56,42 +56,74 @@ namespace Pavel2.GUI {
         }
 
         private void DrawPoints() {
-            Gl.glEnable(Gl.GL_POINT_SMOOTH);
-            if (dataGrid.MaxPoints < 100) {
-                Gl.glPointSize(6f);
-                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.9f));
-            }
-            if (dataGrid.MaxPoints > 100) {
-                Gl.glPointSize(3f);
-                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.6f));
-            }
-            if (dataGrid.MaxPoints > 1000) {
-                Gl.glPointSize(1f);
-                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.3f));
-            }
             if (dataGrid == null) return;
-            int index = -1;
-            for (int x = 0; x < dataGrid.Columns.Length; x++) {
-                for (int y = 0; y < dataGrid.Columns.Length; y++) {
-                    if (x == y) continue;
-                    Gl.glBegin(Gl.GL_POINTS);
-                    for (int row = 0; row < dataGrid.MaxPoints; row++) {
-                        if (comp != null) {
-                            if (comp.GetDataItemIndex(row) != index) {
-                                index = comp.GetDataItemIndex(row);
-                                Gl.glColor4fv(ColorManagement.GetColor(index+2).RGBwithA(0.7f));
-                            }
+            Gl.glEnable(Gl.GL_POINT_SMOOTH);
+            if (dataGrid.Columns.Length == 2) {
+                if (dataGrid.MaxPoints < 100) {
+                    Gl.glPointSize(15f);
+                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.9f));
+                }
+                if (dataGrid.MaxPoints > 100) {
+                    Gl.glPointSize(10f);
+                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.6f));
+                }
+                if (dataGrid.MaxPoints > 1000) {
+                    Gl.glPointSize(5f);
+                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.3f));
+                }
+                int index = -1;
+                Gl.glBegin(Gl.GL_POINTS);
+                for (int row = 0; row < dataGrid.MaxPoints; row++) {
+                    if (comp != null) {
+                        if (comp.GetDataItemIndex(row) != index) {
+                            index = comp.GetDataItemIndex(row);
+                            Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(0.7f));
                         }
-                        double xCo = Normalize(dataGrid.DoubleDataField[row][x], dataGrid.Columns[x]);
-                        double yCo = Normalize(dataGrid.DoubleDataField[row][y], dataGrid.Columns[y]);
-                        if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
-                            continue;
-                        }
-                        xCo = (xCo * step) + step * x;
-                        yCo = (yCo * step) + step * y;
-                        Gl.glVertex2d(xCo, yCo);
                     }
-                    Gl.glEnd();
+                    double xCo = Normalize(dataGrid.DoubleDataField[row][0], dataGrid.Columns[0]);
+                    double yCo = Normalize(dataGrid.DoubleDataField[row][1], dataGrid.Columns[1]);
+                    if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
+                        continue;
+                    }
+                    Gl.glVertex2d(xCo, yCo);
+                }
+                Gl.glEnd();
+            } else {
+                if (dataGrid.MaxPoints < 100) {
+                    Gl.glPointSize(6f);
+                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.9f));
+                }
+                if (dataGrid.MaxPoints > 100) {
+                    Gl.glPointSize(3f);
+                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.6f));
+                }
+                if (dataGrid.MaxPoints > 1000) {
+                    Gl.glPointSize(1f);
+                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.3f));
+                }
+                int index = -1;
+                for (int x = 0; x < dataGrid.Columns.Length; x++) {
+                    for (int y = 0; y < dataGrid.Columns.Length; y++) {
+                        if (x == y) continue;
+                        Gl.glBegin(Gl.GL_POINTS);
+                        for (int row = 0; row < dataGrid.MaxPoints; row++) {
+                            if (comp != null) {
+                                if (comp.GetDataItemIndex(row) != index) {
+                                    index = comp.GetDataItemIndex(row);
+                                    Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(0.7f));
+                                }
+                            }
+                            double xCo = Normalize(dataGrid.DoubleDataField[row][x], dataGrid.Columns[x]);
+                            double yCo = Normalize(dataGrid.DoubleDataField[row][y], dataGrid.Columns[y]);
+                            if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
+                                continue;
+                            }
+                            xCo = (xCo * step) + step * x;
+                            yCo = (yCo * step) + step * y;
+                            Gl.glVertex2d(xCo, yCo);
+                        }
+                        Gl.glEnd();
+                    }
                 }
             }
         }
@@ -104,20 +136,31 @@ namespace Pavel2.GUI {
         }
 
         private void DrawAxes() {
+            if (dataGrid == null) return;
             Gl.glColor3f(0.5f, 0.5f, 0.5f);
             Gl.glDisable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(2f);
-            if (dataGrid == null) return;
-            for (int x = 0; x < dataGrid.Columns.Length; x++) {
-                for (int y = 0; y < dataGrid.Columns.Length; y++) {
-                    Gl.glBegin(Gl.GL_LINES);
-                    Gl.glVertex2d(step * x, step * y);
-                    Gl.glVertex2d(step * x, step * (y + 1));
-                    Gl.glEnd();
-                    Gl.glBegin(Gl.GL_LINES);
-                    Gl.glVertex2d(step * x, step * y);
-                    Gl.glVertex2d(step * (x + 1), step * y);
-                    Gl.glEnd();
+            if (dataGrid.Columns.Length == 2) {
+                Gl.glBegin(Gl.GL_LINES);
+                Gl.glVertex2d(0, 0);
+                Gl.glVertex2d(1, 0);
+                Gl.glEnd();
+                Gl.glBegin(Gl.GL_LINES);
+                Gl.glVertex2d(0, 0);
+                Gl.glVertex2d(0, 1);
+                Gl.glEnd();
+            } else {
+                for (int x = 0; x < dataGrid.Columns.Length; x++) {
+                    for (int y = 0; y < dataGrid.Columns.Length; y++) {
+                        Gl.glBegin(Gl.GL_LINES);
+                        Gl.glVertex2d(step * x, step * y);
+                        Gl.glVertex2d(step * x, step * (y + 1));
+                        Gl.glEnd();
+                        Gl.glBegin(Gl.GL_LINES);
+                        Gl.glVertex2d(step * x, step * y);
+                        Gl.glVertex2d(step * (x + 1), step * y);
+                        Gl.glEnd();
+                    }
                 }
             }
         }
