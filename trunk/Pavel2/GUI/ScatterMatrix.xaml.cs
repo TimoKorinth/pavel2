@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Drawing;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using System.Windows.Media.Imaging;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -43,6 +44,7 @@ namespace Pavel2.GUI {
         double step;
         CombinedDataItem comp;
         WindowsFormsHost host = new WindowsFormsHost();
+        Button lastBtn;
 
         public ScatterMatrix() {
             InitializeComponent();
@@ -129,13 +131,59 @@ namespace Pavel2.GUI {
                 labels.RowDefinitions.Add(new RowDefinition());
                 labels.ColumnDefinitions.Add(new ColumnDefinition());
 
+                Canvas rect = new Canvas();
+                Grid.SetColumn(rect, x);
+                Grid.SetRow(rect, dataGrid.Columns.Length - 1 - x);
+                Button btn = new Button();
+                Canvas.SetTop(btn, 2);
+                Canvas.SetRight(btn, 2);
+                btn.Tag = dataGrid.Columns[x];
+                btn.Click += btn_Click;
+                System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+                img.Source = new BitmapImage(new Uri("Icons/cross.png", UriKind.Relative));
+                btn.Content = img;
+                rect.Children.Add(btn);
+                labels.Children.Add(rect);
+                rect.IsMouseDirectlyOverChanged += rect_IsMouseDirectlyOverChanged;
+                btn.Visibility = Visibility.Collapsed;
+                rect.Tag = btn;
+                rect.Background = System.Windows.Media.Brushes.Transparent;
+
                 Label l = new Label();
                 l.Content = dataGrid.Columns[x].Header;
                 l.ToolTip = dataGrid.Columns[x].Header;
                 labels.Children.Add(l);
                 l.HorizontalContentAlignment = HorizontalAlignment.Center;
+                l.VerticalAlignment = VerticalAlignment.Center;
                 Grid.SetColumn(l, x);
                 Grid.SetRow(l, dataGrid.Columns.Length - 1 - x);
+            }
+        }
+
+        void btn_Click(object sender, RoutedEventArgs e) {
+            Button btn = sender as Button;
+            if (btn == null) return;
+            Column col = btn.Tag as Column;
+            if (col == null) return;
+            dataGrid.ColIsVisible(col, false);
+            step = (double)1 / dataGrid.Columns.Length;
+            SetLabels();
+            RenderScene();
+            visImage.Source = TakeScreenshot();
+            dataGrid.Cache[this.GetType()] = visImage.Source;
+        }
+
+        void rect_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            Canvas cGrid = sender as Canvas;
+            if (cGrid == null) return;
+            Button btn = cGrid.Tag as Button;
+            if (btn == null) return;
+            if ((bool)e.NewValue) {
+                if (lastBtn != null) lastBtn.Visibility = Visibility.Collapsed;
+                btn.Visibility = Visibility.Visible;
+            } else {
+                lastBtn = btn;
+                if (!btn.IsMouseOver) btn.Visibility = Visibility.Collapsed;
             }
         }
 
