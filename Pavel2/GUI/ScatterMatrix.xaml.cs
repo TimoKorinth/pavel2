@@ -191,12 +191,16 @@ namespace Pavel2.GUI {
             if (btn == null) return;
             Column[] cols = btn.Tag as Column[];
             if (cols == null) return;
-            //dataGrid.ColIsVisible(col, false);
-            //step = (double)1 / dataGrid.Columns.Length;
-            //SetLabels();
-            //RenderScene();
-            //visImage.Source = TakeScreenshot();
-            //dataGrid.Cache[this.GetType()] = visImage.Source;
+            foreach (Column col in dataGrid.Columns) {
+                if (!col.Equals(cols[0]) && !col.Equals(cols[1])) {
+                    dataGrid.ColIsVisible(col, false);
+                }
+            }
+            step = (double)1 / dataGrid.Columns.Length;
+            SetLabels();
+            RenderScene();
+            visImage.Source = TakeScreenshot();
+            dataGrid.Cache[this.GetType()] = visImage.Source;
         }
 
         void btn_Click(object sender, RoutedEventArgs e) {

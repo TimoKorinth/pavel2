@@ -327,5 +327,8 @@
   <ItemGroup>
     <Resource Include="GUI\Icons\zoom_out.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\timeline_marker.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

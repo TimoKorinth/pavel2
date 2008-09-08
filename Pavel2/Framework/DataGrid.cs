@@ -22,6 +22,7 @@ namespace Pavel2.Framework {
         private Dictionary<Type, bool> changed = new Dictionary<Type, bool>();
         private bool showAll = true;
         private Button undoZoom;
+        private Button undoColVis;
 
         public event EventHandler ColumnChanged;
         public event EventHandler ColumnVisChanged;
@@ -46,6 +47,7 @@ namespace Pavel2.Framework {
             get {
                 List<Button> buttons = new List<Button>();
                 buttons.Add(undoZoom);
+                buttons.Add(undoColVis);
                 return buttons; 
             }
         }
@@ -123,8 +125,16 @@ namespace Pavel2.Framework {
             col.Visible = isVis;
             SetDataFields();
             HasChanged();
+            SetColVisButton();
             if (ColumnVisChanged != null) {
                 ColumnVisChanged(this, new EventArgs());
+            }
+        }
+
+        private void SetColVisButton() {
+            undoColVis.Visibility = Visibility.Collapsed;
+            foreach (Column col in columns) {
+                if (!col.Visible) undoColVis.Visibility = Visibility.Visible;
             }
         }
 
@@ -174,6 +184,23 @@ namespace Pavel2.Framework {
             undoZoom = MainData.MainWindow.GetToolBarButton("Zoom", new BitmapImage(new Uri("Icons/zoom_out.png", UriKind.Relative)), "Undo Zoom");
             undoZoom.Visibility = Visibility.Collapsed;
             undoZoom.Click += undoZoom_Click;
+
+            undoColVis = MainData.MainWindow.GetToolBarButton("Columns", new BitmapImage(new Uri("Icons/timeline_marker.png", UriKind.Relative)), "Show all columns");
+            undoColVis.Visibility = Visibility.Collapsed;
+            undoColVis.Click += undoColVis_Click;
+        }
+
+        void undoColVis_Click(object sender, RoutedEventArgs e) {
+            foreach (Column col in columns) {
+                col.Visible = true;
+            }
+            SetDataFields();
+            HasChanged();
+            SetColVisButton();
+            if (ColumnVisChanged != null) {
+                ColumnVisChanged(this, new EventArgs());
+            }
+            MainData.MainWindow.UpdateVisualization();
         }
 
         void undoZoom_Click(object sender, RoutedEventArgs e) {
