@@ -171,6 +171,8 @@ namespace Pavel2.GUI {
             labels.Children.Clear();
             labels.ColumnDefinitions.Clear();
             labels.RowDefinitions.Clear();
+            xLabels.Children.Clear();
+            yLabels.Children.Clear();
             if (dataGrid.Columns.Length == 2) {
                 xLabels.ColumnDefinitions.Clear();
                 yLabels.RowDefinitions.Clear();
@@ -181,6 +183,7 @@ namespace Pavel2.GUI {
                 yLabels.ColumnDefinitions.Add(new ColumnDefinition());
                 yLabels.ColumnDefinitions.Add(new ColumnDefinition());
                 yLabels.ColumnDefinitions[0].Width = GridLength.Auto;
+
                 TextBlock xCol = new TextBlock();
                 xCol.Text = dataGrid.Columns[0].Header;
                 xCol.HorizontalAlignment = HorizontalAlignment.Center;
@@ -191,6 +194,7 @@ namespace Pavel2.GUI {
                 Grid.SetRow(xCol, 1);
                 Grid.SetColumn(xCol, 0);
                 Grid.SetColumnSpan(xCol, scaleNumber);
+
                 TextBlock yCol = new TextBlock();
                 yCol.LayoutTransform = new RotateTransform(-90);
                 yCol.VerticalAlignment = VerticalAlignment.Center;
@@ -202,6 +206,7 @@ namespace Pavel2.GUI {
                 Grid.SetRow(yCol, 0);
                 Grid.SetColumn(yCol, 0);
                 Grid.SetRowSpan(yCol, scaleNumber);
+
                 double scaleStepX = (dataGrid.Columns[0].Max - dataGrid.Columns[0].Min) / (this.scaleNumber - 1);
                 double scaleStepY = (dataGrid.Columns[1].Max - dataGrid.Columns[1].Min) / (this.scaleNumber - 1);
                 double scaleTextX;
@@ -212,13 +217,15 @@ namespace Pavel2.GUI {
                     scaleTextX = dataGrid.Columns[0].Min;
                 }
                 if (dataGrid.Columns[1].DirUp) {
-                    scaleTextY = dataGrid.Columns[1].Max;
+                    scaleTextY = dataGrid.Columns[1].Max;   //DREHEN????!!!!
                 } else {
                     scaleTextY = dataGrid.Columns[1].Min;
                 }
                 for (int i = 0; i < this.scaleNumber; i++) {
-                    xLabels.ColumnDefinitions.Add(new ColumnDefinition());
-                    yLabels.RowDefinitions.Add(new RowDefinition());
+                    if (i != scaleNumber - 1) {
+                        xLabels.ColumnDefinitions.Add(new ColumnDefinition());
+                        yLabels.RowDefinitions.Add(new RowDefinition());
+                    }
                     TextBlock scaleX = new TextBlock();
                     TextBlock scaleY = new TextBlock();
                     String sTextX = scaleTextX.ToString();
@@ -244,10 +251,18 @@ namespace Pavel2.GUI {
                         scaleTextY += scaleStepY;
                     }
                     xLabels.Children.Add(scaleX);
-                    Grid.SetColumn(scaleX, i);
                     yLabels.Children.Add(scaleY);
-                    Grid.SetRow(scaleY, i);
-                    Grid.SetColumn(scaleY, 1);
+                    if (i == scaleNumber - 1) {
+                        Grid.SetColumn(scaleX, i - 1);
+                        Grid.SetRow(scaleY, i - 1);
+                        Grid.SetColumn(scaleY, 1);
+                        scaleX.HorizontalAlignment = HorizontalAlignment.Right;
+                        scaleY.VerticalAlignment = VerticalAlignment.Bottom;
+                    } else {
+                        Grid.SetColumn(scaleX, i);
+                        Grid.SetRow(scaleY, i);
+                        Grid.SetColumn(scaleY, 1);
+                    }
                 }
             } else { 
                     for (int x = 0; x < dataGrid.Columns.Length; x++) {
