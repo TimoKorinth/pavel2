@@ -45,7 +45,7 @@ namespace Pavel2.Framework {
                 if (item.Tag is DataProjectTreeItem) {
                     DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
                     if (dPTI.DataGrid != null) columns.AddRange(dPTI.DataGrid.Columns);
-                    dPTI.DataGrid.Changed = false;
+                    dPTI.DataGrid.Changed[this.GetType()] = false;
                 } else if (item.Tag is FolderProjectTreeItem) {
                     GetColumns(item);
                 }
@@ -56,7 +56,7 @@ namespace Pavel2.Framework {
             foreach (TreeViewItem item in tvItem.Items) {
                 if (item.Tag is DataProjectTreeItem) {
                     DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
-                    if (dPTI.DataGrid.Changed) return true;
+                    if (dPTI.DataGrid.Changed[this.GetType()]) return true;
                 } else if (item.Tag is FolderProjectTreeItem) {
                     if (SomethingChanged(item)) return true;
                 }
