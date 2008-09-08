@@ -321,5 +321,11 @@
   <ItemGroup>
     <Resource Include="GUI\Icons\arrow_undo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\zoom_in.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\zoom_out.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
