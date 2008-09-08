@@ -47,22 +47,10 @@ namespace Pavel2.GUI {
         public ScatterMatrix() {
             InitializeComponent();
             wfPA = new OpenGLRenderWind();
-            this.SizeChanged += ScatterMatrix_SizeChanged;
             host.Child = wfPA; 
             wfPA.Width = 1000;
             wfPA.Height = 800;
             wfPA.SetupViewPort();
-        }
-
-        void ScatterMatrix_SizeChanged(object sender, SizeChangedEventArgs e) {
-            for (int i = 0; i < labels.Children.Count; i++) {
-                Label l = (Label)labels.Children[i];
-                l.Width = step * labels.ActualWidth;
-                double x = (double)(i * step * (labels.ActualWidth - 10) + 5);
-                double y = (double)((i * step * labels.ActualHeight) + (step * labels.ActualHeight / 2));
-                Canvas.SetLeft(l, x);
-                Canvas.SetBottom(l, y);
-            }
         }
 
         private void DrawPoints() {
@@ -135,20 +123,19 @@ namespace Pavel2.GUI {
         private void SetLabels() {
             if (dataGrid == null) return;
             labels.Children.Clear();
+            labels.ColumnDefinitions.Clear();
+            labels.RowDefinitions.Clear();
             for (int x = 0; x < dataGrid.Columns.Length; x++) {
+                labels.RowDefinitions.Add(new RowDefinition());
+                labels.ColumnDefinitions.Add(new ColumnDefinition());
+
                 Label l = new Label();
                 l.Content = dataGrid.Columns[x].Header;
                 l.ToolTip = dataGrid.Columns[x].Header;
                 labels.Children.Add(l);
                 l.HorizontalContentAlignment = HorizontalAlignment.Center;
-                Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
-                    l.Width = step * labels.ActualWidth;
-                    double xs = (double)((int)state * step * (labels.ActualWidth - 10) + 5);
-                    double y = (double)(((int)state * step * labels.ActualHeight) + (step * labels.ActualHeight / 2));
-                    Canvas.SetLeft(l, xs);
-                    Canvas.SetBottom(l, y);
-                    return null;
-                }), x);
+                Grid.SetColumn(l, x);
+                Grid.SetRow(l, dataGrid.Columns.Length - 1 - x);
             }
         }
 
