@@ -158,6 +158,45 @@ namespace Pavel2.GUI {
                 Grid.SetColumn(l, x);
                 Grid.SetRow(l, dataGrid.Columns.Length - 1 - x);
             }
+            for (int col = 0; col < dataGrid.Columns.Length; col++) {
+                for (int row = 0; row < dataGrid.Columns.Length; row++) {
+                    if (row != col) {
+                        Canvas rect = new Canvas();
+                        Grid.SetColumn(rect, col);
+                        Grid.SetRow(rect, dataGrid.Columns.Length - 1 - row);
+                        Button btn = new Button();
+                        Canvas.SetTop(btn, 2);
+                        Canvas.SetRight(btn, 2);
+                        Column[] cols = new Column[2];
+                        cols[0] = dataGrid.Columns[col];
+                        cols[1] = dataGrid.Columns[row];
+                        btn.Tag = cols;
+                        btn.Click += btnZoom_Click;
+                        System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+                        img.Source = new BitmapImage(new Uri("Icons/zoom_in.png", UriKind.Relative));
+                        btn.Content = img;
+                        rect.Children.Add(btn);
+                        labels.Children.Add(rect);
+                        rect.IsMouseDirectlyOverChanged += rect_IsMouseDirectlyOverChanged;
+                        btn.Visibility = Visibility.Collapsed;
+                        rect.Tag = btn;
+                        rect.Background = System.Windows.Media.Brushes.Transparent;
+                    }
+                }                
+            }
+        }
+
+        void btnZoom_Click(object sender, RoutedEventArgs e) {
+            Button btn = sender as Button;
+            if (btn == null) return;
+            Column[] cols = btn.Tag as Column[];
+            if (cols == null) return;
+            //dataGrid.ColIsVisible(col, false);
+            //step = (double)1 / dataGrid.Columns.Length;
+            //SetLabels();
+            //RenderScene();
+            //visImage.Source = TakeScreenshot();
+            //dataGrid.Cache[this.GetType()] = visImage.Source;
         }
 
         void btn_Click(object sender, RoutedEventArgs e) {

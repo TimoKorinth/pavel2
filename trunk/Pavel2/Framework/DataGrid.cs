@@ -171,7 +171,7 @@ namespace Pavel2.Framework {
         }
 
         private void InitButtons() {
-            undoZoom = MainData.MainWindow.GetToolBarButton("Zoom", new BitmapImage(new Uri("Icons/arrow_undo.png", UriKind.Relative)), "Undo Zoom");
+            undoZoom = MainData.MainWindow.GetToolBarButton("Zoom", new BitmapImage(new Uri("Icons/zoom_out.png", UriKind.Relative)), "Undo Zoom");
             undoZoom.Visibility = Visibility.Collapsed;
             undoZoom.Click += undoZoom_Click;
         }
