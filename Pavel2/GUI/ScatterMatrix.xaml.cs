@@ -94,6 +94,9 @@ namespace Pavel2.GUI {
                         }
                         double xCo = Normalize(dataGrid.DoubleDataField[row][x], dataGrid.Columns[x]);
                         double yCo = Normalize(dataGrid.DoubleDataField[row][y], dataGrid.Columns[y]);
+                        if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
+                            continue;
+                        }
                         xCo = (xCo * step) + step * x;
                         yCo = (yCo * step) + step * y;
                         Gl.glVertex2d(xCo, yCo);
