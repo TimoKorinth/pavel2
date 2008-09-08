@@ -6,6 +6,8 @@ using System.Windows.Media;
 using Pavel2.GUI;
 using System.Windows;
 using System.ComponentModel;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Pavel2.Framework {
     [Serializable()]
@@ -19,6 +21,7 @@ namespace Pavel2.Framework {
         private bool changed;
         private Dictionary<Type, ImageSource> cache = new Dictionary<Type,ImageSource>();
         private bool showAll = true;
+        private Button undoZoom;
 
         public event EventHandler ColumnChanged;
         public event EventHandler ColumnVisChanged;
@@ -35,6 +38,15 @@ namespace Pavel2.Framework {
                 } else {
                     SetDataFieldsAfterZoom();
                 }
+            }
+        }
+
+        [Browsable(false)]
+        public List<Button> Buttons {
+            get {
+                List<Button> buttons = new List<Button>();
+                buttons.Add(undoZoom);
+                return buttons; 
             }
         }
 
@@ -105,6 +117,7 @@ namespace Pavel2.Framework {
             col.Min = min;
             changed = true;
             if (!showAll) SetDataFieldsAfterZoom();
+            undoZoom.Visibility = Visibility.Visible;
         }
 
         [Browsable(false)]
@@ -129,12 +142,34 @@ namespace Pavel2.Framework {
             this.data = new String[0][];
             this.dData = new double[0][];
             changed = true;
+            InitButtons();
         }
 
         public DataGrid(Column[] columns) {
             this.columns = columns;
             SetDataFields();
             changed = true;
+            InitButtons();
+        }
+
+        private void InitButtons() {
+            undoZoom = MainData.MainWindow.GetToolBarButton("Zoom", new BitmapImage(new Uri("Icons/arrow_undo.png", UriKind.Relative)), "Undo Zoom");
+            undoZoom.Visibility = Visibility.Collapsed;
+            undoZoom.Click += undoZoom_Click;
+        }
+
+        void undoZoom_Click(object sender, RoutedEventArgs e) {
+            foreach (Column col in columns) {
+                col.CalcMinMax();
+            }
+            if (!showAll) {
+                SetDataFieldsAfterZoom();
+            } else {
+                SetDataFields();
+            }
+            undoZoom.Visibility = Visibility.Collapsed;
+            changed = true;
+            MainData.MainWindow.UpdateVisualization();
         }
 
         public void AddColumn(Column column) {

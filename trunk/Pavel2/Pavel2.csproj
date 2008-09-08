@@ -318,5 +318,8 @@
   <ItemGroup>
     <Resource Include="GUI\Icons\cross.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\arrow_undo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

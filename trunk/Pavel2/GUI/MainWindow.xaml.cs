@@ -128,6 +128,31 @@ namespace Pavel2.GUI
                 stack.Children.Add(element);
             }
         }
+
+        public Button GetToolBarButton(String desc, ImageSource imgSource, String toolTip) {
+            Button btn = new Button();
+            btn.Width = 50;
+            btn.Height = 50;
+            StackPanel stack = new StackPanel();
+            Image img = new Image();
+            img.Width = 20;
+            img.Height = 20;
+            img.Source = imgSource;
+            stack.Children.Add(img);
+            Label l = new Label();
+            l.Content = desc;
+            stack.Children.Add(l);
+            btn.ToolTip = toolTip;
+            btn.Content = stack;
+            return btn;
+        }
+
+        public void SetupToolBarButtons(DataGrid d) {
+            visToolBar.Children.Clear();
+            foreach (Button btn in d.Buttons) {
+                visToolBar.Children.Add(btn);
+            }
+        }
         
         public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
             List<DataProjectTreeItem> relData = projectTreeView.GetRelatedItems(dPTI);
@@ -170,6 +195,7 @@ namespace Pavel2.GUI
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                     AddDataGridOptions(pTI.DataGrid);
+                    SetupToolBarButtons(pTI.DataGrid);
                 }
                 visualizationLayer.VisualizationData = item.Tag;
                 ShowParserProperties();
@@ -196,6 +222,10 @@ namespace Pavel2.GUI
         }
 
         void pGridDataGrid_PropertyChanged(object sender, RoutedEventArgs e) {
+            UpdateVisualization();
+        }
+
+        public void UpdateVisualization() {
             if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
                 DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
                 visualizationLayer.VisualizationData = dPTI;
