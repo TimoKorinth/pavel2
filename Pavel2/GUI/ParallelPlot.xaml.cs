@@ -405,8 +405,8 @@ namespace Pavel2.GUI {
             SetOverlayControls();
             //Abfrage ob sich was geändert hat, sonst einfach den evtl. schon
             //vorhandenen Screenshot nehmen:
-            if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed) {
-                this.dataGrid.Changed = false;
+            if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed[this.GetType()]) {
+                this.dataGrid.Changed[this.GetType()] = false;
                 RenderScene();
                 visImage.Source = TakeScreenshot();
                 dataGrid.Cache[this.GetType()] = visImage.Source;

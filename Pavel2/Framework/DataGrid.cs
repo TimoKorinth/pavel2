@@ -18,8 +18,8 @@ namespace Pavel2.Framework {
         private double[][] dData;
         private int maxColumn;
         private int maxPoints;
-        private bool changed;
         private Dictionary<Type, ImageSource> cache = new Dictionary<Type,ImageSource>();
+        private Dictionary<Type, bool> changed = new Dictionary<Type, bool>();
         private bool showAll = true;
         private Button undoZoom;
 
@@ -32,7 +32,7 @@ namespace Pavel2.Framework {
             set { 
                 if (showAll == value) return;
                 showAll = value;
-                changed = true;
+                HasChanged();
                 if (showAll) {
                     SetDataFields();
                 } else {
@@ -63,7 +63,7 @@ namespace Pavel2.Framework {
         }
 
         [Browsable(false)]
-        public bool Changed {
+        public Dictionary<Type, bool> Changed {
             get { return changed; }
             set { changed = value; }
         }
@@ -91,6 +91,22 @@ namespace Pavel2.Framework {
             return colList.IndexOf(col);
         }
 
+        public void InitChangeDict() {
+            HasChanged();
+        }
+
+        public void HasChanged() {
+            changed[typeof(FolderProjectTreeItem)] = true;
+
+            Type[] types = System.Reflection.Assembly.GetAssembly(typeof(Visualization)).GetTypes();
+            foreach (Type t in types) {
+                Type tmp = t.GetInterface("Visualization");
+                if (tmp != null) {
+                    changed[t] = true;
+                }
+            }
+        }
+
         public void ChangeColOrder(Column col, int position) {
             List<Column> colList = new List<Column>(columns);
             colList.Remove(col);
@@ -100,13 +116,13 @@ namespace Pavel2.Framework {
             if (ColumnChanged != null) {
                 ColumnChanged(this, new EventArgs());
             }
-            changed = true;
+            HasChanged();
         }
 
         public void ColIsVisible(Column col, bool isVis) {
             col.Visible = isVis;
             SetDataFields();
-            changed = true;
+            HasChanged();
             if (ColumnVisChanged != null) {
                 ColumnVisChanged(this, new EventArgs());
             }
@@ -115,7 +131,7 @@ namespace Pavel2.Framework {
         public void ChangeColZoom(Column col, double min, double max) {
             col.Max = max;
             col.Min = min;
-            changed = true;
+            HasChanged();
             if (!showAll) SetDataFieldsAfterZoom();
             undoZoom.Visibility = Visibility.Visible;
         }
@@ -141,15 +157,17 @@ namespace Pavel2.Framework {
             this.columns = new Column[0];
             this.data = new String[0][];
             this.dData = new double[0][];
-            changed = true;
+            HasChanged();
             InitButtons();
+            InitChangeDict();
         }
 
         public DataGrid(Column[] columns) {
             this.columns = columns;
             SetDataFields();
-            changed = true;
+            HasChanged();
             InitButtons();
+            InitChangeDict();
         }
 
         private void InitButtons() {
@@ -168,7 +186,7 @@ namespace Pavel2.Framework {
                 SetDataFields();
             }
             undoZoom.Visibility = Visibility.Collapsed;
-            changed = true;
+            HasChanged();
             MainData.MainWindow.UpdateVisualization();
         }
 
@@ -178,7 +196,7 @@ namespace Pavel2.Framework {
             listTmp.Add(column);
             this.columns = listTmp.ToArray();
             SetDataFields();
-            changed = true;
+            HasChanged();
         }
 
         public void SetDataFields() {
