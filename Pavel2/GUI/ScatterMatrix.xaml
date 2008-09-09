@@ -10,9 +10,10 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Image Grid.Column="1" Grid.Row="0" Margin="5" Name="visImage" Stretch="Fill" />
-        <Grid Grid.Column="1" Grid.Row="0" Margin="5" Name="labels" />
         <Grid Name="xLabels" Grid.Column="1" Grid.Row="1" />
         <Grid Name="yLabels" Grid.Column="0" Grid.Row="0" />
+        <Grid Name="switchColPanel" Grid.Column="0" Grid.Row="1" />
+        <Image Grid.Column="1" Grid.Row="0" Margin="5" Name="visImage" Stretch="Fill" />
+        <Grid Grid.Column="1" Grid.Row="0" Margin="5" Name="labels" />
     </Grid>
 </UserControl>
