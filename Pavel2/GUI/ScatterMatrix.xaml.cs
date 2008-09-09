@@ -183,6 +183,19 @@ namespace Pavel2.GUI {
             btn.Visibility = Visibility.Collapsed;
             switchColPanel.MouseLeave += switchColPanel_MouseLeave;
             switchColPanel.MouseEnter += switchColPanel_MouseEnter;
+            btn.Click += btnSwitch_Click;
+        }
+
+        void btnSwitch_Click(object sender, RoutedEventArgs e) {
+            Button btn = sender as Button;
+            if (btn == null) return;
+
+            dataGrid.ChangeColOrder(dataGrid.Columns[0], 1);
+
+            SetLabels();
+            RenderScene();
+            visImage.Source = TakeScreenshot();
+            dataGrid.Cache[this.GetType()] = visImage.Source;
         }
 
         void switchColPanel_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
