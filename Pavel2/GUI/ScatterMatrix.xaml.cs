@@ -171,6 +171,9 @@ namespace Pavel2.GUI {
         }
 
         private void SetupSwitchButton() {
+            switchColPanel.Children.Clear();
+            switchColPanel.MouseLeave -= switchColPanel_MouseLeave;
+            switchColPanel.MouseEnter -= switchColPanel_MouseEnter;
             Button btn = new Button();
             btn.Margin = new Thickness(5);
             System.Windows.Controls.Image img = new System.Windows.Controls.Image();
@@ -180,7 +183,8 @@ namespace Pavel2.GUI {
             switchColPanel.Children.Add(btn);
             switchColPanel.Tag = btn;
             switchColPanel.Background = System.Windows.Media.Brushes.Transparent;
-            btn.Visibility = Visibility.Collapsed;
+            btn.Visibility = Visibility.Hidden;
+            if (switchColPanel.IsMouseOver) btn.Visibility = Visibility.Visible;
             switchColPanel.MouseLeave += switchColPanel_MouseLeave;
             switchColPanel.MouseEnter += switchColPanel_MouseEnter;
             btn.Click += btnSwitch_Click;
@@ -189,9 +193,7 @@ namespace Pavel2.GUI {
         void btnSwitch_Click(object sender, RoutedEventArgs e) {
             Button btn = sender as Button;
             if (btn == null) return;
-
             dataGrid.ChangeColOrder(dataGrid.Columns[0], 1);
-
             SetLabels();
             RenderScene();
             visImage.Source = TakeScreenshot();
@@ -211,7 +213,7 @@ namespace Pavel2.GUI {
             if (cGrid == null) return;
             Button btn = cGrid.Tag as Button;
             if (btn == null) return;
-            btn.Visibility = Visibility.Collapsed;
+            btn.Visibility = Visibility.Hidden;
         }
 
         private void SetLabels() {
