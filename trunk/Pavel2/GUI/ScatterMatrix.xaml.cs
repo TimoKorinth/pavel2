@@ -193,7 +193,7 @@ namespace Pavel2.GUI {
         void btnSwitch_Click(object sender, RoutedEventArgs e) {
             Button btn = sender as Button;
             if (btn == null) return;
-            dataGrid.ChangeColOrder(dataGrid.Columns[0], 1);
+            dataGrid.ChangeColOrder(dataGrid.Columns[0], dataGrid.GetIndex(dataGrid.Columns[1]));
             SetLabels();
             RenderScene();
             visImage.Source = TakeScreenshot();

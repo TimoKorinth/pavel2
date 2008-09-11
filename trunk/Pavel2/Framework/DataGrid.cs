@@ -121,6 +121,14 @@ namespace Pavel2.Framework {
             HasChanged();
         }
 
+        public int GetIndex(Column col) {
+            for (int i = 0; i < columns.Length; i++) {
+                if (columns[i].Equals(col)) return i;
+            }
+            //TODO: NaN oder so zurückgeben
+            return 0;
+        }
+
         public void ColIsVisible(Column col, bool isVis) {
             col.Visible = isVis;
             SetDataFields();
