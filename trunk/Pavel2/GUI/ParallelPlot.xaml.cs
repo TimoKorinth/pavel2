@@ -56,9 +56,12 @@ namespace Pavel2.GUI {
             this.SizeChanged += ParallelPlot_SizeChanged;
             wfPA = new OpenGLRenderWind();
             host.Child = wfPA;
-            wfPA.Width = 1000;
-            wfPA.Height = 800;
-            wfPA.SetupViewPort();
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
+                wfPA.Width = (int)MainData.MainWindow.visualizationLayer.ActualWidth; ;
+                wfPA.Height = (int)MainData.MainWindow.visualizationLayer.ActualHeight;
+                wfPA.SetupViewPort();
+                return null;
+            }), null);
         }
 
         void ParallelPlot_SizeChanged(object sender, SizeChangedEventArgs e) {
@@ -95,6 +98,7 @@ namespace Pavel2.GUI {
                             Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(alpha));
                         }
                     }
+                    Gl.glLoadName(row);
                     Gl.glBegin(Gl.GL_LINE_STRIP);
                     for (int col = 0; col < dataGrid.Columns.Length; col++) {
                         if (dataGrid.DoubleDataField[row][col] == double.NaN) {
@@ -492,9 +496,17 @@ namespace Pavel2.GUI {
         }
 
         private void visImage_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            int x = (int)startPoint.X;
+            int y = (int)startPoint.Y;
+            int w = (int)Math.Abs(x - endPoint.X);
+            int h = (int)Math.Abs(y - endPoint.Y);
+            PerformPicking((int)(x + endPoint.X) / 2, (int)(y + endPoint.Y) / 2, w, h);
             startPoint = e.GetPosition(this);
             endPoint = startPoint;
             RemoveAdornerArray();
+            RenderScene();
+            visImage.Source = TakeScreenshot();
+            dataGrid.Cache[this.GetType()] = visImage.Source;
         }
 
         private void DrawRubberBand() {
@@ -508,6 +520,64 @@ namespace Pavel2.GUI {
                 for (int x = 0; x < toRemoveArray.Length; x++) {
                     AdornerLayer.GetAdornerLayer(this).Remove(toRemoveArray[x]);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Picks the Points in the given Rectangle
+        /// </summary>
+        /// <param name="x">x-Coordinate (Window based, left is 0) of the picking region's center</param>
+        /// <param name="y">y-Coordinate (Window based, top is 0) of the picking region's center</param>
+        /// <param name="w">Width of the Picking Rectangle</param>
+        /// <param name="h">Height of the Picking Rectangle</param>
+        /// <returns>An array containing the picked Points</returns>
+        private void PerformPicking(int x, int y, int w, int h) {
+            wfPA.PushMatrices();
+            int[] selectBuffer = new int[dataGrid.MaxPoints * 4];
+            int[] viewport = new int[4];
+            int hits;
+
+            //Extract viewport
+            wfPA.SetupViewPort();
+            Gl.glGetIntegerv(Gl.GL_VIEWPORT, viewport);
+
+            //Designate SelectBuffer and switch to Select mode
+            Gl.glSelectBuffer(selectBuffer.Length, selectBuffer);
+            Gl.glRenderMode(Gl.GL_SELECT);
+
+            Gl.glInitNames();
+            Gl.glPushName(0);
+
+            //Initialize Picking Matrix
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glLoadIdentity();
+            // create picking region near cursor location
+            Glu.gluPickMatrix(x, (viewport[3] - y), w, h, viewport);
+
+            //Draw Lines
+
+            Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+            Gl.glPopAttrib();
+
+            wfPA.SetupModelView(true);
+
+            DrawLines();
+
+            //Switch Back to Render Mode
+            hits = Gl.glRenderMode(Gl.GL_RENDER);
+
+            wfPA.PopMatrices();
+            //Calculate actual Points and return them
+            //Point[] selectedPointsBuffer = new Point[hits];
+            //for (int i = 0; i < hits; i++) {
+            //    selectedPointsBuffer[i] = vis.VisualizationWindow.DisplayedPointSet[selectBuffer[i * 4 + 3]];
+            //}
+            //return selectedPointsBuffer;
+            dataGrid.ClearSelectedPoints();
+            for (int i = 0; i < hits; i++) {
+                dataGrid.SelectedPoints[selectBuffer[i * 4 + 3]] = true;
             }
         }
 
