@@ -189,7 +189,7 @@ namespace Pavel2.GUI {
         /// <remarks>Does not change the current matrix mode</remarks>
         /// <param name="loadIdentityFirst">Set to true if you want LoadIdentity to be executed on
         /// the modelview Matrix before the Camera is set</param>
-        protected void SetupModelView(bool loadIdentityFirst) {
+        public void SetupModelView(bool loadIdentityFirst) {
             Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
@@ -467,7 +467,7 @@ namespace Pavel2.GUI {
         /// Performs PushMatrix for both projection and modelview matrices.
         /// Doesn't change the current MatrixMode.
         /// </summary>
-        protected void PushMatrices() {
+        public void PushMatrices() {
             Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
@@ -482,7 +482,7 @@ namespace Pavel2.GUI {
         /// Performs PopMatrix for both projection and modelview matrices.
         /// Doesn't change the current MatrixMode.
         /// </summary>
-        protected void PopMatrices() {
+        public void PopMatrices() {
             Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
