@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
+using System.Windows.Controls.Primitives;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -170,6 +171,148 @@ namespace Pavel2.GUI {
             }
         }
 
+        private void SetupOverlayControls() {
+            Canvas xCanvas = new Canvas();
+            Thumb tLeftX = new Thumb();
+            Thumb tRightX = new Thumb();
+            tLeftX.Tag = dataGrid.Columns[0];
+            tRightX.Tag = dataGrid.Columns[0];
+            tRightX.Width = 8;
+            tLeftX.Width = 8;
+            tRightX.Height = 20;
+            tLeftX.Height = 20;
+            tRightX.DragDelta += tZoomX_DragDelta;
+            tLeftX.DragDelta += tZoomX_DragDelta;
+            tRightX.DragCompleted += tZoomX_DragCompleted;
+            tLeftX.DragCompleted += tZoomX_DragCompleted;
+            xCanvas.Children.Add(tRightX);
+            xCanvas.Children.Add(tLeftX);
+            Canvas.SetRight(tRightX, 0);
+            Canvas.SetLeft(tLeftX, 0);
+
+            Canvas yCanvas = new Canvas();
+            Thumb tDownY = new Thumb();
+            Thumb tUpY = new Thumb();
+            tDownY.Tag = dataGrid.Columns[1];
+            tUpY.Tag = dataGrid.Columns[1];
+            tUpY.Width = 20;
+            tDownY.Width = 20;
+            tUpY.Height = 8;
+            tDownY.Height = 8;
+            tUpY.DragDelta += tZoomY_DragDelta;
+            tDownY.DragDelta += tZoomY_DragDelta;
+            tUpY.DragCompleted += tZoomY_DragCompleted;
+            tDownY.DragCompleted += tZoomY_DragCompleted;
+            yCanvas.Children.Add(tUpY);
+            yCanvas.Children.Add(tDownY);
+            Canvas.SetTop(tUpY, 0);
+            Canvas.SetBottom(tDownY, 0);
+
+            xLabels.Children.Add(xCanvas);
+            yLabels.Children.Add(yCanvas);
+            xCanvas.Visibility = Visibility.Collapsed;
+            yCanvas.Visibility = Visibility.Collapsed;
+            xLabels.Tag = xCanvas;
+            xLabels.Background = System.Windows.Media.Brushes.Transparent;
+            yLabels.Background = System.Windows.Media.Brushes.Transparent;
+            yLabels.Tag = yCanvas;
+            Grid.SetColumn(yCanvas, 1);
+            Grid.SetRowSpan(yCanvas, this.scaleNumber - 1);
+            Grid.SetColumnSpan(xCanvas, this.scaleNumber - 1);
+        }
+
+        void tZoomX_DragCompleted(object sender, DragCompletedEventArgs e) {
+            //Thumb t = sender as Thumb;
+            //if (t == null) return;
+            //Column col = t.Tag as Column;
+            //if (col == null) return;
+            //double tmp = Canvas.GetTop(t);
+            //double pixVal = (col.Max - col.Min) / scaleGrid.ActualHeight;
+            //double newVal;
+            //if (double.IsNaN(tmp)) {
+            //    if (col.DirUp) {
+            //        newVal = col.Min - pixVal * e.VerticalChange;
+            //        dataGrid.ChangeColZoom(col, newVal, col.Max);
+            //    } else {
+            //        newVal = col.Max + pixVal * e.VerticalChange;
+            //        dataGrid.ChangeColZoom(col, col.Min, newVal);
+            //    }
+            //} else {
+            //    if (col.DirUp) {
+            //        newVal = col.Max - pixVal * e.VerticalChange;
+            //        dataGrid.ChangeColZoom(col, col.Min, newVal);
+            //    } else {
+            //        newVal = col.Min + pixVal * e.VerticalChange;
+            //        dataGrid.ChangeColZoom(col, newVal, col.Max);
+            //    }
+            //}
+            //SetLabelPanel();
+            //SetOverlayControls();
+            //RenderScene();
+            //visImage.Source = TakeScreenshot();
+            //dataGrid.Cache[this.GetType()] = visImage.Source;
+        }
+
+        void tZoomX_DragDelta(object sender, DragDeltaEventArgs e) {
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            double tmp = Canvas.GetRight(t);
+            double newPos;
+            if (double.IsNaN(tmp)) {
+                newPos = Canvas.GetLeft(t) + e.HorizontalChange;
+                if ((newPos > 0) && (newPos < xLabels.ActualWidth - 8)) Canvas.SetLeft(t, newPos);
+            } else {
+                newPos = Canvas.GetRight(t) - e.HorizontalChange;
+                if ((newPos > 0) && (newPos < xLabels.ActualWidth - 8)) Canvas.SetRight(t, newPos);
+            }
+        }
+
+        void tZoomY_DragCompleted(object sender, DragCompletedEventArgs e) {
+            //Thumb t = sender as Thumb;
+            //if (t == null) return;
+            //Column col = t.Tag as Column;
+            //if (col == null) return;
+            //double tmp = Canvas.GetTop(t);
+            //double pixVal = (col.Max - col.Min) / scaleGrid.ActualHeight;
+            //double newVal;
+            //if (double.IsNaN(tmp)) {
+            //    if (col.DirUp) {
+            //        newVal = col.Min - pixVal * e.VerticalChange;
+            //        dataGrid.ChangeColZoom(col, newVal, col.Max);
+            //    } else {
+            //        newVal = col.Max + pixVal * e.VerticalChange;
+            //        dataGrid.ChangeColZoom(col, col.Min, newVal);
+            //    }
+            //} else {
+            //    if (col.DirUp) {
+            //        newVal = col.Max - pixVal * e.VerticalChange;
+            //        dataGrid.ChangeColZoom(col, col.Min, newVal);
+            //    } else {
+            //        newVal = col.Min + pixVal * e.VerticalChange;
+            //        dataGrid.ChangeColZoom(col, newVal, col.Max);
+            //    }
+            //}
+            //SetLabelPanel();
+            //SetOverlayControls();
+            //RenderScene();
+            //visImage.Source = TakeScreenshot();
+            //dataGrid.Cache[this.GetType()] = visImage.Source;
+        }
+
+        void tZoomY_DragDelta(object sender, DragDeltaEventArgs e) {
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            double tmp = Canvas.GetTop(t);
+            double newPos;
+            if (double.IsNaN(tmp)) {
+                newPos = Canvas.GetBottom(t) - e.VerticalChange;
+                if ((newPos > 0) && (newPos < yLabels.ActualHeight - 8)) Canvas.SetBottom(t, newPos);
+            } else {
+                newPos = Canvas.GetTop(t) + e.VerticalChange;
+                if ((newPos > 0) && (newPos < yLabels.ActualHeight - 8)) Canvas.SetTop(t, newPos);
+            }
+        }
+
         private void SetupSwitchButton() {
             switchColPanel.Children.Clear();
             switchColPanel.MouseLeave -= switchColPanel_MouseLeave;
@@ -315,6 +458,7 @@ namespace Pavel2.GUI {
                         Grid.SetColumn(scaleY, 1);
                     }
                 }
+                SetupOverlayControls();
             } else { 
                     for (int x = 0; x < dataGrid.Columns.Length; x++) {
                     labels.RowDefinitions.Add(new RowDefinition());
@@ -486,5 +630,21 @@ namespace Pavel2.GUI {
         }
 
         #endregion
+
+        private void Labels_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
+            Grid lGrid = sender as Grid;
+            if (lGrid == null) return;
+            Canvas canvas = lGrid.Tag as Canvas;
+            if (canvas == null) return;
+            canvas.Visibility = Visibility.Visible;
+        }
+
+        private void Labels_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
+            Grid lGrid = sender as Grid;
+            if (lGrid == null) return;
+            Canvas canvas = lGrid.Tag as Canvas;
+            if (canvas == null) return;
+            canvas.Visibility = Visibility.Collapsed;
+        }
     }
 }
