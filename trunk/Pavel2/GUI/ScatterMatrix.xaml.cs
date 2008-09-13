@@ -207,6 +207,8 @@ namespace Pavel2.GUI {
             yCanvas.Children.Add(tDownY);
             Canvas.SetTop(tUpY, 0);
             Canvas.SetBottom(tDownY, 0);
+            Canvas.SetRight(tUpY, 0);
+            Canvas.SetRight(tDownY, 0);
 
             xLabels.Children.Add(xCanvas);
             yLabels.Children.Add(yCanvas);
