@@ -503,7 +503,7 @@ namespace Pavel2.GUI {
             int h = (int)Math.Abs(y - endPoint.Y);
             if (w < 5) w = 5;
             if (h < 5) h = 5;
-            PerformPicking(x, y, w, h);
+            PerformPicking((int)(endPoint.X - x) / 2 + x, (int)(endPoint.Y - y) / 2 + y, w, h);
             startPoint = e.GetPosition(this);
             endPoint = startPoint;
             RemoveAdornerArray();
