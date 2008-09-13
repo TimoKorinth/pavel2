@@ -110,9 +110,9 @@ namespace Pavel2.GUI {
                 }
             }
             //Selected Points:
+            Gl.glColor4fv(ColorManagement.CurrentSelectionColor.RGBwithA(0.8f));
             for (int row = 0; row < dataGrid.MaxPoints; row++) {
                 if (dataGrid.SelectedPoints[row]) {
-                    Gl.glColor4fv(ColorManagement.CurrentSelectionColor.RGBwithA(0.8f));
                     Gl.glBegin(Gl.GL_LINE_STRIP);
                     for (int col = 0; col < dataGrid.Columns.Length; col++) {
                         if (dataGrid.DoubleDataField[row][col] == double.NaN) {
