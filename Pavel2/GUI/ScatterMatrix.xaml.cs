@@ -222,35 +222,34 @@ namespace Pavel2.GUI {
         }
 
         void tZoomX_DragCompleted(object sender, DragCompletedEventArgs e) {
-            //Thumb t = sender as Thumb;
-            //if (t == null) return;
-            //Column col = t.Tag as Column;
-            //if (col == null) return;
-            //double tmp = Canvas.GetTop(t);
-            //double pixVal = (col.Max - col.Min) / scaleGrid.ActualHeight;
-            //double newVal;
-            //if (double.IsNaN(tmp)) {
-            //    if (col.DirUp) {
-            //        newVal = col.Min - pixVal * e.VerticalChange;
-            //        dataGrid.ChangeColZoom(col, newVal, col.Max);
-            //    } else {
-            //        newVal = col.Max + pixVal * e.VerticalChange;
-            //        dataGrid.ChangeColZoom(col, col.Min, newVal);
-            //    }
-            //} else {
-            //    if (col.DirUp) {
-            //        newVal = col.Max - pixVal * e.VerticalChange;
-            //        dataGrid.ChangeColZoom(col, col.Min, newVal);
-            //    } else {
-            //        newVal = col.Min + pixVal * e.VerticalChange;
-            //        dataGrid.ChangeColZoom(col, newVal, col.Max);
-            //    }
-            //}
-            //SetLabelPanel();
-            //SetOverlayControls();
-            //RenderScene();
-            //visImage.Source = TakeScreenshot();
-            //dataGrid.Cache[this.GetType()] = visImage.Source;
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            Column col = t.Tag as Column;
+            if (col == null) return;
+            double tmp = Canvas.GetRight(t);
+            double pixVal = (col.Max - col.Min) / xLabels.ActualWidth;
+            double newVal;
+            if (double.IsNaN(tmp)) {
+                if (col.DirUp) {
+                    newVal = col.Min + pixVal * e.HorizontalChange;
+                    dataGrid.ChangeColZoom(col, newVal, col.Max);
+                } else {
+                    newVal = col.Max - pixVal * e.HorizontalChange;
+                    dataGrid.ChangeColZoom(col, col.Min, newVal);
+                }
+            } else {
+                if (col.DirUp) {
+                    newVal = col.Max + pixVal * e.HorizontalChange;
+                    dataGrid.ChangeColZoom(col, col.Min, newVal);
+                } else {
+                    newVal = col.Min - pixVal * e.HorizontalChange;
+                    dataGrid.ChangeColZoom(col, newVal, col.Max);
+                }
+            }
+            SetLabels();
+            RenderScene();
+            visImage.Source = TakeScreenshot();
+            dataGrid.Cache[this.GetType()] = visImage.Source;
         }
 
         void tZoomX_DragDelta(object sender, DragDeltaEventArgs e) {
@@ -268,35 +267,34 @@ namespace Pavel2.GUI {
         }
 
         void tZoomY_DragCompleted(object sender, DragCompletedEventArgs e) {
-            //Thumb t = sender as Thumb;
-            //if (t == null) return;
-            //Column col = t.Tag as Column;
-            //if (col == null) return;
-            //double tmp = Canvas.GetTop(t);
-            //double pixVal = (col.Max - col.Min) / scaleGrid.ActualHeight;
-            //double newVal;
-            //if (double.IsNaN(tmp)) {
-            //    if (col.DirUp) {
-            //        newVal = col.Min - pixVal * e.VerticalChange;
-            //        dataGrid.ChangeColZoom(col, newVal, col.Max);
-            //    } else {
-            //        newVal = col.Max + pixVal * e.VerticalChange;
-            //        dataGrid.ChangeColZoom(col, col.Min, newVal);
-            //    }
-            //} else {
-            //    if (col.DirUp) {
-            //        newVal = col.Max - pixVal * e.VerticalChange;
-            //        dataGrid.ChangeColZoom(col, col.Min, newVal);
-            //    } else {
-            //        newVal = col.Min + pixVal * e.VerticalChange;
-            //        dataGrid.ChangeColZoom(col, newVal, col.Max);
-            //    }
-            //}
-            //SetLabelPanel();
-            //SetOverlayControls();
-            //RenderScene();
-            //visImage.Source = TakeScreenshot();
-            //dataGrid.Cache[this.GetType()] = visImage.Source;
+            Thumb t = sender as Thumb;
+            if (t == null) return;
+            Column col = t.Tag as Column;
+            if (col == null) return;
+            double tmp = Canvas.GetTop(t);
+            double pixVal = (col.Max - col.Min) / yLabels.ActualHeight;
+            double newVal;
+            if (double.IsNaN(tmp)) {
+                if (col.DirUp) {
+                    newVal = col.Min - pixVal * e.VerticalChange;
+                    dataGrid.ChangeColZoom(col, newVal, col.Max);
+                } else {
+                    newVal = col.Max + pixVal * e.VerticalChange;
+                    dataGrid.ChangeColZoom(col, col.Min, newVal);
+                }
+            } else {
+                if (col.DirUp) {
+                    newVal = col.Max - pixVal * e.VerticalChange;
+                    dataGrid.ChangeColZoom(col, col.Min, newVal);
+                } else {
+                    newVal = col.Min + pixVal * e.VerticalChange;
+                    dataGrid.ChangeColZoom(col, newVal, col.Max);
+                }
+            }
+            SetLabels();
+            RenderScene();
+            visImage.Source = TakeScreenshot();
+            dataGrid.Cache[this.GetType()] = visImage.Source;
         }
 
         void tZoomY_DragDelta(object sender, DragDeltaEventArgs e) {
