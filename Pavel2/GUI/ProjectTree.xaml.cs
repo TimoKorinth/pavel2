@@ -411,7 +411,6 @@ namespace Pavel2.GUI {
             if (item != null) {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem || item.Tag is ImageTreeItem) {
                     if (this.editItem == null) {
-                        //if (!projectTree.SelectedItems.Contains(item)) item.IsSelected = true;
                         DragDropHelper.DoDragDrop(projectTree, projectTree.SelectedItems, DragDropEffects.Copy, this);
                     }
                 }

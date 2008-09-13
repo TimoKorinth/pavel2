@@ -195,7 +195,7 @@ namespace Pavel2.GUI
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                     AddDataGridOptions(pTI.DataGrid);
-                    SetupToolBarButtons(pTI.DataGrid);
+                    if (pTI.DataGrid != null) SetupToolBarButtons(pTI.DataGrid);
                 }
                 visualizationLayer.VisualizationData = item.Tag;
                 ShowParserProperties();
