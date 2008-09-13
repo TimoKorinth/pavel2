@@ -23,6 +23,19 @@ namespace Pavel2.GUI {
         
         public TableView() {
             InitializeComponent();
+            tableListView.SelectionChanged += tableListView_SelectionChanged;
+        }
+
+        void tableListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            tableListView.SelectedItems.GetType();
+            IEnumerable<Int32> tmp = GetSelectedIndices(tableListView);
+        }
+
+        private IEnumerable<Int32> GetSelectedIndices(ListView listView) {
+            return from item in listView.SelectedItems.OfType<Object>()
+                   let container = listView.ItemContainerGenerator.ContainerFromItem(item) as ListViewItem
+                   where container != null
+                   select listView.ItemContainerGenerator.IndexFromContainer(container);
         }
 
         public void Render(DataGrid dataGrid) {

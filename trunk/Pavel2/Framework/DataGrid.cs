@@ -23,6 +23,7 @@ namespace Pavel2.Framework {
         private bool showAll = true;
         private Button undoZoom;
         private Button undoColVis;
+        private bool[] selectedPoints;
 
         public event EventHandler ColumnChanged;
         public event EventHandler ColumnVisChanged;
@@ -43,6 +44,11 @@ namespace Pavel2.Framework {
         }
 
         [Browsable(false)]
+        public bool[] SelectedPoints {
+            get { return selectedPoints; }
+        }
+
+        [Browsable(false)]
         public List<Button> Buttons {
             get {
                 List<Button> buttons = new List<Button>();
@@ -55,7 +61,11 @@ namespace Pavel2.Framework {
         [Browsable(false)]
         public int MaxPoints {
             get { return maxPoints; }
-            set { maxPoints = value; }
+            set {
+                if (value == maxPoints) return;
+                maxPoints = value; 
+                selectedPoints = new bool[maxPoints];
+            }
         }
 
         [Browsable(false)]
@@ -287,19 +297,19 @@ namespace Pavel2.Framework {
                     data.Add(sTmp);
                 }
             }
-            maxPoints = dData.Count;
+            MaxPoints = dData.Count;
             this.dData = dData.ToArray();
             this.data = data.ToArray();
         }
 
         private void SetMaxColumn() {
             this.maxColumn = 0;
-            this.maxPoints = columns[0].Points.Length;
+            this.MaxPoints = columns[0].Points.Length;
             for (int i = 0; i < columns.Length; i++) {
                 if (columns[i].Points.Length > columns[this.maxColumn].Points.Length) {
                     if (columns[i].Visible) {
                         this.maxColumn = i;
-                        maxPoints = columns[i].Points.Length;
+                        MaxPoints = columns[i].Points.Length;
                     }
                 }
             }
