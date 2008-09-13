@@ -486,6 +486,7 @@ namespace Pavel2.GUI {
 
         private void visImage_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             startPoint = e.GetPosition(this);
+            endPoint = startPoint;
         }
 
         private void visImage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e) {
@@ -500,7 +501,9 @@ namespace Pavel2.GUI {
             int y = (int)startPoint.Y;
             int w = (int)Math.Abs(x - endPoint.X);
             int h = (int)Math.Abs(y - endPoint.Y);
-            PerformPicking((int)(x + endPoint.X) / 2, (int)(y + endPoint.Y) / 2, w, h);
+            if (w < 5) w = 5;
+            if (h < 5) h = 5;
+            PerformPicking(x, y, w, h);
             startPoint = e.GetPosition(this);
             endPoint = startPoint;
             RemoveAdornerArray();
