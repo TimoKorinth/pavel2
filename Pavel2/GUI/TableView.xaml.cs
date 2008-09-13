@@ -21,6 +21,7 @@ namespace Pavel2.GUI {
     public partial class TableView : UserControl, Visualization {
 
         private DataGrid dataGrid;
+        private bool selecting;
         
         public TableView() {
             InitializeComponent();
@@ -28,10 +29,12 @@ namespace Pavel2.GUI {
         }
 
         void tableListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            IEnumerable<Int32> tmp = GetSelectedIndices(tableListView);
-            this.dataGrid.ClearSelectedPoints();
-            foreach (int i in tmp) {
-                this.dataGrid.SelectedPoints[i] = true;
+            if (!selecting) {
+                IEnumerable<Int32> tmp = GetSelectedIndices(tableListView);
+                this.dataGrid.ClearSelectedPoints();
+                foreach (int i in tmp) {
+                    this.dataGrid.SelectedPoints[i] = true;
+                }
             }
         }
 
@@ -44,6 +47,7 @@ namespace Pavel2.GUI {
 
         public void Render(DataGrid dataGrid) {
             this.dataGrid = dataGrid;
+            tableListView.SelectedItems.Clear();
             if (dataGrid != null) {
                 tableListView.Visibility = Visibility.Visible;
                 tableListView.ItemsSource = dataGrid.DataField;
@@ -63,14 +67,13 @@ namespace Pavel2.GUI {
                 tableListView.ItemsSource = null;
                 tableListView.View = null;
             }
+            selecting = true;
             for (int row = 0; row < dataGrid.MaxPoints; row++) {
                 if (dataGrid.SelectedPoints[row]) {
-                    ListViewItem item = tableListView.ItemContainerGenerator.ContainerFromIndex(row) as ListViewItem;
-                    if (item != null) {
-                        Selector.SetIsSelected(item, true);
-                    }
+                    tableListView.SelectedItems.Add(dataGrid.DataField[row]);
                 }
             }
+            selecting = false;
         }
 
         void Columns_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
