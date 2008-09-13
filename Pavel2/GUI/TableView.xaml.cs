@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Pavel2.Framework;
+using System.Windows.Controls.Primitives;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -61,6 +62,14 @@ namespace Pavel2.GUI {
                 tableListView.Visibility = Visibility.Collapsed;
                 tableListView.ItemsSource = null;
                 tableListView.View = null;
+            }
+            for (int row = 0; row < dataGrid.MaxPoints; row++) {
+                if (dataGrid.SelectedPoints[row]) {
+                    ListViewItem item = tableListView.ItemContainerGenerator.ContainerFromIndex(row) as ListViewItem;
+                    if (item != null) {
+                        Selector.SetIsSelected(item, true);
+                    }
+                }
             }
         }
 
