@@ -27,8 +27,11 @@ namespace Pavel2.GUI {
         }
 
         void tableListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            tableListView.SelectedItems.GetType();
             IEnumerable<Int32> tmp = GetSelectedIndices(tableListView);
+            this.dataGrid.ClearSelectedPoints();
+            foreach (int i in tmp) {
+                this.dataGrid.SelectedPoints[i] = true;
+            }
         }
 
         private IEnumerable<Int32> GetSelectedIndices(ListView listView) {

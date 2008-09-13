@@ -66,44 +66,70 @@ namespace Pavel2.GUI {
 
         private void DrawLines() {
             Gl.glEnable(Gl.GL_LINE_SMOOTH);
+            float alpha = 1;
             if (dataGrid.MaxPoints < 100) {
                 Gl.glLineWidth(6f);
-                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.5f));
+                alpha = 0.5f;
             }
             if (dataGrid.MaxPoints > 100) {
                 Gl.glLineWidth(3f);
-                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.2f));
+                alpha = 0.2f;
             }
             if (dataGrid.MaxPoints > 1000) {
                 Gl.glLineWidth(1f);
-                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.02f));
+                alpha = 0.02f;
             }
             bool breakLine = false;
             if (dataGrid == null) return;
             int index = -1;
+            Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
             for (int row = 0; row < dataGrid.MaxPoints; row++) {
-                if (comp != null) {
-                    if (comp.GetDataItemIndex(row) != index) {
-                        index = comp.GetDataItemIndex(row);
-                        Gl.glColor4fv(ColorManagement.GetColor(index+2).RGBwithA(0.2f));
-                    }
-                }
-                Gl.glBegin(Gl.GL_LINE_STRIP);
-                for (int col = 0; col < dataGrid.Columns.Length; col++) {
-                    if (dataGrid.DoubleDataField[row][col] == double.NaN) {
-                        Gl.glEnd();
-                        breakLine = true;
-                    } else {
-                        if (breakLine) Gl.glBegin(Gl.GL_LINE_STRIP);
-                        double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
-                        if (dataGrid.Columns[col].DirUp) {
-                            Gl.glVertex2d(step * col, nValue);
-                        } else {
-                            Gl.glVertex2d(step * col, 1-nValue);
+                if (!dataGrid.SelectedPoints[row]) {
+                    if (comp != null) {
+                        if (comp.GetDataItemIndex(row) != index) {
+                            index = comp.GetDataItemIndex(row);
+                            Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(alpha));
                         }
                     }
+                    Gl.glBegin(Gl.GL_LINE_STRIP);
+                    for (int col = 0; col < dataGrid.Columns.Length; col++) {
+                        if (dataGrid.DoubleDataField[row][col] == double.NaN) {
+                            Gl.glEnd();
+                            breakLine = true;
+                        } else {
+                            if (breakLine) Gl.glBegin(Gl.GL_LINE_STRIP);
+                            double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
+                            if (dataGrid.Columns[col].DirUp) {
+                                Gl.glVertex2d(step * col, nValue);
+                            } else {
+                                Gl.glVertex2d(step * col, 1 - nValue);
+                            }
+                        }
+                    }
+                    if (!breakLine) Gl.glEnd();
                 }
-                if (!breakLine) Gl.glEnd();
+            }
+            //Selected Points:
+            for (int row = 0; row < dataGrid.MaxPoints; row++) {
+                if (dataGrid.SelectedPoints[row]) {
+                    Gl.glColor4fv(ColorManagement.CurrentSelectionColor.RGBwithA(0.8f));
+                    Gl.glBegin(Gl.GL_LINE_STRIP);
+                    for (int col = 0; col < dataGrid.Columns.Length; col++) {
+                        if (dataGrid.DoubleDataField[row][col] == double.NaN) {
+                            Gl.glEnd();
+                            breakLine = true;
+                        } else {
+                            if (breakLine) Gl.glBegin(Gl.GL_LINE_STRIP);
+                            double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
+                            if (dataGrid.Columns[col].DirUp) {
+                                Gl.glVertex2d(step * col, nValue);
+                            } else {
+                                Gl.glVertex2d(step * col, 1 - nValue);
+                            }
+                        }
+                    }
+                    if (!breakLine) Gl.glEnd();
+                }
             }
         }
 

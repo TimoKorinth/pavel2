@@ -48,6 +48,11 @@ namespace Pavel2.Framework {
             get { return selectedPoints; }
         }
 
+        public void ClearSelectedPoints() {
+            selectedPoints = new bool[maxPoints];
+            HasChanged();
+        }
+
         [Browsable(false)]
         public List<Button> Buttons {
             get {
