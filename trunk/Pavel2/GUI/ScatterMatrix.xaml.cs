@@ -60,73 +60,110 @@ namespace Pavel2.GUI {
         private void DrawPoints() {
             if (dataGrid == null) return;
             Gl.glEnable(Gl.GL_POINT_SMOOTH);
+            float alpha = 1;
             if (dataGrid.Columns.Length == 2) {
                 if (dataGrid.MaxPoints < 100) {
                     Gl.glPointSize(15f);
-                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.9f));
+                    alpha = 0.9f;
                 }
                 if (dataGrid.MaxPoints > 100) {
                     Gl.glPointSize(10f);
-                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.6f));
+                    alpha = 0.6f;
                 }
                 if (dataGrid.MaxPoints > 1000) {
                     Gl.glPointSize(5f);
-                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.3f));
+                    alpha = 0.3f;
                 }
+                Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
                 int index = -1;
                 Gl.glBegin(Gl.GL_POINTS);
                 for (int row = 0; row < dataGrid.MaxPoints; row++) {
-                    if (comp != null) {
-                        if (comp.GetDataItemIndex(row) != index) {
-                            index = comp.GetDataItemIndex(row);
-                            Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(0.7f));
+                    if (!dataGrid.SelectedPoints[row]) {
+                        if (comp != null) {
+                            if (comp.GetDataItemIndex(row) != index) {
+                                index = comp.GetDataItemIndex(row);
+                                Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(alpha));
+                            }
                         }
+                        double xCo = Normalize(dataGrid.DoubleDataField[row][0], dataGrid.Columns[0]);
+                        double yCo = Normalize(dataGrid.DoubleDataField[row][1], dataGrid.Columns[1]);
+                        if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
+                            continue;
+                        }
+                        if (!dataGrid.Columns[0].DirUp) xCo = 1 - xCo;
+                        if (!dataGrid.Columns[1].DirUp) yCo = 1 - yCo;
+                        Gl.glVertex2d(xCo, yCo);
                     }
-                    double xCo = Normalize(dataGrid.DoubleDataField[row][0], dataGrid.Columns[0]);
-                    double yCo = Normalize(dataGrid.DoubleDataField[row][1], dataGrid.Columns[1]);
-                    if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
-                        continue;
+                }
+                //Selected Points:
+                Gl.glColor4fv(ColorManagement.CurrentSelectionColor.RGBwithA(0.8f));
+                for (int row = 0; row < dataGrid.MaxPoints; row++) {
+                    if (dataGrid.SelectedPoints[row]) {
+                        double xCo = Normalize(dataGrid.DoubleDataField[row][0], dataGrid.Columns[0]);
+                        double yCo = Normalize(dataGrid.DoubleDataField[row][1], dataGrid.Columns[1]);
+                        if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
+                            continue;
+                        }
+                        if (!dataGrid.Columns[0].DirUp) xCo = 1 - xCo;
+                        if (!dataGrid.Columns[1].DirUp) yCo = 1 - yCo;
+                        Gl.glVertex2d(xCo, yCo);
                     }
-                    if (!dataGrid.Columns[0].DirUp) xCo = 1 - xCo;
-                    if (!dataGrid.Columns[1].DirUp) yCo = 1 - yCo;
-                    Gl.glVertex2d(xCo, yCo);
                 }
                 Gl.glEnd();
             } else {
                 if (dataGrid.MaxPoints < 100) {
                     Gl.glPointSize(6f);
-                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.9f));
+                    alpha = 0.9f;
                 }
                 if (dataGrid.MaxPoints > 100) {
                     Gl.glPointSize(3f);
-                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.6f));
+                    alpha = 0.6f;
                 }
                 if (dataGrid.MaxPoints > 1000) {
                     Gl.glPointSize(1f);
-                    Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.3f));
+                    alpha = 0.3f;
                 }
                 int index = -1;
                 for (int x = 0; x < dataGrid.Columns.Length; x++) {
                     for (int y = 0; y < dataGrid.Columns.Length; y++) {
                         if (x == y) continue;
+                        Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
                         Gl.glBegin(Gl.GL_POINTS);
                         for (int row = 0; row < dataGrid.MaxPoints; row++) {
-                            if (comp != null) {
-                                if (comp.GetDataItemIndex(row) != index) {
-                                    index = comp.GetDataItemIndex(row);
-                                    Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(0.7f));
+                            if (!dataGrid.SelectedPoints[row]) {
+                                if (comp != null) {
+                                    if (comp.GetDataItemIndex(row) != index) {
+                                        index = comp.GetDataItemIndex(row);
+                                        Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(alpha));
+                                    }
                                 }
-                            }
-                            double xCo = Normalize(dataGrid.DoubleDataField[row][x], dataGrid.Columns[x]);
-                            double yCo = Normalize(dataGrid.DoubleDataField[row][y], dataGrid.Columns[y]);
-                            if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
-                                continue;
-                            }
-                            if (!dataGrid.Columns[x].DirUp) xCo = step - (xCo * step) + step * x;
+                                double xCo = Normalize(dataGrid.DoubleDataField[row][x], dataGrid.Columns[x]);
+                                double yCo = Normalize(dataGrid.DoubleDataField[row][y], dataGrid.Columns[y]);
+                                if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
+                                    continue;
+                                }
+                                if (!dataGrid.Columns[x].DirUp) xCo = step - (xCo * step) + step * x;
                                 else xCo = (xCo * step) + step * x;
-                            if (!dataGrid.Columns[y].DirUp) yCo = step - (yCo * step) + step * y;
+                                if (!dataGrid.Columns[y].DirUp) yCo = step - (yCo * step) + step * y;
                                 else yCo = (yCo * step) + step * y;
-                            Gl.glVertex2d(xCo, yCo);
+                                Gl.glVertex2d(xCo, yCo);
+                            }
+                        }
+                        //Selected Points:
+                        Gl.glColor4fv(ColorManagement.CurrentSelectionColor.RGBwithA(0.8f));
+                        for (int row = 0; row < dataGrid.MaxPoints; row++) {
+                            if (dataGrid.SelectedPoints[row]) {
+                                double xCo = Normalize(dataGrid.DoubleDataField[row][x], dataGrid.Columns[x]);
+                                double yCo = Normalize(dataGrid.DoubleDataField[row][y], dataGrid.Columns[y]);
+                                if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
+                                    continue;
+                                }
+                                if (!dataGrid.Columns[x].DirUp) xCo = step - (xCo * step) + step * x;
+                                else xCo = (xCo * step) + step * x;
+                                if (!dataGrid.Columns[y].DirUp) yCo = step - (yCo * step) + step * y;
+                                else yCo = (yCo * step) + step * y;
+                                Gl.glVertex2d(xCo, yCo);
+                            }
                         }
                         Gl.glEnd();
                     }
