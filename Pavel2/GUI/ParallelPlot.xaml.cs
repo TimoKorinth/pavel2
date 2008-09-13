@@ -12,6 +12,8 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 using System.Windows.Shapes;
 using System.Windows.Media.Imaging;
+using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -44,6 +46,8 @@ namespace Pavel2.GUI {
         CombinedDataItem comp;
         Canvas lastPanel;
         private double step;
+        private System.Windows.Point startPoint;
+        private System.Windows.Point endPoint;
         private int scaleNumber = 5;
         WindowsFormsHost host = new WindowsFormsHost();
 
@@ -475,5 +479,57 @@ namespace Pavel2.GUI {
         }
 
         #endregion
+
+        private void visImage_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            startPoint = e.GetPosition(this);
+        }
+
+        private void visImage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e) {
+            if (e.LeftButton == MouseButtonState.Pressed) {
+                endPoint = e.GetPosition(this);
+                DrawRubberBand();
+            }
+        }
+
+        private void visImage_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            startPoint = e.GetPosition(this);
+            endPoint = startPoint;
+            RemoveAdornerArray();
+        }
+
+        private void DrawRubberBand() {
+            RemoveAdornerArray();
+            AdornerLayer.GetAdornerLayer(this).Add(new RubberBandAdorner(this, startPoint, endPoint));
+        }
+
+        private void RemoveAdornerArray() {
+            Adorner[] toRemoveArray = AdornerLayer.GetAdornerLayer(this).GetAdorners(this);
+            if (toRemoveArray != null) {
+                for (int x = 0; x < toRemoveArray.Length; x++) {
+                    AdornerLayer.GetAdornerLayer(this).Remove(toRemoveArray[x]);
+                }
+            }
+        }
+
+        private class RubberBandAdorner : Adorner {
+
+            SolidColorBrush renderBrush = new SolidColorBrush(Colors.Turquoise);
+            System.Windows.Media.Pen renderPen = new System.Windows.Media.Pen(new SolidColorBrush(Colors.Turquoise), 1);
+            System.Windows.Point start;
+            System.Windows.Point end;
+
+            public RubberBandAdorner(UIElement adornedElement, System.Windows.Point start, System.Windows.Point end)
+                : base(adornedElement) {
+                this.start = start;
+                this.end = end;
+            }
+
+            protected override void OnRender(DrawingContext dc) {
+                this.IsHitTestVisible = false;
+                Rect e = new Rect(start, end);
+                renderBrush.Opacity = 0.2;
+                dc.DrawRectangle(renderBrush, renderPen, e);
+            }
+        }
     }
 }
