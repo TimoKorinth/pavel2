@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Pavel2.Framework;
 using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -71,7 +72,6 @@ namespace Pavel2.GUI {
             if (CurrentVisualization == null) return;
             foreach (TabItem item in visualizationTabControl.Items) {
                 if (item.Content.GetType().Equals(CurrentVisualization.GetType())) {
-                    //CurrentVisualization.Render(this.pTI.DataGrid);
                     item.IsSelected = true;
                 }
             }
@@ -84,8 +84,12 @@ namespace Pavel2.GUI {
             if (tItem == null) return;
             CurrentVisualization = (Visualization)tItem.Content;
             if (CurrentVisualization == null) return;
-            CurrentVisualization.Render(this.pTI.DataGrid);
-            this.pTI.TakeScreenShot();
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
+                CurrentVisualization.Render(this.pTI.DataGrid);
+                this.pTI.TakeScreenShot();
+                return null;
+            }), null);
         }
 
         protected override void OnInitialized(EventArgs e) {

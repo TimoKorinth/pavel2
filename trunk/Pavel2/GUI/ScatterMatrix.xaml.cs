@@ -160,7 +160,7 @@ namespace Pavel2.GUI {
                                 else xCo = (xCo * step) + step * x;
                                 if (!dataGrid.Columns[y].DirUp) yCo = step - (yCo * step) + step * y;
                                 else yCo = (yCo * step) + step * y;
-                                Gl.glLoadName(i);
+                                Gl.glLoadName(row);
                                 Gl.glBegin(Gl.GL_POINTS);
                                 Gl.glVertex2d(xCo, yCo);
                                 Gl.glEnd();
@@ -180,7 +180,7 @@ namespace Pavel2.GUI {
                                 else xCo = (xCo * step) + step * x;
                                 if (!dataGrid.Columns[y].DirUp) yCo = step - (yCo * step) + step * y;
                                 else yCo = (yCo * step) + step * y;
-                                Gl.glLoadName(i);
+                                Gl.glLoadName(row);
                                 Gl.glBegin(Gl.GL_POINTS);
                                 Gl.glVertex2d(xCo, yCo);
                                 Gl.glEnd();
@@ -656,8 +656,10 @@ namespace Pavel2.GUI {
         }
 
         public void RenderAfterResize() {
-            wfPA.Height = (int)this.ActualHeight;
-            wfPA.Width = (int)this.ActualWidth;
+            if (visImage.ActualHeight != 0 && visImage.ActualWidth != 0) {
+                wfPA.Height = (int)visImage.ActualHeight;
+                wfPA.Width = (int)visImage.ActualWidth;
+            }
             RenderScene();
             visImage.Source = TakeScreenshot();
         }
@@ -719,26 +721,38 @@ namespace Pavel2.GUI {
         }
 
         private void visImage_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            int x;
-            int y;
+            int sx;
+            int sy;
+            int ex;
+            int ey;
             int w;
             int h;
+            int mx;
+            int my;
             if (dataGrid.Columns.Length == 2) {
-                x = (int)startPoint.X - (int)yLabels.ActualWidth - (int)visImage.Margin.Left;
-                y = (int)startPoint.Y - (int)visImage.Margin.Top;
-                w = (int)Math.Abs(x - endPoint.X - (int)yLabels.ActualWidth);
-                h = (int)Math.Abs(y - endPoint.Y);
+                sx = (int)startPoint.X - (int)yLabels.ActualWidth - (int)visImage.Margin.Left;
+                sy = (int)startPoint.Y - (int)visImage.Margin.Top;
+                ex = (int)endPoint.X - (int)yLabels.ActualWidth - (int)visImage.Margin.Left;
+                ey = (int)endPoint.Y - (int)visImage.Margin.Top;
+                w = (int)Math.Abs(ex - sx);
+                h = (int)Math.Abs(ey - sy);
                 if (w < 5) w = 5;
                 if (h < 5) h = 5;
+                mx = (ex - sx) / 2 + sx;
+                my = (ey - sy) / 2 + sy;
             } else {
-                x = (int)startPoint.X;
-                y = (int)startPoint.Y;
-                w = (int)Math.Abs(x - endPoint.X);
-                h = (int)Math.Abs(y - endPoint.Y);
+                sx = (int)startPoint.X - (int)visImage.Margin.Left;
+                sy = (int)startPoint.Y - (int)visImage.Margin.Top;
+                ex = (int)endPoint.X - (int)visImage.Margin.Left;
+                ey = (int)endPoint.Y - (int)visImage.Margin.Top;
+                w = (int)Math.Abs(ex - sx);
+                h = (int)Math.Abs(ey - sy);
                 if (w < 5) w = 5;
                 if (h < 5) h = 5;
+                mx = (ex - sx) / 2 + sx;
+                my = (ey - sy) / 2 + sy;
             }
-            PerformPicking((int)(endPoint.X - x - (int)yLabels.ActualWidth) / 2 + x, (int)(endPoint.Y - y) / 2 + y, w, h);
+            PerformPicking(mx, my, w, h);
             startPoint = e.GetPosition(this);
             endPoint = startPoint;
             RemoveAdornerArray();
