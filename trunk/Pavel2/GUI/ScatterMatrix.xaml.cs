@@ -83,7 +83,6 @@ namespace Pavel2.GUI {
                 }
                 Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
                 int index = -1;
-                //Gl.glBegin(Gl.GL_POINTS);
                 for (int row = 0; row < dataGrid.MaxPoints; row++) {
                     if (!dataGrid.SelectedPoints[row]) {
                         if (comp != null) {
@@ -122,7 +121,6 @@ namespace Pavel2.GUI {
                         Gl.glEnd();
                     }
                 }
-                //Gl.glEnd();
             } else {
                 if (dataGrid.MaxPoints < 100) {
                     Gl.glPointSize(6f);
@@ -137,12 +135,10 @@ namespace Pavel2.GUI {
                     alpha = 0.3f;
                 }
                 int index = -1;
-                int i = 0;
                 for (int x = 0; x < dataGrid.Columns.Length; x++) {
                     for (int y = 0; y < dataGrid.Columns.Length; y++) {
                         if (x == y) continue;
                         Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
-                        //Gl.glBegin(Gl.GL_POINTS);
                         for (int row = 0; row < dataGrid.MaxPoints; row++) {
                             if (!dataGrid.SelectedPoints[row]) {
                                 if (comp != null) {
@@ -164,7 +160,6 @@ namespace Pavel2.GUI {
                                 Gl.glBegin(Gl.GL_POINTS);
                                 Gl.glVertex2d(xCo, yCo);
                                 Gl.glEnd();
-                                i++;
                             }
                         }
                         //Selected Points:
@@ -184,10 +179,8 @@ namespace Pavel2.GUI {
                                 Gl.glBegin(Gl.GL_POINTS);
                                 Gl.glVertex2d(xCo, yCo);
                                 Gl.glEnd();
-                                i++;
                             }
                         }
-                        //Gl.glEnd();
                     }
                 }
             }
@@ -592,9 +585,16 @@ namespace Pavel2.GUI {
             }
             step = (double)1 / dataGrid.Columns.Length;
             SetLabels();
-            RenderScene();
-            visImage.Source = TakeScreenshot();
-            dataGrid.Cache[this.GetType()] = visImage.Source;
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
+                if (visImage.ActualHeight != 0 && visImage.ActualWidth != 0) {
+                    wfPA.Height = (int)visImage.ActualHeight;
+                    wfPA.Width = (int)visImage.ActualWidth;
+                }
+                RenderScene();
+                visImage.Source = TakeScreenshot();
+                dataGrid.Cache[this.GetType()] = visImage.Source;
+                return null;
+            }), null);
         }
 
         void btn_Click(object sender, RoutedEventArgs e) {
