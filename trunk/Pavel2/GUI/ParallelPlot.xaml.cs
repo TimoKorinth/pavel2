@@ -496,10 +496,10 @@ namespace Pavel2.GUI {
         }
 
         private void visImage_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            int sx = (int)startPoint.X - (int)openGlCanvas.Margin.Left;
-            int sy = (int)startPoint.Y - (int)openGlCanvas.Margin.Top - (int)thumbGrid.ActualHeight;
-            int ex = (int)endPoint.X - (int)openGlCanvas.Margin.Left; ;
-            int ey = (int)endPoint.Y - (int)openGlCanvas.Margin.Top - (int)thumbGrid.ActualHeight;
+            int sx = (int)((startPoint.X - openGlCanvas.Margin.Left) * wfPA.Width / visImage.ActualWidth);
+            int sy = (int)((startPoint.Y - openGlCanvas.Margin.Top - thumbGrid.ActualHeight) * wfPA.Height / visImage.ActualHeight);
+            int ex = (int)((endPoint.X - openGlCanvas.Margin.Left) * wfPA.Width / visImage.ActualWidth);
+            int ey = (int)((endPoint.Y - openGlCanvas.Margin.Top - thumbGrid.ActualHeight) * wfPA.Height / visImage.ActualHeight);
             int w = (int)Math.Abs(ex - sx);
             int h = (int)Math.Abs(ey - sy);
             if (w < 5) w = 5;
