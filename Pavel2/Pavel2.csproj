@@ -123,6 +123,9 @@
       <DependentUpon>PropertyGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\PropertyTemplateSelector.cs" />
+    <Compile Include="GUI\Scatterplot3D.xaml.cs">
+      <DependentUpon>Scatterplot3D.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\TableView.xaml.cs">
       <DependentUpon>TableView.xaml</DependentUpon>
     </Compile>
@@ -158,6 +161,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="GUI\PropertyGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Scatterplot3D.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

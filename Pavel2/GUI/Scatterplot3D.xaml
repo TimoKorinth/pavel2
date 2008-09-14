@@ -1,0 +1,7 @@
+﻿<UserControl x:Class="Pavel2.GUI.Scatterplot3D"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+         <Image Name="visImage" Stretch="Fill" />   
+    </Grid>
+</UserControl>
