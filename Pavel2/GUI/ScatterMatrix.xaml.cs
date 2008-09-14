@@ -730,10 +730,10 @@ namespace Pavel2.GUI {
             int mx;
             int my;
             if (dataGrid.Columns.Length == 2) {
-                sx = (int)startPoint.X - (int)yLabels.ActualWidth - (int)visImage.Margin.Left;
-                sy = (int)startPoint.Y - (int)visImage.Margin.Top;
-                ex = (int)endPoint.X - (int)yLabels.ActualWidth - (int)visImage.Margin.Left;
-                ey = (int)endPoint.Y - (int)visImage.Margin.Top;
+                sx = (int)((startPoint.X - yLabels.ActualWidth - visImage.Margin.Left) * wfPA.Width / visImage.ActualWidth);
+                sy = (int)((startPoint.Y - visImage.Margin.Top) * wfPA.Height / visImage.ActualHeight);
+                ex = (int)((endPoint.X - yLabels.ActualWidth - visImage.Margin.Left) * wfPA.Width / visImage.ActualWidth);
+                ey = (int)((endPoint.Y - visImage.Margin.Top) * wfPA.Height / visImage.ActualHeight);
                 w = (int)Math.Abs(ex - sx);
                 h = (int)Math.Abs(ey - sy);
                 if (w < 5) w = 5;
@@ -741,10 +741,10 @@ namespace Pavel2.GUI {
                 mx = (ex - sx) / 2 + sx;
                 my = (ey - sy) / 2 + sy;
             } else {
-                sx = (int)startPoint.X - (int)visImage.Margin.Left;
-                sy = (int)startPoint.Y - (int)visImage.Margin.Top;
-                ex = (int)endPoint.X - (int)visImage.Margin.Left;
-                ey = (int)endPoint.Y - (int)visImage.Margin.Top;
+                sx = (int)((startPoint.X - visImage.Margin.Left) * wfPA.Width / visImage.ActualWidth);
+                sy = (int)((startPoint.Y - visImage.Margin.Top) * wfPA.Height / visImage.ActualHeight);
+                ex = (int)((endPoint.X - visImage.Margin.Left) * wfPA.Width / visImage.ActualWidth);
+                ey = (int)((endPoint.Y - visImage.Margin.Top) * wfPA.Height / visImage.ActualHeight);
                 w = (int)Math.Abs(ex - sx);
                 h = (int)Math.Abs(ey - sy);
                 if (w < 5) w = 5;
