@@ -30,12 +30,11 @@ namespace Pavel2.GUI {
             }
 
             protected override void InitOpenGL() {
+                Gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
                 Gl.glShadeModel(Gl.GL_FLAT);
                 Gl.glDisable(Gl.GL_CULL_FACE);
                 Gl.glEnable(Gl.GL_LINE_SMOOTH);
                 Gl.glEnable(Gl.GL_POINT_SMOOTH);
-                Gl.glEnable(Gl.GL_DEPTH_TEST);
-                Gl.glDepthFunc(Gl.GL_ALWAYS);
                 Gl.glEnable(Gl.GL_BLEND);
                 Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
             }
@@ -49,19 +48,92 @@ namespace Pavel2.GUI {
         DataGrid dataGrid;
         CombinedDataItem comp;
         private int scaleNumber = 5;
-        WindowsFormsHost host = new WindowsFormsHost();
+        //WindowsFormsHost host = new WindowsFormsHost();
         private double[] vertexArray;
+        private System.Windows.Point mouseDragStartPoint;
+        private float lrAngle;
+        private float udAngle;
+        private float lrAngleCurrent;
+        private float udAngleCurrent;
+        private float lrAngleTemp;
+        private float udAngleTemp;
+
+        public float LRAngleCurrent {
+            get { return lrAngleCurrent; }
+            set {
+                lrAngleCurrent = value % 360;
+            }
+        }
+
+        public float UDAngleCurrent {
+            get { return udAngleCurrent; }
+            set {
+                float newVal = value % 360;
+
+                if (newVal > 270) udAngleCurrent = 270;
+                else if (newVal > 90) udAngleCurrent = 90;
+                else if (newVal < -270) udAngleCurrent = -270;
+                else if (newVal < -90) udAngleCurrent = -90;
+                else udAngleCurrent = newVal;
+            }
+        }
 
         public Scatterplot3D() {
             InitializeComponent();
             wfPA = new OpenGLRenderWind();
             host.Child = wfPA;
+            wfPA.MouseDown += wfPA_MouseDown;
+            wfPA.MouseMove += wfPA_MouseMove;
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
                 wfPA.Width = (int)MainData.MainWindow.visualizationLayer.ActualWidth; ;
                 wfPA.Height = (int)MainData.MainWindow.visualizationLayer.ActualHeight;
                 wfPA.SetupViewPort();
                 return null;
             }), null);
+        }
+
+        void wfPA_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right && mouseDragStartPoint != null) {
+                lrAngle = lrAngleTemp + (float)(mouseDragStartPoint.X - e.X);
+                udAngle = udAngleTemp + (float)(mouseDragStartPoint.Y - e.Y);
+                LRAngleCurrent = lrAngle;
+                UDAngleCurrent = udAngle;
+                RenderScene();
+                //visImage.Source = TakeScreenshot();
+                //dataGrid.Cache[this.GetType()] = visImage.Source;
+            }
+        }
+
+        void wfPA_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
+            wfPA.MakeCurrentContext();
+            mouseDragStartPoint = new System.Windows.Point(e.X, e.Y);
+            if (e.Button == System.Windows.Forms.MouseButtons.Right) {
+                udAngleTemp = udAngle;
+                lrAngleTemp = lrAngle;
+            }
+        }
+
+        void host_MouseUp(object sender, MouseButtonEventArgs e) {
+            //if (ev.Button == MouseButtons.Left) {
+            //    switch (vis.LeftMouseButtonMode) {
+            //        case ScatterPlot.LeftMouseButtonModes.Picking:
+            //            PickingEnd(new Vector(ev.X, ev.Y)); break;
+            //        case ScatterPlot.LeftMouseButtonModes.ScatterPlanesAdd:
+            //            if (Control.ModifierKeys != Keys.Control)
+            //                ScatterPlaneAddPicking(ev.X, ev.Y);
+            //            else
+            //                ScatterPlaneRemovePicking(ev.X, ev.Y);
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //} else if (ev.Button == MouseButtons.Right
+            //    && ev.X == mouseDragStartPoint.X
+            //    && ev.Y == mouseDragStartPoint.Y) {
+            //    flipAxisMenu.Show(this, ev.X, ev.Y);
+            //}
+
+            //mouseDragStartPoint = null;
         }
 
         private void DrawAxis() {
@@ -91,6 +163,7 @@ namespace Pavel2.GUI {
 
         private void DrawPoints() {
             Gl.glPointSize(5);
+            Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.8f));
             for (int row = 0; row < dataGrid.MaxPoints; row++) {
                 Gl.glBegin(Gl.GL_POINTS);
                 Gl.glVertex3d(Normalize(dataGrid.DoubleDataField[row][0], dataGrid.Columns[0]), Normalize(dataGrid.DoubleDataField[row][1], dataGrid.Columns[1]), Normalize(dataGrid.DoubleDataField[row][2], dataGrid.Columns[2]));
@@ -106,14 +179,30 @@ namespace Pavel2.GUI {
         }
 
         private void RenderScene() {
+            Gl.glDrawBuffer(Gl.GL_BACK);
+            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
             wfPA.MakeCurrentContext();
             wfPA.SetupViewPort();
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
+            Gl.glMatrixMode(Gl.GL_MODELVIEW);
+            Gl.glLoadIdentity();
+            //Gl.glOrtho(-HalfWidthCapped,
+            //            HalfWidthCapped,
+            //           -HalfHeightCapped,
+            //            HalfHeightCapped,
+            //           -1000,
+            //            1000);
+
+            Gl.glRotatef((udAngleCurrent), 1.0f, 0.0f, 0.0f);
+            Gl.glRotatef(-(lrAngleCurrent), 0.0f, 1.0f, 0.0f);
+            //Shift the OGL Coordinate System, so that 0.5, 0.5, 0.5 is the center of rotation
+            //Gl.glTranslatef(-0.5f, -0.5f, -0.5f);
 
             DrawAxis();
             DrawPoints();
 
             Gl.glFlush();
+            wfPA.SwapBuffers();
         }
 
         #region Visualization Member
@@ -125,18 +214,18 @@ namespace Pavel2.GUI {
             if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed[this.GetType()]) {
                 this.dataGrid.Changed[this.GetType()] = false;
                 RenderScene();
-                visImage.Source = TakeScreenshot();
-                dataGrid.Cache[this.GetType()] = visImage.Source;
+                //visImage.Source = TakeScreenshot();
+                //dataGrid.Cache[this.GetType()] = visImage.Source;
             } else {
-                visImage.Source = dataGrid.Cache[this.GetType()];
+                //visImage.Source = dataGrid.Cache[this.GetType()];
             }
         }
 
         public void RenderAfterResize() {
-            wfPA.Height = (int)visImage.ActualHeight;
-            wfPA.Width = (int)visImage.ActualWidth;
+            //wfPA.Height = (int)visImage.ActualHeight;
+            //wfPA.Width = (int)visImage.ActualWidth;
             RenderScene();
-            visImage.Source = TakeScreenshot();
+            //visImage.Source = TakeScreenshot();
         }
 
         public bool OwnScreenshot() {

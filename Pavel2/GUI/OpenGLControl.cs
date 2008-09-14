@@ -334,7 +334,7 @@ namespace Pavel2.GUI {
         /// <summary>
         /// Swaps the back and front buffer.
         /// </summary>
-        protected void SwapBuffers() {
+        public void SwapBuffers() {
             Gdi.SwapBuffersFast(this.deviceContext);
         }
 
