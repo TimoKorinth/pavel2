@@ -829,8 +829,8 @@ namespace Pavel2.GUI {
 
         private class RubberBandAdorner : Adorner {
 
-            SolidColorBrush renderBrush = new SolidColorBrush(Colors.Turquoise);
-            System.Windows.Media.Pen renderPen = new System.Windows.Media.Pen(new SolidColorBrush(Colors.Turquoise), 1);
+            SolidColorBrush renderBrush = new SolidColorBrush(Colors.Red);
+            System.Windows.Media.Pen renderPen = new System.Windows.Media.Pen(new SolidColorBrush(Colors.Red), 1);
             System.Windows.Point start;
             System.Windows.Point end;
 
