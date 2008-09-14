@@ -421,9 +421,8 @@ namespace Pavel2.GUI {
                 SetOverlayControls();
                 line.Visibility = Visibility.Collapsed;
             }
-
-            wfPA.Height = (int)this.ActualHeight;
-            wfPA.Width = (int)this.ActualWidth;
+            wfPA.Height = (int)visImage.ActualHeight;
+            wfPA.Width = (int)visImage.ActualWidth;
             RenderScene();
             visImage.Source = TakeScreenshot();
         }
@@ -450,8 +449,8 @@ namespace Pavel2.GUI {
         }
 
         public void RenderAfterResize() {
-            wfPA.Height = (int)this.ActualHeight;
-            wfPA.Width = (int)this.ActualWidth;
+            wfPA.Height = (int)visImage.ActualHeight;
+            wfPA.Width = (int)visImage.ActualWidth;
             RenderScene();
             visImage.Source = TakeScreenshot();
         }
@@ -497,13 +496,17 @@ namespace Pavel2.GUI {
         }
 
         private void visImage_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-            int x = (int)startPoint.X;
-            int y = (int)startPoint.Y;
-            int w = (int)Math.Abs(x - endPoint.X);
-            int h = (int)Math.Abs(y - endPoint.Y);
+            int sx = (int)startPoint.X - (int)openGlCanvas.Margin.Left;
+            int sy = (int)startPoint.Y - (int)openGlCanvas.Margin.Top - (int)thumbGrid.ActualHeight;
+            int ex = (int)endPoint.X - (int)openGlCanvas.Margin.Left; ;
+            int ey = (int)endPoint.Y - (int)openGlCanvas.Margin.Top - (int)thumbGrid.ActualHeight;
+            int w = (int)Math.Abs(ex - sx);
+            int h = (int)Math.Abs(ey - sy);
             if (w < 5) w = 5;
             if (h < 5) h = 5;
-            PerformPicking((int)(endPoint.X - x) / 2 + x, (int)(endPoint.Y - y) / 2 + y, w, h);
+            int mx = (ex - sx) / 2 + sx;
+            int my = (ey - sy) / 2 + sy;
+            PerformPicking(mx, my, w, h);
             startPoint = e.GetPosition(this);
             endPoint = startPoint;
             RemoveAdornerArray();
@@ -572,12 +575,6 @@ namespace Pavel2.GUI {
             hits = Gl.glRenderMode(Gl.GL_RENDER);
 
             wfPA.PopMatrices();
-            //Calculate actual Points and return them
-            //Point[] selectedPointsBuffer = new Point[hits];
-            //for (int i = 0; i < hits; i++) {
-            //    selectedPointsBuffer[i] = vis.VisualizationWindow.DisplayedPointSet[selectBuffer[i * 4 + 3]];
-            //}
-            //return selectedPointsBuffer;
             dataGrid.ClearSelectedPoints();
             for (int i = 0; i < hits; i++) {
                 dataGrid.SelectedPoints[selectBuffer[i * 4 + 3]] = true;

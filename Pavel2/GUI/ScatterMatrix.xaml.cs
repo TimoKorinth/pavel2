@@ -55,10 +55,13 @@ namespace Pavel2.GUI {
         public ScatterMatrix() {
             InitializeComponent();
             wfPA = new OpenGLRenderWind();
-            host.Child = wfPA; 
-            wfPA.Width = 1000;
-            wfPA.Height = 800;
-            wfPA.SetupViewPort();
+            host.Child = wfPA;
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
+                wfPA.Width = (int)MainData.MainWindow.visualizationLayer.ActualWidth; ;
+                wfPA.Height = (int)MainData.MainWindow.visualizationLayer.ActualHeight;
+                wfPA.SetupViewPort();
+                return null;
+            }), null);
         }
 
         private void DrawPoints() {
@@ -80,7 +83,7 @@ namespace Pavel2.GUI {
                 }
                 Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
                 int index = -1;
-                Gl.glBegin(Gl.GL_POINTS);
+                //Gl.glBegin(Gl.GL_POINTS);
                 for (int row = 0; row < dataGrid.MaxPoints; row++) {
                     if (!dataGrid.SelectedPoints[row]) {
                         if (comp != null) {
@@ -96,7 +99,10 @@ namespace Pavel2.GUI {
                         }
                         if (!dataGrid.Columns[0].DirUp) xCo = 1 - xCo;
                         if (!dataGrid.Columns[1].DirUp) yCo = 1 - yCo;
+                        Gl.glLoadName(row);
+                        Gl.glBegin(Gl.GL_POINTS);
                         Gl.glVertex2d(xCo, yCo);
+                        Gl.glEnd();
                     }
                 }
                 //Selected Points:
@@ -110,10 +116,13 @@ namespace Pavel2.GUI {
                         }
                         if (!dataGrid.Columns[0].DirUp) xCo = 1 - xCo;
                         if (!dataGrid.Columns[1].DirUp) yCo = 1 - yCo;
+                        Gl.glLoadName(row);
+                        Gl.glBegin(Gl.GL_POINTS);
                         Gl.glVertex2d(xCo, yCo);
+                        Gl.glEnd();
                     }
                 }
-                Gl.glEnd();
+                //Gl.glEnd();
             } else {
                 if (dataGrid.MaxPoints < 100) {
                     Gl.glPointSize(6f);
@@ -128,11 +137,12 @@ namespace Pavel2.GUI {
                     alpha = 0.3f;
                 }
                 int index = -1;
+                int i = 0;
                 for (int x = 0; x < dataGrid.Columns.Length; x++) {
                     for (int y = 0; y < dataGrid.Columns.Length; y++) {
                         if (x == y) continue;
                         Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
-                        Gl.glBegin(Gl.GL_POINTS);
+                        //Gl.glBegin(Gl.GL_POINTS);
                         for (int row = 0; row < dataGrid.MaxPoints; row++) {
                             if (!dataGrid.SelectedPoints[row]) {
                                 if (comp != null) {
@@ -150,7 +160,11 @@ namespace Pavel2.GUI {
                                 else xCo = (xCo * step) + step * x;
                                 if (!dataGrid.Columns[y].DirUp) yCo = step - (yCo * step) + step * y;
                                 else yCo = (yCo * step) + step * y;
+                                Gl.glLoadName(i);
+                                Gl.glBegin(Gl.GL_POINTS);
                                 Gl.glVertex2d(xCo, yCo);
+                                Gl.glEnd();
+                                i++;
                             }
                         }
                         //Selected Points:
@@ -166,10 +180,14 @@ namespace Pavel2.GUI {
                                 else xCo = (xCo * step) + step * x;
                                 if (!dataGrid.Columns[y].DirUp) yCo = step - (yCo * step) + step * y;
                                 else yCo = (yCo * step) + step * y;
+                                Gl.glLoadName(i);
+                                Gl.glBegin(Gl.GL_POINTS);
                                 Gl.glVertex2d(xCo, yCo);
+                                Gl.glEnd();
+                                i++;
                             }
                         }
-                        Gl.glEnd();
+                        //Gl.glEnd();
                     }
                 }
             }
@@ -690,6 +708,7 @@ namespace Pavel2.GUI {
 
         private void visImage_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             startPoint = e.GetPosition(this);
+            endPoint = startPoint;
         }
 
         private void visImage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e) {
@@ -700,9 +719,32 @@ namespace Pavel2.GUI {
         }
 
         private void visImage_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            int x;
+            int y;
+            int w;
+            int h;
+            if (dataGrid.Columns.Length == 2) {
+                x = (int)startPoint.X - (int)yLabels.ActualWidth - (int)visImage.Margin.Left;
+                y = (int)startPoint.Y - (int)visImage.Margin.Top;
+                w = (int)Math.Abs(x - endPoint.X - (int)yLabels.ActualWidth);
+                h = (int)Math.Abs(y - endPoint.Y);
+                if (w < 5) w = 5;
+                if (h < 5) h = 5;
+            } else {
+                x = (int)startPoint.X;
+                y = (int)startPoint.Y;
+                w = (int)Math.Abs(x - endPoint.X);
+                h = (int)Math.Abs(y - endPoint.Y);
+                if (w < 5) w = 5;
+                if (h < 5) h = 5;
+            }
+            PerformPicking((int)(endPoint.X - x - (int)yLabels.ActualWidth) / 2 + x, (int)(endPoint.Y - y) / 2 + y, w, h);
             startPoint = e.GetPosition(this);
             endPoint = startPoint;
             RemoveAdornerArray();
+            RenderScene();
+            visImage.Source = TakeScreenshot();
+            dataGrid.Cache[this.GetType()] = visImage.Source;
         }
 
         private void DrawRubberBand() {
@@ -716,6 +758,58 @@ namespace Pavel2.GUI {
                 for (int x = 0; x < toRemoveArray.Length; x++) {
                     AdornerLayer.GetAdornerLayer(this).Remove(toRemoveArray[x]);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Picks the Points in the given Rectangle
+        /// </summary>
+        /// <param name="x">x-Coordinate (Window based, left is 0) of the picking region's center</param>
+        /// <param name="y">y-Coordinate (Window based, top is 0) of the picking region's center</param>
+        /// <param name="w">Width of the Picking Rectangle</param>
+        /// <param name="h">Height of the Picking Rectangle</param>
+        /// <returns>An array containing the picked Points</returns>
+        private void PerformPicking(int x, int y, int w, int h) {
+            wfPA.PushMatrices();
+            int[] selectBuffer = new int[dataGrid.MaxPoints * 4 * (dataGrid.Columns.Length * (dataGrid.Columns.Length - 1))];
+            int[] viewport = new int[4];
+            int hits;
+
+            //Extract viewport
+            wfPA.SetupViewPort();
+            Gl.glGetIntegerv(Gl.GL_VIEWPORT, viewport);
+
+            //Designate SelectBuffer and switch to Select mode
+            Gl.glSelectBuffer(selectBuffer.Length, selectBuffer);
+            Gl.glRenderMode(Gl.GL_SELECT);
+
+            Gl.glInitNames();
+            Gl.glPushName(0);
+
+            //Initialize Picking Matrix
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glLoadIdentity();
+            // create picking region near cursor location
+            Glu.gluPickMatrix(x, (viewport[3] - y), w, h, viewport);
+
+            //Draw Lines
+
+            Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+            Gl.glPopAttrib();
+
+            wfPA.SetupModelView(true);
+
+            DrawPoints();
+
+            //Switch Back to Render Mode
+            hits = Gl.glRenderMode(Gl.GL_RENDER);
+
+            wfPA.PopMatrices();
+            dataGrid.ClearSelectedPoints();
+            for (int i = 0; i < hits; i++) {
+                dataGrid.SelectedPoints[selectBuffer[i * 4 + 3]] = true;
             }
         }
 
