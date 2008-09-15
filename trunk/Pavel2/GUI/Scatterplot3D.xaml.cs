@@ -17,6 +17,7 @@ using System.Windows.Forms.Integration;
 using System.Windows.Threading;
 using System.Drawing;
 using System.Windows.Interop;
+using Tao.FreeGlut;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -49,7 +50,7 @@ namespace Pavel2.GUI {
         OpenGLRenderWind wfPA;
         DataGrid dataGrid;
         CombinedDataItem comp;
-        //WindowsFormsHost host = new WindowsFormsHost();
+        private int scaleNumber = 5;
         private float[] vertexArray;
         private float[] colorArray;
         private System.Windows.Point mouseDragStartPoint;
@@ -61,20 +62,22 @@ namespace Pavel2.GUI {
         private float udAngleTemp;
         private float zoom = 0f;
 
+        private int col1 = 0;
+        private int col2 = 1;
+        private int col3 = 2;
+
         public float LRAngleCurrent {
             get { return lrAngleCurrent; }
-            set {
-                lrAngleCurrent = value % 360;
-            }
+            set { lrAngleCurrent = value % 360; }
         }
 
         private void CreateArrays() {
             this.vertexArray = new float[dataGrid.MaxPoints * 3];
             this.colorArray = new float[dataGrid.MaxPoints * 4];
             for (int pointIndex = 0; pointIndex < dataGrid.MaxPoints; pointIndex++) {
-                vertexArray[pointIndex * 3 + 0] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][0], dataGrid.Columns[0]);
-                vertexArray[pointIndex * 3 + 1] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][1], dataGrid.Columns[1]);
-                vertexArray[pointIndex * 3 + 2] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][2], dataGrid.Columns[2]);
+                vertexArray[pointIndex * 3 + 0] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][col1], dataGrid.Columns[col1]);
+                vertexArray[pointIndex * 3 + 1] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][col2], dataGrid.Columns[col2]);
+                vertexArray[pointIndex * 3 + 2] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][col3], dataGrid.Columns[col3]);
                 colorArray[pointIndex * 4 + 0] = ColorManagement.UnselectedColor.R;
                 colorArray[pointIndex * 4 + 1] = ColorManagement.UnselectedColor.G;
                 colorArray[pointIndex * 4 + 2] = ColorManagement.UnselectedColor.B;
@@ -85,15 +88,7 @@ namespace Pavel2.GUI {
 
         public float UDAngleCurrent {
             get { return udAngleCurrent; }
-            set {
-                float newVal = value % 360;
-
-                if (newVal > 270) udAngleCurrent = 270;
-                else if (newVal > 90) udAngleCurrent = 90;
-                else if (newVal < -270) udAngleCurrent = -270;
-                else if (newVal < -90) udAngleCurrent = -90;
-                else udAngleCurrent = newVal;
-            }
+            set { udAngleCurrent = value % 360; }
         }
 
         public Scatterplot3D() {
@@ -123,8 +118,6 @@ namespace Pavel2.GUI {
                 LRAngleCurrent = lrAngle;
                 UDAngleCurrent = udAngle;
                 RenderScene();
-                //visImage.Source = TakeScreenshot();
-                //dataGrid.Cache[this.GetType()] = visImage.Source;
             }
         }
 
@@ -161,28 +154,40 @@ namespace Pavel2.GUI {
         }
 
         private void DrawAxis() {
-            //float step = 1 / ((float)vis.ScaleCount - 1);
+            float step = 1 / ((float)scaleNumber - 1);
+            
+            //Axis
+            Gl.glColor3fv(ColorManagement.AxesColor.RGB);
+            Gl.glLineWidth(3f);
 
-            //// Axis
-            //Gl.glColor3fv(color.RGB);
-            //Gl.glBegin(Gl.GL_LINES);
-            //Gl.glVertex3f(0, 0, 0);
-            //Gl.glVertex3f(axisBase.X, axisBase.Y, axisBase.Z);
-            //Gl.glEnd();
+            Gl.glBegin(Gl.GL_LINES);
+            Gl.glVertex3f(0, 0, 0);
+            Gl.glVertex3f(1, 0, 0);
+            Gl.glVertex3f(0, 0, 0);
+            Gl.glVertex3f(0, 1, 0);
+            Gl.glVertex3f(0, 0, 0);
+            Gl.glVertex3f(0, 0, 1);
+            Gl.glEnd();
 
-            ////Scale
-            //float pos;
-            //VectorF PointValue;
-            //Gl.glColor3fv(ColorManagement.DescriptionColor.RGB);
-            //for (int i = 0; i < vis.ScaleCount; i++) {
-            //    pos = 0 + i * step;
-            //    Gl.glRasterPos3fv((scaleDisp + pos * axisBase).XYZ);
-            //    PointValue = ScaleToPoint(scaleDisp + axisBase * pos);
-            //    Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (axisBase.X * PointValue.X + axisBase.Y * PointValue.Y + axisBase.Z * PointValue.Z).ToString("F" + vis.DecimalDigits));
-            //}
-            ////Label
-            //Gl.glRasterPos3f(labelPos.X, labelPos.Y, labelPos.Z);
-            //Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, axisCp.Label);
+            //Scales
+            float pos;
+            Gl.glColor3fv(ColorManagement.DescriptionColor.RGB);
+            for (int i = 0; i < scaleNumber; i++) {
+                pos = 0 + i * step;
+                Gl.glRasterPos3f(pos , 0, 0);
+                Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (dataGrid.Columns[col1].Min + (dataGrid.Columns[col1].Max - dataGrid.Columns[col1].Min) * step * i).ToString("F5"));
+                Gl.glRasterPos3f(0, pos, 0);
+                Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (dataGrid.Columns[col2].Min + (dataGrid.Columns[col2].Max - dataGrid.Columns[col2].Min) * step * i).ToString("F5"));
+                Gl.glRasterPos3f(0, 0, pos);
+                Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (dataGrid.Columns[col3].Min + (dataGrid.Columns[col3].Max - dataGrid.Columns[col3].Min) * step * i).ToString("F5"));
+            }
+            //Labels
+            Gl.glRasterPos3f(1.1f, 0, 0);
+            Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, dataGrid.Columns[col1].Header);
+            Gl.glRasterPos3f(0, 1.1f, 0);
+            Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, dataGrid.Columns[col2].Header);
+            Gl.glRasterPos3f(0, 0, 1.1f);
+            Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, dataGrid.Columns[col3].Header);
         }
 
         private void DrawPoints() {
@@ -194,12 +199,22 @@ namespace Pavel2.GUI {
             Gl.glPushMatrix();
             Gl.glDrawArrays(Gl.GL_POINTS, 0, dataGrid.MaxPoints);
             Gl.glPopMatrix();
-            //Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(0.8f));
-            //for (int row = 0; row < dataGrid.MaxPoints; row++) {
-            //    Gl.glBegin(Gl.GL_POINTS);
-            //    Gl.glVertex3d(Normalize(dataGrid.DoubleDataField[row][0], dataGrid.Columns[0]), Normalize(dataGrid.DoubleDataField[row][1], dataGrid.Columns[1]), Normalize(dataGrid.DoubleDataField[row][2], dataGrid.Columns[2]));
-            //    Gl.glEnd();
-            //}
+        }
+
+        private void SelectPoints() {
+            for (int row = 0; row < dataGrid.MaxPoints; row++) {
+                if (dataGrid.SelectedPoints[row]) {
+                    colorArray[row * 4 + 0] = ColorManagement.CurrentSelectionColor.R;
+                    colorArray[row * 4 + 1] = ColorManagement.CurrentSelectionColor.G;
+                    colorArray[row * 4 + 2] = ColorManagement.CurrentSelectionColor.B;
+                    colorArray[row * 4 + 3] = 0.8f;
+                } else {
+                    colorArray[row * 4 + 0] = ColorManagement.UnselectedColor.R;
+                    colorArray[row * 4 + 1] = ColorManagement.UnselectedColor.G;
+                    colorArray[row * 4 + 2] = ColorManagement.UnselectedColor.B;
+                    colorArray[row * 4 + 3] = 0.8f;
+                }
+            }
         }
 
         private double Normalize(double value, Column col) {
@@ -243,22 +258,15 @@ namespace Pavel2.GUI {
             this.dataGrid = dataGrid;
             comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
             if (dataGrid == null) return;
-            if (!dataGrid.Cache.ContainsKey(this.GetType()) || this.dataGrid.Changed[this.GetType()]) {
-                this.dataGrid.Changed[this.GetType()] = false;
-                CreateArrays();
-                RenderScene();
-                //visImage.Source = TakeScreenshot();
-                //dataGrid.Cache[this.GetType()] = visImage.Source;
-            } else {
-                //visImage.Source = dataGrid.Cache[this.GetType()];
-            }
+            CreateArrays();
+            if (dataGrid.Changed[this.GetType()]) SelectPoints();
+            this.dataGrid.Changed[this.GetType()] = false;
+            RenderScene();
+            dataGrid.Cache[this.GetType()] = TakeScreenshot();
         }
 
         public void RenderAfterResize() {
-            //wfPA.Height = (int)visImage.ActualHeight;
-            //wfPA.Width = (int)visImage.ActualWidth;
             RenderScene();
-            //visImage.Source = TakeScreenshot();
         }
 
         public bool OwnScreenshot() {
