@@ -74,14 +74,27 @@ namespace Pavel2.GUI {
         private void CreateArrays() {
             this.vertexArray = new float[dataGrid.MaxPoints * 3];
             this.colorArray = new float[dataGrid.MaxPoints * 4];
+            int index = -1;
             for (int pointIndex = 0; pointIndex < dataGrid.MaxPoints; pointIndex++) {
                 vertexArray[pointIndex * 3 + 0] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][col1], dataGrid.Columns[col1]);
                 vertexArray[pointIndex * 3 + 1] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][col2], dataGrid.Columns[col2]);
                 vertexArray[pointIndex * 3 + 2] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][col3], dataGrid.Columns[col3]);
-                colorArray[pointIndex * 4 + 0] = ColorManagement.UnselectedColor.R;
-                colorArray[pointIndex * 4 + 1] = ColorManagement.UnselectedColor.G;
-                colorArray[pointIndex * 4 + 2] = ColorManagement.UnselectedColor.B;
-                colorArray[pointIndex * 4 + 3] = 0.8f;
+                if (comp != null) {
+                    if (comp.GetDataItemIndex(pointIndex) != index) {
+                        index = comp.GetDataItemIndex(pointIndex);
+                    }
+                }
+                if (index != -1) {
+                    colorArray[pointIndex * 4 + 0] = ColorManagement.GetColor(index + 2).R;
+                    colorArray[pointIndex * 4 + 1] = ColorManagement.GetColor(index + 2).G;
+                    colorArray[pointIndex * 4 + 2] = ColorManagement.GetColor(index + 2).B;
+                    colorArray[pointIndex * 4 + 3] = 0.8f;
+                } else {
+                    colorArray[pointIndex * 4 + 0] = ColorManagement.UnselectedColor.R;
+                    colorArray[pointIndex * 4 + 1] = ColorManagement.UnselectedColor.G;
+                    colorArray[pointIndex * 4 + 2] = ColorManagement.UnselectedColor.B;
+                    colorArray[pointIndex * 4 + 3] = 0.8f;
+                }
             }
             //this.colorArrayBase = (float[])this.colorArray.Clone();
         }
@@ -207,16 +220,28 @@ namespace Pavel2.GUI {
         }
 
         private void SelectPoints() {
+            int index = -1;
             for (int row = 0; row < dataGrid.MaxPoints; row++) {
-                if (dataGrid.SelectedPoints[row]) {
-                    colorArray[row * 4 + 0] = ColorManagement.CurrentSelectionColor.R;
-                    colorArray[row * 4 + 1] = ColorManagement.CurrentSelectionColor.G;
-                    colorArray[row * 4 + 2] = ColorManagement.CurrentSelectionColor.B;
+                if (comp != null) {
+                    if (comp.GetDataItemIndex(row) != index) {
+                        index = comp.GetDataItemIndex(row);
+                    }
+                }
+                if (index != -1) {
+                    colorArray[row * 4 + 0] = ColorManagement.GetColor(index + 2).R;
+                    colorArray[row * 4 + 1] = ColorManagement.GetColor(index + 2).G;
+                    colorArray[row * 4 + 2] = ColorManagement.GetColor(index + 2).B;
                     colorArray[row * 4 + 3] = 0.8f;
                 } else {
                     colorArray[row * 4 + 0] = ColorManagement.UnselectedColor.R;
                     colorArray[row * 4 + 1] = ColorManagement.UnselectedColor.G;
                     colorArray[row * 4 + 2] = ColorManagement.UnselectedColor.B;
+                    colorArray[row * 4 + 3] = 0.8f;
+                }
+                if (dataGrid.SelectedPoints[row]) {
+                    colorArray[row * 4 + 0] = ColorManagement.CurrentSelectionColor.R;
+                    colorArray[row * 4 + 1] = ColorManagement.CurrentSelectionColor.G;
+                    colorArray[row * 4 + 2] = ColorManagement.CurrentSelectionColor.B;
                     colorArray[row * 4 + 3] = 0.8f;
                 }
             }
