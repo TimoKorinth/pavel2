@@ -50,7 +50,7 @@ namespace Pavel2.GUI {
         DataGrid dataGrid;
         CombinedDataItem comp;
         //WindowsFormsHost host = new WindowsFormsHost();
-        private double[] vertexArray;
+        private float[] vertexArray;
         private float[] colorArray;
         private System.Windows.Point mouseDragStartPoint;
         private float lrAngle;
@@ -69,7 +69,7 @@ namespace Pavel2.GUI {
         }
 
         private void CreateArrays() {
-            this.vertexArray = new double[dataGrid.MaxPoints * 3];
+            this.vertexArray = new float[dataGrid.MaxPoints * 3];
             this.colorArray = new float[dataGrid.MaxPoints * 4];
             for (int pointIndex = 0; pointIndex < dataGrid.MaxPoints; pointIndex++) {
                 vertexArray[pointIndex * 3 + 0] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][0], dataGrid.Columns[0]);
