@@ -98,12 +98,17 @@ namespace Pavel2.GUI {
             wfPA.MouseDown += wfPA_MouseDown;
             wfPA.MouseMove += wfPA_MouseMove;
             wfPA.MouseWheel += wfPA_MouseWheel;
+            wfPA.SizeChanged += wfPA_SizeChanged;
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
                 wfPA.Width = (int)MainData.MainWindow.visualizationLayer.ActualWidth; ;
                 wfPA.Height = (int)MainData.MainWindow.visualizationLayer.ActualHeight;
                 wfPA.SetupViewPort();
                 return null;
             }), null);
+        }
+
+        void wfPA_SizeChanged(object sender, EventArgs e) {
+            if (dataGrid != null) RenderScene();
         }
 
         void wfPA_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e) {
