@@ -179,24 +179,25 @@ namespace Pavel2.GUI {
         }
 
         private void RenderScene() {
+            wfPA.MakeCurrentContext();
             Gl.glDrawBuffer(Gl.GL_BACK);
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
-            wfPA.MakeCurrentContext();
             wfPA.SetupViewPort();
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glLoadIdentity();
-            //Gl.glOrtho(-HalfWidthCapped,
-            //            HalfWidthCapped,
-            //           -HalfHeightCapped,
-            //            HalfHeightCapped,
-            //           -1000,
-            //            1000);
-
             Gl.glRotatef((udAngleCurrent), 1.0f, 0.0f, 0.0f);
             Gl.glRotatef(-(lrAngleCurrent), 0.0f, 1.0f, 0.0f);
             //Shift the OGL Coordinate System, so that 0.5, 0.5, 0.5 is the center of rotation
-            //Gl.glTranslatef(-0.5f, -0.5f, -0.5f);
+            Gl.glTranslatef(-0.5f, -0.5f, -0.5f);
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glLoadIdentity();
+            Gl.glOrtho(-1,
+                        1,
+                       -1,
+                        1,
+                       -1000,
+                        1000);
 
             DrawAxis();
             DrawPoints();
