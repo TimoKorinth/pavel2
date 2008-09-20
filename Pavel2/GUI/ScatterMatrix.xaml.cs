@@ -881,5 +881,14 @@ namespace Pavel2.GUI {
                 dc.DrawRectangle(renderBrush, renderPen, e);
             }
         }
+
+        #region Visualization Member
+
+
+        public object GetProperties() {
+            return null;
+        }
+
+        #endregion
     }
 }

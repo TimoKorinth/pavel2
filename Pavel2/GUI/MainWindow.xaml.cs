@@ -210,7 +210,7 @@ namespace Pavel2.GUI
             AddToOptionsPanel(pGrid);
         }
 
-        private void ShowParserProperties() {
+        public void ShowParserProperties() {
             if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
                 DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
                 ParserOptions pOpts = new ParserOptions();

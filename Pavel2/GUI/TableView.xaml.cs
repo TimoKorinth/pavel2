@@ -97,5 +97,14 @@ namespace Pavel2.GUI {
         }
 
         #endregion
+
+        #region Visualization Member
+
+
+        public object GetProperties() {
+            return null;
+        }
+
+        #endregion
     }
 }

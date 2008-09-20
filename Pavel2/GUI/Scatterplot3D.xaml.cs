@@ -63,10 +63,7 @@ namespace Pavel2.GUI {
         private float lrAngleTemp;
         private float udAngleTemp;
         private float zoom = 0f;
-
-        private int col1 = 0;
-        private int col2 = 1;
-        private int col3 = 2;
+        private Options properties = new Options();
 
         public float LRAngleCurrent {
             get { return lrAngleCurrent; }
@@ -78,9 +75,9 @@ namespace Pavel2.GUI {
             this.colorArray = new float[dataGrid.MaxPoints * 4];
             int index = -1;
             for (int pointIndex = 0; pointIndex < dataGrid.MaxPoints; pointIndex++) {
-                vertexArray[pointIndex * 3 + 0] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][col1], dataGrid.Columns[col1]);
-                vertexArray[pointIndex * 3 + 1] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][col2], dataGrid.Columns[col2]);
-                vertexArray[pointIndex * 3 + 2] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][col3], dataGrid.Columns[col3]);
+                vertexArray[pointIndex * 3 + 0] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][properties.Col1], dataGrid.Columns[properties.Col1]);
+                vertexArray[pointIndex * 3 + 1] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][properties.Col2], dataGrid.Columns[properties.Col2]);
+                vertexArray[pointIndex * 3 + 2] = (float)Normalize(dataGrid.DoubleDataField[pointIndex][properties.Col3], dataGrid.Columns[properties.Col3]);
                 if (comp != null) {
                     if (comp.GetDataItemIndex(pointIndex) != index) {
                         index = comp.GetDataItemIndex(pointIndex);
@@ -227,19 +224,19 @@ namespace Pavel2.GUI {
             for (int i = 0; i < scaleNumber; i++) {
                 pos = 0 + i * step;
                 Gl.glRasterPos3f(pos , 0, 0);
-                Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (dataGrid.Columns[col1].Min + (dataGrid.Columns[col1].Max - dataGrid.Columns[col1].Min) * step * i).ToString("F5"));
+                Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (dataGrid.Columns[properties.Col1].Min + (dataGrid.Columns[properties.Col1].Max - dataGrid.Columns[properties.Col1].Min) * step * i).ToString("F5"));
                 Gl.glRasterPos3f(0, pos, 0);
-                Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (dataGrid.Columns[col2].Min + (dataGrid.Columns[col2].Max - dataGrid.Columns[col2].Min) * step * i).ToString("F5"));
+                Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (dataGrid.Columns[properties.Col2].Min + (dataGrid.Columns[properties.Col2].Max - dataGrid.Columns[properties.Col2].Min) * step * i).ToString("F5"));
                 Gl.glRasterPos3f(0, 0, pos);
-                Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (dataGrid.Columns[col3].Min + (dataGrid.Columns[col3].Max - dataGrid.Columns[col3].Min) * step * i).ToString("F5"));
+                Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, (dataGrid.Columns[properties.Col3].Min + (dataGrid.Columns[properties.Col3].Max - dataGrid.Columns[properties.Col3].Min) * step * i).ToString("F5"));
             }
             //Labels
             Gl.glRasterPos3f(1.1f, 0, 0);
-            Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, dataGrid.Columns[col1].Header);
+            Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, dataGrid.Columns[properties.Col1].Header);
             Gl.glRasterPos3f(0, 1.1f, 0);
-            Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, dataGrid.Columns[col2].Header);
+            Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, dataGrid.Columns[properties.Col2].Header);
             Gl.glRasterPos3f(0, 0, 1.1f);
-            Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, dataGrid.Columns[col3].Header);
+            Glut.glutBitmapString(Glut.GLUT_BITMAP_HELVETICA_10, dataGrid.Columns[properties.Col3].Header);
         }
 
         private void DrawPoints() {
@@ -454,5 +451,32 @@ namespace Pavel2.GUI {
             }
         }
 
+        private class Options {
+            private int col1 = 0;
+            public int Col1 {
+                get { return col1; }
+                set { col1 = value; }
+            }
+            private int col2 = 1;
+            public int Col2 {
+                get { return col2; }
+                set { col2 = value; }
+            }
+            private int col3 = 2;
+            public int Col3 {
+                get { return col3; }
+                set { col3 = value; }
+            }
+        }
+
+
+        #region Visualization Member
+
+
+        public object GetProperties() {
+            return properties;
+        }
+
+        #endregion
     }
 }
