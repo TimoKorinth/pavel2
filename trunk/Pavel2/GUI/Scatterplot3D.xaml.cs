@@ -406,29 +406,21 @@ namespace Pavel2.GUI {
             Gl.glInitNames();
             Gl.glPushName(0);
 
-            //Initialize Picking Matrix
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glLoadIdentity();
-            // create picking region near cursor location
-            Glu.gluPickMatrix(x, (viewport[3] - y), w, h, viewport);
-
             Gl.glRotatef((udAngleCurrent), 1.0f, 0.0f, 0.0f);
             Gl.glRotatef(-(lrAngleCurrent), 0.0f, 1.0f, 0.0f);
-            ////Shift the OGL Coordinate System, so that 0.5, 0.5, 0.5 is the center of rotation
+            //Shift the OGL Coordinate System, so that 0.5, 0.5, 0.5 is the center of rotation
             Gl.glTranslatef(-0.5f, -0.5f, -0.5f);
-
-            Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
             Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glLoadIdentity();
+            Glu.gluPickMatrix(x, (viewport[3] - y), w, h, viewport);
             Gl.glOrtho(-1 + zoom,
                         1 - zoom,
                        -1 + zoom,
                         1 - zoom,
                        -1000,
                         1000);
-            Gl.glPopAttrib();
-
-            wfPA.SetupModelView(true);
-
             DrawPoints();
 
             //Switch Back to Render Mode
