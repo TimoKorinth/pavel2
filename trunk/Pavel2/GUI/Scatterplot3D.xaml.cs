@@ -149,23 +149,22 @@ namespace Pavel2.GUI {
             if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 overlay.Visibility = Visibility.Hidden;
                 host.Visibility = Visibility.Visible;
-                //int sx = (int)((startPoint.X - openGlCanvas.Margin.Left) * wfPA.Width / visImage.ActualWidth);
-                //int sy = (int)((startPoint.Y - openGlCanvas.Margin.Top - thumbGrid.ActualHeight) * wfPA.Height / visImage.ActualHeight);
-                //int ex = (int)((endPoint.X - openGlCanvas.Margin.Left) * wfPA.Width / visImage.ActualWidth);
-                //int ey = (int)((endPoint.Y - openGlCanvas.Margin.Top - thumbGrid.ActualHeight) * wfPA.Height / visImage.ActualHeight);
-                //int w = (int)Math.Abs(ex - sx);
-                //int h = (int)Math.Abs(ey - sy);
-                //if (w < 5) w = 5;
-                //if (h < 5) h = 5;
-                //int mx = (ex - sx) / 2 + sx;
-                //int my = (ey - sy) / 2 + sy;
-                //PerformPicking(mx, my, w, h);
+                int sx = (int)((startPoint.X) * wfPA.Width / host.ActualWidth);
+                int sy = (int)((startPoint.Y) * wfPA.Height / host.ActualHeight);
+                int ex = (int)((endPoint.X) * wfPA.Width / host.ActualWidth);
+                int ey = (int)((endPoint.Y) * wfPA.Height / host.ActualHeight);
+                int w = (int)Math.Abs(ex - sx);
+                int h = (int)Math.Abs(ey - sy);
+                if (w < 5) w = 5;
+                if (h < 5) h = 5;
+                int mx = (ex - sx) / 2 + sx;
+                int my = (ey - sy) / 2 + sy;
+                PerformPicking(mx, my, w, h);
                 startPoint = new System.Windows.Point(e.X, e.Y);
                 endPoint = startPoint;
                 RemoveAdornerArray();
-                //RenderScene();
-                //visImage.Source = TakeScreenshot();
-                //dataGrid.Cache[this.GetType()] = visImage.Source;
+                SelectPoints();
+                RenderScene();
             }
         }
 
@@ -245,12 +244,23 @@ namespace Pavel2.GUI {
 
         private void DrawPoints() {
             if (vertexArray == null || colorArray == null) return;
+            int[] mode = new int[1];
+            Gl.glGetIntegerv(Gl.GL_RENDER_MODE, mode);
             Gl.glPointSize(5);
             Gl.glVertexPointer(3, Gl.GL_FLOAT, 0, this.vertexArray);
             Gl.glColorPointer(4, Gl.GL_FLOAT, 0, this.colorArray);
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glPushMatrix();
-            Gl.glDrawArrays(Gl.GL_POINTS, 0, dataGrid.MaxPoints);
+            if (mode[0] == Gl.GL_SELECT) {
+                for (int i = 0; i < dataGrid.MaxPoints; i++) {
+                    Gl.glLoadName(i);
+                    Gl.glBegin(Gl.GL_POINTS);
+                    Gl.glArrayElement(i);
+                    Gl.glEnd();
+                }
+            } else {
+                Gl.glDrawArrays(Gl.GL_POINTS, 0, dataGrid.MaxPoints);
+            }
             Gl.glPopMatrix();
         }
 
@@ -402,11 +412,19 @@ namespace Pavel2.GUI {
             // create picking region near cursor location
             Glu.gluPickMatrix(x, (viewport[3] - y), w, h, viewport);
 
-            //Draw Lines
+            Gl.glRotatef((udAngleCurrent), 1.0f, 0.0f, 0.0f);
+            Gl.glRotatef(-(lrAngleCurrent), 0.0f, 1.0f, 0.0f);
+            ////Shift the OGL Coordinate System, so that 0.5, 0.5, 0.5 is the center of rotation
+            Gl.glTranslatef(-0.5f, -0.5f, -0.5f);
 
             Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
             Gl.glMatrixMode(Gl.GL_PROJECTION);
-            Gl.glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+            Gl.glOrtho(-1 + zoom,
+                        1 - zoom,
+                       -1 + zoom,
+                        1 - zoom,
+                       -1000,
+                        1000);
             Gl.glPopAttrib();
 
             wfPA.SetupModelView(true);
