@@ -54,6 +54,8 @@ namespace Pavel2.GUI {
         private float[] vertexArray;
         private float[] colorArray;
         private System.Windows.Point mouseDragStartPoint;
+        private System.Windows.Point startPoint;
+        private System.Windows.Point endPoint;
         private float lrAngle;
         private float udAngle;
         private float lrAngleCurrent;
@@ -110,6 +112,7 @@ namespace Pavel2.GUI {
             host.Child = wfPA;
             wfPA.MouseDown += wfPA_MouseDown;
             wfPA.MouseMove += wfPA_MouseMove;
+            wfPA.MouseUp += wfPA_MouseUp;
             wfPA.MouseWheel += wfPA_MouseWheel;
             wfPA.SizeChanged += wfPA_SizeChanged;
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
@@ -118,6 +121,52 @@ namespace Pavel2.GUI {
                 wfPA.SetupViewPort();
                 return null;
             }), null);
+        }
+
+        void wfPA_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right) {
+                //if (ev.Button == MouseButtons.Left) {
+                //    switch (vis.LeftMouseButtonMode) {
+                //        case ScatterPlot.LeftMouseButtonModes.Picking:
+                //            PickingEnd(new Vector(ev.X, ev.Y)); break;
+                //        case ScatterPlot.LeftMouseButtonModes.ScatterPlanesAdd:
+                //            if (Control.ModifierKeys != Keys.Control)
+                //                ScatterPlaneAddPicking(ev.X, ev.Y);
+                //            else
+                //                ScatterPlaneRemovePicking(ev.X, ev.Y);
+                //            break;
+                //        default:
+                //            break;
+                //    }
+                //} else if (ev.Button == MouseButtons.Right
+                //    && ev.X == mouseDragStartPoint.X
+                //    && ev.Y == mouseDragStartPoint.Y) {
+                //    flipAxisMenu.Show(this, ev.X, ev.Y);
+                //}
+
+                //mouseDragStartPoint = null;
+            }
+            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+                overlay.Visibility = Visibility.Hidden;
+                host.Visibility = Visibility.Visible;
+                //int sx = (int)((startPoint.X - openGlCanvas.Margin.Left) * wfPA.Width / visImage.ActualWidth);
+                //int sy = (int)((startPoint.Y - openGlCanvas.Margin.Top - thumbGrid.ActualHeight) * wfPA.Height / visImage.ActualHeight);
+                //int ex = (int)((endPoint.X - openGlCanvas.Margin.Left) * wfPA.Width / visImage.ActualWidth);
+                //int ey = (int)((endPoint.Y - openGlCanvas.Margin.Top - thumbGrid.ActualHeight) * wfPA.Height / visImage.ActualHeight);
+                //int w = (int)Math.Abs(ex - sx);
+                //int h = (int)Math.Abs(ey - sy);
+                //if (w < 5) w = 5;
+                //if (h < 5) h = 5;
+                //int mx = (ex - sx) / 2 + sx;
+                //int my = (ey - sy) / 2 + sy;
+                //PerformPicking(mx, my, w, h);
+                startPoint = new System.Windows.Point(e.X, e.Y);
+                endPoint = startPoint;
+                RemoveAdornerArray();
+                //RenderScene();
+                //visImage.Source = TakeScreenshot();
+                //dataGrid.Cache[this.GetType()] = visImage.Source;
+            }
         }
 
         void wfPA_SizeChanged(object sender, EventArgs e) {
@@ -136,39 +185,25 @@ namespace Pavel2.GUI {
                 LRAngleCurrent = lrAngle;
                 UDAngleCurrent = udAngle;
                 RenderScene();
+            } else if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+                endPoint = new System.Windows.Point(e.X, e.Y);
+                DrawRubberBand();
             }
         }
 
         void wfPA_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
-            wfPA.MakeCurrentContext();
-            mouseDragStartPoint = new System.Windows.Point(e.X, e.Y);
             if (e.Button == System.Windows.Forms.MouseButtons.Right) {
+                wfPA.MakeCurrentContext();
+                mouseDragStartPoint = new System.Windows.Point(e.X, e.Y);
                 udAngleTemp = udAngle;
                 lrAngleTemp = lrAngle;
+            } else if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+                overlay.Source = TakeScreenshot();
+                overlay.Visibility = Visibility.Visible;
+                host.Visibility = Visibility.Hidden;
+                startPoint = new System.Windows.Point(e.X, e.Y);
+                endPoint = startPoint;
             }
-        }
-
-        void host_MouseUp(object sender, MouseButtonEventArgs e) {
-            //if (ev.Button == MouseButtons.Left) {
-            //    switch (vis.LeftMouseButtonMode) {
-            //        case ScatterPlot.LeftMouseButtonModes.Picking:
-            //            PickingEnd(new Vector(ev.X, ev.Y)); break;
-            //        case ScatterPlot.LeftMouseButtonModes.ScatterPlanesAdd:
-            //            if (Control.ModifierKeys != Keys.Control)
-            //                ScatterPlaneAddPicking(ev.X, ev.Y);
-            //            else
-            //                ScatterPlaneRemovePicking(ev.X, ev.Y);
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //} else if (ev.Button == MouseButtons.Right
-            //    && ev.X == mouseDragStartPoint.X
-            //    && ev.Y == mouseDragStartPoint.Y) {
-            //    flipAxisMenu.Show(this, ev.X, ev.Y);
-            //}
-
-            //mouseDragStartPoint = null;
         }
 
         private void DrawAxis() {
@@ -321,5 +356,93 @@ namespace Pavel2.GUI {
         }
 
         #endregion
+
+        private void DrawRubberBand() {
+            RemoveAdornerArray();
+            AdornerLayer.GetAdornerLayer(this).Add(new RubberBandAdorner(this, startPoint, endPoint));
+        }
+
+        private void RemoveAdornerArray() {
+            Adorner[] toRemoveArray = AdornerLayer.GetAdornerLayer(this).GetAdorners(this);
+            if (toRemoveArray != null) {
+                for (int x = 0; x < toRemoveArray.Length; x++) {
+                    AdornerLayer.GetAdornerLayer(this).Remove(toRemoveArray[x]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Picks the Points in the given Rectangle
+        /// </summary>
+        /// <param name="x">x-Coordinate (Window based, left is 0) of the picking region's center</param>
+        /// <param name="y">y-Coordinate (Window based, top is 0) of the picking region's center</param>
+        /// <param name="w">Width of the Picking Rectangle</param>
+        /// <param name="h">Height of the Picking Rectangle</param>
+        /// <returns>An array containing the picked Points</returns>
+        private void PerformPicking(int x, int y, int w, int h) {
+            wfPA.PushMatrices();
+            int[] selectBuffer = new int[dataGrid.MaxPoints * 4];
+            int[] viewport = new int[4];
+            int hits;
+
+            //Extract viewport
+            wfPA.SetupViewPort();
+            Gl.glGetIntegerv(Gl.GL_VIEWPORT, viewport);
+
+            //Designate SelectBuffer and switch to Select mode
+            Gl.glSelectBuffer(selectBuffer.Length, selectBuffer);
+            Gl.glRenderMode(Gl.GL_SELECT);
+
+            Gl.glInitNames();
+            Gl.glPushName(0);
+
+            //Initialize Picking Matrix
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glLoadIdentity();
+            // create picking region near cursor location
+            Glu.gluPickMatrix(x, (viewport[3] - y), w, h, viewport);
+
+            //Draw Lines
+
+            Gl.glPushAttrib(Gl.GL_TRANSFORM_BIT);
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+            Gl.glPopAttrib();
+
+            wfPA.SetupModelView(true);
+
+            DrawPoints();
+
+            //Switch Back to Render Mode
+            hits = Gl.glRenderMode(Gl.GL_RENDER);
+
+            wfPA.PopMatrices();
+            dataGrid.ClearSelectedPoints();
+            for (int i = 0; i < hits; i++) {
+                dataGrid.SelectedPoints[selectBuffer[i * 4 + 3]] = true;
+            }
+        }
+
+        private class RubberBandAdorner : Adorner {
+
+            SolidColorBrush renderBrush = new SolidColorBrush(Colors.Red);
+            System.Windows.Media.Pen renderPen = new System.Windows.Media.Pen(new SolidColorBrush(Colors.Red), 1);
+            System.Windows.Point start;
+            System.Windows.Point end;
+
+            public RubberBandAdorner(UIElement adornedElement, System.Windows.Point start, System.Windows.Point end)
+                : base(adornedElement) {
+                this.start = start;
+                this.end = end;
+            }
+
+            protected override void OnRender(DrawingContext dc) {
+                this.IsHitTestVisible = false;
+                Rect e = new Rect(start, end);
+                renderBrush.Opacity = 0.2;
+                dc.DrawRectangle(renderBrush, renderPen, e);
+            }
+        }
+
     }
 }
