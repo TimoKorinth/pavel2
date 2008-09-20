@@ -17,5 +17,7 @@ namespace Pavel2.GUI {
 
         ImageSource GetScreenshot();
 
+        object GetProperties();
+
     }
 }

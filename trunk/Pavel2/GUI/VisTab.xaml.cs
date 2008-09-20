@@ -84,10 +84,14 @@ namespace Pavel2.GUI {
             if (tItem == null) return;
             CurrentVisualization = (Visualization)tItem.Content;
             if (CurrentVisualization == null) return;
-
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
                 CurrentVisualization.Render(this.pTI.DataGrid);
                 this.pTI.TakeScreenShot();
+                PropertyGrid pGrid = new PropertyGrid();
+                pGrid.SelectedObject = CurrentVisualization.GetProperties();
+                //pGrid.PropertyChanged += pGridDataGrid_PropertyChanged;
+                MainData.MainWindow.CreateOptionsPanel(pGrid);
+                MainData.MainWindow.ShowParserProperties();
                 return null;
             }), null);
         }
