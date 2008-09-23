@@ -224,12 +224,17 @@ namespace Pavel2.GUI
 
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             RemoveOptionsPanel();
+            pointStatus.Visibility = Visibility.Collapsed;
             TreeViewItem item = projectTreeView.SelectedItem;
             if (item != null) {
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                     AddDataGridOptions(pTI.DataGrid);
                     if (pTI.DataGrid != null) SetupToolBarButtons(pTI.DataGrid);
+                    pointStatus.Visibility = Visibility.Visible;
+                    pointStatus.Content = pTI.DataGrid.MaxPoints + " Points";
+                    selectionStatus.Visibility = Visibility.Collapsed;
+                    pTI.DataGrid.ShowNumberSelPoints();
                 }
                 visualizationLayer.VisualizationData = item.Tag;
                 ShowParserProperties();
