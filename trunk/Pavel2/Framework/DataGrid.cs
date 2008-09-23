@@ -51,6 +51,7 @@ namespace Pavel2.Framework {
         public void ClearSelectedPoints() {
             selectedPoints = new bool[maxPoints];
             HasChanged();
+            MainData.MainWindow.selectionStatus.Visibility = Visibility.Collapsed;
         }
 
         [Browsable(false)]
@@ -71,6 +72,16 @@ namespace Pavel2.Framework {
                 maxPoints = value; 
                 selectedPoints = new bool[maxPoints];
             }
+        }
+
+        public void ShowNumberSelPoints() {
+            int index = 0;
+            for (int i = 0; i < selectedPoints.Length; i++) {
+                if (selectedPoints[i]) index++;
+            }
+            if (index > 0) MainData.MainWindow.selectionStatus.Visibility = Visibility.Visible;
+            else MainData.MainWindow.selectionStatus.Visibility = Visibility.Collapsed;
+            MainData.MainWindow.selectionStatus.Content = index + " selected Points";
         }
 
         [Browsable(false)]

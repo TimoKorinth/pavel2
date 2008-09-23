@@ -521,6 +521,7 @@ namespace Pavel2.GUI {
             RenderScene();
             visImage.Source = TakeScreenshot();
             dataGrid.Cache[this.GetType()] = visImage.Source;
+            dataGrid.ShowNumberSelPoints();
         }
 
         private void DrawRubberBand() {
