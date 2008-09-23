@@ -484,6 +484,7 @@ namespace Pavel2.GUI {
             InsertToProjectTree(newItem, true, true);
             UpdateLinkItem(newItem);
             linkTreeViewItems.Add(newItem);
+            newItem.IsSelected = true;
         }
 
         #endregion
