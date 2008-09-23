@@ -8,8 +8,8 @@
         <gui:PropertyTemplateSelector x:Key="propertyTemplateSelector"></gui:PropertyTemplateSelector>
         
         <DataTemplate DataType="{x:Type gui:Property}">
-            <DockPanel Margin="4">
-                <TextBlock DockPanel.Dock="Left" Width="80" Margin="0,0,8,0" TextAlignment="Right" VerticalAlignment="Center" Text="{Binding Mode=OneTime, Path=Name}" />
+            <DockPanel Margin="5">
+                <TextBlock DockPanel.Dock="Left" Width="120" Margin="0,0,8,0" TextAlignment="Right" VerticalAlignment="Center" Text="{Binding Mode=OneTime, Path=Name}" />
 			<ContentControl
 				VerticalAlignment="Center"
 				Content="{Binding Mode=OneWay}"
