@@ -162,6 +162,7 @@ namespace Pavel2.GUI {
                 RemoveAdornerArray();
                 SelectPoints();
                 RenderScene();
+                dataGrid.ShowNumberSelPoints();
             }
         }
 

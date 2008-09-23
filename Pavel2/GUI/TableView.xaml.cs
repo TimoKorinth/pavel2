@@ -35,6 +35,7 @@ namespace Pavel2.GUI {
                 foreach (int i in tmp) {
                     this.dataGrid.SelectedPoints[i] = true;
                 }
+                dataGrid.ShowNumberSelPoints();
             }
         }
 
