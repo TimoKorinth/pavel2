@@ -185,6 +185,42 @@ namespace Pavel2.GUI
             explorerExpander.IsExpanded = true;
         }
 
+        private void exportButton_Click(object sender, RoutedEventArgs e) {
+            TreeViewItem item = projectTreeView.SelectedItem;
+            if (item != null) {
+                if (item.Tag is ProjectTreeItem) {
+                    ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
+                    pTI.TakeScreenShot();
+                    Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                    dlg.FileName = pTI.LastVisualization.GetType().ToString();
+                    dlg.DefaultExt = ".png";
+                    dlg.Filter = "PNG file (.png)|*.png|JPEG file (.jpg)|*.jpg|Gif file (.gif)|*.gif";
+                    Nullable<bool> result = dlg.ShowDialog();
+                    if (result == true) {
+                        ExportToPng(new Uri(dlg.FileName), (BitmapSource)pTI.Screenshot);
+                    }
+                }
+            }
+        }
+
+        public void ExportToPng(Uri path, BitmapSource surface) {
+            if (path == null) return;
+            using (FileStream outStream = new FileStream(path.LocalPath, FileMode.Create)) {
+                string Extension = System.IO.Path.GetExtension(path.AbsolutePath).ToLower();
+                BitmapEncoder encoder;
+                if (Extension == ".gif")
+                    encoder = new GifBitmapEncoder();
+                else if (Extension == ".png")
+                    encoder = new PngBitmapEncoder();
+                else if (Extension == ".jpg")
+                    encoder = new JpegBitmapEncoder();
+                else
+                    return;
+                encoder.Frames.Add(BitmapFrame.Create(surface));
+                encoder.Save(outStream);
+            }
+        }
+
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             RemoveOptionsPanel();
             TreeViewItem item = projectTreeView.SelectedItem;

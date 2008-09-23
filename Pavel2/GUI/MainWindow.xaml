@@ -52,7 +52,13 @@
 					<Label Content="Import" />
 				</StackPanel>
 			</Button>
-		</StackPanel>
+            <Button Click="exportButton_Click" Margin="5,0,0,0" Width="50" Height="50" HorizontalAlignment="Left" Name="exportButton">
+                <StackPanel>
+                    <Image Width="20" Height="20" Source="Icons\chart_curve_go.png" Stretch="Fill"/>
+                    <Label Content="Export" />
+                </StackPanel>
+            </Button>
+            </StackPanel>
         <StackPanel Grid.Column="4" Grid.Row="1" Margin="5" Orientation="Horizontal" Name="visToolBar" />
 		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" x:Name="optionsExpander" Margin="0,3,0,0">
             <ScrollViewer x:Name="optionsScrollViewer" MinHeight="100" MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>

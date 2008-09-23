@@ -462,7 +462,7 @@ namespace Pavel2.GUI {
 
 
         public bool OwnScreenshot() {
-            return true;
+            return false;
         }
 
         public ImageSource GetScreenshot() {
