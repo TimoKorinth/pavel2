@@ -35,7 +35,8 @@
 			<MenuItem Header="View"/>
 		</Menu>
 		<StatusBar Grid.Row="4" Grid.ColumnSpan="7" Height="20">
-			<StatusBarItem Name="selectionStatus" Visibility="Collapsed"/>
+            <StatusBarItem Name="pointStatus" Visibility="Collapsed"/>
+			<StatusBarItem Name="selectionStatus" Visibility="Collapsed" Margin="20,0,0,0" />
 		</StatusBar>
         <GridSplitter HorizontalAlignment="Center" Width="3" Grid.Column="1" Grid.Row="2" VerticalAlignment="Stretch" Grid.RowSpan="2" x:Name="projectTreeSplitter" Background="Transparent" />
 		<Expander Collapsed="projectTreeExpander_Collapsed" Expanded="projectTreeExpander_Expanded" Grid.Row="2" Width="Auto" Grid.RowSpan="2" ExpandDirection="Left" IsExpanded="True" x:Name="projectTreeExpander" Header="Organization of Data">
