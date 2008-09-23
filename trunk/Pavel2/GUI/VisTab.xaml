@@ -4,5 +4,8 @@
     <Grid>
         <TabControl SelectionChanged="visualizationTabControl_SelectionChanged" Name="visualizationTabControl">
         </TabControl>
+        <TextBlock Text="Generating Visualization..." 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   Visibility="Collapsed" Name="loading" FontSize="26" />
     </Grid>
 </UserControl>
