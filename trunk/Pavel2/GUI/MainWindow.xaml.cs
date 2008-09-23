@@ -28,6 +28,7 @@ namespace Pavel2.GUI
         private GridLength previewExpanderWidth;
         private double explorerExpanderMinWidth = double.NaN;
         private GridLength explorerExpanderWidth;
+        private PropertyGrid pGridlastDataGrid = new PropertyGrid();
 
         #endregion
 
@@ -236,11 +237,15 @@ namespace Pavel2.GUI
             UpdatePreviewPanel();
         }
 
-        private void AddDataGridOptions(DataGrid d) {
+        public void AddDataGridOptions(DataGrid d) {
+            if (pGridlastDataGrid != null) {
+                pGridlastDataGrid.PropertyChanged -= pGridDataGrid_PropertyChanged;
+            }
             PropertyGrid pGrid = new PropertyGrid();
             pGrid.SelectedObject = d;
             pGrid.PropertyChanged += pGridDataGrid_PropertyChanged;
             AddToOptionsPanel(pGrid);
+            pGridlastDataGrid = pGrid;
         }
 
         public void ShowParserProperties() {
