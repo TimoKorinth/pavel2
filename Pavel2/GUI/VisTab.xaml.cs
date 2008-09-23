@@ -84,6 +84,7 @@ namespace Pavel2.GUI {
             if (tItem == null) return;
             CurrentVisualization = (Visualization)tItem.Content;
             if (CurrentVisualization == null) return;
+            MainData.MainWindow.Cursor = Cursors.Wait;
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
                 CurrentVisualization.Render(this.pTI.DataGrid);
                 this.pTI.TakeScreenShot();
@@ -94,6 +95,7 @@ namespace Pavel2.GUI {
                 MainData.MainWindow.AddToOptionsPanel(CurrentVisualization.GetUIElement());
                 MainData.MainWindow.AddDataGridOptions(this.pTI.DataGrid);
                 MainData.MainWindow.ShowParserProperties();
+                MainData.MainWindow.Cursor = Cursors.Arrow;
                 return null;
             }), null);
         }
