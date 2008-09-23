@@ -421,7 +421,7 @@ namespace Pavel2.GUI {
             hits = Gl.glRenderMode(Gl.GL_RENDER);
 
             wfPA.PopMatrices();
-            dataGrid.ClearSelectedPoints();
+            if (!System.Windows.Input.Keyboard.IsKeyDown(Key.LeftCtrl)) dataGrid.ClearSelectedPoints();
             for (int i = 0; i < hits; i++) {
                 dataGrid.SelectedPoints[selectBuffer[i * 4 + 3]] = true;
             }
