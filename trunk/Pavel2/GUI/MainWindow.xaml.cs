@@ -31,13 +31,12 @@ namespace Pavel2.GUI
 
         #endregion
 
-        private bool optionsExpanded = true;
-
         public MainWindow() {
 			this.InitializeComponent();
 
             EmptyPreviewPanel();
             RemoveOptionsPanel();
+            optionsExpander.IsExpanded = true;
 		}
 
         #region Expander Event Handler
@@ -98,7 +97,6 @@ namespace Pavel2.GUI
             stack.Children.Add(element);
             optionsExpander.Content = stack;
             optionsExpander.Visibility = Visibility.Visible;
-            optionsExpander.IsExpanded = optionsExpanded;
         }
 
         public void RemoveOptionsPanel() {
@@ -117,7 +115,6 @@ namespace Pavel2.GUI
             }
             optionsExpander.Content = null;
             optionsExpander.Visibility = Visibility.Collapsed;
-            optionsExpanded = optionsExpander.IsExpanded;
         }
 
         public void AddToOptionsPanel(UIElement element) {
@@ -125,7 +122,7 @@ namespace Pavel2.GUI
             if (stack == null) {
                 CreateOptionsPanel(element);
             } else {
-                stack.Children.Add(element);
+                if (element != null) stack.Children.Add(element);
             }
         }
 

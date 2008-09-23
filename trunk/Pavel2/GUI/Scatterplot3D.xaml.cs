@@ -474,7 +474,104 @@ namespace Pavel2.GUI {
 
 
         public object GetProperties() {
-            return properties;
+            return null;
+        }
+
+        #endregion
+
+        #region Visualization Member
+
+
+        public UIElement GetUIElement() {
+            if (dataGrid == null) return null;
+            ItemsControl itemsControl = new ItemsControl();
+            itemsControl.Margin = new Thickness(5);
+
+            ComboBox col1combo = new ComboBox();
+            col1combo.ItemsSource = dataGrid.Columns;
+            col1combo.SelectedIndex = properties.Col1;
+            col1combo.DisplayMemberPath = "Header";
+            col1combo.SelectionChanged += col1combo_SelectionChanged;
+            TextBlock col1txt = new TextBlock();
+            col1txt.Text = "Column 1";
+            col1txt.Width = 120;
+            col1txt.Margin = new Thickness(0,0,8,0);
+            col1txt.TextAlignment = TextAlignment.Right;
+            col1txt.VerticalAlignment = VerticalAlignment.Center;
+            StackPanel col1stack = new StackPanel();
+            col1stack.Margin = new Thickness(0,0,0,5);
+            col1stack.Orientation = Orientation.Horizontal;
+            col1stack.Children.Add(col1txt);
+            col1stack.Children.Add(col1combo);
+
+            ComboBox col2combo = new ComboBox();
+            col2combo.ItemsSource = dataGrid.Columns;
+            col2combo.SelectedIndex = properties.Col2;
+            col2combo.DisplayMemberPath = "Header";
+            col2combo.SelectionChanged += col2combo_SelectionChanged;
+            TextBlock col2txt = new TextBlock();
+            col2txt.Text = "Column 2";
+            col2txt.Width = 120;
+            col2txt.Margin = new Thickness(0, 0, 8, 0);
+            col2txt.TextAlignment = TextAlignment.Right;
+            col2txt.VerticalAlignment = VerticalAlignment.Center;
+            StackPanel col2stack = new StackPanel();
+            col2stack.Margin = new Thickness(0, 0, 0, 5);
+            col2stack.Orientation = Orientation.Horizontal;
+            col2stack.Children.Add(col2txt);
+            col2stack.Children.Add(col2combo);
+
+            ComboBox col3combo = new ComboBox();
+            col3combo.ItemsSource = dataGrid.Columns;
+            col3combo.SelectedIndex = properties.Col3;
+            col3combo.SelectionChanged += col3combo_SelectionChanged;
+            col3combo.DisplayMemberPath = "Header";
+            TextBlock col3txt = new TextBlock();
+            col3txt.Text = "Column 3";
+            col3txt.Width = 120;
+            col3txt.Margin = new Thickness(0, 0, 8, 0);
+            col3txt.TextAlignment = TextAlignment.Right;
+            col3txt.VerticalAlignment = VerticalAlignment.Center;
+            StackPanel col3stack = new StackPanel();
+            col3stack.Margin = new Thickness(0, 0, 0, 5);
+            col3stack.Orientation = Orientation.Horizontal;
+            col3stack.Children.Add(col3txt);
+            col3stack.Children.Add(col3combo);
+
+            itemsControl.Items.Add(col1stack);
+            itemsControl.Items.Add(col2stack);
+            itemsControl.Items.Add(col3stack);
+            return itemsControl;
+        }
+
+        void col1combo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            ComboBox cBox = (ComboBox)sender;
+            properties.Col1 = cBox.SelectedIndex;
+            CreateArrays();
+            if (dataGrid.Changed[this.GetType()]) SelectPoints();
+            this.dataGrid.Changed[this.GetType()] = false;
+            RenderScene();
+            dataGrid.Cache[this.GetType()] = TakeScreenshot();
+        }
+
+        void col2combo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            ComboBox cBox = (ComboBox)sender;
+            properties.Col2 = cBox.SelectedIndex;
+            CreateArrays();
+            if (dataGrid.Changed[this.GetType()]) SelectPoints();
+            this.dataGrid.Changed[this.GetType()] = false;
+            RenderScene();
+            dataGrid.Cache[this.GetType()] = TakeScreenshot();
+        }
+
+        void col3combo_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            ComboBox cBox = (ComboBox)sender;
+            properties.Col3 = cBox.SelectedIndex;
+            CreateArrays();
+            if (dataGrid.Changed[this.GetType()]) SelectPoints();
+            this.dataGrid.Changed[this.GetType()] = false;
+            RenderScene();
+            dataGrid.Cache[this.GetType()] = TakeScreenshot();
         }
 
         #endregion

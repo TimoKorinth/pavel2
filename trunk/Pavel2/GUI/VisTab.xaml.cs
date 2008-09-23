@@ -91,6 +91,7 @@ namespace Pavel2.GUI {
                 pGrid.SelectedObject = CurrentVisualization.GetProperties();
                 //pGrid.PropertyChanged += pGridDataGrid_PropertyChanged;
                 MainData.MainWindow.CreateOptionsPanel(pGrid);
+                MainData.MainWindow.AddToOptionsPanel(CurrentVisualization.GetUIElement());
                 MainData.MainWindow.ShowParserProperties();
                 return null;
             }), null);

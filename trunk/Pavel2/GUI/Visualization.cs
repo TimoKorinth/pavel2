@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Controls;
 using Pavel2.Framework;
 using System.Windows.Media;
+using System.Windows;
 
 namespace Pavel2.GUI {
     public interface Visualization {
@@ -18,6 +19,8 @@ namespace Pavel2.GUI {
         ImageSource GetScreenshot();
 
         object GetProperties();
+
+        UIElement GetUIElement();
 
     }
 }

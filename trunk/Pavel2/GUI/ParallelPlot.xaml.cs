@@ -611,5 +611,14 @@ namespace Pavel2.GUI {
         }
 
         #endregion
+
+        #region Visualization Member
+
+
+        public UIElement GetUIElement() {
+            return null;
+        }
+
+        #endregion
     }
 }
