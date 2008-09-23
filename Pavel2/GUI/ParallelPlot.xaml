@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Pavel2.GUI.ParallelPlot"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Background="White">
     <Grid Name="openGlCanvas" Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
