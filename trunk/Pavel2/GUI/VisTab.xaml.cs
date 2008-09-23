@@ -109,12 +109,8 @@ namespace Pavel2.GUI {
         public const Int32 WM_EXITSIZEMOVE = 0x0232;
         private IntPtr WinProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, ref Boolean handled) {
             IntPtr result = IntPtr.Zero;
-            switch (msg) {
-                case WM_EXITSIZEMOVE: {
-                        if (CurrentVisualization == null) break;
-                        CurrentVisualization.RenderAfterResize();
-                        break;
-                    }
+            if (msg == WM_EXITSIZEMOVE) {
+                if (CurrentVisualization != null) CurrentVisualization.RenderAfterResize();
             }
             return result;
         }
