@@ -346,9 +346,6 @@ namespace Pavel2.GUI {
         }
 
         public ImageSource GetScreenshot() {
-            if (this.dataGrid != null && this.dataGrid.Cache.ContainsKey(this.GetType())) {
-                return this.dataGrid.Cache[this.GetType()];
-            }
             Bitmap bmp = wfPA.Screenshot();
             if (bmp == null) return null;
             return Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
