@@ -50,6 +50,7 @@ namespace Pavel2.GUI {
         private System.Windows.Point endPoint;
         private int scaleNumber = 5;
         WindowsFormsHost host = new WindowsFormsHost();
+        private bool selecting = true;
 
         public ParallelPlot() {
             InitializeComponent();
@@ -269,6 +270,7 @@ namespace Pavel2.GUI {
                     dataGrid.ChangeColZoom(col, newVal, col.Max);
                 }
             }
+            selecting = true;
             SetLabelPanel();
             SetOverlayControls();
             RenderScene();
@@ -278,6 +280,8 @@ namespace Pavel2.GUI {
 
         void tZoom_DragDelta(object sender, DragDeltaEventArgs e) {
             Thumb t = sender as Thumb;
+            RemoveAdornerArray();
+            selecting = false;
             if (t == null) return;
             double tmp = Canvas.GetTop(t);
             double newPos;
@@ -389,6 +393,8 @@ namespace Pavel2.GUI {
 
         void DragDelta(object sender, DragDeltaEventArgs e) {
             Thumb t = sender as Thumb;
+            RemoveAdornerArray();
+            selecting = false;
             if (t == null) return;
             if ((t.Margin.Left + ((overlayControls.ActualWidth * step) * dataGrid.IndexOf((Column)t.Tag)) + e.HorizontalChange) < -5) return;
             t.Margin = new Thickness(t.Margin.Left + e.HorizontalChange, t.Margin.Top, t.Margin.Right, t.Margin.Bottom);
@@ -417,6 +423,7 @@ namespace Pavel2.GUI {
                 } else {
                     pos = (int)(((t.Margin.Left + ((overlayControls.ActualWidth * step) * dataGrid.IndexOf((Column)t.Tag))) / (step * thumbGrid.ActualWidth)));
                 }
+                selecting = true;
                 dataGrid.ChangeColOrder(col, pos);
                 SetLabelPanel();
                 SetOverlayControls();
@@ -490,7 +497,7 @@ namespace Pavel2.GUI {
         }
 
         private void visImage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e) {
-            if (e.LeftButton == MouseButtonState.Pressed) {
+            if (e.LeftButton == MouseButtonState.Pressed && selecting) {
                 endPoint = e.GetPosition(this);
                 DrawRubberBand();
             }
