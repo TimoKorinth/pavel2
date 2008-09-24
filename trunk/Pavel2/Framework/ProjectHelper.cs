@@ -30,7 +30,7 @@ namespace Pavel2.Framework {
             foreach (TreeViewItem tvItem in item.Items) {
                 if (!(tvItem.Tag is ProjectTreeItem) && !(tvItem.Tag is LinkItem)) continue;
                 SerializeObject serTmp = new SerializeObject();
-                serTmp.Item = tvItem.Tag;
+                //serTmp.Item = tvItem.Tag;
                 ser.Items.Add(serTmp);
                 FillSerTree(serTmp, tvItem);
             }
