@@ -25,14 +25,12 @@
 		</Grid.ColumnDefinitions>
 		<Menu Grid.ColumnSpan="7">
             <MenuItem Header="Project">
-                <MenuItem Header="New..." />
                 <MenuItem Header="Open..." Name="openMenu" Click="openMenu_Click" />
-                <MenuItem Header="Import..." />
                 <MenuItem Header="Save..." Name="saveMenu" Click="saveMenu_Click" />
-                <MenuItem Header="Exit" />
+                <MenuItem Header="Import..." Click="importButton_Click" />
+                <MenuItem Header="Export..." Click="exportButton_Click" />
             </MenuItem>
-            <MenuItem Header="Edit"/>
-			<MenuItem Header="View"/>
+            <MenuItem Header="Help"/>
 		</Menu>
 		<StatusBar Grid.Row="4" Grid.ColumnSpan="7" Height="20">
             <StatusBarItem Name="pointStatus" Visibility="Collapsed"/>
