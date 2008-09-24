@@ -449,6 +449,10 @@ namespace Pavel2.GUI {
 
         private void ContextMenu_RemoveItem(object sender, RoutedEventArgs e) {
             TreeViewItem item = this.SelectedItem;
+            TreeViewItem parent = null;
+            if (item.Parent is TreeViewItem) {
+                parent = (TreeViewItem)item.Parent;
+            }
             if (item.Tag is DataProjectTreeItem) {
                 DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag);
             } else if (item.Tag is FolderProjectTreeItem) {
@@ -457,6 +461,7 @@ namespace Pavel2.GUI {
                 DeleteLinkTreeItem(item.Tag as LinkItem);
             }
             RemoveTreeViewItem(item);
+            if (parent != null) parent.IsSelected = true;
         }
 
         private void ContextMenu_AddNewDataTable(object sender, RoutedEventArgs e) {
