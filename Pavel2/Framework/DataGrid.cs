@@ -148,8 +148,8 @@ namespace Pavel2.Framework {
         }
 
         public int GetIndex(Column col) {
-            for (int i = 0; i < columns.Length; i++) {
-                if (columns[i].Equals(col)) return i;
+            for (int i = 0; i < Columns.Length; i++) {
+                if (Columns[i].Equals(col)) return i;
             }
             //TODO: NaN oder so zurückgeben
             return 0;
