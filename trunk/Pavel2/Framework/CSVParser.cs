@@ -17,6 +17,7 @@ namespace Pavel2.Framework {
             get { return "CSV Parser"; }
         }
 
+        [Description("Has Headers")]
         public Boolean HasHeaders {
             get { return hasHeaders; }
             set { hasHeaders = value; }
