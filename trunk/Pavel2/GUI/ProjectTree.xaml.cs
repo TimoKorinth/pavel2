@@ -81,6 +81,10 @@ namespace Pavel2.GUI {
             if (item.Tag is DataProjectTreeItem) {
                 item.Items.Clear();
                 DataProjectTreeItem dPTVI = (DataProjectTreeItem)item.Tag;
+                dPTVI.DataGrid.ColumnChanged -= dataGrid_ColumnChanged;
+                dPTVI.DataGrid.ColumnVisChanged -= dataGrid_ColumnVisChanged;
+                dPTVI.DataGrid.ColumnChanged += dataGrid_ColumnChanged;
+                dPTVI.DataGrid.ColumnVisChanged += dataGrid_ColumnVisChanged;
                 for (int i = 0; i < dPTVI.DataGrid.RealColumns.Length; i++) {
                     TreeViewItem tmp = new TreeViewItem();
                     tmp.FontWeight = FontWeights.Normal;
@@ -186,8 +190,6 @@ namespace Pavel2.GUI {
             } else {
                 DataGrid dataGrid = ParserManagement.GetDataGrid(file);
                 if (null != dataGrid) {
-                    dataGrid.ColumnChanged += dataGrid_ColumnChanged;
-                    dataGrid.ColumnVisChanged += dataGrid_ColumnVisChanged;
                     TreeViewItem tvItem = new TreeViewItem();
                     DataProjectTreeItem dPTI = new DataProjectTreeItem(dataGrid);
                     dPTI.Header = file.Name;

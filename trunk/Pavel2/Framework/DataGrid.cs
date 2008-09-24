@@ -27,7 +27,9 @@ namespace Pavel2.Framework {
         private Button undoColVis;
         private bool[] selectedPoints;
 
+        [field: NonSerialized]
         public event EventHandler ColumnChanged;
+        [field: NonSerialized]
         public event EventHandler ColumnVisChanged;
 
         [Description("Show filtered points")]
@@ -59,6 +61,9 @@ namespace Pavel2.Framework {
         [Browsable(false)]
         public List<Button> Buttons {
             get {
+                if (undoColVis == null || undoZoom == null) {
+                    InitButtons();
+                }
                 List<Button> buttons = new List<Button>();
                 buttons.Add(undoZoom);
                 buttons.Add(undoColVis);
