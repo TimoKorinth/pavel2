@@ -229,6 +229,7 @@ namespace Pavel2.GUI
             if (item != null) {
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
+                    if (pTI.DataGrid == null) return;
                     AddDataGridOptions(pTI.DataGrid);
                     if (pTI.DataGrid != null) SetupToolBarButtons(pTI.DataGrid);
                     pointStatus.Visibility = Visibility.Visible;

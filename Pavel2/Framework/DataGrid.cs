@@ -21,7 +21,9 @@ namespace Pavel2.Framework {
         private Dictionary<Type, ImageSource> cache = new Dictionary<Type,ImageSource>();
         private Dictionary<Type, bool> changed = new Dictionary<Type, bool>();
         private bool showAll = true;
+        [NonSerialized()]
         private Button undoZoom;
+        [NonSerialized()]
         private Button undoColVis;
         private bool[] selectedPoints;
 
@@ -76,6 +78,7 @@ namespace Pavel2.Framework {
 
         public void ShowNumberSelPoints() {
             int index = 0;
+            if (selectedPoints == null) return;
             for (int i = 0; i < selectedPoints.Length; i++) {
                 if (selectedPoints[i]) index++;
             }
