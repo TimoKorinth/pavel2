@@ -18,6 +18,7 @@ namespace Pavel2.Framework {
         private double[][] dData;
         private int maxColumn;
         private int maxPoints;
+        [NonSerialized()]
         private Dictionary<Type, ImageSource> cache = new Dictionary<Type,ImageSource>();
         private Dictionary<Type, bool> changed = new Dictionary<Type, bool>();
         private bool showAll = true;
@@ -94,7 +95,10 @@ namespace Pavel2.Framework {
 
         [Browsable(false)]
         public Dictionary<Type, ImageSource> Cache {
-            get { return cache; }
+            get {
+                if (cache == null) cache = new Dictionary<Type, ImageSource>();
+                return cache; 
+            }
             set { cache = value; }
         }
 
