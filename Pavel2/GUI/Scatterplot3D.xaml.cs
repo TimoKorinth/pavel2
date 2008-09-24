@@ -483,7 +483,6 @@ namespace Pavel2.GUI {
         public UIElement GetUIElement() {
             if (dataGrid == null) return null;
             ItemsControl itemsControl = new ItemsControl();
-            itemsControl.Margin = new Thickness(5);
 
             ComboBox col1combo = new ComboBox();
             col1combo.ItemsSource = dataGrid.Columns;
@@ -497,7 +496,7 @@ namespace Pavel2.GUI {
             col1txt.TextAlignment = TextAlignment.Right;
             col1txt.VerticalAlignment = VerticalAlignment.Center;
             StackPanel col1stack = new StackPanel();
-            col1stack.Margin = new Thickness(0,0,0,5);
+            col1stack.Margin = new Thickness(5);
             col1stack.Orientation = Orientation.Horizontal;
             col1stack.Children.Add(col1txt);
             col1stack.Children.Add(col1combo);
@@ -514,7 +513,7 @@ namespace Pavel2.GUI {
             col2txt.TextAlignment = TextAlignment.Right;
             col2txt.VerticalAlignment = VerticalAlignment.Center;
             StackPanel col2stack = new StackPanel();
-            col2stack.Margin = new Thickness(0, 0, 0, 5);
+            col2stack.Margin = new Thickness(5);
             col2stack.Orientation = Orientation.Horizontal;
             col2stack.Children.Add(col2txt);
             col2stack.Children.Add(col2combo);
@@ -531,7 +530,7 @@ namespace Pavel2.GUI {
             col3txt.TextAlignment = TextAlignment.Right;
             col3txt.VerticalAlignment = VerticalAlignment.Center;
             StackPanel col3stack = new StackPanel();
-            col3stack.Margin = new Thickness(0, 0, 0, 5);
+            col3stack.Margin = new Thickness(5);
             col3stack.Orientation = Orientation.Horizontal;
             col3stack.Children.Add(col3txt);
             col3stack.Children.Add(col3combo);
