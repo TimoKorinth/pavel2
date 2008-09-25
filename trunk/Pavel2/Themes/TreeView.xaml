@@ -122,8 +122,6 @@
             <Border Name="Bd"
                 Grid.Column="1"
                 Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
                 Padding="{TemplateBinding Padding}">
               <ContentPresenter x:Name="PART_Header"
                         ContentSource="Header"

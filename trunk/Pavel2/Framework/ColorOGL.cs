@@ -79,6 +79,20 @@ namespace Pavel2.Framework {
             }
         }
 
+        /// <value>Gets the ColorOGL as Color or sets it</value>
+        [RefreshProperties(RefreshProperties.Repaint)]
+        [NotifyParentProperty(true)]
+        public System.Windows.Media.Color MediaColor {
+            get {
+                System.Windows.Media.Color col = new System.Windows.Media.Color();
+                col.A = 255;
+                col.R = color.R;
+                col.G = color.G;
+                col.B = color.B;
+                return col; 
+            }
+        }
+
         /// <value>Gets a description of the ColorOGL or sets it</value>
         public String Description {
             get { return description; }

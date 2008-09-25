@@ -182,6 +182,7 @@ namespace Pavel2.GUI
             item.IsCombined = false;
             visualizationLayer.VisualizationData = item;
             SetupLinkToolBarButtons(item);
+            projectTreeView.UpdateLinkItem(projectTreeView.SelectedItem);
         }
 
         void comb_Click(object sender, RoutedEventArgs e) {
@@ -198,6 +199,7 @@ namespace Pavel2.GUI
             pointStatus.Content = item.CombItem.DataGrid.MaxPoints + " Points";
             selectionStatus.Visibility = Visibility.Collapsed;
             item.CombItem.DataGrid.ShowNumberSelPoints();
+            projectTreeView.UpdateLinkItem(projectTreeView.SelectedItem);
         }
         
         public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
