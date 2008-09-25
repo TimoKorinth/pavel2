@@ -130,7 +130,7 @@ namespace Pavel2.GUI {
 
         #region Private Methods
 
-        private void InsertToProjectTree(TreeViewItem item, bool isSelected, bool isExpanded) {
+        public void InsertToProjectTree(TreeViewItem item, bool isSelected, bool isExpanded) {
             TreeViewItem rootItem = this.SelectedItem;
             if (rootItem != null) {
                 InsertToProjectTree(item, rootItem, isSelected, isExpanded);
