@@ -19,14 +19,13 @@ namespace Pavel2.GUI {
     /// </summary>
     public partial class VisualizationLayer : UserControl {
 
-        private LinkItem lastLinkItem;
         private object visualizationData;
 
         public object VisualizationData {
             get { return visualizationData; }
             set { 
                 visualizationData = value;
-                if (visualizationData is LinkItem) lastLinkItem = visualizationData as LinkItem;
+                //if (visualizationData is LinkItem) lastLinkItem = visualizationData as LinkItem;
                 Display();
             }
         }
@@ -37,7 +36,17 @@ namespace Pavel2.GUI {
                 visStackPanel.RowDefinitions.Clear();
                 visStackPanel.ColumnDefinitions.Clear();
             }
-            if ((visualizationData is CombinedDataItem) || (visualizationData is LinkItem)) {
+            if (visualizationData is ProjectTreeItem) {
+                ProjectTreeItem ptItem = (ProjectTreeItem)visualizationData;
+                VisTab visTab = new VisTab(ptItem);
+                if (visualizationData is CombinedDataItem) {
+                    visStackPanel.RowDefinitions.Add(new RowDefinition());
+                    Grid.SetRow(visTab, 1);
+                }
+                visStackPanel.Children.Add(visTab);
+            }
+            if (visualizationData is LinkItem) {
+                LinkItem lItem = (LinkItem)visualizationData;
                 RowDefinition row = new RowDefinition();
                 row.Height = GridLength.Auto;
                 visStackPanel.RowDefinitions.Add(row);
@@ -48,9 +57,7 @@ namespace Pavel2.GUI {
                 Button tog = new Button();
                 tog.Content = "Combined";
                 tog.Click += tog_Click;
-                if (lastLinkItem != null) {
-                    if (!lastLinkItem.IsCombineable) tog.IsEnabled = false;
-                }
+                if (!lItem.IsCombineable) tog.IsEnabled = false;
                 Grid stack = new Grid();
                 stack.ColumnDefinitions.Add(new ColumnDefinition());
                 ColumnDefinition cTmp = new ColumnDefinition();
@@ -79,33 +86,29 @@ namespace Pavel2.GUI {
                 grid.Content = gridImg;
                 display.Items.Add(list);
                 display.Items.Add(grid);
-            }
-            if (visualizationData is ProjectTreeItem) {
-                ProjectTreeItem ptItem = (ProjectTreeItem)visualizationData;
-                VisTab visTab = new VisTab(ptItem);
-                if (visualizationData is CombinedDataItem) {
+                if (lItem.IsCombined) {
+                    ProjectTreeItem ptItem = lItem.CombItem;
+                    VisTab visTab = new VisTab(ptItem);
                     visStackPanel.RowDefinitions.Add(new RowDefinition());
                     Grid.SetRow(visTab, 1);
-                }
-                visStackPanel.Children.Add(visTab);
-            }
-            if (visualizationData is LinkItem) {
-                LinkItem lItem = (LinkItem)visualizationData;
-                int i = 1;
-                foreach (DataProjectTreeItem item in lItem.DataItems) {
-                    visStackPanel.RowDefinitions.Add(new RowDefinition());
-                    VisTab visTab = new VisTab(item);
-                    Grid.SetRow(visTab, i);
                     visStackPanel.Children.Add(visTab);
-                    i++;
-                }
-                foreach (ImageTreeItem imgItem in lItem.Images) {
-                    visStackPanel.RowDefinitions.Add(new RowDefinition());
-                    Image img = new Image();
-                    img.Source = imgItem.ImageSource;
-                    Grid.SetRow(img, i);
-                    visStackPanel.Children.Add(img);
-                    i++;
+                } else {
+                    int i = 1;
+                    foreach (DataProjectTreeItem item in lItem.DataItems) {
+                        visStackPanel.RowDefinitions.Add(new RowDefinition());
+                        VisTab visTab = new VisTab(item);
+                        Grid.SetRow(visTab, i);
+                        visStackPanel.Children.Add(visTab);
+                        i++;
+                    }
+                    foreach (ImageTreeItem imgItem in lItem.Images) {
+                        visStackPanel.RowDefinitions.Add(new RowDefinition());
+                        Image img = new Image();
+                        img.Source = imgItem.ImageSource;
+                        Grid.SetRow(img, i);
+                        visStackPanel.Children.Add(img);
+                        i++;
+                    }
                 }
             }
             if (visualizationData is ImageTreeItem) {
@@ -121,15 +124,16 @@ namespace Pavel2.GUI {
         }
 
         void sep_Click(object sender, RoutedEventArgs e) {
-            if (lastLinkItem != null) {
-                this.VisualizationData = lastLinkItem;
+            if (this.VisualizationData is LinkItem) {
+                (this.VisualizationData as LinkItem).IsCombined = false;
+                Display();
             }
         }
 
         void tog_Click(object sender, RoutedEventArgs e) {
-            if (lastLinkItem != null) {
-                CombinedDataItem item = new CombinedDataItem(lastLinkItem.DataItems);
-                this.VisualizationData = item;
+            if (this.VisualizationData is LinkItem) {
+                (this.VisualizationData as LinkItem).IsCombined = true;
+                Display();
             }
         }
 

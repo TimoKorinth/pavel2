@@ -673,7 +673,10 @@ namespace Pavel2.GUI {
 
         public void Render(DataGrid dataGrid) {
             this.dataGrid = dataGrid;
-            comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
+            if (MainData.MainWindow.visualizationLayer.VisualizationData is LinkItem) {
+                LinkItem link = MainData.MainWindow.visualizationLayer.VisualizationData as LinkItem;
+                if (link.IsCombined) comp = link.CombItem;
+            }
             if (dataGrid == null) return;
             step = (double)1 / dataGrid.Columns.Length;
             SetLabels();
