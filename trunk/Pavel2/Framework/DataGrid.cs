@@ -287,7 +287,10 @@ namespace Pavel2.Framework {
             }
             DataGrid dGrid = new DataGrid(cols);
             DataProjectTreeItem dPTI = new DataProjectTreeItem(dGrid);
+            TreeViewItem rootItem = MainData.MainWindow.projectTreeView.SelectedItem;
             dPTI.Header = "Subset";
+            if (rootItem.Tag is ProjectTreeItem) dPTI.Header = (rootItem.Tag as ProjectTreeItem).Header + "_Subset";
+            if (rootItem.Tag is LinkItem) dPTI.Header = (rootItem.Tag as LinkItem).Header + "_Subset";
             TreeViewItem tvItem = new TreeViewItem();
             tvItem.Tag = dPTI;
             MainData.MainWindow.projectTreeView.UpdateDataTreeViewItem(tvItem);
