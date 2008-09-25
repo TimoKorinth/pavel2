@@ -515,5 +515,13 @@ namespace Pavel2.GUI {
                 }
             }
         }
+
+        private void TextBox_Loaded(object sender, RoutedEventArgs e) {
+            if (sender is TextBox) {
+                TextBox b = sender as TextBox;
+                b.Focus();
+                b.SelectAll();
+            }
+        }
     }
 }
