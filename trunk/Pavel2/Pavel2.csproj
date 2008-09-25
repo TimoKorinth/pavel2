@@ -345,5 +345,9 @@
   <ItemGroup>
     <Resource Include="GUI\Icons\chart_curve_go.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\grid.png" />
+    <Resource Include="GUI\Icons\list.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
