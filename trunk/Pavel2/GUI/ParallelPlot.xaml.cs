@@ -205,18 +205,16 @@ namespace Pavel2.GUI {
                 }
                 wPanel.Children.Add(t);
 
-                Button delButton = new Button();
-                delButton.Tag = dataGrid.Columns[col];
                 System.Windows.Controls.Image img = new System.Windows.Controls.Image();
                 Uri uri = new Uri("Icons/cross.png", UriKind.Relative);
                 BitmapImage source = new BitmapImage(uri);
                 img.Source = source;
                 img.Width = 10;
                 img.Height = 10;
-                delButton.Content = img;
-                Canvas.SetLeft(delButton, 15);
-                delButton.Click += delButton_Click;
-                wPanel.Children.Add(delButton);
+                img.Tag = dataGrid.Columns[col];
+                img.MouseDown += delButton_Click;
+                Canvas.SetLeft(img, 15);
+                wPanel.Children.Add(img);
 
                 Thumb tDown = new Thumb();
                 Thumb tUp = new Thumb();
@@ -295,7 +293,7 @@ namespace Pavel2.GUI {
         }
 
         void delButton_Click(object sender, RoutedEventArgs e) {
-            Button btn = sender as Button;
+            System.Windows.Controls.Image btn = sender as System.Windows.Controls.Image;
             if (btn == null) return;
             Column col = btn.Tag as Column;
             if (col == null) return;

@@ -49,7 +49,7 @@ namespace Pavel2.GUI {
         private System.Windows.Point endPoint;
         CombinedDataItem comp;
         WindowsFormsHost host = new WindowsFormsHost();
-        Button lastBtn;
+        System.Windows.Controls.Image lastBtn;
         int scaleNumber = 5;
 
         public ScatterMatrix() {
@@ -547,19 +547,17 @@ namespace Pavel2.GUI {
                     Canvas rect = new Canvas();
                     Grid.SetColumn(rect, x);
                     Grid.SetRow(rect, dataGrid.Columns.Length - 1 - x);
-                    Button btn = new Button();
-                    Canvas.SetTop(btn, 2);
-                    Canvas.SetRight(btn, 2);
-                    btn.Tag = dataGrid.Columns[x];
-                    btn.Click += btn_Click;
                     System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+                    img.MouseDown += btn_Click;
+                    Canvas.SetTop(img, 2);
+                    Canvas.SetRight(img, 2);
+                    img.Tag = dataGrid.Columns[x];
                     img.Source = new BitmapImage(new Uri("Icons/cross.png", UriKind.Relative));
-                    btn.Content = img;
-                    rect.Children.Add(btn);
+                    rect.Children.Add(img);
                     labels.Children.Add(rect);
                     rect.IsMouseDirectlyOverChanged += rect_IsMouseDirectlyOverChanged;
-                    btn.Visibility = Visibility.Collapsed;
-                    rect.Tag = btn;
+                    img.Visibility = Visibility.Collapsed;
+                    rect.Tag = img;
                     rect.Background = System.Windows.Media.Brushes.Transparent;
 
                     Label l = new Label();
@@ -577,22 +575,20 @@ namespace Pavel2.GUI {
                             Canvas rect = new Canvas();
                             Grid.SetColumn(rect, col);
                             Grid.SetRow(rect, dataGrid.Columns.Length - 1 - row);
-                            Button btn = new Button();
-                            Canvas.SetTop(btn, 2);
-                            Canvas.SetRight(btn, 2);
                             Column[] cols = new Column[2];
                             cols[0] = dataGrid.Columns[col];
                             cols[1] = dataGrid.Columns[row];
-                            btn.Tag = cols;
-                            btn.Click += btnZoom_Click;
                             System.Windows.Controls.Image img = new System.Windows.Controls.Image();
                             img.Source = new BitmapImage(new Uri("Icons/zoom_in.png", UriKind.Relative));
-                            btn.Content = img;
-                            rect.Children.Add(btn);
+                            img.Tag = cols;
+                            Canvas.SetTop(img, 2);
+                            Canvas.SetRight(img, 2);
+                            img.MouseDown += btnZoom_Click;
+                            rect.Children.Add(img);
                             labels.Children.Add(rect);
                             rect.IsMouseDirectlyOverChanged += rect_IsMouseDirectlyOverChanged;
-                            btn.Visibility = Visibility.Collapsed;
-                            rect.Tag = btn;
+                            img.Visibility = Visibility.Collapsed;
+                            rect.Tag = img;
                             rect.Background = System.Windows.Media.Brushes.Transparent;
                         }
                     }                
@@ -602,15 +598,10 @@ namespace Pavel2.GUI {
         }
 
         void btnZoom_Click(object sender, RoutedEventArgs e) {
-            Button btn = sender as Button;
+            System.Windows.Controls.Image btn = sender as System.Windows.Controls.Image;
             if (btn == null) return;
             Column[] cols = btn.Tag as Column[];
             if (cols == null) return;
-            //foreach (Column col in dataGrid.Columns) {
-            //    if (!col.Equals(cols[0]) && !col.Equals(cols[1])) {
-            //        dataGrid.ColIsVisible(col, false);
-            //    }
-            //}
             dataGrid.IsScatterplot = true;
             dataGrid.ScatterCol1 = dataGrid.GetIndex(cols[0]);
             dataGrid.ScatterCol2 = dataGrid.GetIndex(cols[1]);
@@ -629,7 +620,7 @@ namespace Pavel2.GUI {
         }
 
         void btn_Click(object sender, RoutedEventArgs e) {
-            Button btn = sender as Button;
+            System.Windows.Controls.Image btn = sender as System.Windows.Controls.Image;
             if (btn == null) return;
             Column col = btn.Tag as Column;
             if (col == null) return;
@@ -644,7 +635,7 @@ namespace Pavel2.GUI {
         void rect_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e) {
             Canvas cGrid = sender as Canvas;
             if (cGrid == null) return;
-            Button btn = cGrid.Tag as Button;
+            System.Windows.Controls.Image btn = cGrid.Tag as System.Windows.Controls.Image;
             if (btn == null) return;
             if ((bool)e.NewValue) {
                 if (lastBtn != null) lastBtn.Visibility = Visibility.Collapsed;
