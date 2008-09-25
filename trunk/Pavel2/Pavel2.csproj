@@ -352,5 +352,8 @@
   <ItemGroup>
     <Resource Include="GUI\Icons\table_link.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_go.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
