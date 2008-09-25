@@ -41,6 +41,7 @@ namespace Pavel2.GUI {
                 RowDefinition row = new RowDefinition();
                 row.Height = GridLength.Auto;
                 visStackPanel.RowDefinitions.Add(row);
+
                 Button sep = new Button();
                 sep.Content = "Separate";
                 sep.Click += sep_Click;
@@ -50,11 +51,34 @@ namespace Pavel2.GUI {
                 if (lastLinkItem != null) {
                     if (!lastLinkItem.IsCombineable) tog.IsEnabled = false;
                 }
+                Grid stack = new Grid();
+                stack.ColumnDefinitions.Add(new ColumnDefinition());
+                ColumnDefinition cTmp = new ColumnDefinition();
+                cTmp.Width = GridLength.Auto;
+                stack.ColumnDefinitions.Add(cTmp);
                 ToolBar bar = new ToolBar();
                 bar.Items.Add(sep);
                 bar.Items.Add(tog);
-                Grid.SetRow(bar, 0);
-                visStackPanel.Children.Add(bar);
+                stack.Children.Add(bar);
+                Grid.SetRow(stack, 0);
+                visStackPanel.Children.Add(stack);
+
+
+                ToolBar display = new ToolBar();
+                stack.Children.Add(display);
+                Grid.SetColumn(display, 1);
+                Button list = new Button();
+                Image listImg = new Image();
+                listImg.ToolTip = "List View";
+                listImg.Source = new BitmapImage(new Uri("Icons/list.png", UriKind.Relative));
+                list.Content = listImg;
+                Button grid = new Button();
+                Image gridImg = new Image();
+                gridImg.ToolTip = "Grid View";
+                gridImg.Source = new BitmapImage(new Uri("Icons/grid.png", UriKind.Relative));
+                grid.Content = gridImg;
+                display.Items.Add(list);
+                display.Items.Add(grid);
             }
             if (visualizationData is ProjectTreeItem) {
                 ProjectTreeItem ptItem = (ProjectTreeItem)visualizationData;
