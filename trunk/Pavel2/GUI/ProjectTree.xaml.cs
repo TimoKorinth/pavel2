@@ -274,6 +274,14 @@ namespace Pavel2.GUI {
             }
         }
 
+        private void CopyColumn(TreeViewItem tvItem, Column col) {
+            if (tvItem.Tag is DataProjectTreeItem) {
+                DataProjectTreeItem dPTI = tvItem.Tag as DataProjectTreeItem;
+                dPTI.DataGrid.AddColumn(col);
+                UpdateDataTreeViewItem(tvItem);
+            }
+        }
+
         private void MoveTreeViewItem(TreeViewItem tvItem, TreeViewItem target) {
             if (target.Tag is FolderProjectTreeItem) {
                 if (tvItem.Tag is DataProjectTreeItem || tvItem.Tag is ImageTreeItem) {
@@ -434,6 +442,7 @@ namespace Pavel2.GUI {
                     if (tvItem.Tag is FileInfo) AddDataProjectTreeItem(tvItem.Tag as FileInfo, e.Source as TreeViewItem);
                     if (tvItem.Tag is ProjectTreeItem || tvItem.Tag is ImageTreeItem) MoveTreeViewItem(tvItem, e.Source as TreeViewItem);
                     if (tvItem.Tag is DirectoryInfo) AddDirectory((DirectoryInfo)tvItem.Tag, e.Source as TreeViewItem);
+                    if (tvItem.Tag is Column) CopyColumn(e.Source as TreeViewItem, tvItem.Tag as Column);
                 }
             }
         }
