@@ -184,7 +184,7 @@ namespace Pavel2.GUI
         #endregion
 
         private void importButton_Click(object sender, RoutedEventArgs e) {
-            explorerExpander.IsExpanded = true;
+            explorerExpander.IsExpanded = !explorerExpander.IsExpanded;
         }
 
         private void exportButton_Click(object sender, RoutedEventArgs e) {
