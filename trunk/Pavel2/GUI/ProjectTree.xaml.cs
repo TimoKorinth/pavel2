@@ -157,7 +157,7 @@ namespace Pavel2.GUI {
             projectTree.Items.Add(root);
         }
 
-        private void AddDirectory(DirectoryInfo dir, TreeViewItem root) {
+        public void AddDirectory(DirectoryInfo dir, TreeViewItem root) {
             TreeViewItem tmp = new TreeViewItem();
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(tmp);
             tmp.Tag = fPTI;
@@ -175,7 +175,7 @@ namespace Pavel2.GUI {
             }
         }
 
-        private void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
+        public void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
             if (ImageParser.IsImage(file)) {
                 ImageTreeItem imgItem = new ImageTreeItem(ImageParser.GetImage(file));
                 TreeViewItem tvItem = new TreeViewItem();
