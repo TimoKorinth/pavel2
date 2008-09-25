@@ -47,73 +47,12 @@ namespace Pavel2.GUI {
             }
             if (visualizationData is LinkItem) {
                 LinkItem lItem = (LinkItem)visualizationData;
-                RowDefinition row = new RowDefinition();
-                row.Height = GridLength.Auto;
-                visStackPanel.RowDefinitions.Add(row);
-
-                Button sep = new Button();
-                Image sepImg = new Image();
-                sepImg.Source = new BitmapImage(new Uri("Icons/table_multiple.png", UriKind.Relative));
-                Label sepLabel = new Label();
-                sepLabel.Content = "Show separate";
-                StackPanel sepStack = new StackPanel();
-                sepStack.Orientation = Orientation.Horizontal;
-                sepStack.Children.Add(sepImg);
-                sepStack.Children.Add(sepLabel);
-                sep.Content = sepStack;
-                sep.Click += sep_Click;
-                if (!lItem.IsCombined) sep.IsEnabled = false;
-
-                Button tog = new Button();
-                Image togImg = new Image();
-                togImg.Source = new BitmapImage(new Uri("Icons/table_link.png", UriKind.Relative));
-                Label togLabel = new Label();
-                togLabel.Content = "Show combined";
-                StackPanel togStack = new StackPanel();
-                togStack.Orientation = Orientation.Horizontal;
-                togStack.Children.Add(togImg);
-                togStack.Children.Add(togLabel);
-                tog.Content = togStack;
-                tog.Click += tog_Click;
-                if (!lItem.IsCombineable || lItem.IsCombined) tog.IsEnabled = false;
-                Grid stack = new Grid();
-                stack.ColumnDefinitions.Add(new ColumnDefinition());
-                ColumnDefinition cTmp = new ColumnDefinition();
-                cTmp.Width = GridLength.Auto;
-                stack.ColumnDefinitions.Add(cTmp);
-                ToolBar bar = new ToolBar();
-                bar.Items.Add(sep);
-                bar.Items.Add(tog);
-                stack.Children.Add(bar);
-                Grid.SetRow(stack, 0);
-                visStackPanel.Children.Add(stack);
-
-
-                ToolBar display = new ToolBar();
-                stack.Children.Add(display);
-                Grid.SetColumn(display, 1);
-                Button list = new Button();
-                Image listImg = new Image();
-                listImg.ToolTip = "List View";
-                if (lItem.IsCombined) list.Visibility = Visibility.Hidden;
-                listImg.Source = new BitmapImage(new Uri("Icons/list.png", UriKind.Relative));
-                list.Content = listImg;
-                Button grid = new Button();
-                Image gridImg = new Image();
-                gridImg.ToolTip = "Grid View";
-                if (lItem.IsCombined) grid.Visibility = Visibility.Hidden;
-                gridImg.Source = new BitmapImage(new Uri("Icons/grid.png", UriKind.Relative));
-                grid.Content = gridImg;
-                display.Items.Add(list);
-                display.Items.Add(grid);
                 if (lItem.IsCombined) {
                     ProjectTreeItem ptItem = lItem.CombItem;
                     VisTab visTab = new VisTab(ptItem);
-                    visStackPanel.RowDefinitions.Add(new RowDefinition());
-                    Grid.SetRow(visTab, 1);
                     visStackPanel.Children.Add(visTab);
                 } else {
-                    int i = 1;
+                    int i = 0;
                     foreach (DataProjectTreeItem item in lItem.DataItems) {
                         visStackPanel.RowDefinitions.Add(new RowDefinition());
                         VisTab visTab = new VisTab(item);
@@ -140,20 +79,6 @@ namespace Pavel2.GUI {
                     img.Stretch = Stretch.Uniform;
                 }
                 visStackPanel.Children.Add(img);
-            }
-        }
-
-        void sep_Click(object sender, RoutedEventArgs e) {
-            if (this.VisualizationData is LinkItem) {
-                (this.VisualizationData as LinkItem).IsCombined = false;
-                Display();
-            }
-        }
-
-        void tog_Click(object sender, RoutedEventArgs e) {
-            if (this.VisualizationData is LinkItem) {
-                (this.VisualizationData as LinkItem).IsCombined = true;
-                Display();
             }
         }
 
