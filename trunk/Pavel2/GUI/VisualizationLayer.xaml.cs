@@ -54,10 +54,11 @@ namespace Pavel2.GUI {
                 Button sep = new Button();
                 sep.Content = "Separate";
                 sep.Click += sep_Click;
+                if (!lItem.IsCombined) sep.IsEnabled = false;
                 Button tog = new Button();
                 tog.Content = "Combined";
                 tog.Click += tog_Click;
-                if (!lItem.IsCombineable) tog.IsEnabled = false;
+                if (!lItem.IsCombineable || lItem.IsCombined) tog.IsEnabled = false;
                 Grid stack = new Grid();
                 stack.ColumnDefinitions.Add(new ColumnDefinition());
                 ColumnDefinition cTmp = new ColumnDefinition();
@@ -77,11 +78,13 @@ namespace Pavel2.GUI {
                 Button list = new Button();
                 Image listImg = new Image();
                 listImg.ToolTip = "List View";
+                if (lItem.IsCombined) list.Visibility = Visibility.Hidden;
                 listImg.Source = new BitmapImage(new Uri("Icons/list.png", UriKind.Relative));
                 list.Content = listImg;
                 Button grid = new Button();
                 Image gridImg = new Image();
                 gridImg.ToolTip = "Grid View";
+                if (lItem.IsCombined) grid.Visibility = Visibility.Hidden;
                 gridImg.Source = new BitmapImage(new Uri("Icons/grid.png", UriKind.Relative));
                 grid.Content = gridImg;
                 display.Items.Add(list);
