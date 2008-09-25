@@ -307,6 +307,10 @@ namespace Pavel2.GUI {
             dPTI = null;
         }
 
+        private void DeleteDataProjectTreeItem(DataProjectTreeItem dPTI, LinkItem lItem) {
+            lItem.RemoveDataItem(dPTI);
+        }
+
         //TODO: Dispose für alle
         private void DeleteLinkTreeItem(LinkItem lItem) {
             List<TreeViewItem> tmp = new List<TreeViewItem>();
@@ -468,13 +472,20 @@ namespace Pavel2.GUI {
                 parent = (TreeViewItem)item.Parent;
             }
             if (item.Tag is DataProjectTreeItem) {
-                DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag);
+                if (parent != null && parent.Tag is LinkItem) {
+                    DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag, parent.Tag as LinkItem);
+                    RemoveTreeViewItem(item);
+                } else {
+                    DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag);
+                    RemoveTreeViewItem(item);
+                }
             } else if (item.Tag is FolderProjectTreeItem) {
                 DeleteFolderProjectTreeItem(item);
+                RemoveTreeViewItem(item);
             } else if (item.Tag is LinkItem) {
                 DeleteLinkTreeItem(item.Tag as LinkItem);
+                RemoveTreeViewItem(item);
             }
-            RemoveTreeViewItem(item);
             if (parent != null) parent.IsSelected = true;
         }
 
