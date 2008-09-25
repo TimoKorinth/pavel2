@@ -226,13 +226,17 @@ namespace Pavel2.GUI {
         private void SetupOverlayControls() {
             Canvas xCanvas = new Canvas();
             Thumb tLeftX = new Thumb();
+            tLeftX.BorderThickness = new Thickness(1);
+            tLeftX.BorderBrush = System.Windows.Media.Brushes.Red;
             Thumb tRightX = new Thumb();
+            tRightX.BorderThickness = new Thickness(1);
+            tRightX.BorderBrush = System.Windows.Media.Brushes.Red;
             tLeftX.Tag = dataGrid.Columns[dataGrid.ScatterCol1];
             tRightX.Tag = dataGrid.Columns[dataGrid.ScatterCol1];
             tRightX.Width = 8;
             tLeftX.Width = 8;
-            tRightX.Height = 20;
-            tLeftX.Height = 20;
+            tRightX.Height = 25;
+            tLeftX.Height = 25;
             tRightX.DragDelta += tZoomX_DragDelta;
             tLeftX.DragDelta += tZoomX_DragDelta;
             tRightX.DragCompleted += tZoomX_DragCompleted;
@@ -244,11 +248,15 @@ namespace Pavel2.GUI {
 
             Canvas yCanvas = new Canvas();
             Thumb tDownY = new Thumb();
+            tDownY.BorderThickness = new Thickness(1);
+            tDownY.BorderBrush = System.Windows.Media.Brushes.Red;
             Thumb tUpY = new Thumb();
+            tUpY.BorderThickness = new Thickness(1);
+            tUpY.BorderBrush = System.Windows.Media.Brushes.Red;
             tDownY.Tag = dataGrid.Columns[dataGrid.ScatterCol2];
             tUpY.Tag = dataGrid.Columns[dataGrid.ScatterCol2];
-            tUpY.Width = 20;
-            tDownY.Width = 20;
+            tUpY.Width = 25;
+            tDownY.Width = 25;
             tUpY.Height = 8;
             tDownY.Height = 8;
             tUpY.DragDelta += tZoomY_DragDelta;
@@ -553,6 +561,8 @@ namespace Pavel2.GUI {
                     Canvas.SetRight(img, 2);
                     img.Tag = dataGrid.Columns[x];
                     img.Source = new BitmapImage(new Uri("Icons/cross.png", UriKind.Relative));
+                    img.Width = 20;
+                    img.Height = 20;
                     rect.Children.Add(img);
                     labels.Children.Add(rect);
                     rect.IsMouseDirectlyOverChanged += rect_IsMouseDirectlyOverChanged;
@@ -581,6 +591,8 @@ namespace Pavel2.GUI {
                             System.Windows.Controls.Image img = new System.Windows.Controls.Image();
                             img.Source = new BitmapImage(new Uri("Icons/zoom_in.png", UriKind.Relative));
                             img.Tag = cols;
+                            img.Width = 20;
+                            img.Height = 20;
                             Canvas.SetTop(img, 2);
                             Canvas.SetRight(img, 2);
                             img.MouseDown += btnZoom_Click;
