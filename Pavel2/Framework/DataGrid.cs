@@ -268,7 +268,30 @@ namespace Pavel2.Framework {
         }
 
         void createNewData_Click(object sender, RoutedEventArgs e) {
-
+            List<IPoint>[] newCols = new List<IPoint>[this.columns.Length];
+            for (int row = 0; row < this.selectedPoints.Length; row++) {
+                if (this.selectedPoints[row]) {
+                    for (int col = 0; col < this.columns.Length; col++) {
+                        if (newCols[col] == null) newCols[col] = new List<IPoint>();
+                        newCols[col].Add(this.columns[col].Points[row]);
+                    }
+                }
+            }
+            Column[] cols = new Column[this.columns.Length];
+            for (int i = 0; i < this.columns.Length; i++) {
+                cols[i] = new Column(this.columns[i].Header);
+                cols[i].Points = newCols[i].ToArray();
+                cols[i].DirUp = this.columns[i].DirUp;
+                cols[i].CalcMinMax();
+                cols[i].Visible = this.columns[i].Visible;
+            }
+            DataGrid dGrid = new DataGrid(cols);
+            DataProjectTreeItem dPTI = new DataProjectTreeItem(dGrid);
+            dPTI.Header = "Subset";
+            TreeViewItem tvItem = new TreeViewItem();
+            tvItem.Tag = dPTI;
+            MainData.MainWindow.projectTreeView.UpdateDataTreeViewItem(tvItem);
+            MainData.MainWindow.projectTreeView.InsertToProjectTree(tvItem, true, true);
         }
 
         void undoColVis_Click(object sender, RoutedEventArgs e) {
