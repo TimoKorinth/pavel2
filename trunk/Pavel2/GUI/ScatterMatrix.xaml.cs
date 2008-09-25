@@ -51,9 +51,6 @@ namespace Pavel2.GUI {
         WindowsFormsHost host = new WindowsFormsHost();
         Button lastBtn;
         int scaleNumber = 5;
-        bool scatterplot = false;
-        int col1;
-        int col2;
 
         public ScatterMatrix() {
             InitializeComponent();
@@ -71,7 +68,7 @@ namespace Pavel2.GUI {
             if (dataGrid == null) return;
             Gl.glEnable(Gl.GL_POINT_SMOOTH);
             float alpha = 1;
-            if (scatterplot) {
+            if (dataGrid.IsScatterplot) {
                 if (dataGrid.MaxPoints < 100) {
                     Gl.glPointSize(15f);
                     alpha = 0.9f;
@@ -94,13 +91,13 @@ namespace Pavel2.GUI {
                                 Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(alpha));
                             }
                         }
-                        double xCo = Normalize(dataGrid.DoubleDataField[row][col1], dataGrid.Columns[col1]);
-                        double yCo = Normalize(dataGrid.DoubleDataField[row][col2], dataGrid.Columns[col2]);
+                        double xCo = Normalize(dataGrid.DoubleDataField[row][dataGrid.ScatterCol1], dataGrid.Columns[dataGrid.ScatterCol1]);
+                        double yCo = Normalize(dataGrid.DoubleDataField[row][dataGrid.ScatterCol2], dataGrid.Columns[dataGrid.ScatterCol2]);
                         if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
                             continue;
                         }
-                        if (!dataGrid.Columns[col1].DirUp) xCo = 1 - xCo;
-                        if (!dataGrid.Columns[col2].DirUp) yCo = 1 - yCo;
+                        if (!dataGrid.Columns[dataGrid.ScatterCol1].DirUp) xCo = 1 - xCo;
+                        if (!dataGrid.Columns[dataGrid.ScatterCol2].DirUp) yCo = 1 - yCo;
                         Gl.glLoadName(row);
                         Gl.glBegin(Gl.GL_POINTS);
                         Gl.glVertex2d(xCo, yCo);
@@ -111,13 +108,13 @@ namespace Pavel2.GUI {
                 Gl.glColor4fv(ColorManagement.CurrentSelectionColor.RGBwithA(0.8f));
                 for (int row = 0; row < dataGrid.MaxPoints; row++) {
                     if (dataGrid.SelectedPoints[row]) {
-                        double xCo = Normalize(dataGrid.DoubleDataField[row][col1], dataGrid.Columns[col1]);
-                        double yCo = Normalize(dataGrid.DoubleDataField[row][col2], dataGrid.Columns[col2]);
+                        double xCo = Normalize(dataGrid.DoubleDataField[row][dataGrid.ScatterCol1], dataGrid.Columns[dataGrid.ScatterCol1]);
+                        double yCo = Normalize(dataGrid.DoubleDataField[row][dataGrid.ScatterCol2], dataGrid.Columns[dataGrid.ScatterCol2]);
                         if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
                             continue;
                         }
-                        if (!dataGrid.Columns[col1].DirUp) xCo = 1 - xCo;
-                        if (!dataGrid.Columns[col2].DirUp) yCo = 1 - yCo;
+                        if (!dataGrid.Columns[dataGrid.ScatterCol1].DirUp) xCo = 1 - xCo;
+                        if (!dataGrid.Columns[dataGrid.ScatterCol2].DirUp) yCo = 1 - yCo;
                         Gl.glLoadName(row);
                         Gl.glBegin(Gl.GL_POINTS);
                         Gl.glVertex2d(xCo, yCo);
@@ -201,7 +198,7 @@ namespace Pavel2.GUI {
             Gl.glColor3f(0.5f, 0.5f, 0.5f);
             Gl.glDisable(Gl.GL_LINE_SMOOTH);
             Gl.glLineWidth(2f);
-            if (scatterplot) {
+            if (dataGrid.IsScatterplot) {
                 Gl.glBegin(Gl.GL_LINES);
                 Gl.glVertex2d(0, 0);
                 Gl.glVertex2d(1, 0);
@@ -230,8 +227,8 @@ namespace Pavel2.GUI {
             Canvas xCanvas = new Canvas();
             Thumb tLeftX = new Thumb();
             Thumb tRightX = new Thumb();
-            tLeftX.Tag = dataGrid.Columns[col1];
-            tRightX.Tag = dataGrid.Columns[col1];
+            tLeftX.Tag = dataGrid.Columns[dataGrid.ScatterCol1];
+            tRightX.Tag = dataGrid.Columns[dataGrid.ScatterCol1];
             tRightX.Width = 8;
             tLeftX.Width = 8;
             tRightX.Height = 20;
@@ -248,8 +245,8 @@ namespace Pavel2.GUI {
             Canvas yCanvas = new Canvas();
             Thumb tDownY = new Thumb();
             Thumb tUpY = new Thumb();
-            tDownY.Tag = dataGrid.Columns[col2];
-            tUpY.Tag = dataGrid.Columns[col2];
+            tDownY.Tag = dataGrid.Columns[dataGrid.ScatterCol2];
+            tUpY.Tag = dataGrid.Columns[dataGrid.ScatterCol2];
             tUpY.Width = 20;
             tDownY.Width = 20;
             tUpY.Height = 8;
@@ -406,7 +403,7 @@ namespace Pavel2.GUI {
         void btnBack_Click(object sender, RoutedEventArgs e) {
             Button btn = sender as Button;
             if (btn == null) return;
-            scatterplot = false;
+            dataGrid.IsScatterplot = false;
             SetLabels();
             RenderScene();
             visImage.Source = TakeScreenshot();
@@ -416,9 +413,9 @@ namespace Pavel2.GUI {
         void btnSwitch_Click(object sender, RoutedEventArgs e) {
             Button btn = sender as Button;
             if (btn == null) return;
-            int tmp = col1;
-            col1 = col2;
-            col2 = tmp;
+            int tmp = dataGrid.ScatterCol1;
+            dataGrid.ScatterCol1 = dataGrid.ScatterCol2;
+            dataGrid.ScatterCol2 = tmp;
             SetLabels();
             RenderScene();
             visImage.Source = TakeScreenshot();
@@ -449,7 +446,7 @@ namespace Pavel2.GUI {
             togglePanel.Children.Clear();
             xLabels.Children.Clear();
             yLabels.Children.Clear();
-            if (scatterplot) {
+            if (dataGrid.IsScatterplot) {
                 SetupToggleButtons();
                 xLabels.ColumnDefinitions.Clear();
                 yLabels.RowDefinitions.Clear();
@@ -462,7 +459,7 @@ namespace Pavel2.GUI {
                 yLabels.ColumnDefinitions[0].Width = GridLength.Auto;
 
                 TextBlock xCol = new TextBlock();
-                xCol.Text = dataGrid.Columns[col1].Header;
+                xCol.Text = dataGrid.Columns[dataGrid.ScatterCol1].Header;
                 xCol.HorizontalAlignment = HorizontalAlignment.Center;
                 xCol.FontSize = 12;
                 xCol.FontWeight = FontWeights.Bold;
@@ -475,7 +472,7 @@ namespace Pavel2.GUI {
                 TextBlock yCol = new TextBlock();
                 yCol.LayoutTransform = new RotateTransform(-90);
                 yCol.VerticalAlignment = VerticalAlignment.Center;
-                yCol.Text = dataGrid.Columns[col2].Header;
+                yCol.Text = dataGrid.Columns[dataGrid.ScatterCol2].Header;
                 yCol.Margin = new Thickness(5);
                 yCol.FontWeight = FontWeights.Bold;
                 yCol.FontSize = 12;
@@ -484,19 +481,19 @@ namespace Pavel2.GUI {
                 Grid.SetColumn(yCol, 0);
                 Grid.SetRowSpan(yCol, scaleNumber);
 
-                double scaleStepX = (dataGrid.Columns[col1].Max - dataGrid.Columns[col1].Min) / (this.scaleNumber - 1);
-                double scaleStepY = (dataGrid.Columns[col2].Max - dataGrid.Columns[col2].Min) / (this.scaleNumber - 1);
+                double scaleStepX = (dataGrid.Columns[dataGrid.ScatterCol1].Max - dataGrid.Columns[dataGrid.ScatterCol1].Min) / (this.scaleNumber - 1);
+                double scaleStepY = (dataGrid.Columns[dataGrid.ScatterCol2].Max - dataGrid.Columns[dataGrid.ScatterCol2].Min) / (this.scaleNumber - 1);
                 double scaleTextX;
                 double scaleTextY;
-                if (dataGrid.Columns[col1].DirUp) {
-                    scaleTextX = dataGrid.Columns[col1].Min;
+                if (dataGrid.Columns[dataGrid.ScatterCol1].DirUp) {
+                    scaleTextX = dataGrid.Columns[dataGrid.ScatterCol1].Min;
                 } else {
-                    scaleTextX = dataGrid.Columns[col1].Max;
+                    scaleTextX = dataGrid.Columns[dataGrid.ScatterCol1].Max;
                 }
-                if (dataGrid.Columns[col2].DirUp) {
-                    scaleTextY = dataGrid.Columns[col2].Max;
+                if (dataGrid.Columns[dataGrid.ScatterCol2].DirUp) {
+                    scaleTextY = dataGrid.Columns[dataGrid.ScatterCol2].Max;
                 } else {
-                    scaleTextY = dataGrid.Columns[col2].Min;
+                    scaleTextY = dataGrid.Columns[dataGrid.ScatterCol2].Min;
                 }
                 for (int i = 0; i < this.scaleNumber; i++) {
                     if (i != scaleNumber - 1) {
@@ -511,7 +508,7 @@ namespace Pavel2.GUI {
                         sTextX = sTextX.Substring(0, 10) + "...";
                     }
                     scaleX.Text = sTextX;
-                    if (dataGrid.Columns[col1].DirUp) {
+                    if (dataGrid.Columns[dataGrid.ScatterCol1].DirUp) {
                         scaleTextX += scaleStepX;
                     } else {
                         scaleTextX -= scaleStepX;
@@ -522,7 +519,7 @@ namespace Pavel2.GUI {
                         sTextY = sTextY.Substring(0, 10) + "...";
                     }
                     scaleY.Text = sTextY;
-                    if (dataGrid.Columns[col2].DirUp) {
+                    if (dataGrid.Columns[dataGrid.ScatterCol2].DirUp) {
                         scaleTextY -= scaleStepY;
                     } else {
                         scaleTextY += scaleStepY;
@@ -614,9 +611,9 @@ namespace Pavel2.GUI {
             //        dataGrid.ColIsVisible(col, false);
             //    }
             //}
-            scatterplot = true;
-            col1 = dataGrid.GetIndex(cols[0]);
-            col2 = dataGrid.GetIndex(cols[1]);
+            dataGrid.IsScatterplot = true;
+            dataGrid.ScatterCol1 = dataGrid.GetIndex(cols[0]);
+            dataGrid.ScatterCol2 = dataGrid.GetIndex(cols[1]);
             step = (double)1 / dataGrid.Columns.Length;
             SetLabels();
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
@@ -766,7 +763,7 @@ namespace Pavel2.GUI {
             int h;
             int mx;
             int my;
-            if (scatterplot) {
+            if (dataGrid.IsScatterplot) {
                 sx = (int)((startPoint.X - yLabels.ActualWidth - visImage.Margin.Left) * wfPA.Width / visImage.ActualWidth);
                 sy = (int)((startPoint.Y - visImage.Margin.Top) * wfPA.Height / visImage.ActualHeight);
                 ex = (int)((endPoint.X - yLabels.ActualWidth - visImage.Margin.Left) * wfPA.Width / visImage.ActualWidth);
