@@ -28,6 +28,25 @@ namespace Pavel2.Framework {
         private Button undoColVis;
         private bool[] selectedPoints;
 
+        private bool isScatterplot = false;
+        private int scatterCol1;
+        private int scatterCol2;
+        [Browsable(false)]
+        public bool IsScatterplot {
+            get { return isScatterplot; }
+            set { isScatterplot = value; }
+        }
+        [Browsable(false)]
+        public int ScatterCol1 {
+            get { return scatterCol1; }
+            set { scatterCol1 = value; }
+        }
+        [Browsable(false)]
+        public int ScatterCol2 {
+            get { return scatterCol2; }
+            set { scatterCol2 = value; }
+        }
+
         [field: NonSerialized]
         public event EventHandler ColumnChanged;
         [field: NonSerialized]
