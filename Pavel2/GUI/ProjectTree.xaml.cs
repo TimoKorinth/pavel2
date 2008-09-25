@@ -66,9 +66,15 @@ namespace Pavel2.GUI {
             foreach (TreeViewItem tvItem in linkTreeViewItems) {
                 if (tvItem.Tag is LinkItem) {
                     LinkItem lItem = (LinkItem)tvItem.Tag;
-                    if (lItem.DataItems.Contains(dPTI)) {
+                    bool isIn = false;
+                    for (int i = 0; i < lItem.DataItems.Count; i++) {
+                        if (lItem.DataItems[i].OriginalData.Equals(dPTI)) {
+                            isIn = true;
+                        }
+                    }
+                    if (isIn) {
                         foreach (DataProjectTreeItem d in lItem.DataItems) {
-                            if (!relData.Contains(d)) relData.Add(d);
+                            if (!relData.Contains(d.OriginalData)) relData.Add(d.OriginalData);
                         }
                         relData.Remove(dPTI);
                     }
@@ -505,13 +511,11 @@ namespace Pavel2.GUI {
             foreach (TreeViewItem tvItem in projectTree.SelectedItems) {
                 if (tvItem.Tag is DataProjectTreeItem) {
                     DataProjectTreeItem dPTI = tvItem.Tag as DataProjectTreeItem;
-                    lItem.AddDataItem(dPTI);
-                    //if (lItem.Header == null) lItem.Header = dPTI.Header;
+                    lItem.AddDataItem(dPTI.Clone());
                 }
                 if (tvItem.Tag is ImageTreeItem) {
                     ImageTreeItem img = (ImageTreeItem)tvItem.Tag;
                     lItem.AddImage(img);
-                    //if (lItem.Header == null) lItem.Header = img.Header;
                 }
             }
             lItem.Header = "new Group";
