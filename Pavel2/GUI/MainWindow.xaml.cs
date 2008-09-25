@@ -168,11 +168,36 @@ namespace Pavel2.GUI
                     comb.Click += comb_Click;
                     visToolBar.Children.Add(comb);
                 }
-                Button list = GetToolBarButton("List", new BitmapImage(new Uri("Icons/list.png", UriKind.Relative)), "List View");
-                visToolBar.Children.Add(list);
-                Button grid = GetToolBarButton("Grid", new BitmapImage(new Uri("Icons/grid.png", UriKind.Relative)), "Grid View");
-                visToolBar.Children.Add(grid);
+                if (item.IsGridView) {
+                    Button list = GetToolBarButton("Stack", new BitmapImage(new Uri("Icons/list.png", UriKind.Relative)), "Stack View");
+                    list.Tag = item;
+                    list.Click += list_Click;
+                    visToolBar.Children.Add(list);
+                } else {
+                    Button grid = GetToolBarButton("Grid", new BitmapImage(new Uri("Icons/grid.png", UriKind.Relative)), "Grid View");
+                    grid.Click += grid_Click;
+                    grid.Tag = item;
+                    visToolBar.Children.Add(grid);
+                }
             }
+        }
+
+        void grid_Click(object sender, RoutedEventArgs e) {
+            Button grid = sender as Button;
+            if (grid == null) return;
+            LinkItem item = grid.Tag as LinkItem;
+            item.IsGridView = true;
+            visualizationLayer.VisualizationData = item;
+            SetupLinkToolBarButtons(item);
+        }
+
+        void list_Click(object sender, RoutedEventArgs e) {
+            Button list = sender as Button;
+            if (list == null) return;
+            LinkItem item = list.Tag as LinkItem;
+            item.IsGridView = false;
+            visualizationLayer.VisualizationData = item;
+            SetupLinkToolBarButtons(item);
         }
 
         void sep_Click(object sender, RoutedEventArgs e) {
