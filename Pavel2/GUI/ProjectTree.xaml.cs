@@ -444,6 +444,8 @@ namespace Pavel2.GUI {
             fPTI.Header = "new Folder";
             newItem.Tag = fPTI;
             InsertToProjectTree(newItem, true, true);
+            this.editItem = newItem;
+            newItem.HeaderTemplate = (DataTemplate)this.FindResource("EditTemplate");
         }
 
         private void ContextMenu_RemoveItem(object sender, RoutedEventArgs e) {
@@ -469,6 +471,8 @@ namespace Pavel2.GUI {
             dPTI.Header = "new Data Set";
             item.Tag = dPTI;
             InsertToProjectTree(item, true, true);
+            this.editItem = item;
+            item.HeaderTemplate = (DataTemplate)this.FindResource("EditTemplate");
         }
 
         private void ContextMenu_CreateNewGroup(object sender, RoutedEventArgs e) {
@@ -478,19 +482,22 @@ namespace Pavel2.GUI {
                 if (tvItem.Tag is DataProjectTreeItem) {
                     DataProjectTreeItem dPTI = tvItem.Tag as DataProjectTreeItem;
                     lItem.AddDataItem(dPTI);
-                    if (lItem.Header == null) lItem.Header = dPTI.Header;
+                    //if (lItem.Header == null) lItem.Header = dPTI.Header;
                 }
                 if (tvItem.Tag is ImageTreeItem) {
                     ImageTreeItem img = (ImageTreeItem)tvItem.Tag;
                     lItem.AddImage(img);
-                    if (lItem.Header == null) lItem.Header = img.Header;
+                    //if (lItem.Header == null) lItem.Header = img.Header;
                 }
             }
+            lItem.Header = "new Group";
             newItem.Tag = lItem;
             InsertToProjectTree(newItem, true, true);
             UpdateLinkItem(newItem);
             linkTreeViewItems.Add(newItem);
             newItem.IsSelected = true;
+            this.editItem = newItem;
+            newItem.HeaderTemplate = (DataTemplate)this.FindResource("EditTemplate");
         }
 
         #endregion
