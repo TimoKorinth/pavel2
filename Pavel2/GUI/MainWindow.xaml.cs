@@ -148,7 +148,7 @@ namespace Pavel2.GUI
         }
 
         public void SetupToolBarButtons(DataGrid d) {
-            visToolBar.Children.Clear();
+            if (!(visualizationLayer.VisualizationData is LinkItem)) visToolBar.Children.Clear();
             foreach (Button btn in d.Buttons) {
                 visToolBar.Children.Add(btn);
             }
@@ -191,6 +191,13 @@ namespace Pavel2.GUI
             item.IsCombined = true;
             visualizationLayer.VisualizationData = item;
             SetupLinkToolBarButtons(item);
+
+            AddDataGridOptions(item.CombItem.DataGrid);
+            SetupToolBarButtons(item.CombItem.DataGrid);
+            pointStatus.Visibility = Visibility.Visible;
+            pointStatus.Content = item.CombItem.DataGrid.MaxPoints + " Points";
+            selectionStatus.Visibility = Visibility.Collapsed;
+            item.CombItem.DataGrid.ShowNumberSelPoints();
         }
         
         public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
@@ -281,6 +288,14 @@ namespace Pavel2.GUI
                 if (item.Tag is LinkItem) {
                     LinkItem lItem = item.Tag as LinkItem;
                     SetupLinkToolBarButtons(lItem);
+                    if (lItem.IsCombined) {
+                        AddDataGridOptions(lItem.CombItem.DataGrid);
+                        SetupToolBarButtons(lItem.CombItem.DataGrid);
+                        pointStatus.Visibility = Visibility.Visible;
+                        pointStatus.Content = lItem.CombItem.DataGrid.MaxPoints + " Points";
+                        selectionStatus.Visibility = Visibility.Collapsed;
+                        lItem.CombItem.DataGrid.ShowNumberSelPoints();
+                    }
                 }
                 visualizationLayer.VisualizationData = item.Tag;
                 ShowParserProperties();
@@ -318,6 +333,10 @@ namespace Pavel2.GUI
             if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
                 DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
                 visualizationLayer.VisualizationData = dPTI;
+            }
+            if (projectTreeView.SelectedItem.Tag is LinkItem) {
+                LinkItem item = (LinkItem)projectTreeView.SelectedItem.Tag;
+                visualizationLayer.VisualizationData = item;
             }
         }
 
