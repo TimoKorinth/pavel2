@@ -26,6 +26,8 @@ namespace Pavel2.Framework {
         private Button undoZoom;
         [NonSerialized()]
         private Button undoColVis;
+        [NonSerialized()]
+        private Button createNewData;
         private bool[] selectedPoints;
 
         private bool isScatterplot = false;
@@ -81,12 +83,13 @@ namespace Pavel2.Framework {
         [Browsable(false)]
         public List<Button> Buttons {
             get {
-                if (undoColVis == null || undoZoom == null) {
+                if (undoColVis == null || undoZoom == null || createNewData == null) {
                     InitButtons();
                 }
                 List<Button> buttons = new List<Button>();
                 buttons.Add(undoZoom);
                 buttons.Add(undoColVis);
+                buttons.Add(createNewData);
                 return buttons; 
             }
         }
@@ -107,8 +110,13 @@ namespace Pavel2.Framework {
             for (int i = 0; i < selectedPoints.Length; i++) {
                 if (selectedPoints[i]) index++;
             }
-            if (index > 0) MainData.MainWindow.selectionStatus.Visibility = Visibility.Visible;
-            else MainData.MainWindow.selectionStatus.Visibility = Visibility.Collapsed;
+            if (index > 0) {
+                MainData.MainWindow.selectionStatus.Visibility = Visibility.Visible;
+                createNewData.Visibility = Visibility.Visible;
+            } else {
+                MainData.MainWindow.selectionStatus.Visibility = Visibility.Collapsed;
+                createNewData.Visibility = Visibility.Collapsed;
+            }
             MainData.MainWindow.selectionStatus.Content = index + " selected Points";
         }
 
@@ -253,6 +261,14 @@ namespace Pavel2.Framework {
             undoColVis = MainData.MainWindow.GetToolBarButton("Columns", new BitmapImage(new Uri("Icons/timeline_marker.png", UriKind.Relative)), "Show all columns");
             undoColVis.Visibility = Visibility.Collapsed;
             undoColVis.Click += undoColVis_Click;
+
+            createNewData = MainData.MainWindow.GetToolBarButton("Create", new BitmapImage(new Uri("Icons/table_go.png", UriKind.Relative)), "Create new data from selected points");
+            createNewData.Visibility = Visibility.Collapsed;
+            createNewData.Click += createNewData_Click;
+        }
+
+        void createNewData_Click(object sender, RoutedEventArgs e) {
+
         }
 
         void undoColVis_Click(object sender, RoutedEventArgs e) {
