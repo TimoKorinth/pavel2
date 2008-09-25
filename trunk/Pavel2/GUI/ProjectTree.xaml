@@ -8,7 +8,9 @@
         <DataTemplate x:Key="EditTemplate">
             <StackPanel Orientation="Horizontal">
                 <Image Name="img"  Width="16" Height="16" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag, Converter={StaticResource HeaderToImageConverterPT}}"/>
-                <TextBox Margin="3,0,0,0" VerticalAlignment="Center" Style="{x:Null}" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag.Header, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Margin="3,0,0,0" VerticalAlignment="Center" Style="{x:Null}"
+                         Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Tag.Header, UpdateSourceTrigger=PropertyChanged}"
+                         BorderThickness="0" Background="#d9d9d9" FontSize="11" />
             </StackPanel>
         </DataTemplate>
 
