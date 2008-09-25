@@ -330,7 +330,10 @@ namespace Pavel2.GUI {
 
         public void Render(Pavel2.Framework.DataGrid dataGrid) {
             this.dataGrid = dataGrid;
-            comp = MainData.MainWindow.visualizationLayer.VisualizationData as CombinedDataItem;
+            if (MainData.MainWindow.visualizationLayer.VisualizationData is LinkItem) {
+                LinkItem link = MainData.MainWindow.visualizationLayer.VisualizationData as LinkItem;
+                if (link.IsCombined) comp = link.CombItem;
+            }
             if (dataGrid == null) return;
             CreateArrays();
             if (dataGrid.Changed[this.GetType()]) SelectPoints();
