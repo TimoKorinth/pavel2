@@ -22,6 +22,7 @@ namespace Pavel2.Framework {
             Column c = new Column(col.Header);
             c.Points = (IPoint[])col.Points.Clone();
             MainData.Columns.Add(c);
+            c.CalcMinMax();
             return c;
         }
 
