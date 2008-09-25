@@ -131,7 +131,7 @@ namespace Pavel2.GUI
         public Button GetToolBarButton(String desc, ImageSource imgSource, String toolTip) {
             Button btn = new Button();
             btn.Margin = new Thickness(0,0,5,0);
-            btn.Width = 50;
+            btn.Width = 60;
             btn.Height = 50;
             StackPanel stack = new StackPanel();
             Image img = new Image();
