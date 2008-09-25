@@ -56,10 +56,10 @@ namespace Pavel2.GUI {
         private System.Windows.Point mouseDragStartPoint;
         private System.Windows.Point startPoint;
         private System.Windows.Point endPoint;
-        private float lrAngle;
-        private float udAngle;
-        private float lrAngleCurrent;
-        private float udAngleCurrent;
+        private float lrAngle = 20;
+        private float udAngle = 20;
+        private float lrAngleCurrent = 20;
+        private float udAngleCurrent = 20;
         private float lrAngleTemp;
         private float udAngleTemp;
         private float zoom = 0f;
