@@ -52,11 +52,28 @@ namespace Pavel2.GUI {
                 visStackPanel.RowDefinitions.Add(row);
 
                 Button sep = new Button();
-                sep.Content = "Separate";
+                Image sepImg = new Image();
+                sepImg.Source = new BitmapImage(new Uri("Icons/table_multiple.png", UriKind.Relative));
+                Label sepLabel = new Label();
+                sepLabel.Content = "Show separate";
+                StackPanel sepStack = new StackPanel();
+                sepStack.Orientation = Orientation.Horizontal;
+                sepStack.Children.Add(sepImg);
+                sepStack.Children.Add(sepLabel);
+                sep.Content = sepStack;
                 sep.Click += sep_Click;
                 if (!lItem.IsCombined) sep.IsEnabled = false;
+
                 Button tog = new Button();
-                tog.Content = "Combined";
+                Image togImg = new Image();
+                togImg.Source = new BitmapImage(new Uri("Icons/table_link.png", UriKind.Relative));
+                Label togLabel = new Label();
+                togLabel.Content = "Show combined";
+                StackPanel togStack = new StackPanel();
+                togStack.Orientation = Orientation.Horizontal;
+                togStack.Children.Add(togImg);
+                togStack.Children.Add(togLabel);
+                tog.Content = togStack;
                 tog.Click += tog_Click;
                 if (!lItem.IsCombineable || lItem.IsCombined) tog.IsEnabled = false;
                 Grid stack = new Grid();

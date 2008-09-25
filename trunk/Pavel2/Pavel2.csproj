@@ -349,5 +349,8 @@
     <Resource Include="GUI\Icons\grid.png" />
     <Resource Include="GUI\Icons\list.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_link.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
