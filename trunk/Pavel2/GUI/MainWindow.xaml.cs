@@ -38,6 +38,7 @@ namespace Pavel2.GUI
             EmptyPreviewPanel();
             RemoveOptionsPanel();
             optionsExpander.IsExpanded = true;
+            projectTreeView.root.IsSelected = true;
 		}
 
         #region Expander Event Handler

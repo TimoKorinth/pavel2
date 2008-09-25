@@ -155,7 +155,6 @@ namespace Pavel2.GUI {
             fPTI.Header = "Root";
             root.Tag = fPTI;
             projectTree.Items.Add(root);
-            root.IsSelected = true;
         }
 
         private void AddDirectory(DirectoryInfo dir, TreeViewItem root) {
