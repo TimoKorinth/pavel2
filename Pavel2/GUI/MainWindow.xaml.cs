@@ -130,6 +130,7 @@ namespace Pavel2.GUI
 
         public Button GetToolBarButton(String desc, ImageSource imgSource, String toolTip) {
             Button btn = new Button();
+            btn.Margin = new Thickness(0,0,5,0);
             btn.Width = 50;
             btn.Height = 50;
             StackPanel stack = new StackPanel();
@@ -151,6 +152,45 @@ namespace Pavel2.GUI
             foreach (Button btn in d.Buttons) {
                 visToolBar.Children.Add(btn);
             }
+        }
+
+        public void SetupLinkToolBarButtons(LinkItem item) {
+            visToolBar.Children.Clear();
+            if (item.IsCombined) {
+                Button sep = GetToolBarButton("Separate", new BitmapImage(new Uri("Icons/table_multiple.png", UriKind.Relative)), "Show separate");
+                sep.Tag = item;
+                sep.Click += sep_Click;
+                visToolBar.Children.Add(sep);
+            } else {
+                if (item.IsCombineable) {
+                    Button comb = GetToolBarButton("Combined", new BitmapImage(new Uri("Icons/table_link.png", UriKind.Relative)), "Show combined");
+                    comb.Tag = item;
+                    comb.Click += comb_Click;
+                    visToolBar.Children.Add(comb);
+                }
+                Button list = GetToolBarButton("List", new BitmapImage(new Uri("Icons/list.png", UriKind.Relative)), "List View");
+                visToolBar.Children.Add(list);
+                Button grid = GetToolBarButton("Grid", new BitmapImage(new Uri("Icons/grid.png", UriKind.Relative)), "Grid View");
+                visToolBar.Children.Add(grid);
+            }
+        }
+
+        void sep_Click(object sender, RoutedEventArgs e) {
+            Button sep = sender as Button;
+            if (sep == null) return;
+            LinkItem item = sep.Tag as LinkItem;
+            item.IsCombined = false;
+            visualizationLayer.VisualizationData = item;
+            SetupLinkToolBarButtons(item);
+        }
+
+        void comb_Click(object sender, RoutedEventArgs e) {
+            Button comb = sender as Button;
+            if (comb == null) return;
+            LinkItem item = comb.Tag as LinkItem;
+            item.IsCombined = true;
+            visualizationLayer.VisualizationData = item;
+            SetupLinkToolBarButtons(item);
         }
         
         public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
@@ -237,6 +277,10 @@ namespace Pavel2.GUI
                     pointStatus.Content = pTI.DataGrid.MaxPoints + " Points";
                     selectionStatus.Visibility = Visibility.Collapsed;
                     pTI.DataGrid.ShowNumberSelPoints();
+                }
+                if (item.Tag is LinkItem) {
+                    LinkItem lItem = item.Tag as LinkItem;
+                    SetupLinkToolBarButtons(lItem);
                 }
                 visualizationLayer.VisualizationData = item.Tag;
                 ShowParserProperties();
