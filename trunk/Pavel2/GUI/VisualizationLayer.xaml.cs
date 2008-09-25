@@ -57,14 +57,16 @@ namespace Pavel2.GUI {
                     if (lItem.IsGridView) {
                         WrapPanel wrap = new WrapPanel();
                         scroller.Content = wrap;
+                        double width = this.ActualWidth / Math.Ceiling(Math.Sqrt(lItem.DataItems.Count + lItem.Images.Count));
+                        double height = this.ActualHeight / Math.Ceiling((lItem.DataItems.Count + lItem.Images.Count) / Math.Ceiling(Math.Sqrt(lItem.DataItems.Count + lItem.Images.Count)));
                         foreach (DataProjectTreeItem item in lItem.DataItems) {
                             VisTab visTab = new VisTab(item);
                             visTab.MinHeight = 150;
                             visTab.MinWidth = 200;
                             visTab.MaxHeight = 500;
                             visTab.MaxWidth = 600;
-                            visTab.Height = this.ActualHeight / Math.Ceiling(lItem.DataItems.Count / Math.Ceiling(Math.Sqrt(lItem.DataItems.Count)));
-                            visTab.Width = this.ActualWidth / Math.Ceiling(Math.Sqrt(lItem.DataItems.Count));
+                            visTab.Height = height;
+                            visTab.Width = width;
                             wrap.Children.Add(visTab);
                         }
                         foreach (ImageTreeItem imgItem in lItem.Images) {
@@ -75,8 +77,8 @@ namespace Pavel2.GUI {
                             img.MaxWidth = 600;
                             img.Source = imgItem.ImageSource;
                             img.Stretch = Stretch.Uniform;
-                            img.Height = this.ActualHeight / lItem.DataItems.Count;
-                            img.Width = this.ActualWidth / lItem.DataItems.Count;
+                            img.Height = height;
+                            img.Width = width;
                             if (img.Source.Height < img.Height) {
                                 img.Height = img.Source.Height;
                                 img.MinHeight = img.Height;
