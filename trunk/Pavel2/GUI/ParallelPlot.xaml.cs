@@ -218,10 +218,14 @@ namespace Pavel2.GUI {
 
                 Thumb tDown = new Thumb();
                 Thumb tUp = new Thumb();
+                tDown.BorderThickness = new Thickness(1);
+                tDown.BorderBrush = System.Windows.Media.Brushes.Red;
+                tUp.BorderThickness = new Thickness(1);
+                tUp.BorderBrush = System.Windows.Media.Brushes.Red;
                 tDown.Tag = dataGrid.Columns[col];
                 tUp.Tag = dataGrid.Columns[col];
-                tUp.Width = 20;
-                tDown.Width = 20;
+                tUp.Width = 25;
+                tDown.Width = 25;
                 tUp.Height = 8;
                 tDown.Height = 8;
                 tUp.DragDelta += tZoom_DragDelta;
