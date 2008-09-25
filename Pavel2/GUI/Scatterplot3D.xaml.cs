@@ -303,6 +303,7 @@ namespace Pavel2.GUI {
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
             wfPA.SetupViewPort();
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
+            if (dataGrid.Columns.Length < 3) return;
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
             Gl.glLoadIdentity();
             Gl.glRotatef((udAngleCurrent), 1.0f, 0.0f, 0.0f);
