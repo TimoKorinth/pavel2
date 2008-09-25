@@ -12,6 +12,12 @@ namespace Pavel2.Framework {
         private String header;
         private bool isCombined = false;
         private CombinedDataItem combItem;
+        private bool isGridView = false;
+
+        public bool IsGridView {
+            get { return isGridView; }
+            set { isGridView = value; }
+        }
 
         public CombinedDataItem CombItem {
             get { return combItem; }
@@ -54,17 +60,17 @@ namespace Pavel2.Framework {
         public LinkItem() {
             dataItems = new List<DataProjectTreeItem>();
             images = new List<ImageTreeItem>();
-            combItem = new CombinedDataItem(dataItems);
+            if (IsCombineable) combItem = new CombinedDataItem(dataItems);
         }
 
         public void AddDataItem(DataProjectTreeItem dataItem) {
             this.dataItems.Add(dataItem);
-            combItem = new CombinedDataItem(dataItems);
+            if (IsCombineable) combItem = new CombinedDataItem(dataItems);
         }
 
         public void RemoveDataItem(DataProjectTreeItem dataItem) {
             this.dataItems.Remove(dataItem);
-            combItem = new CombinedDataItem(dataItems);
+            if (IsCombineable) combItem = new CombinedDataItem(dataItems);
         }
 
         public void AddImage(ImageTreeItem img) {

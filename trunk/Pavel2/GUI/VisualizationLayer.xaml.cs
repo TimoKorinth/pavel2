@@ -25,7 +25,6 @@ namespace Pavel2.GUI {
             get { return visualizationData; }
             set { 
                 visualizationData = value;
-                //if (visualizationData is LinkItem) lastLinkItem = visualizationData as LinkItem;
                 Display();
             }
         }
@@ -52,21 +51,34 @@ namespace Pavel2.GUI {
                     VisTab visTab = new VisTab(ptItem);
                     visStackPanel.Children.Add(visTab);
                 } else {
-                    int i = 0;
-                    foreach (DataProjectTreeItem item in lItem.DataItems) {
-                        visStackPanel.RowDefinitions.Add(new RowDefinition());
-                        VisTab visTab = new VisTab(item);
-                        Grid.SetRow(visTab, i);
-                        visStackPanel.Children.Add(visTab);
-                        i++;
-                    }
-                    foreach (ImageTreeItem imgItem in lItem.Images) {
-                        visStackPanel.RowDefinitions.Add(new RowDefinition());
-                        Image img = new Image();
-                        img.Source = imgItem.ImageSource;
-                        Grid.SetRow(img, i);
-                        visStackPanel.Children.Add(img);
-                        i++;
+                    ScrollViewer scroller = new ScrollViewer();
+                    scroller.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                    StackPanel stack = new StackPanel();
+                    scroller.Content = stack;
+                    visStackPanel.Children.Add(scroller);
+                    if (lItem.IsGridView) {
+
+                    } else {
+                        foreach (DataProjectTreeItem item in lItem.DataItems) {
+                            VisTab visTab = new VisTab(item);
+                            visTab.MinHeight = 150;
+                            visTab.Height = this.ActualHeight / lItem.DataItems.Count;
+                            visTab.MaxHeight = 500;
+                            stack.Children.Add(visTab);
+                        }
+                        foreach (ImageTreeItem imgItem in lItem.Images) {
+                            Image img = new Image();
+                            img.MinHeight = 150;
+                            img.Source = imgItem.ImageSource;
+                            img.Stretch = Stretch.Uniform;
+                            img.Height = this.ActualHeight / lItem.DataItems.Count;
+                            if (img.Source.Height < img.Height) {
+                                img.Height = img.Source.Height;
+                                img.MinHeight = img.Height;
+                            }
+                            img.MaxHeight = 500;
+                            stack.Children.Add(img);
+                        }
                     }
                 }
             }
