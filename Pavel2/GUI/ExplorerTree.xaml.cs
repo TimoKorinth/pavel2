@@ -74,5 +74,12 @@ namespace Pavel2.GUI {
             }
         }
 
+        private void directoryTree_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
+            TreeViewItem item = directoryTree.SelectedItem as TreeViewItem;
+            if (item != null && (item.Tag is FileInfo || item.Tag is DirectoryInfo)) {
+                if (item.Tag is FileInfo) MainData.MainWindow.projectTreeView.AddDataProjectTreeItem(item.Tag as FileInfo, null);
+            }
+        }
+
     }
 }
