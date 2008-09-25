@@ -108,7 +108,6 @@ namespace Pavel2.GUI {
                     if (lItem.IsCombined) {
                         tmp.BorderThickness = new Thickness(0,0,15,0);
                         tmp.BorderBrush = new SolidColorBrush(ColorManagement.GetColor(i + 2).MediaColor);
-                        tmp.BorderBrush.Opacity = 0.6;
                     }
                 }
                 for (int i = 0; i < lItem.Images.Count; i++) {
