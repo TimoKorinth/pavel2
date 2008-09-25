@@ -18,6 +18,13 @@ namespace Pavel2.Framework {
             get { return (Pavel2.GUI.MainWindow)Application.Current.MainWindow; }
         }
 
+        public static Column CopyColumn(Column col) {
+            Column c = new Column(col.Header);
+            c.Points = (IPoint[])col.Points.Clone();
+            MainData.Columns.Add(c);
+            return c;
+        }
+
         public static DataGrid AddColumns(Column[] columns) {
             Column[] cols = columns.Clone() as Column[];
             MainData.columns.AddRange(cols);

@@ -11,6 +11,12 @@ namespace Pavel2.Framework {
         private DataGrid dataGrid;
         private String filename;
         private Parser parser;
+        private DataProjectTreeItem originalData;
+
+        public DataProjectTreeItem OriginalData {
+            get { return originalData; }
+            set { originalData = value; }
+        }
 
         public Parser Parser {
             get { return parser; }
@@ -29,6 +35,22 @@ namespace Pavel2.Framework {
             set {
                 this.dataGrid = value;
             }
+        }
+
+        public DataProjectTreeItem Clone() {
+            Column[] cols = new Column[this.dataGrid.RealColumns.Length];
+            for (int i = 0; i < this.dataGrid.RealColumns.Length; i++) {
+                cols[i] = MainData.CopyColumn(this.dataGrid.RealColumns[i]);
+            }
+            DataGrid d = new DataGrid(cols);
+            DataProjectTreeItem data = new DataProjectTreeItem(d);
+            data.OriginalData = this;
+            data.filename = this.filename;
+            data.Header = this.Header;
+            data.LastVisualization = this.LastVisualization;
+            data.parser = this.parser;
+            data.Screenshot = this.Screenshot;
+            return data;
         }
 
         public DataProjectTreeItem(DataGrid dataGrid) {
