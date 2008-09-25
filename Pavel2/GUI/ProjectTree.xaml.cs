@@ -105,6 +105,11 @@ namespace Pavel2.GUI {
                     tmp.Tag = lItem.DataItems[i];
                     item.Items.Add(tmp);
                     UpdateDataTreeViewItem(tmp);
+                    if (lItem.IsCombined) {
+                        tmp.BorderThickness = new Thickness(0,0,15,0);
+                        tmp.BorderBrush = new SolidColorBrush(ColorManagement.GetColor(i + 2).MediaColor);
+                        tmp.BorderBrush.Opacity = 0.6;
+                    }
                 }
                 for (int i = 0; i < lItem.Images.Count; i++) {
                     TreeViewItem tmp = new TreeViewItem();
