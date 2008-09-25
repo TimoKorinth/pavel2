@@ -53,30 +53,57 @@ namespace Pavel2.GUI {
                 } else {
                     ScrollViewer scroller = new ScrollViewer();
                     scroller.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                    StackPanel stack = new StackPanel();
-                    scroller.Content = stack;
                     visStackPanel.Children.Add(scroller);
                     if (lItem.IsGridView) {
-
-                    } else {
+                        WrapPanel wrap = new WrapPanel();
+                        scroller.Content = wrap;
                         foreach (DataProjectTreeItem item in lItem.DataItems) {
                             VisTab visTab = new VisTab(item);
                             visTab.MinHeight = 150;
-                            visTab.Height = this.ActualHeight / lItem.DataItems.Count;
+                            visTab.MinWidth = 200;
                             visTab.MaxHeight = 500;
+                            visTab.MaxWidth = 600;
+                            visTab.Height = this.ActualHeight / Math.Ceiling(lItem.DataItems.Count / Math.Ceiling(Math.Sqrt(lItem.DataItems.Count)));
+                            visTab.Width = this.ActualWidth / Math.Ceiling(Math.Sqrt(lItem.DataItems.Count));
+                            wrap.Children.Add(visTab);
+                        }
+                        foreach (ImageTreeItem imgItem in lItem.Images) {
+                            Image img = new Image();
+                            img.MinHeight = 150;
+                            img.MinWidth = 200;
+                            img.MaxHeight = 500;
+                            img.MaxWidth = 600;
+                            img.Source = imgItem.ImageSource;
+                            img.Stretch = Stretch.Uniform;
+                            img.Height = this.ActualHeight / lItem.DataItems.Count;
+                            img.Width = this.ActualWidth / lItem.DataItems.Count;
+                            if (img.Source.Height < img.Height) {
+                                img.Height = img.Source.Height;
+                                img.MinHeight = img.Height;
+                            }
+                            wrap.Children.Add(img);
+                        }
+                    } else {
+                        StackPanel stack = new StackPanel();
+                        scroller.Content = stack;
+                        foreach (DataProjectTreeItem item in lItem.DataItems) {
+                            VisTab visTab = new VisTab(item);
+                            visTab.MinHeight = 150;
+                            visTab.MaxHeight = 500;
+                            visTab.Height = this.ActualHeight / lItem.DataItems.Count;
                             stack.Children.Add(visTab);
                         }
                         foreach (ImageTreeItem imgItem in lItem.Images) {
                             Image img = new Image();
                             img.MinHeight = 150;
+                            img.MaxHeight = 500;
                             img.Source = imgItem.ImageSource;
                             img.Stretch = Stretch.Uniform;
                             img.Height = this.ActualHeight / lItem.DataItems.Count;
                             if (img.Source.Height < img.Height) {
-                                img.Height = img.Source.Height;
                                 img.MinHeight = img.Height;
+                                img.Height = img.Source.Height;
                             }
-                            img.MaxHeight = 500;
                             stack.Children.Add(img);
                         }
                     }
