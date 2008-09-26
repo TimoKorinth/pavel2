@@ -103,22 +103,5 @@ namespace Pavel2.GUI {
                 return null;
             }), null);
         }
-
-        protected override void OnInitialized(EventArgs e) {
-            base.OnInitialized(e);
-            HwndSource source = HwndSource.FromVisual(MainData.MainWindow) as HwndSource;
-            if (source != null) {
-                source.AddHook(new HwndSourceHook(WinProc));
-            }
-        }
-
-        public const Int32 WM_EXITSIZEMOVE = 0x0232;
-        private IntPtr WinProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, ref Boolean handled) {
-            IntPtr result = IntPtr.Zero;
-            if (msg == WM_EXITSIZEMOVE) {
-                if (CurrentVisualization != null) CurrentVisualization.RenderAfterResize();
-            }
-            return result;
-        }
     }
 }
