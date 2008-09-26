@@ -116,5 +116,14 @@ namespace Pavel2.GUI {
         }
 
         #endregion
+
+        #region IDisposable Member
+
+        public void Dispose() {
+            dataGrid = null;
+            tableListView.SelectionChanged -= tableListView_SelectionChanged;
+        }
+
+        #endregion
     }
 }
