@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Pavel2.Framework;
 using System.IO;
+using System.Windows.Interop;
 
 namespace Pavel2.GUI
 {
@@ -34,12 +35,37 @@ namespace Pavel2.GUI
 
         public MainWindow() {
 			this.InitializeComponent();
+            this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
 
             EmptyPreviewPanel();
             RemoveOptionsPanel();
             optionsExpander.IsExpanded = true;
             projectTreeView.root.IsSelected = true;
 		}
+
+        void MainWindow_Loaded(object sender, RoutedEventArgs e) {
+            HwndSource hwndSource = PresentationSource.FromVisual(this) as HwndSource;
+            HwndTarget hwndTarget = hwndSource.CompositionTarget;
+            // this is the new WPF API to force render mode.
+            hwndTarget.RenderMode = RenderMode.SoftwareOnly;
+
+            if (hwndSource != null) {
+                hwndSource.AddHook(new HwndSourceHook(WinProc));
+            }
+        }
+
+        public const Int32 WM_EXITSIZEMOVE = 0x0232;
+        private IntPtr WinProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, ref Boolean handled) {
+            IntPtr result = IntPtr.Zero;
+            if (msg == WM_EXITSIZEMOVE) {
+                TreeViewItem tvItem = projectTreeView.SelectedItem;
+                if (tvItem.Tag is ProjectTreeItem) {
+                    (tvItem.Tag as ProjectTreeItem).LastVisualization.RenderAfterResize();
+                }
+                //if (CurrentVisualization != null) CurrentVisualization.RenderAfterResize();
+            }
+            return result;
+        }
 
         #region Expander Event Handler
 
