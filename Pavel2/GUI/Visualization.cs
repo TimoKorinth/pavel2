@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows;
 
 namespace Pavel2.GUI {
-    public interface Visualization {
+    public interface Visualization : IDisposable {
 
         void Render(DataGrid dataGrid);
 

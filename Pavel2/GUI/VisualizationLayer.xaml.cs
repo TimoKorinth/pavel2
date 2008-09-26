@@ -31,6 +31,11 @@ namespace Pavel2.GUI {
 
         private void Display() {
             if (!(visualizationData is Column)) {
+                if (visStackPanel.Children.Count == 1 && visStackPanel.Children[0] is VisTab) {
+                    VisTab v = visStackPanel.Children[0] as VisTab;
+                    v.Dispose();
+                }
+
                 visStackPanel.Children.Clear();
                 visStackPanel.RowDefinitions.Clear();
                 visStackPanel.ColumnDefinitions.Clear();
@@ -38,10 +43,6 @@ namespace Pavel2.GUI {
             if (visualizationData is ProjectTreeItem) {
                 ProjectTreeItem ptItem = (ProjectTreeItem)visualizationData;
                 VisTab visTab = new VisTab(ptItem);
-                if (visualizationData is CombinedDataItem) {
-                    visStackPanel.RowDefinitions.Add(new RowDefinition());
-                    Grid.SetRow(visTab, 1);
-                }
                 visStackPanel.Children.Add(visTab);
             }
             if (visualizationData is LinkItem) {

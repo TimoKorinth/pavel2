@@ -29,19 +29,28 @@ namespace Pavel2.GUI
         private GridLength previewExpanderWidth;
         private double explorerExpanderMinWidth = double.NaN;
         private GridLength explorerExpanderWidth;
+        private TreeViewItem lastItem;
         private PropertyGrid pGridlastDataGrid = new PropertyGrid();
 
         #endregion
 
         public MainWindow() {
 			this.InitializeComponent();
-            this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
+            this.Loaded += MainWindow_Loaded;
+            this.StateChanged += MainWindow_StateChanged;
 
             EmptyPreviewPanel();
             RemoveOptionsPanel();
             optionsExpander.IsExpanded = true;
             projectTreeView.root.IsSelected = true;
 		}
+
+        void MainWindow_StateChanged(object sender, EventArgs e) {
+            TreeViewItem tvItem = projectTreeView.SelectedItem;
+            if (tvItem.Tag is ProjectTreeItem) {
+                (tvItem.Tag as ProjectTreeItem).LastVisualization.RenderAfterResize();
+            }
+        }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e) {
             HwndSource hwndSource = PresentationSource.FromVisual(this) as HwndSource;
@@ -324,6 +333,8 @@ namespace Pavel2.GUI
         }
 
         private void ProjectTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+            if (lastItem != null && lastItem.Equals(projectTreeView.SelectedItem)) return;
+            lastItem = projectTreeView.SelectedItem;
             RemoveOptionsPanel();
             pointStatus.Visibility = Visibility.Collapsed;
             TreeViewItem item = projectTreeView.SelectedItem;
@@ -352,8 +363,8 @@ namespace Pavel2.GUI
                 }
                 visualizationLayer.VisualizationData = item.Tag;
                 ShowParserProperties();
+                UpdatePreviewPanel();
             }
-            UpdatePreviewPanel();
         }
 
         public void AddDataGridOptions(DataGrid d) {

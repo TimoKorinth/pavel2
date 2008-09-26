@@ -19,7 +19,7 @@ namespace Pavel2.GUI {
     /// <summary>
     /// Interaktionslogik für VisTab.xaml
     /// </summary>
-    public partial class VisTab : UserControl {
+    public partial class VisTab : UserControl, IDisposable {
 
         private ProjectTreeItem pTI;
 
@@ -89,19 +89,36 @@ namespace Pavel2.GUI {
             loading.Visibility = Visibility.Visible;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
-                CurrentVisualization.Render(this.pTI.DataGrid);
-                this.pTI.TakeScreenShot();
+                ProjectTreeItem pTI = (ProjectTreeItem)state;
+                pTI.LastVisualization.Render(pTI.DataGrid);
+                pTI.TakeScreenShot();
                 PropertyGrid pGrid = new PropertyGrid();
-                pGrid.SelectedObject = CurrentVisualization.GetProperties();
-                //pGrid.PropertyChanged += pGridDataGrid_PropertyChanged;
+                pGrid.SelectedObject = pTI.LastVisualization.GetProperties();
                 MainData.MainWindow.CreateOptionsPanel(pGrid);
-                MainData.MainWindow.AddToOptionsPanel(CurrentVisualization.GetUIElement());
-                MainData.MainWindow.AddDataGridOptions(this.pTI.DataGrid);
+                MainData.MainWindow.AddToOptionsPanel(pTI.LastVisualization.GetUIElement());
+                MainData.MainWindow.AddDataGridOptions(pTI.DataGrid);
                 MainData.MainWindow.ShowParserProperties();
                 MainData.MainWindow.Cursor = Cursors.Arrow;
                 loading.Visibility = Visibility.Collapsed;
                 return null;
-            }), null);
+            }), this.pTI);
         }
+
+        #region IDisposable Member
+
+        public void Dispose() {
+            pTI = null;
+            foreach (TabItem item in visualizationTabControl.Items) {
+                Visualization vis = (Visualization)item.Content;
+                vis.Dispose();
+                vis = null;
+                item.Content = null;
+            }
+            //for (int i = 0; i < visualizationTabControl.Items.Count; i++) {
+            //    visualizationTabControl.Items[i] = null;
+            //}
+        }
+
+        #endregion
     }
 }

@@ -576,5 +576,15 @@ namespace Pavel2.GUI {
         }
 
         #endregion
+
+        #region IDisposable Member
+
+        public void Dispose() {
+            dataGrid = null;
+            this.vertexArray = null;
+            this.colorArray = null;
+        }
+
+        #endregion
     }
 }
