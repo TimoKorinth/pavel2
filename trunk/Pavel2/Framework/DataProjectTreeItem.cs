@@ -40,7 +40,9 @@ namespace Pavel2.Framework {
         public DataProjectTreeItem Clone() {
             Column[] cols = new Column[this.dataGrid.RealColumns.Length];
             for (int i = 0; i < this.dataGrid.RealColumns.Length; i++) {
-                cols[i] = MainData.CopyColumn(this.dataGrid.RealColumns[i]);
+                Column c = new Column(this.dataGrid.RealColumns[i].Header);
+                c.Points = (IPoint[])this.dataGrid.RealColumns[i].Points.Clone();
+                cols[i] = c;
             }
             DataGrid d = new DataGrid(cols);
             DataProjectTreeItem data = new DataProjectTreeItem(d);
