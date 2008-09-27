@@ -183,7 +183,7 @@ namespace Pavel2.GUI
         }
 
         public void SetupToolBarButtons(DataGrid d) {
-            if (!(visualizationLayer.VisualizationData is LinkItem)) visToolBar.Children.Clear();
+            if (!(projectTreeView.SelectedItem.Tag is LinkItem)) visToolBar.Children.Clear();
             foreach (Button btn in d.Buttons) {
                 visToolBar.Children.Add(btn);
             }
@@ -360,6 +360,9 @@ namespace Pavel2.GUI
                         selectionStatus.Visibility = Visibility.Collapsed;
                         lItem.CombItem.DataGrid.ShowNumberSelPoints();
                     }
+                }
+                if (item.Tag is ImageTreeItem) {
+                    visToolBar.Children.Clear();
                 }
                 visualizationLayer.VisualizationData = item.Tag;
                 ShowParserProperties();
