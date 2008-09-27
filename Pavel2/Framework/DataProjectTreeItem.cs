@@ -42,6 +42,7 @@ namespace Pavel2.Framework {
             for (int i = 0; i < this.dataGrid.RealColumns.Length; i++) {
                 Column c = new Column(this.dataGrid.RealColumns[i].Header);
                 c.Points = (IPoint[])this.dataGrid.RealColumns[i].Points.Clone();
+                c.CalcMinMax();
                 cols[i] = c;
             }
             DataGrid d = new DataGrid(cols);

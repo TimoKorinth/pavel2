@@ -208,7 +208,7 @@
                             <Grid>
                                 <ContentPresenter Visibility="Collapsed"
                                                   Margin="{TemplateBinding Padding}" x:Name="Content" />
-                                <Label x:Name="HeaderLeft"
+                                <Label x:Name="HeaderLeft" HorizontalContentAlignment="Right"
                                        Background="{StaticResource LightBrush}"
   			                           BorderBrush="{StaticResource NormalBorderBrush}"
   			                           BorderThickness="{TemplateBinding BorderThickness}"
