@@ -44,7 +44,12 @@
 		</Expander>
 		
 		<GridSplitter HorizontalAlignment="Center" Grid.Column="5" Grid.Row="2" VerticalAlignment="Stretch" Width="3" Grid.RowSpan="2" Name="previewSplitter" Background="Transparent" />
-		<StackPanel Grid.Column="0" Grid.Row="1" x:Name="toolBarPanel" Orientation="Horizontal" Grid.ColumnSpan="4" Margin="5,5,5,5">
+        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" x:Name="toolBarPanel" Orientation="Horizontal" Margin="5,5,5,5">
 			<Button Click="importButton_Click" Width="60" Height="50" HorizontalAlignment="Left" Name="importButton">
 				<StackPanel>
 					<Image Width="20" Height="20" Source="Icons\Move.png" Stretch="Fill"/>
@@ -58,8 +63,9 @@
                 </StackPanel>
             </Button>
             </StackPanel>
-        <StackPanel Grid.Column="4" Grid.Row="1" Margin="0,5,5,5" Orientation="Horizontal" Name="visToolBar" />
-		<Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" x:Name="optionsExpander" Margin="0,3,0,0">
+            <StackPanel Grid.Column="1" Margin="0,5,5,5" Orientation="Horizontal" Name="visToolBar" />
+		</Grid>
+        <Expander Grid.Column="4" Grid.Row="3" Header="Options" ExpandDirection="Down" x:Name="optionsExpander" Margin="0,3,0,0">
             <ScrollViewer x:Name="optionsScrollViewer" MinHeight="100" MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
         </Expander>
 		<Expander Expanded="previewExpander_Expanded" Collapsed="previewExpander_Collapsed" Grid.Column="6" Grid.Row="2" ExpandDirection="Right" Grid.RowSpan="2" x:Name="previewExpander" Header="Preview" IsExpanded="True">
