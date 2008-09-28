@@ -153,6 +153,7 @@ namespace Pavel2.GUI {
                     } else {
                         rootItem.Items.Insert(insertIndex, item);
                     }
+                    projectTree.SelectItem(item);
                     item.IsSelected = isSelected;
                     rootItem.IsExpanded = isExpanded;
                 }
@@ -232,6 +233,7 @@ namespace Pavel2.GUI {
         public void Select(DataProjectTreeItem d) {
             TreeViewItem tvItem = GetRelatedItem(d.DataGrid, root);
             if (tvItem == null) return;
+            projectTree.SelectItem(tvItem);
             tvItem.IsSelected = true;
         }
 
@@ -408,7 +410,7 @@ namespace Pavel2.GUI {
 
         private void projectTree_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = e.Source as TreeViewItem;
-            if (item != null) item.IsSelected = true;
+            if (item != null) projectTree.SelectItem(item);
         }
 
         private void projectTree_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
@@ -506,7 +508,7 @@ namespace Pavel2.GUI {
                     DeleteLinkTreeItem(item.Tag as LinkItem);
                     RemoveTreeViewItem(item);
                 }
-                if (parent != null) parent.IsSelected = true;
+                if (parent != null) projectTree.SelectItem(parent);
             }
         }
 
@@ -538,7 +540,7 @@ namespace Pavel2.GUI {
             InsertToProjectTree(newItem, true, true);
             UpdateLinkItem(newItem);
             linkTreeViewItems.Add(newItem);
-            newItem.IsSelected = true;
+            projectTree.SelectItem(newItem);
             this.editItem = newItem;
             newItem.HeaderTemplate = (DataTemplate)this.FindResource("EditTemplate");
         }
@@ -554,7 +556,7 @@ namespace Pavel2.GUI {
                         DataProjectTreeItem dPTI = (DataProjectTreeItem)dataTreeItem.Tag;
                         dPTI.DataGrid.ColIsVisible(col, !col.Visible);
                     }
-                    dataTreeItem.IsSelected = true;
+                    projectTree.SelectItem(dataTreeItem);
                 }
             }
         }

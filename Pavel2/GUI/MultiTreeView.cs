@@ -18,7 +18,8 @@ namespace Pavel2.GUI {
         private Point startPoint;
         private Point endPoint;
         private bool unselect = false;
-        private bool clickFirst = false;
+        public bool clickFirst = true;
+        public bool firstStart = true;
 
         public AdornerLayer AdornerLayerLocal {
             get {
@@ -32,6 +33,13 @@ namespace Pavel2.GUI {
             get {
                 return selItems;
             }
+        }
+
+        public void SelectItem(TreeViewItem item) {
+            if (!CtrlPressed && !isDrawing) {
+                DeselectAll();
+            }
+            ChangeSelectedState(item);
         }
 
         new public object SelectedItem {
@@ -54,6 +62,10 @@ namespace Pavel2.GUI {
             get { return System.Windows.Input.Keyboard.IsKeyDown(Key.LeftCtrl); }
         }
 
+        private bool ShiftPressed {
+            get { return System.Windows.Input.Keyboard.IsKeyDown(Key.LeftShift); }
+        }
+
         public MultiTreeView() : base() {
             this.SelectedItemChanged += TreeView_SelectedItemChanged;
             this.MouseDown += MouseDownHandler;
@@ -63,14 +75,22 @@ namespace Pavel2.GUI {
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            if (isDrawing || unselect) e.Handled = true;
             TreeViewItem item = base.SelectedItem as TreeViewItem;
             if (item == null) return;
+            if (!clickFirst) {
+                item.IsSelected = false;
+                return;
+            }
+            if (isDrawing || unselect) e.Handled = true;
             if (!clickFirst) {
                 if (!CtrlPressed && !isDrawing) {
                     DeselectAll();
                 }
                 ChangeSelectedState(item);
+            }
+            if (firstStart) {
+                ChangeSelectedState(item);
+                firstStart = false;
             }
             unselect = true;
             item.IsSelected = false;
