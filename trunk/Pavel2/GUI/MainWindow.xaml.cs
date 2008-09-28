@@ -40,6 +40,7 @@ namespace Pavel2.GUI
             this.StateChanged += MainWindow_StateChanged;
 
             EmptyPreviewPanel();
+            previewExpander.IsExpanded = false;
             RemoveOptionsPanel();
             optionsExpander.IsExpanded = true;
             projectTreeView.root.IsSelected = true;
@@ -269,13 +270,11 @@ namespace Pavel2.GUI
             } else {
                 previewList.ItemsSource = relData;
                 previewExpander.Visibility = Visibility.Visible;
-                previewExpander.IsExpanded = expand;
             }
         }
 
         public void EmptyPreviewPanel() {
             previewList.ItemsSource = null;
-            previewExpander.IsExpanded = false;
             previewExpander.Visibility = Visibility.Collapsed;
         }
 
