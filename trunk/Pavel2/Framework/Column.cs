@@ -13,6 +13,12 @@ namespace Pavel2.Framework {
         private double max;
         private bool visible = true;
         private bool dirUp = true;
+        private bool isZoomed = false;
+
+        public bool IsZoomed {
+            get { return isZoomed; }
+            set { isZoomed = value; }
+        }
 
         public bool DirUp {
             get { return dirUp; }
