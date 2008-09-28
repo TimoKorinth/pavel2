@@ -84,7 +84,9 @@ namespace Pavel2.GUI {
                 Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
                 int index = -1;
                 for (int row = 0; row < dataGrid.MaxPoints; row++) {
-                    if (!dataGrid.SelectedPoints[row]) {
+                    if (!dataGrid.SelectedPoints[row] &&
+                        !double.IsNaN(dataGrid.DoubleDataField[row][dataGrid.ScatterCol1]) &&
+                        !double.IsNaN(dataGrid.DoubleDataField[row][dataGrid.ScatterCol2])) {
                         if (comp != null) {
                             if (comp.GetDataItemIndex(row) != index) {
                                 index = comp.GetDataItemIndex(row);
@@ -107,7 +109,9 @@ namespace Pavel2.GUI {
                 //Selected Points:
                 Gl.glColor4fv(ColorManagement.CurrentSelectionColor.RGBwithA(0.8f));
                 for (int row = 0; row < dataGrid.MaxPoints; row++) {
-                    if (dataGrid.SelectedPoints[row]) {
+                    if (dataGrid.SelectedPoints[row] &&
+                        !double.IsNaN(dataGrid.DoubleDataField[row][dataGrid.ScatterCol1]) &&
+                        !double.IsNaN(dataGrid.DoubleDataField[row][dataGrid.ScatterCol2])) {
                         double xCo = Normalize(dataGrid.DoubleDataField[row][dataGrid.ScatterCol1], dataGrid.Columns[dataGrid.ScatterCol1]);
                         double yCo = Normalize(dataGrid.DoubleDataField[row][dataGrid.ScatterCol2], dataGrid.Columns[dataGrid.ScatterCol2]);
                         if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
@@ -140,7 +144,9 @@ namespace Pavel2.GUI {
                         if (x == y) continue;
                         Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
                         for (int row = 0; row < dataGrid.MaxPoints; row++) {
-                            if (!dataGrid.SelectedPoints[row]) {
+                            if (!dataGrid.SelectedPoints[row] &&
+                                !double.IsNaN(dataGrid.DoubleDataField[row][x]) &&
+                                !double.IsNaN(dataGrid.DoubleDataField[row][y])) {
                                 if (comp != null) {
                                     if (comp.GetDataItemIndex(row) != index) {
                                         index = comp.GetDataItemIndex(row);
@@ -165,7 +171,9 @@ namespace Pavel2.GUI {
                         //Selected Points:
                         Gl.glColor4fv(ColorManagement.CurrentSelectionColor.RGBwithA(0.8f));
                         for (int row = 0; row < dataGrid.MaxPoints; row++) {
-                            if (dataGrid.SelectedPoints[row]) {
+                            if (dataGrid.SelectedPoints[row] &&
+                                !double.IsNaN(dataGrid.DoubleDataField[row][x]) &&
+                                !double.IsNaN(dataGrid.DoubleDataField[row][y])) {
                                 double xCo = Normalize(dataGrid.DoubleDataField[row][x], dataGrid.Columns[x]);
                                 double yCo = Normalize(dataGrid.DoubleDataField[row][y], dataGrid.Columns[y]);
                                 if (xCo > 1 || xCo < 0 || yCo > 1 || yCo < 0) {
