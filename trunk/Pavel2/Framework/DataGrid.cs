@@ -200,7 +200,7 @@ namespace Pavel2.Framework {
             HasChanged();
             SetColVisButton();
             if (ColumnVisChanged != null) {
-                ColumnVisChanged(this, new EventArgs());
+                ColumnVisChanged(col, new EventArgs());
             }
         }
 
@@ -256,6 +256,17 @@ namespace Pavel2.Framework {
 
         public void UpdateAll() {
             UpdateButtons();
+            UpdateDataSets();
+        }
+
+        public void UpdateDataSets() {
+            if (undoColVis.Visibility == Visibility.Visible) {
+                SetDataFields();
+                HasChanged();
+                //if (ColumnVisChanged != null) {
+                //    ColumnVisChanged(this, new EventArgs());
+                //} 
+            }
         }
 
         public void UpdateButtons() {
@@ -315,14 +326,14 @@ namespace Pavel2.Framework {
 
         void undoColVis_Click(object sender, RoutedEventArgs e) {
             foreach (Column col in columns) {
+                if (ColumnVisChanged != null && col.Visible == false) {
+                    ColumnVisChanged(col, new EventArgs());
+                }
                 col.Visible = true;
             }
             SetDataFields();
             HasChanged();
             SetColVisButton();
-            if (ColumnVisChanged != null) {
-                ColumnVisChanged(this, new EventArgs());
-            }
             MainData.MainWindow.UpdateVisualization();
         }
 
