@@ -71,6 +71,7 @@ namespace Pavel2.GUI {
         }
 
         private void CreateArrays() {
+            if (dataGrid.Columns.Length < 3) return;
             this.vertexArray = new float[dataGrid.MaxPoints * 3];
             this.colorArray = new float[dataGrid.MaxPoints * 4];
             int index = -1;
@@ -334,6 +335,7 @@ namespace Pavel2.GUI {
 
         public void Render(Pavel2.Framework.DataGrid dataGrid) {
             this.dataGrid = dataGrid;
+            if (dataGrid.Columns.Length < 3) return;
             if (MainData.MainWindow.visualizationLayer.VisualizationData is LinkItem) {
                 LinkItem link = MainData.MainWindow.visualizationLayer.VisualizationData as LinkItem;
                 if (link.IsCombined) comp = link.CombItem;
