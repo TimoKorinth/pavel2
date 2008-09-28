@@ -69,6 +69,7 @@ namespace Pavel2.GUI
             IntPtr result = IntPtr.Zero;
             if (msg == WM_EXITSIZEMOVE) {
                 TreeViewItem tvItem = projectTreeView.SelectedItem;
+                if (tvItem == null) return result;
                 if (tvItem.Tag is ProjectTreeItem) {
                     (tvItem.Tag as ProjectTreeItem).LastVisualization.RenderAfterResize();
                 }
