@@ -251,10 +251,14 @@ namespace Pavel2.GUI {
             Gl.glPushMatrix();
             if (mode[0] == Gl.GL_SELECT) {
                 for (int i = 0; i < dataGrid.MaxPoints; i++) {
-                    Gl.glLoadName(i);
-                    Gl.glBegin(Gl.GL_POINTS);
-                    Gl.glArrayElement(i);
-                    Gl.glEnd();
+                    if (!double.IsNaN(dataGrid.DoubleDataField[i][properties.Col1]) &&
+                        !double.IsNaN(dataGrid.DoubleDataField[i][properties.Col2]) &&
+                        !double.IsNaN(dataGrid.DoubleDataField[i][properties.Col3])) {
+                        Gl.glLoadName(i);
+                        Gl.glBegin(Gl.GL_POINTS);
+                        Gl.glArrayElement(i);
+                        Gl.glEnd();
+                    }
                 }
             } else {
                 Gl.glDrawArrays(Gl.GL_POINTS, 0, dataGrid.MaxPoints);
