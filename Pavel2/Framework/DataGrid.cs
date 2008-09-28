@@ -214,6 +214,7 @@ namespace Pavel2.Framework {
         public void ChangeColZoom(Column col, double min, double max) {
             col.Max = max;
             col.Min = min;
+            col.IsZoomed = true;
             HasChanged();
             if (!showAll) SetDataFieldsAfterZoom();
             undoZoom.Visibility = Visibility.Visible;
@@ -251,6 +252,21 @@ namespace Pavel2.Framework {
             HasChanged();
             InitButtons();
             InitChangeDict();
+        }
+
+        public void UpdateAll() {
+            UpdateButtons();
+        }
+
+        public void UpdateButtons() {
+            for (int col = 0; col < columns.Length; col++) {
+                if (columns[col].IsZoomed) {
+                    undoZoom.Visibility = Visibility.Visible;
+                }
+                if (!columns[col].Visible) {
+                    undoColVis.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         private void InitButtons() {
@@ -313,6 +329,7 @@ namespace Pavel2.Framework {
         void undoZoom_Click(object sender, RoutedEventArgs e) {
             foreach (Column col in columns) {
                 col.CalcMinMax();
+                col.IsZoomed = false;
             }
             if (!showAll) {
                 SetDataFieldsAfterZoom();

@@ -344,6 +344,7 @@ namespace Pavel2.GUI
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                     if (pTI.DataGrid == null) return;
+                    pTI.DataGrid.UpdateAll();
                     AddDataGridOptions(pTI.DataGrid);
                     if (pTI.DataGrid != null) SetupToolBarButtons(pTI.DataGrid);
                     pointStatus.Visibility = Visibility.Visible;
@@ -399,8 +400,8 @@ namespace Pavel2.GUI
         }
 
         public void UpdateVisualization() {
-            if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
-                DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
+            if (projectTreeView.SelectedItem.Tag is ProjectTreeItem) {
+                ProjectTreeItem dPTI = (ProjectTreeItem)projectTreeView.SelectedItem.Tag;
                 visualizationLayer.VisualizationData = dPTI;
             }
             if (projectTreeView.SelectedItem.Tag is LinkItem) {
