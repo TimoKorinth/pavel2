@@ -483,29 +483,31 @@ namespace Pavel2.GUI {
         }
 
         private void ContextMenu_RemoveItem(object sender, RoutedEventArgs e) {
-            TreeViewItem item = this.SelectedItem;
-            TreeViewItem parent = null;
-            if (item.Parent is TreeViewItem) {
-                parent = (TreeViewItem)item.Parent;
-            }
-            if (item.Tag is DataProjectTreeItem) {
-                if (parent != null && parent.Tag is LinkItem) {
-                    DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag, parent.Tag as LinkItem);
+            TreeViewItem[] tmp = projectTree.SelectedItems.ToArray();
+            foreach (TreeViewItem item in tmp) {
+                TreeViewItem parent = null;
+                if (item.Parent is TreeViewItem) {
+                    parent = (TreeViewItem)item.Parent;
+                }
+                if (item.Tag is DataProjectTreeItem) {
+                    if (parent != null && parent.Tag is LinkItem) {
+                        DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag, parent.Tag as LinkItem);
+                        RemoveTreeViewItem(item);
+                    } else {
+                        DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag);
+                        RemoveTreeViewItem(item);
+                    }
+                } else if (item.Tag is FolderProjectTreeItem) {
+                    DeleteFolderProjectTreeItem(item);
+                    (item.Tag as FolderProjectTreeItem).DataGrid.ColumnChanged -= dataGrid_ColumnChanged;
+                    (item.Tag as FolderProjectTreeItem).DataGrid.ColumnVisChanged -= dataGrid_ColumnVisChanged;
                     RemoveTreeViewItem(item);
-                } else {
-                    DeleteDataProjectTreeItem((DataProjectTreeItem)item.Tag);
+                } else if (item.Tag is LinkItem) {
+                    DeleteLinkTreeItem(item.Tag as LinkItem);
                     RemoveTreeViewItem(item);
                 }
-            } else if (item.Tag is FolderProjectTreeItem) {
-                DeleteFolderProjectTreeItem(item);
-                (item.Tag as FolderProjectTreeItem).DataGrid.ColumnChanged -= dataGrid_ColumnChanged;
-                (item.Tag as FolderProjectTreeItem).DataGrid.ColumnVisChanged -= dataGrid_ColumnVisChanged;
-                RemoveTreeViewItem(item);
-            } else if (item.Tag is LinkItem) {
-                DeleteLinkTreeItem(item.Tag as LinkItem);
-                RemoveTreeViewItem(item);
+                if (parent != null) parent.IsSelected = true;
             }
-            if (parent != null) parent.IsSelected = true;
         }
 
         private void ContextMenu_AddNewDataTable(object sender, RoutedEventArgs e) {
