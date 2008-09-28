@@ -87,7 +87,6 @@ namespace Pavel2.GUI {
                 Gl.glLineWidth(1f);
                 alpha = 0.02f;
             }
-            bool breakLine = false;
             if (dataGrid == null) return;
             int index = -1;
             Gl.glColor4fv(ColorManagement.UnselectedColor.RGBwithA(alpha));
@@ -99,46 +98,66 @@ namespace Pavel2.GUI {
                             Gl.glColor4fv(ColorManagement.GetColor(index + 2).RGBwithA(alpha));
                         }
                     }
-                    Gl.glLoadName(row);
-                    Gl.glBegin(Gl.GL_LINE_STRIP);
+                    bool started = false;
                     for (int col = 0; col < dataGrid.Columns.Length; col++) {
-                        if (dataGrid.DoubleDataField[row][col] == double.NaN) {
-                            Gl.glEnd();
-                            breakLine = true;
-                        } else {
-                            if (breakLine) Gl.glBegin(Gl.GL_LINE_STRIP);
-                            double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
-                            if (dataGrid.Columns[col].DirUp) {
-                                Gl.glVertex2d(step * col, nValue);
-                            } else {
-                                Gl.glVertex2d(step * col, 1 - nValue);
+                        if (!double.IsNaN(dataGrid.DoubleDataField[row][col])) {
+                            if (col < dataGrid.Columns.Length - 1 && !double.IsNaN(dataGrid.DoubleDataField[row][col + 1])) {
+                                if (!started) {
+                                    Gl.glLoadName(row);
+                                    Gl.glBegin(Gl.GL_LINE_STRIP);
+                                    started = true;
+                                }
+                                double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
+                                if (dataGrid.Columns[col].DirUp) {
+                                    Gl.glVertex2d(step * col, nValue);
+                                } else {
+                                    Gl.glVertex2d(step * col, 1 - nValue);
+                                }
+                            } else if (col == dataGrid.Columns.Length - 1 || started) {
+                                double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
+                                if (dataGrid.Columns[col].DirUp) {
+                                    Gl.glVertex2d(step * col, nValue);
+                                } else {
+                                    Gl.glVertex2d(step * col, 1 - nValue);
+                                }
+                                Gl.glEnd();
+                                started = false;
                             }
                         }
                     }
-                    if (!breakLine) Gl.glEnd();
                 }
             }
             //Selected Points:
             Gl.glColor4fv(ColorManagement.CurrentSelectionColor.RGBwithA(0.8f));
             for (int row = 0; row < dataGrid.MaxPoints; row++) {
                 if (dataGrid.SelectedPoints[row]) {
-                    Gl.glLoadName(row);
-                    Gl.glBegin(Gl.GL_LINE_STRIP);
+                    bool started = false;
                     for (int col = 0; col < dataGrid.Columns.Length; col++) {
-                        if (dataGrid.DoubleDataField[row][col] == double.NaN) {
-                            Gl.glEnd();
-                            breakLine = true;
-                        } else {
-                            if (breakLine) Gl.glBegin(Gl.GL_LINE_STRIP);
-                            double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
-                            if (dataGrid.Columns[col].DirUp) {
-                                Gl.glVertex2d(step * col, nValue);
-                            } else {
-                                Gl.glVertex2d(step * col, 1 - nValue);
+                        if (!double.IsNaN(dataGrid.DoubleDataField[row][col])) {
+                            if (col < dataGrid.Columns.Length - 1 && !double.IsNaN(dataGrid.DoubleDataField[row][col + 1])) {
+                                if (!started) {
+                                    Gl.glLoadName(row);
+                                    Gl.glBegin(Gl.GL_LINE_STRIP);
+                                    started = true;
+                                }
+                                double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
+                                if (dataGrid.Columns[col].DirUp) {
+                                    Gl.glVertex2d(step * col, nValue);
+                                } else {
+                                    Gl.glVertex2d(step * col, 1 - nValue);
+                                }
+                            } else if (col == dataGrid.Columns.Length - 1 || started) {
+                                double nValue = Normalize(dataGrid.DoubleDataField[row][col], dataGrid.Columns[col]);
+                                if (dataGrid.Columns[col].DirUp) {
+                                    Gl.glVertex2d(step * col, nValue);
+                                } else {
+                                    Gl.glVertex2d(step * col, 1 - nValue);
+                                }
+                                Gl.glEnd();
+                                started = false;
                             }
                         }
                     }
-                    if (!breakLine) Gl.glEnd();
                 }
             }
         }
