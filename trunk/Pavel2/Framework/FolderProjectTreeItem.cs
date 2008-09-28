@@ -15,17 +15,18 @@ namespace Pavel2.Framework {
 
         public override DataGrid DataGrid {
             get {
-                //if (SomethingChanged(parentItem) || dataGrid == null) {
-                    columns.Clear();
-                    GetColumns(parentItem);
-                    if (columns.Count > 0) dataGrid = new DataGrid(columns.ToArray());
-                    else dataGrid = new DataGrid();
-                //}
                 return dataGrid;
             }
             set {
                 this.dataGrid = value;
             }
+        }
+
+        public void UpdateDataGrid() {
+            columns.Clear();
+            GetColumns(parentItem);
+            if (columns.Count > 0) dataGrid = new DataGrid(columns.ToArray());
+            else dataGrid = new DataGrid();
         }
 
         public TreeViewItem ParentItem {

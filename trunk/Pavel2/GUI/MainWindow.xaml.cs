@@ -338,6 +338,9 @@ namespace Pavel2.GUI
             pointStatus.Visibility = Visibility.Collapsed;
             TreeViewItem item = projectTreeView.SelectedItem;
             if (item != null) {
+                if (item.Tag is FolderProjectTreeItem) {
+                    (item.Tag as FolderProjectTreeItem).UpdateDataGrid();
+                }
                 if (item.Tag is ProjectTreeItem) {
                     ProjectTreeItem pTI = (ProjectTreeItem)item.Tag;
                     if (pTI.DataGrid == null) return;
