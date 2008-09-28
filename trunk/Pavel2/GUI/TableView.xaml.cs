@@ -22,6 +22,7 @@ namespace Pavel2.GUI {
 
         private DataGrid dataGrid;
         private bool selecting;
+        private ContextMenu menu;
         
         public TableView() {
             InitializeComponent();
@@ -50,9 +51,16 @@ namespace Pavel2.GUI {
             this.dataGrid = dataGrid;
             tableListView.SelectedItems.Clear();
             if (dataGrid != null) {
+                menu = new ContextMenu();
+                MenuItem mItem = new MenuItem();
+                menu.Items.Add(mItem);
+                mItem.Click += mItem_Click;
+                mItem.Header = "Remove Column";
+
                 tableListView.Visibility = Visibility.Visible;
                 tableListView.ItemsSource = dataGrid.DataField;
                 GridView gView = new GridView();
+                gView.ColumnHeaderContextMenu = menu;
                 gView.Columns.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Columns_CollectionChanged);
                 for (int i = 0; i < dataGrid.Columns.Length; i++) {
                     GridViewColumn gColumn = new GridViewColumn();
@@ -75,6 +83,16 @@ namespace Pavel2.GUI {
                 }
             }
             selecting = false;
+        }
+
+        void mItem_Click(object sender, RoutedEventArgs e) {
+            GridViewColumnHeader gHeader = ContextMenuService.GetPlacementTarget(menu) as GridViewColumnHeader;
+            if (gHeader == null) return;
+            GridView gView = tableListView.View as GridView;
+            if (gView == null) return;
+            int index = gView.Columns.IndexOf(gHeader.Column);
+            dataGrid.ColIsVisible(dataGrid.Columns[index], false);
+            Render(dataGrid);
         }
 
         void Columns_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
