@@ -93,7 +93,7 @@ namespace Pavel2.GUI {
                             VisTab visTab = new VisTab(item);
                             visTab.MinHeight = 150;
                             visTab.MaxHeight = 500;
-                            visTab.Height = this.ActualHeight / lItem.DataItems.Count;
+                            visTab.Height = this.ActualHeight / (lItem.DataItems.Count + lItem.Images.Count);
                             stack.Children.Add(visTab);
                         }
                         foreach (ImageTreeItem imgItem in lItem.Images) {
@@ -102,7 +102,7 @@ namespace Pavel2.GUI {
                             img.MaxHeight = 500;
                             img.Source = imgItem.ImageSource;
                             img.Stretch = Stretch.Uniform;
-                            img.Height = this.ActualHeight / lItem.DataItems.Count;
+                            img.Height = this.ActualHeight / (lItem.DataItems.Count + lItem.Images.Count);
                             if (img.Source.Height < img.Height) {
                                 img.MinHeight = img.Height;
                                 img.Height = img.Source.Height;

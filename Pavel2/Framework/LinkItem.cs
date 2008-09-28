@@ -32,6 +32,7 @@ namespace Pavel2.Framework {
         public bool IsCombineable {
             get {
                 int cols = -1;
+                if (dataItems.Count == 0) return false;
                 foreach (DataProjectTreeItem item in dataItems) {
                     if (cols == -1) cols = item.DataGrid.Columns.Length;
                     if (cols != item.DataGrid.Columns.Length) {

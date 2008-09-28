@@ -298,7 +298,7 @@ namespace Pavel2.GUI {
             if (target.Tag is LinkItem) {
                 LinkItem lItem = target.Tag as LinkItem;
                 if (tvItem.Tag is DataProjectTreeItem) {
-                    lItem.AddDataItem(tvItem.Tag as DataProjectTreeItem);
+                    lItem.AddDataItem((tvItem.Tag as DataProjectTreeItem).Clone());
                 }
                 if (tvItem.Tag is ImageTreeItem) {
                     lItem.AddImage(tvItem.Tag as ImageTreeItem);
