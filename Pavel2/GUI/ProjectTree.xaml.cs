@@ -217,14 +217,12 @@ namespace Pavel2.GUI {
             }
         }
 
-        void dataGrid_ColumnVisChanged(object sender, EventArgs e) {
-            DataGrid d = (DataGrid)sender;
-            TreeViewItem tvItem = GetRelatedItem(d, root);
-            if (tvItem == null) return;
-            UpdateDataTreeViewItem(tvItem);
+        public void dataGrid_ColumnVisChanged(object sender, EventArgs e) {
+            Column col = (Column)sender;
+            UpdateRelatedDataSets(col, root);
         }
 
-        private void dataGrid_ColumnChanged(object sender, EventArgs e) {
+        public void dataGrid_ColumnChanged(object sender, EventArgs e) {
             DataGrid d = (DataGrid)sender;
             TreeViewItem tvItem = GetRelatedItem(d, root);
             if (tvItem == null) return;
@@ -248,6 +246,19 @@ namespace Pavel2.GUI {
                 }
             }
             return null;
+        }
+
+        public void UpdateRelatedDataSets(Column col, TreeViewItem root) {
+            foreach (TreeViewItem item in root.Items) {
+                if (item.Tag is DataProjectTreeItem) {
+                    DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
+                    for (int i = 0; i < dPTI.DataGrid.RealColumns.Length; i++) {
+                        if (dPTI.DataGrid.RealColumns[i].Equals(col)) UpdateDataTreeViewItem(item);
+                    }
+                } else if (item.Tag is FolderProjectTreeItem) {
+                    UpdateRelatedDataSets(col, item);
+                }
+            }
         }
 
         private void RemoveTreeViewItem(TreeViewItem item) {
@@ -487,6 +498,8 @@ namespace Pavel2.GUI {
                 }
             } else if (item.Tag is FolderProjectTreeItem) {
                 DeleteFolderProjectTreeItem(item);
+                (item.Tag as FolderProjectTreeItem).DataGrid.ColumnChanged -= dataGrid_ColumnChanged;
+                (item.Tag as FolderProjectTreeItem).DataGrid.ColumnVisChanged -= dataGrid_ColumnVisChanged;
                 RemoveTreeViewItem(item);
             } else if (item.Tag is LinkItem) {
                 DeleteLinkTreeItem(item.Tag as LinkItem);

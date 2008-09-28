@@ -25,8 +25,14 @@ namespace Pavel2.Framework {
         public void UpdateDataGrid() {
             columns.Clear();
             GetColumns(parentItem);
+            if (dataGrid != null) {
+                dataGrid.ColumnChanged -= MainData.MainWindow.projectTreeView.dataGrid_ColumnChanged;
+                dataGrid.ColumnVisChanged -= MainData.MainWindow.projectTreeView.dataGrid_ColumnVisChanged;
+            }
             if (columns.Count > 0) dataGrid = new DataGrid(columns.ToArray());
             else dataGrid = new DataGrid();
+            dataGrid.ColumnChanged += MainData.MainWindow.projectTreeView.dataGrid_ColumnChanged;
+            dataGrid.ColumnVisChanged += MainData.MainWindow.projectTreeView.dataGrid_ColumnVisChanged;
         }
 
         public TreeViewItem ParentItem {
