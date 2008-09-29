@@ -62,6 +62,7 @@ namespace Pavel2.GUI {
                         double height = this.ActualHeight / Math.Ceiling((lItem.DataItems.Count + lItem.Images.Count) / Math.Ceiling(Math.Sqrt(lItem.DataItems.Count + lItem.Images.Count)));
                         foreach (DataProjectTreeItem item in lItem.DataItems) {
                             VisTab visTab = new VisTab(item);
+                            visTab.ToolTip = MainData.MainWindow.projectTreeView.GetPath(item);
                             visTab.MinHeight = 150;
                             visTab.MinWidth = 200;
                             visTab.MaxHeight = 500;
@@ -72,6 +73,7 @@ namespace Pavel2.GUI {
                         }
                         foreach (ImageTreeItem imgItem in lItem.Images) {
                             Image img = new Image();
+                            img.ToolTip = MainData.MainWindow.projectTreeView.GetPath(imgItem);
                             img.MinHeight = 150;
                             img.MinWidth = 200;
                             img.MaxHeight = 500;
@@ -91,6 +93,7 @@ namespace Pavel2.GUI {
                         scroller.Content = stack;
                         foreach (DataProjectTreeItem item in lItem.DataItems) {
                             VisTab visTab = new VisTab(item);
+                            visTab.ToolTip = MainData.MainWindow.projectTreeView.GetPath(item);
                             visTab.MinHeight = 150;
                             visTab.MaxHeight = 500;
                             visTab.Height = this.ActualHeight / (lItem.DataItems.Count + lItem.Images.Count);
@@ -98,6 +101,7 @@ namespace Pavel2.GUI {
                         }
                         foreach (ImageTreeItem imgItem in lItem.Images) {
                             Image img = new Image();
+                            img.ToolTip = MainData.MainWindow.projectTreeView.GetPath(imgItem);
                             img.MinHeight = 150;
                             img.MaxHeight = 500;
                             img.Source = imgItem.ImageSource;

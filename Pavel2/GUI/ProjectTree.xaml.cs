@@ -217,6 +217,48 @@ namespace Pavel2.GUI {
             insertDir = false;
         }
 
+        public String GetPath(object item) {
+            if (item is DataProjectTreeItem) {
+                DataProjectTreeItem d = (DataProjectTreeItem)item;
+                List<String> list = new List<string>();
+                TreeViewItem tvItem = GetRelatedItem(d.OriginalData.DataGrid, root);
+                if (tvItem == null) return d.Header;
+                list.Add(d.Header);
+                while (tvItem.Parent is TreeViewItem) {
+                    TreeViewItem parent = tvItem.Parent as TreeViewItem;
+                    if (parent.Tag is FolderProjectTreeItem) {
+                        list.Add((parent.Tag as FolderProjectTreeItem).Header);
+                    }
+                    tvItem = (TreeViewItem)tvItem.Parent;
+                }
+                String path = "";
+                for (int i = 0; i < list.Count; i++) {
+                    path = path + "/" + list[list.Count - i - 1];
+                }
+                return path;
+            }
+            if (item is ImageTreeItem) {
+                ImageTreeItem d = (ImageTreeItem)item;
+                List<String> list = new List<string>();
+                TreeViewItem tvItem = GetRelatedItem(d, root);
+                if (tvItem == null) return d.Header;
+                list.Add(d.Header);
+                while (tvItem.Parent is TreeViewItem) {
+                    TreeViewItem parent = tvItem.Parent as TreeViewItem;
+                    if (parent.Tag is FolderProjectTreeItem) {
+                        list.Add((parent.Tag as FolderProjectTreeItem).Header);
+                    }
+                    tvItem = (TreeViewItem)tvItem.Parent;
+                }
+                String path = "";
+                for (int i = 0; i < list.Count; i++) {
+                    path = path + "/" + list[list.Count - i - 1];
+                }
+                return path;
+            }
+            return null;
+        }
+
         public void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
             if (ImageParser.IsImage(file)) {
                 ImageTreeItem imgItem = new ImageTreeItem(ImageParser.GetImage(file));
