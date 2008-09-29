@@ -23,6 +23,7 @@ namespace Pavel2.GUI {
         private String oldHeader;
         private List<TreeViewItem> linkTreeViewItems = new List<TreeViewItem>();
         private bool insertDir = false;
+        private bool dragEnabled = false;
 
         #endregion
 
@@ -411,6 +412,22 @@ namespace Pavel2.GUI {
                 }
                 UpdateLinkItem(target);
             }
+            if (target.Tag is DataProjectTreeItem && tvItem.Tag is DataProjectTreeItem) {
+                if (target.Parent is TreeViewItem) {
+                    TreeViewItem tvLinkItem = target.Parent as TreeViewItem;
+                    if (tvLinkItem.Tag is LinkItem) {
+                        LinkItem lItem = tvLinkItem.Tag as LinkItem;
+                        DataProjectTreeItem targetItem = target.Tag as DataProjectTreeItem;
+                        DataProjectTreeItem sourceItem = tvItem.Tag as DataProjectTreeItem;
+                        int index = lItem.DataItems.IndexOf(targetItem);
+                        if (index != -1) {
+                            lItem.DataItems.Remove(sourceItem);
+                            lItem.DataItems.Insert(index, sourceItem);
+                        }
+                        UpdateLinkItem(tvLinkItem);
+                    }
+                }
+            }
         }
 
         private void DeleteDataProjectTreeItem(DataProjectTreeItem dPTI) {
@@ -535,13 +552,21 @@ namespace Pavel2.GUI {
             }
         }
 
+        private void projectTree_PreviewMouseMove(object sender, MouseEventArgs e) {
+            if (e.LeftButton == MouseButtonState.Pressed) {
+                if (this.editItem == null && dragEnabled) {
+                    DragDropHelper.DoDragDrop(projectTree, projectTree.SelectedItems, DragDropEffects.Copy, this);
+                    dragEnabled = false;
+                }
+            }
+        }
+
         private void projectTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             TreeViewItem item = e.Source as TreeViewItem;
+            dragEnabled = false;
             if (item != null) {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem || item.Tag is ImageTreeItem) {
-                    if (this.editItem == null) {
-                        DragDropHelper.DoDragDrop(projectTree, projectTree.SelectedItems, DragDropEffects.Copy, this);
-                    }
+                    dragEnabled = true;
                 }
             }
         }
@@ -660,6 +685,6 @@ namespace Pavel2.GUI {
                 b.Focus();
                 b.SelectAll();
             }
-        }
+        }        
     }
 }
