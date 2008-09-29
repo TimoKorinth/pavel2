@@ -675,6 +675,7 @@ namespace Pavel2.GUI {
                         dPTI.DataGrid.ColIsVisible(col, !col.Visible);
                     }
                     projectTree.SelectItem(dataTreeItem);
+                    MainData.MainWindow.UpdateVisualization();
                 }
             }
         }
