@@ -69,6 +69,11 @@ namespace Pavel2.Framework {
             if (IsCombineable) combItem = new CombinedDataItem(dataItems);
         }
 
+        public void AddDataItem(DataProjectTreeItem dataItem, int index) {
+            this.dataItems.Insert(index, dataItem);
+            if (IsCombineable) combItem = new CombinedDataItem(dataItems);
+        }
+
         public void RemoveDataItem(DataProjectTreeItem dataItem) {
             this.dataItems.Remove(dataItem);
             if (IsCombineable) combItem = new CombinedDataItem(dataItems);
