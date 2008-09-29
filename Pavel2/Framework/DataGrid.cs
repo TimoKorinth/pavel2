@@ -28,6 +28,8 @@ namespace Pavel2.Framework {
         private Button undoColVis;
         [NonSerialized()]
         private Button createNewData;
+        [NonSerialized()]
+        private Button invertSelection;
         private bool[] selectedPoints;
 
         private bool isScatterplot = false;
@@ -83,13 +85,14 @@ namespace Pavel2.Framework {
         [Browsable(false)]
         public List<Button> Buttons {
             get {
-                if (undoColVis == null || undoZoom == null || createNewData == null) {
+                if (undoColVis == null || undoZoom == null || createNewData == null || invertSelection == null) {
                     InitButtons();
                 }
                 List<Button> buttons = new List<Button>();
                 buttons.Add(undoZoom);
                 buttons.Add(undoColVis);
                 buttons.Add(createNewData);
+                buttons.Add(invertSelection);
                 return buttons; 
             }
         }
@@ -113,9 +116,11 @@ namespace Pavel2.Framework {
             if (index > 0) {
                 MainData.MainWindow.selectionStatus.Visibility = Visibility.Visible;
                 createNewData.Visibility = Visibility.Visible;
+                invertSelection.Visibility = Visibility.Visible;
             } else {
                 MainData.MainWindow.selectionStatus.Visibility = Visibility.Collapsed;
                 createNewData.Visibility = Visibility.Collapsed;
+                invertSelection.Visibility = Visibility.Collapsed;
             }
             MainData.MainWindow.selectionStatus.Content = index + " selected Points";
         }
@@ -292,6 +297,19 @@ namespace Pavel2.Framework {
             createNewData = MainData.MainWindow.GetToolBarButton("Create", new BitmapImage(new Uri("Icons/table_go.png", UriKind.Relative)), "Create new data from selected points");
             createNewData.Visibility = Visibility.Collapsed;
             createNewData.Click += createNewData_Click;
+
+            invertSelection = MainData.MainWindow.GetToolBarButton("Invert", new BitmapImage(new Uri("Icons/arrow_switch.png", UriKind.Relative)), "Invert selection");
+            invertSelection.Visibility = Visibility.Collapsed;
+            invertSelection.Click += invertSelection_Click;
+        }
+
+        void invertSelection_Click(object sender, RoutedEventArgs e) {
+            for (int i = 0; i < selectedPoints.Length; i++) {
+                selectedPoints[i] = !selectedPoints[i];
+            }
+            ShowNumberSelPoints();
+            HasChanged();
+            MainData.MainWindow.UpdateVisualization();
         }
 
         void createNewData_Click(object sender, RoutedEventArgs e) {
