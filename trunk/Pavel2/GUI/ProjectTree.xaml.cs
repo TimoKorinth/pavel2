@@ -22,6 +22,7 @@ namespace Pavel2.GUI {
         private TreeViewItem highlightedItem;
         private String oldHeader;
         private List<TreeViewItem> linkTreeViewItems = new List<TreeViewItem>();
+        private bool insertDir = false;
 
         #endregion
 
@@ -181,7 +182,7 @@ namespace Pavel2.GUI {
                     } else {
                         rootItem.Items.Insert(insertIndex, item);
                     }
-                    projectTree.SelectItem(item);
+                    if (!insertDir) projectTree.SelectItem(item);
                     item.IsSelected = isSelected;
                     rootItem.IsExpanded = isExpanded;
                 }
@@ -197,6 +198,7 @@ namespace Pavel2.GUI {
         }
 
         public void AddDirectory(DirectoryInfo dir, TreeViewItem root) {
+            insertDir = true;
             TreeViewItem tmp = new TreeViewItem();
             FolderProjectTreeItem fPTI = new FolderProjectTreeItem(tmp);
             tmp.Tag = fPTI;
@@ -205,13 +207,14 @@ namespace Pavel2.GUI {
                 AddDataProjectTreeItem(file, tmp);
             }
             if (root != null) {
-                InsertToProjectTree(tmp, root, false, false);
+                InsertToProjectTree(tmp, root, false, true);
             } else {
-                InsertToProjectTree(tmp, false, false);
+                InsertToProjectTree(tmp, false, true);
             }
             foreach (DirectoryInfo directory in dir.GetDirectories()) {
                 AddDirectory(directory, tmp);
             }
+            insertDir = false;
         }
 
         public void AddDataProjectTreeItem(FileInfo file, TreeViewItem rootItem) {
