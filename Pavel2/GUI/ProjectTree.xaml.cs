@@ -61,8 +61,8 @@ namespace Pavel2.GUI {
             }
         }
 
-        public List<DataProjectTreeItem> GetRelatedItems(DataProjectTreeItem dPTI) {
-            List<DataProjectTreeItem> relData = new List<DataProjectTreeItem>();
+        public List<object> GetRelatedItems(DataProjectTreeItem dPTI) {
+            List<object> relData = new List<object>();
             foreach (TreeViewItem tvItem in linkTreeViewItems) {
                 if (tvItem.Tag is LinkItem) {
                     LinkItem lItem = (LinkItem)tvItem.Tag;
@@ -77,6 +77,34 @@ namespace Pavel2.GUI {
                             if (!relData.Contains(d.OriginalData)) relData.Add(d.OriginalData);
                         }
                         relData.Remove(dPTI);
+                        foreach (ImageTreeItem img in lItem.Images) {
+                            if (!relData.Contains(img)) relData.Add(img);
+                        }
+                    }
+                }
+            }
+            return relData;
+        }
+
+        public List<object> GetRelatedItems(ImageTreeItem imgItem) {
+            List<object> relData = new List<object>();
+            foreach (TreeViewItem tvItem in linkTreeViewItems) {
+                if (tvItem.Tag is LinkItem) {
+                    LinkItem lItem = (LinkItem)tvItem.Tag;
+                    bool isIn = false;
+                    for (int i = 0; i < lItem.Images.Count; i++) {
+                        if (lItem.Images[i].Equals(imgItem)) {
+                            isIn = true;
+                        }
+                    }
+                    if (isIn) {
+                        foreach (DataProjectTreeItem d in lItem.DataItems) {
+                            if (!relData.Contains(d.OriginalData)) relData.Add(d.OriginalData);
+                        }
+                        foreach (ImageTreeItem img in lItem.Images) {
+                            if (!relData.Contains(img)) relData.Add(img);
+                        }
+                        relData.Remove(imgItem);
                     }
                 }
             }
@@ -230,8 +258,13 @@ namespace Pavel2.GUI {
             UpdateDataTreeViewItem(tvItem);
         }
 
-        public void Select(DataProjectTreeItem d) {
-            TreeViewItem tvItem = GetRelatedItem(d.DataGrid, root);
+        public void Select(object item) {
+            TreeViewItem tvItem = null;
+            if (item is DataProjectTreeItem) {
+                tvItem = GetRelatedItem((item as DataProjectTreeItem).DataGrid, root);
+            } else if (true) {
+                tvItem = GetRelatedItem(item as ImageTreeItem, root);
+            }
             if (tvItem == null) return;
             projectTree.SelectItem(tvItem);
             tvItem.IsSelected = true;
@@ -244,6 +277,19 @@ namespace Pavel2.GUI {
                     if (dPTI.DataGrid.Equals(d)) return item;
                 } else if (item.Tag is FolderProjectTreeItem) {
                     TreeViewItem tVI = GetRelatedItem(d, item);
+                    if (tVI != null) return tVI;
+                }
+            }
+            return null;
+        }
+
+        public TreeViewItem GetRelatedItem(ImageTreeItem imgItem, TreeViewItem root) {
+            foreach (TreeViewItem item in root.Items) {
+                if (item.Tag is ImageTreeItem) {
+                    ImageTreeItem img = (ImageTreeItem)item.Tag;
+                    if (img.Equals(imgItem)) return item;
+                } else if (item.Tag is FolderProjectTreeItem) {
+                    TreeViewItem tVI = GetRelatedItem(imgItem, item);
                     if (tVI != null) return tVI;
                 }
             }
