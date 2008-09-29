@@ -316,6 +316,21 @@ namespace Pavel2.GUI
                         ExportToPng(new Uri(dlg.FileName), (BitmapSource)pTI.Screenshot);
                     }
                 }
+                if (item.Tag is LinkItem) {
+                    LinkItem lItem = (LinkItem)item.Tag;
+                    if (lItem.IsCombineable && lItem.IsCombined) {
+                        ProjectTreeItem pTI = (ProjectTreeItem)lItem.CombItem;
+                        pTI.TakeScreenShot();
+                        Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                        dlg.FileName = pTI.LastVisualization.GetType().ToString();
+                        dlg.DefaultExt = ".png";
+                        dlg.Filter = "PNG file (.png)|*.png|JPEG file (.jpg)|*.jpg|Gif file (.gif)|*.gif";
+                        Nullable<bool> result = dlg.ShowDialog();
+                        if (result == true) {
+                            ExportToPng(new Uri(dlg.FileName), (BitmapSource)pTI.Screenshot);
+                        }
+                    }
+                }
             }
         }
 
