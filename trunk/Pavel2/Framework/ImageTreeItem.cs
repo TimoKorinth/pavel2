@@ -20,6 +20,11 @@ namespace Pavel2.Framework {
             set { imageSource = value; }
         }
 
+        public ImageSource Screenshot {
+            get { return imageSource; }
+            set { imageSource = value; }
+        }
+
         public ImageTreeItem(ImageSource img) {
             this.imageSource = img;
         }

@@ -264,8 +264,13 @@ namespace Pavel2.GUI
             projectTreeView.UpdateLinkItem(projectTreeView.SelectedItem);
         }
         
-        public void FillPreviewPanel(DataProjectTreeItem dPTI, bool expand) {
-            List<DataProjectTreeItem> relData = projectTreeView.GetRelatedItems(dPTI);
+        public void FillPreviewPanel(object item, bool expand) {
+            List<object> relData = new List<object>();
+            if (item is DataProjectTreeItem) {
+                relData = projectTreeView.GetRelatedItems((DataProjectTreeItem)item);
+            } else if (item is ImageTreeItem) {
+                relData = projectTreeView.GetRelatedItems((ImageTreeItem)item);
+            }
             if (relData.Count == 0) {
                 EmptyPreviewPanel();
             } else {
@@ -282,8 +287,8 @@ namespace Pavel2.GUI
         public void UpdatePreviewPanel() {
             TreeViewItem selItem = projectTreeView.SelectedItem;
             if (selItem != null) {
-                if (selItem.Tag is DataProjectTreeItem) {
-                    FillPreviewPanel((DataProjectTreeItem)selItem.Tag, true);
+                if (selItem.Tag is DataProjectTreeItem || selItem.Tag is ImageTreeItem) {
+                    FillPreviewPanel(selItem.Tag, true);
                 } else {
                     EmptyPreviewPanel();
                 }
@@ -468,9 +473,16 @@ namespace Pavel2.GUI
         }
 
         private void previewList_MouseDoubleClick(object sender, MouseButtonEventArgs e) {
-            DataProjectTreeItem dPTI = previewList.SelectedItem as DataProjectTreeItem;
-            if (dPTI == null) return;
-            projectTreeView.Select(dPTI);
+            if (previewList.SelectedItem is DataProjectTreeItem) {
+                DataProjectTreeItem dPTI = previewList.SelectedItem as DataProjectTreeItem;
+                if (dPTI == null) return;
+                projectTreeView.Select(dPTI);
+            }
+            if (previewList.SelectedItem is ImageTreeItem) {
+                ImageTreeItem imgItem = previewList.SelectedItem as ImageTreeItem;
+                if (imgItem == null) return;
+                projectTreeView.Select(imgItem);
+            }
         }
 	}
 }
