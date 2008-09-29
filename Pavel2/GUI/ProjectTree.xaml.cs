@@ -421,8 +421,8 @@ namespace Pavel2.GUI {
                         DataProjectTreeItem sourceItem = tvItem.Tag as DataProjectTreeItem;
                         int index = lItem.DataItems.IndexOf(targetItem);
                         if (index != -1) {
-                            lItem.DataItems.Remove(sourceItem);
-                            lItem.DataItems.Insert(index, sourceItem);
+                            lItem.RemoveDataItem(sourceItem);
+                            lItem.AddDataItem(sourceItem, index);
                         }
                         UpdateLinkItem(tvLinkItem);
                     }
