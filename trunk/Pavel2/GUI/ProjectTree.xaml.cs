@@ -24,6 +24,7 @@ namespace Pavel2.GUI {
         private List<TreeViewItem> linkTreeViewItems = new List<TreeViewItem>();
         private bool insertDir = false;
         private bool dragEnabled = false;
+        private Point startPoint;
 
         #endregion
 
@@ -554,7 +555,7 @@ namespace Pavel2.GUI {
 
         private void projectTree_PreviewMouseMove(object sender, MouseEventArgs e) {
             if (e.LeftButton == MouseButtonState.Pressed) {
-                if (this.editItem == null && dragEnabled) {
+                if (this.editItem == null && dragEnabled && (Point.Subtract(startPoint, e.GetPosition(this)).Length > 10)) {
                     DragDropHelper.DoDragDrop(projectTree, projectTree.SelectedItems, DragDropEffects.Copy, this);
                     dragEnabled = false;
                 }
@@ -567,6 +568,7 @@ namespace Pavel2.GUI {
             if (item != null) {
                 if (item.Tag is Column || item.Tag is DataProjectTreeItem || item.Tag is ImageTreeItem) {
                     dragEnabled = true;
+                    startPoint = e.GetPosition(this);
                 }
             }
         }
