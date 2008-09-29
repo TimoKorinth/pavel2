@@ -135,6 +135,7 @@ namespace Pavel2.GUI {
                 LinkItem lItem = (LinkItem)item.Tag;
                 for (int i = 0; i < lItem.DataItems.Count; i++) {
                     TreeViewItem tmp = new TreeViewItem();
+                    tmp.ToolTip = this.GetPath(lItem.DataItems[i]);
                     tmp.FontWeight = FontWeights.Normal;
                     tmp.Opacity = 0.6;
                     tmp.Tag = lItem.DataItems[i];
@@ -147,6 +148,7 @@ namespace Pavel2.GUI {
                 }
                 for (int i = 0; i < lItem.Images.Count; i++) {
                     TreeViewItem tmp = new TreeViewItem();
+                    tmp.ToolTip = this.GetPath(lItem.Images[i]);
                     tmp.FontWeight = FontWeights.Normal;
                     tmp.Opacity = 0.6;
                     tmp.Tag = lItem.Images[i];
