@@ -1,0 +1,366 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DefaultClrNameSpace>Pavel2</DefaultClrNameSpace>
+    <AssemblyName>Pavel2</AssemblyName>
+    <RootNamespace>Pavel2</RootNamespace>
+    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <AlwaysCompileMarkupFilesInSeparateDomain>false</AlwaysCompileMarkupFilesInSeparateDomain>
+    <ExpressionBlendCreationVersion>2.1.1111.0</ExpressionBlendCreationVersion>
+    <ProjectGuid>{4F56B397-D120-4C5B-A37B-166C4725B94A}</ProjectGuid>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OutputType>WinExe</OutputType>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <StartupObject>
+    </StartupObject>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework.Classic" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tao.FreeGlut, Version=2.4.0.2, Culture=neutral, PublicKeyToken=6e602a6ad6c0d06d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Tao.FreeGlut.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.OpenGl, Version=2.1.0.12, Culture=neutral, PublicKeyToken=1ca010269a4501ef, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Tao.OpenGl.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.Platform.Windows, Version=1.0.0.5, Culture=neutral, PublicKeyToken=701104b2da67a104, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Tao.Platform.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsFormsIntegration">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\ColorManagement.cs" />
+    <Compile Include="Framework\ColorOGL.cs" />
+    <Compile Include="Framework\Column.cs" />
+    <Compile Include="Framework\CombinedDataItem.cs" />
+    <Compile Include="Framework\CSVParser.cs" />
+    <Compile Include="Framework\DataGrid.cs" />
+    <Compile Include="Framework\DataProjectTreeItem.cs" />
+    <Compile Include="Framework\DiscretePoint.cs" />
+    <Compile Include="Framework\FolderProjectTreeItem.cs" />
+    <Compile Include="Framework\ImageParser.cs" />
+    <Compile Include="Framework\ImageTreeItem.cs" />
+    <Compile Include="Framework\IPoint.cs" />
+    <Compile Include="Framework\LinkItem.cs" />
+    <Compile Include="Framework\MainData.cs" />
+    <Compile Include="Framework\Parser.cs" />
+    <Compile Include="Framework\ParserManagement.cs" />
+    <Compile Include="Framework\ProjectHelper.cs" />
+    <Compile Include="Framework\ProjectTreeItem.cs" />
+    <Compile Include="Framework\SerializeObject.cs" />
+    <Compile Include="GUI\EnumTypeConverter.cs" />
+    <Compile Include="GUI\ExplorerTree.xaml.cs">
+      <DependentUpon>ExplorerTree.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\HeaderToImageConverter.cs" />
+    <Compile Include="GUI\HeaderToImageConverterPT.cs" />
+    <Compile Include="GUI\DragDropHelper.cs" />
+    <Compile Include="GUI\MultiTreeView.cs" />
+    <Compile Include="GUI\OpenGLControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\ParserOptions.xaml.cs">
+      <DependentUpon>ParserOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ScatterMatrix.xaml.cs">
+      <DependentUpon>ScatterMatrix.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ParallelPlot.xaml.cs">
+      <DependentUpon>ParallelPlot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ProjectTree.xaml.cs">
+      <DependentUpon>ProjectTree.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Property.cs" />
+    <Compile Include="GUI\PropertyGrid.xaml.cs">
+      <DependentUpon>PropertyGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PropertyTemplateSelector.cs" />
+    <Compile Include="GUI\Scatterplot3D.xaml.cs">
+      <DependentUpon>Scatterplot3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\TableView.xaml.cs">
+      <DependentUpon>TableView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\VisTab.xaml.cs">
+      <DependentUpon>VisTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Visualization.cs" />
+    <Compile Include="GUI\VisualizationLayer.xaml.cs">
+      <DependentUpon>VisualizationLayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GUI\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="GUI\ExplorerTree.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\ParserOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\ScatterMatrix.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\ParallelPlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\ProjectTree.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\PropertyGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Scatterplot3D.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\TableView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\VisTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\VisualizationLayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\CheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Expander.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Frame.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\GroupBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Label.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Menu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\NavigationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\RadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ResizeGrip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ScrollBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Separator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Shared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Slider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\StatusBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\TabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ToolBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ToolTip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\TreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Window.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Resource Include="GUI\Icons\Move.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\Document.png" />
+    <Resource Include="GUI\Icons\Folder.png" />
+    <Resource Include="GUI\Icons\HDD.png" />
+    <Resource Include="GUI\Icons\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\package.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_multiple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\control_stop.png" />
+    <Resource Include="GUI\Icons\control_stop_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\package_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_multiple_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\arrow_undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\zoom_in.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\zoom_out.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\timeline_marker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\arrow_switch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\chart_curve_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\grid.png" />
+    <Resource Include="GUI\Icons\list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_link.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\table_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\Icons\Logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

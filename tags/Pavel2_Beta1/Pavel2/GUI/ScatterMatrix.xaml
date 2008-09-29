@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Pavel2.GUI.ScatterMatrix"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Background="White">
+    <Grid Name="openGlCanvas">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Name="xLabels" Grid.Column="1" Grid.Row="1" MouseEnter="Labels_MouseEnter" MouseLeave="Labels_MouseLeave" />
+        <Grid Name="yLabels" Grid.Column="0" Grid.Row="0" MouseEnter="Labels_MouseEnter" MouseLeave="Labels_MouseLeave" />
+        <Grid Name="togglePanel" Grid.Column="0" Grid.Row="1" />
+        <Image Grid.Column="1" Grid.Row="0" Margin="5" Name="visImage" Stretch="Fill" MouseDown="visImage_MouseDown" MouseMove="visImage_MouseMove" MouseUp="visImage_MouseUp" />
+        <Grid Grid.Column="1" Grid.Row="0" Margin="5" Name="labels" MouseDown="visImage_MouseDown" MouseMove="visImage_MouseMove" MouseUp="visImage_MouseUp" />
+    </Grid>
+</UserControl>
