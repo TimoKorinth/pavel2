@@ -498,6 +498,7 @@ namespace Pavel2.GUI {
             col1combo.ItemsSource = dataGrid.Columns;
             col1combo.SelectedIndex = properties.Col1;
             col1combo.DisplayMemberPath = "Header";
+            col1combo.SelectionChanged -= col1combo_SelectionChanged;
             col1combo.SelectionChanged += col1combo_SelectionChanged;
             TextBlock col1txt = new TextBlock();
             col1txt.Text = "Column 1";
@@ -515,6 +516,7 @@ namespace Pavel2.GUI {
             col2combo.ItemsSource = dataGrid.Columns;
             col2combo.SelectedIndex = properties.Col2;
             col2combo.DisplayMemberPath = "Header";
+            col2combo.SelectionChanged -= col2combo_SelectionChanged;
             col2combo.SelectionChanged += col2combo_SelectionChanged;
             TextBlock col2txt = new TextBlock();
             col2txt.Text = "Column 2";
@@ -531,6 +533,7 @@ namespace Pavel2.GUI {
             ComboBox col3combo = new ComboBox();
             col3combo.ItemsSource = dataGrid.Columns;
             col3combo.SelectedIndex = properties.Col3;
+            col3combo.SelectionChanged -= col3combo_SelectionChanged;
             col3combo.SelectionChanged += col3combo_SelectionChanged;
             col3combo.DisplayMemberPath = "Header";
             TextBlock col3txt = new TextBlock();
