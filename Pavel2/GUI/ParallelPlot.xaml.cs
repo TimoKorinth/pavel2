@@ -500,17 +500,15 @@ namespace Pavel2.GUI {
             if (this.dataGrid != null && this.dataGrid.Cache.ContainsKey(this.GetType())) {
                 return this.dataGrid.Cache[this.GetType()];
             }
-            Bitmap bmp = wfPA.Screenshot();
-            if (bmp == null) return null;
-            return Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
-                System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+            ImageSource imgSource = wfPA.Screenshot();
+            if (imgSource == null) return null;
+            return imgSource;
         }
 
         public ImageSource TakeScreenshot() {
-            Bitmap bmp = wfPA.Screenshot();
-            if (bmp == null) return null;
-            return Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
-                System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+            ImageSource imgSource = wfPA.Screenshot();
+            if (imgSource == null) return null;
+            return imgSource;
         }
 
         #endregion

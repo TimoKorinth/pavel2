@@ -342,66 +342,24 @@ namespace Pavel2.GUI {
         /// Save the front buffer as a Bitmap.
         /// </summary>
         /// <returns></returns>
-        public Bitmap Screenshot() {
-            // Make this current first!
-            this.MakeCurrentContext();
-
-            // Get size from viewport
-            int[] viewport = new int[4];
-            Gl.glGetIntegerv(Gl.GL_VIEWPORT, viewport);
-            if (viewport[0] == 0 && viewport[1] == 0 && viewport[2] == 0 && viewport[3] == 0) {
+        public System.Windows.Media.Imaging.BitmapSource Screenshot() {
+            if (this.Width == 0 || this.Height == 0) {
                 return null;
             }
+            byte[] read_data = new byte[4 * this.Width * this.Height];
+            Gl.glReadPixels(0, 0, this.Width, this.Height, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, read_data);
 
-            // array for pixeldata
-            byte[] read_data = new byte[4 * viewport[2] * viewport[3]];
+            int rawStride = (this.Width * System.Windows.Media.PixelFormats.Bgr32.BitsPerPixel + 7) / 8;
+            System.Windows.Media.Imaging.BitmapSource bmpSource = System.Windows.Media.Imaging.BitmapSource.Create(
+                this.Width, this.Height, 96, 96, System.Windows.Media.PixelFormats.Bgr32,
+                null, read_data, rawStride);
 
-            // swap buffers to be save working on every card
-            this.SwapBuffers();
-            // read front buffer
-            Gl.glReadBuffer(Gl.GL_BACK);
+            System.Windows.Media.ScaleTransform t = new System.Windows.Media.ScaleTransform();
+            t.ScaleY = -1;
 
-            // read the pixels in BGRA-format (for some graphic cards faster)
-            Gl.glReadPixels(0, 0, viewport[2], viewport[3], Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, read_data);
+            System.Windows.Media.Imaging.TransformedBitmap tBMP = new System.Windows.Media.Imaging.TransformedBitmap(bmpSource, t);
 
-            // swap it back
-            this.SwapBuffers();
-
-            // Create clean bitmap
-            Bitmap nbmp = new Bitmap(viewport[2], viewport[3], PixelFormat.Format24bppRgb);
-
-            // Get the real data from bitmap, lock the original data
-            BitmapData bmpData = nbmp.LockBits(new Rectangle(0, 0, viewport[2], viewport[3]), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-            // Get pointer from first data
-            IntPtr intPtr = bmpData.Scan0;
-
-            // Calc the offset for a row
-            int nOffset = bmpData.Stride - viewport[2] * 4;
-            int loc = 0;
-
-            // Set the pixels
-            for (int i = 0; i < viewport[3]; i++) {
-                loc = bmpData.Stride * (viewport[3] - i - 1);
-                for (int j = 0; j < viewport[2] * 4; j += 4) {
-                    // construct pointers for the pixels color
-                    IntPtr Alpha = new IntPtr(intPtr.ToInt32() + 3);
-                    IntPtr Red = new IntPtr(intPtr.ToInt32() + 2);
-                    IntPtr Green = new IntPtr(intPtr.ToInt32() + 1);
-                    IntPtr Blue = intPtr;
-                    // set pixels to color from buffer
-                    Marshal.WriteByte(Alpha, read_data[loc + j + 3]);
-                    Marshal.WriteByte(Red, read_data[loc + j + 2]);
-                    Marshal.WriteByte(Green, read_data[loc + j + 1]);
-                    Marshal.WriteByte(Blue, read_data[loc + j]);
-                    intPtr = new IntPtr(intPtr.ToInt32() + 4);
-                }
-                intPtr = new IntPtr(intPtr.ToInt32() + nOffset);
-            }
-            // unlock the data from bitmap
-            nbmp.UnlockBits(bmpData);
-
-            return nbmp;
+            return tBMP;
         }
 
         /// <summary>
