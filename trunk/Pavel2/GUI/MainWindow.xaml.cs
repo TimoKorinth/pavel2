@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Pavel2.Framework;
 using System.IO;
 using System.Windows.Interop;
+using System.Diagnostics;
 
 namespace Pavel2.GUI
 {
@@ -498,6 +499,10 @@ namespace Pavel2.GUI
                 if (imgItem == null) return;
                 projectTreeView.Select(imgItem);
             }
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e) {
+            Process.Start(((Hyperlink)sender).NavigateUri.ToString());
         }
 	}
 }

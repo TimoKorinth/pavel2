@@ -104,6 +104,9 @@
     <Compile Include="GUI\HeaderToImageConverterPT.cs" />
     <Compile Include="GUI\DragDropHelper.cs" />
     <Compile Include="GUI\MultiTreeView.cs" />
+    <Compile Include="GUI\Notes.xaml.cs">
+      <DependentUpon>Notes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\OpenGLControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -144,6 +147,10 @@
     <Page Include="GUI\ExplorerTree.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\Notes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\ParserOptions.xaml">
       <SubType>Designer</SubType>
