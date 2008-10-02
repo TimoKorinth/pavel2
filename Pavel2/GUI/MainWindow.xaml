@@ -30,8 +30,10 @@
                 <MenuItem Header="Import..." Click="importButton_Click" />
                 <MenuItem Header="Export..." Click="exportButton_Click" />
             </MenuItem>
-            <MenuItem Header="Help"/>
-		</Menu>
+                <MenuItem Header="Help">
+                    <Hyperlink Click="Hyperlink_Click" NavigateUri="http://code.google.com/p/pavel2/">Project Page</Hyperlink>
+                </MenuItem>
+            </Menu>
 		<StatusBar Grid.Row="4" Grid.ColumnSpan="7" Height="20">
             <StatusBarItem Name="pointStatus" Visibility="Collapsed"/>
 			<StatusBarItem Name="selectionStatus" Visibility="Collapsed" Margin="20,0,0,0" />

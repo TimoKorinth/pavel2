@@ -31,6 +31,12 @@ namespace Pavel2.Framework {
         [NonSerialized()]
         private Button invertSelection;
         private bool[] selectedPoints;
+        private String notes;
+        [Browsable(false)]
+        public String Notes {
+            get { return notes; }
+            set { notes = value; }
+        }
 
         private bool isScatterplot = false;
         private int scatterCol1;
