@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Pavel2.Framework;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace Pavel2.GUI {
     /// <summary>
@@ -63,7 +64,13 @@ namespace Pavel2.GUI {
                     tabItem.Header = t.Name;
                     Visualization vis = (Visualization)Activator.CreateInstance(t);
                     tabItem.Content = vis;
-                    visualizationTabControl.Items.Add(tabItem);
+                    if (vis is TableView) {
+                        visualizationTabControl.Items.Insert(0, tabItem);
+                    } else if (vis is Notes) {
+                        visualizationTabControl.Items.Insert(visualizationTabControl.Items.Count, tabItem);
+                    } else {
+                        visualizationTabControl.Items.Insert(visualizationTabControl.Items.Count - 1, tabItem);
+                    }
                 }
             }
         }
