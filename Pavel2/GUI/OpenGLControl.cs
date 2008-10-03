@@ -18,44 +18,14 @@ namespace Pavel2.GUI {
     public abstract class OpenGLControl : Control {
 
         #region Fields
-        private Font baseFont = new Font("Verdana", 12);
-        private int fontbase;
         private IntPtr deviceContext = IntPtr.Zero;
         private IntPtr renderContext = IntPtr.Zero;
-        private Gdi.GLYPHMETRICSFLOAT[] gmf = new Gdi.GLYPHMETRICSFLOAT[256];
-
-        /// <value>
-        /// Setting this to true or false controls whether the glOrtho
-        /// cuboid stays quadratic in the xy plane or adjusts itself to compensate
-        /// for different aspect ratios of the viewport.
-        /// keepAspect = true results in the cuboid adjusting, keeping aspect ratios in the viewport.
-        /// </value>
-        public bool keepAspect = true;
 
         #endregion
 
         #region Properties
 
-        /// <value>Gets the baseFont or set it</value>
-        public Font BaseFont {
-            get { return baseFont; }
-            set {
-                baseFont = value;
-                BuildFont();
-                RenderScene();
-                SwapBuffers();
-            }
-        }
-
         #region Window Aspect Properties
-
-        /// <value>
-        /// Gets the aspect ratio of this control.
-        /// Depending on whether keepAspect is set, returns the actual aspect ratio (keepAspect=true), or 1
-        /// </value>
-        public float WindowAspect {
-            get { return keepAspect ? (float)this.Width / this.Height : 1f; }
-        }
         #endregion
 
         #endregion
@@ -88,82 +58,6 @@ namespace Pavel2.GUI {
         protected virtual void InitOpenGL() { }
 
         protected abstract void SetupModelViewMatrixOperations();
-
-        /// <summary>
-        /// Builds a font for OpenGL.
-        /// </summary>
-        private void BuildFont() {
-            IntPtr font;                                                        // Windows Font ID
-            fontbase = Gl.glGenLists(256);                                      // Storage For 256 Characters
-
-            font = Gdi.CreateFont(                                              // Create The Font
-                0,                                                              // Height Of Font
-                0,                                                              // Width Of Font
-                0,                                                              // Angle Of Escapement
-                0,                                                              // Orientation Angle
-                0,                                                            // Font Weight
-                false,                                                          // Italic
-                false,                                                          // Underline
-                false,                                                          // Strikeout
-                Gdi.ANSI_CHARSET,                                               // Character Set Identifier
-                Gdi.OUT_TT_PRECIS,                                              // Output Precision
-                Gdi.CLIP_DEFAULT_PRECIS,                                        // Clipping Precision
-                Gdi.ANTIALIASED_QUALITY,                                        // Output Quality
-                Gdi.FF_DONTCARE | Gdi.DEFAULT_PITCH,                            // Family And Pitch
-                BaseFont.FontFamily.Name);                                      // Font Name
-                IntPtr hDC = User.GetDC(this.Handle);
-                Gdi.SelectObject(hDC, font);                                    // Selects The Font We Created
-                Wgl.wglUseFontOutlinesW(
-                    hDC,                                                        // Select The Current DC
-                    0,                                                          // Starting Character
-                    255,                                                        // Number Of Display Lists To Build
-                    fontbase,                                                   // Starting Display Lists
-                    0,                                                          // Deviation From The True Outlines
-                    0f,                                                         // Font Thickness In The Z Direction
-                    Wgl.WGL_FONT_POLYGONS,                                      // Use Polygons, Not Lines
-                    gmf);                                                       // Address Of Buffer To Receive Data
-        }
-
-        /// <summary>
-        /// This method draws a string with OpenGl. It needs the coordinates to draw the String at, a 
-        /// degree for rotating the String counter clockwise, a size modifier and the string to be drawn.
-        /// </summary>
-        /// <param name="x">x-coordinate</param>
-        /// <param name="y">y-coordinate</param>
-        /// <param name="degree">Degree for rotating counter clockwise</param>
-        /// <param name="scaling">Size modifier for scaling</param>
-        /// <param name="text">String to be drawn</param>
-        public void PrintText(float x, float y, float degree, float scaling, string text) {
-            //TODO Sowas aehnliches bauen das unter ProjectionFlat arbeitet und keepAspect beruecksichtigt
-            if (text == null || text.Length == 0) {                             // If There's No Text
-                return;                                                         // Do Nothing
-            }
-            float length = 0;                                                   // Used To Find The Length Of The Text
-            char[] chars = text.ToCharArray();                                  // Holds Our String
-
-            for (int loop = 0; loop < text.Length; loop++) {                    // Loop To Find Text Length
-                length += gmf[chars[loop]].gmfCellIncX;                         // Increase Length By Each Characters Width
-            }
-
-            Gl.glPushMatrix();
-            Gl.glPushAttrib(Gl.GL_LIST_BIT);                                    // Pushes The Display List Bits
-            Gl.glEnable(Gl.GL_POLYGON_SMOOTH);
-            Gl.glHint(Gl.GL_POLYGON_SMOOTH_HINT, Gl.GL_NICEST);
-
-            Gl.glListBase(fontbase);
-
-            Gl.glTranslatef(x, y, 0);
-            Gl.glRotatef(degree, 0.0F, 0.0F, 1.0F);
-            Gl.glScalef(scaling, scaling, 0.0F);
-
-            byte[] textbytes = new byte[text.Length];
-            for (int i = 0; i < text.Length; i++)
-                textbytes[i] = (byte)text[i];
-            Gl.glCallLists(text.Length, Gl.GL_UNSIGNED_BYTE, textbytes);        // Draws The Display List Text
-            Gl.glPopMatrix();
-            Gl.glPopAttrib();
-            Gl.glDisable(Gl.GL_POLYGON_SMOOTH);
-        }
 
         /// <summary>
         /// Initializes the styles.
@@ -300,7 +194,6 @@ namespace Pavel2.GUI {
             }
 
             this.MakeCurrentContext();
-            this.BuildFont();
         }
 
         /// <summary>
@@ -316,7 +209,7 @@ namespace Pavel2.GUI {
         /// <summary>
         /// Deletes the deviceContext and renderContext.
         /// </summary>
-        private void DestroyContexts() { //TODO In die Dispose Methode/Destruktor
+        public void DestroyContexts() { //TODO In die Dispose Methode/Destruktor
             if (this.renderContext != IntPtr.Zero) {
                 Wgl.wglMakeCurrent(IntPtr.Zero, IntPtr.Zero);
                 Wgl.wglDeleteContext(this.renderContext);

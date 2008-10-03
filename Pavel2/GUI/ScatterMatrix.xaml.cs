@@ -57,9 +57,11 @@ namespace Pavel2.GUI {
             wfPA = new OpenGLRenderWind();
             host.Child = wfPA;
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
-                wfPA.Width = (int)MainData.MainWindow.visualizationLayer.ActualWidth; ;
-                wfPA.Height = (int)MainData.MainWindow.visualizationLayer.ActualHeight;
-                wfPA.SetupViewPort();
+                if (wfPA != null) {
+                    wfPA.Width = (int)MainData.MainWindow.visualizationLayer.ActualWidth; ;
+                    wfPA.Height = (int)MainData.MainWindow.visualizationLayer.ActualHeight;
+                    wfPA.SetupViewPort();
+                }
                 return null;
             }), null);
         }
@@ -914,6 +916,9 @@ namespace Pavel2.GUI {
 
         public void Dispose() {
             dataGrid = null;
+            wfPA.DestroyContexts();
+            wfPA = null;
+            host.Child = null;
         }
 
         #endregion

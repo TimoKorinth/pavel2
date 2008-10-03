@@ -114,9 +114,11 @@ namespace Pavel2.GUI {
             wfPA.MouseWheel += wfPA_MouseWheel;
             wfPA.SizeChanged += wfPA_SizeChanged;
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
-                wfPA.Width = (int)MainData.MainWindow.visualizationLayer.ActualWidth; ;
-                wfPA.Height = (int)MainData.MainWindow.visualizationLayer.ActualHeight;
-                wfPA.SetupViewPort();
+                if (wfPA != null) {
+                    wfPA.Width = (int)MainData.MainWindow.visualizationLayer.ActualWidth; ;
+                    wfPA.Height = (int)MainData.MainWindow.visualizationLayer.ActualHeight;
+                    wfPA.SetupViewPort();
+                }
                 return null;
             }), null);
         }
@@ -590,6 +592,15 @@ namespace Pavel2.GUI {
             dataGrid = null;
             this.vertexArray = null;
             this.colorArray = null;
+            wfPA.DestroyContexts();
+            wfPA.MouseDown -= wfPA_MouseDown;
+            wfPA.MouseMove -= wfPA_MouseMove;
+            wfPA.MouseUp -= wfPA_MouseUp;
+            wfPA.MouseWheel -= wfPA_MouseWheel;
+            wfPA.SizeChanged -= wfPA_SizeChanged;
+            wfPA = null;
+            host.Child = null;
+            
         }
 
         #endregion
