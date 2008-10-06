@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Pavel2.Framework.DataGrid">
+    <Position X="6" Y="0.5" Width="2.25" />
+    <Members>
+      <Method Name="AddColumn" Hidden="true" />
+      <Property Name="Buttons" Hidden="true" />
+      <Field Name="cache" Hidden="true" />
+      <Field Name="changed" Hidden="true" />
+      <Method Name="ClearSelectedPoints" Hidden="true" />
+      <Method Name="ColIsVisible" Hidden="true" />
+      <Event Name="ColumnChanged" Hidden="true" />
+      <Field Name="columns" Hidden="true" />
+      <Event Name="ColumnVisChanged" Hidden="true" />
+      <Field Name="createNewData" Hidden="true" />
+      <Method Name="createNewData_Click" Hidden="true" />
+      <Field Name="data" Hidden="true" />
+      <Method Name="DataGrid" Hidden="true" />
+      <Field Name="dData" Hidden="true" />
+      <Method Name="GetIndex" Hidden="true" />
+      <Method Name="HasChanged" Hidden="true" />
+      <Method Name="IndexOf" Hidden="true" />
+      <Method Name="InitButtons" Hidden="true" />
+      <Method Name="InitChangeDict" Hidden="true" />
+      <Field Name="invertSelection" Hidden="true" />
+      <Method Name="invertSelection_Click" Hidden="true" />
+      <Field Name="isScatterplot" Hidden="true" />
+      <Property Name="IsScatterplot" Hidden="true" />
+      <Field Name="maxColumn" Hidden="true" />
+      <Property Name="MaxColumn" Hidden="true" />
+      <Field Name="maxPoints" Hidden="true" />
+      <Property Name="MaxPoints" Hidden="true" />
+      <Field Name="notes" Hidden="true" />
+      <Property Name="Notes" Hidden="true" />
+      <Property Name="RealColumns" Hidden="true" />
+      <Field Name="scatterCol1" Hidden="true" />
+      <Property Name="ScatterCol1" Hidden="true" />
+      <Field Name="scatterCol2" Hidden="true" />
+      <Property Name="ScatterCol2" Hidden="true" />
+      <Field Name="selectedPoints" Hidden="true" />
+      <Method Name="SetColVisButton" Hidden="true" />
+      <Method Name="SetDataFieldsAfterZoom" Hidden="true" />
+      <Method Name="SetMaxColumn" Hidden="true" />
+      <Field Name="showAll" Hidden="true" />
+      <Property Name="ShowAll" Hidden="true" />
+      <Method Name="ShowNumberSelPoints" Hidden="true" />
+      <Field Name="undoColVis" Hidden="true" />
+      <Method Name="undoColVis_Click" Hidden="true" />
+      <Field Name="undoZoom" Hidden="true" />
+      <Method Name="undoZoom_Click" Hidden="true" />
+      <Method Name="UpdateAll" Hidden="true" />
+      <Method Name="UpdateButtons" Hidden="true" />
+      <Method Name="UpdateDataSets" Hidden="true" />
+      <Method Name="VisibleColumns" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AWCoABBghRhiAAAQNIUgAASIIAQUgABAHBAwQEiAoQA=</HashCode>
+      <FileName>Framework\DataGrid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.IPoint">
+    <Position X="8.5" Y="2.5" Width="1.5" />
+    <Members>
+      <Field Name="data" Hidden="true" />
+      <Field Name="doubleData" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAACAAA=</HashCode>
+      <FileName>Framework\IPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.DiscretePoint" Collapsed="true">
+    <Position X="6.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Framework\DiscretePoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.Parser">
+    <Position X="3.25" Y="5.75" Width="1.5" />
+    <Members>
+      <Method Name="AddHeader" Hidden="true" />
+      <Method Name="AddPoint" Hidden="true" />
+      <Field Name="headers" Hidden="true" />
+      <Field Name="max" Hidden="true" />
+      <Field Name="min" Hidden="true" />
+      <Property Name="Name" Hidden="true" />
+      <Method Name="ParseAlgorithm" Hidden="true" />
+      <Field Name="points" Hidden="true" />
+      <Field Name="stream" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAgEECAAAAQAAAAAAAIAAQAAAAAAAAACAAAAAAACAA=</HashCode>
+      <FileName>Framework\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.CSVParser">
+    <Position X="3.25" Y="7" Width="1.5" />
+    <Members>
+      <Field Name="delimiter" Hidden="true" />
+      <Field Name="hasHeaders" Hidden="true" />
+      <Property Name="Name" Hidden="true" />
+      <Method Name="ParseAlgorithm" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAFEAAABAAAAAAAAAABAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Framework\CSVParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.GUI.ParallelPlot" Collapsed="true">
+    <Position X="8.5" Y="6" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Pavel2.GUI.ParallelPlot.OpenGLRenderWind" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>GUI\ParallelPlot.xaml.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Pavel2.GUI.ParallelPlot.RubberBandAdorner" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>GUI\ParallelPlot.xaml.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABiACAgAACgKMAgD0EEAAABCEACiEQFAAFhAEAAAAAA=</HashCode>
+      <FileName>GUI\ParallelPlot.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Pavel2.GUI.ScatterMatrix" Collapsed="true">
+    <Position X="8.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBiCCAgAACUQgCgCkEEAQIBCAAChEUNAABpAkAACAEA=</HashCode>
+      <FileName>GUI\ScatterMatrix.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Pavel2.GUI.Scatterplot3D" Collapsed="true">
+    <Position X="6.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCqGCUgAQCAIAEgKkVEAABFAEAOoMQFIABRAAAAAAAI=</HashCode>
+      <FileName>GUI\Scatterplot3D.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Pavel2.GUI.TableView" Collapsed="true">
+    <Position X="8.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgACAIAACgAAAACAAEgAAgAAACAEAAgABAAAAAAAAA=</HashCode>
+      <FileName>GUI\TableView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Pavel2.GUI.Notes" Collapsed="true">
+    <Position X="6.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgACAAAACAAAAACAAEAAAAAAACAEAAAABAAAAAAAAA=</HashCode>
+      <FileName>GUI\Notes.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Pavel2.Framework.Column">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="CalcMinMax" Hidden="true" />
+      <Method Name="Column" Hidden="true" />
+      <Field Name="dirUp" Hidden="true" />
+      <Field Name="header" Hidden="true" />
+      <Field Name="isZoomed" Hidden="true" />
+      <Field Name="max" Hidden="true" />
+      <Field Name="min" Hidden="true" />
+      <Field Name="points" Hidden="true" />
+      <Field Name="visible" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>BQAAEASAgBAQgIAAEAAAAIAAAAABAAAIAAAACAAAAAA=</HashCode>
+      <FileName>Framework\Column.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.DataProjectTreeItem">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <Members>
+      <Method Name="Clone" Hidden="true" />
+      <Field Name="dataGrid" Hidden="true" />
+      <Method Name="DataProjectTreeItem" Hidden="true" />
+      <Field Name="filename" Hidden="true" />
+      <Field Name="originalData" Hidden="true" />
+      <Property Name="OriginalData" Hidden="true" />
+      <Field Name="parser" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAgAABAAAAAQAAAAAAAAAAAAAAAEAAAABAgAAAAIBA=</HashCode>
+      <FileName>Framework\DataProjectTreeItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.FolderProjectTreeItem">
+    <Position X="3" Y="2.5" Width="1.75" />
+    <Members>
+      <Field Name="columns" Hidden="true" />
+      <Field Name="dataGrid" Hidden="true" />
+      <Method Name="FolderProjectTreeItem" Hidden="true" />
+      <Method Name="GetColumns" Hidden="true" />
+      <Field Name="parentItem" Hidden="true" />
+      <Method Name="SomethingChanged" Hidden="true" />
+      <Method Name="UpdateDataGrid" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAABEAAAAAAAAEAAACJAAAAAAAAA=</HashCode>
+      <FileName>Framework\FolderProjectTreeItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.ImageTreeItem" Collapsed="true">
+    <Position X="3" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQAAAAAAQAAAAEAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Framework\ImageTreeItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.LinkItem" Collapsed="true">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <Members>
+      <Field Name="combItem" Hidden="true" />
+      <Field Name="dataItems" Hidden="true" />
+      <Field Name="header" Hidden="true" />
+      <Field Name="images" Hidden="true" />
+      <Field Name="isCombined" Hidden="true" />
+      <Property Name="IsCombined" Hidden="true" />
+      <Field Name="isGridView" Hidden="true" />
+      <Property Name="IsGridView" Hidden="true" />
+      <Method Name="LinkItem" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>BACAAQYAiACAEIgAgAAAAAAAEAAgABAAIAAAAAACAAA=</HashCode>
+      <FileName>Framework\LinkItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.ParserManagement">
+    <Position X="0.5" Y="5.75" Width="2.5" />
+    <Members>
+      <Field Name="currentParser" Hidden="true" />
+      <Field Name="file" Hidden="true" />
+      <Field Name="parserList" Hidden="true" />
+      <Method Name="UpdateParserList" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAEBAAAAAQAAAAAAAAEAAAABEAAABBAAAAAAAAAA=</HashCode>
+      <FileName>Framework\ParserManagement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pavel2.Framework.ProjectTreeItem">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="GetObjectData" Hidden="true" />
+      <Field Name="header" Hidden="true" />
+      <Field Name="lastVisualization" Hidden="true" />
+      <Method Name="ProjectTreeItem" Hidden="true" />
+      <Field Name="screenshot" Hidden="true" />
+      <Method Name="TakeScreenShot" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>BAAAAAQAAAAAAAAAAAABAAAgAAAAACEAABAgAAAAAAA=</HashCode>
+      <FileName>Framework\ProjectTreeItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Pavel2.GUI.Visualization">
+    <Position X="6.25" Y="5.5" Width="2" />
+    <Members>
+      <Method Name="GetProperties" Hidden="true" />
+      <Method Name="GetScreenshot" Hidden="true" />
+      <Method Name="GetUIElement" Hidden="true" />
+      <Method Name="OwnScreenshot" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAgACAAAAAAAAAACAAEAAAAAAACAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>GUI\Visualization.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Arial" Size="6.75" />
+</ClassDiagram>
