@@ -109,18 +109,6 @@
   </Class>
   <Class Name="Pavel2.GUI.ParallelPlot" Collapsed="true">
     <Position X="8.5" Y="4.5" Width="1.5" />
-    <NestedTypes>
-      <Class Name="Pavel2.GUI.ParallelPlot.OpenGLRenderWind" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>GUI\ParallelPlot.xaml.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Class Name="Pavel2.GUI.ParallelPlot.RubberBandAdorner" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>GUI\ParallelPlot.xaml.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>ABiACAgAACgKMAgD0EEAAABCEACiEQFAAFhAEAAAAAA=</HashCode>
       <FileName>GUI\ParallelPlot.xaml.cs</FileName>
@@ -226,17 +214,6 @@
   </Class>
   <Class Name="Pavel2.Framework.LinkItem" Collapsed="true">
     <Position X="0.5" Y="4" Width="1.5" />
-    <Members>
-      <Field Name="combItem" Hidden="true" />
-      <Field Name="dataItems" Hidden="true" />
-      <Field Name="header" Hidden="true" />
-      <Field Name="images" Hidden="true" />
-      <Field Name="isCombined" Hidden="true" />
-      <Property Name="IsCombined" Hidden="true" />
-      <Field Name="isGridView" Hidden="true" />
-      <Property Name="IsGridView" Hidden="true" />
-      <Method Name="LinkItem" Hidden="true" />
-    </Members>
     <TypeIdentifier>
       <HashCode>BACAAQYAiACAEIgAgAAAAAAAEAAgABAAIAAAAAACAAA=</HashCode>
       <FileName>Framework\LinkItem.cs</FileName>
@@ -273,54 +250,6 @@
   </Class>
   <Class Name="Pavel2.GUI.MainWindow" Collapsed="true">
     <Position X="5" Y="8" Width="1.5" />
-    <Members>
-      <Method Name="AddDataGridOptions" Hidden="true" />
-      <Method Name="AddToOptionsPanel" Hidden="true" />
-      <Method Name="comb_Click" Hidden="true" />
-      <Method Name="CreateOptionsPanel" Hidden="true" />
-      <Method Name="EmptyPreviewPanel" Hidden="true" />
-      <Method Name="explorerExpander_Collapsed" Hidden="true" />
-      <Method Name="explorerExpander_Expanded" Hidden="true" />
-      <Field Name="explorerExpanderMinWidth" Hidden="true" />
-      <Field Name="explorerExpanderWidth" Hidden="true" />
-      <Method Name="exportButton_Click" Hidden="true" />
-      <Method Name="ExportToPng" Hidden="true" />
-      <Method Name="FillPreviewPanel" Hidden="true" />
-      <Method Name="GetToolBarButton" Hidden="true" />
-      <Method Name="grid_Click" Hidden="true" />
-      <Method Name="Hyperlink_Click" Hidden="true" />
-      <Method Name="importButton_Click" Hidden="true" />
-      <Field Name="lastItem" Hidden="true" />
-      <Method Name="list_Click" Hidden="true" />
-      <Method Name="MainWindow" Hidden="true" />
-      <Method Name="MainWindow_Loaded" Hidden="true" />
-      <Method Name="MainWindow_StateChanged" Hidden="true" />
-      <Method Name="openMenu_Click" Hidden="true" />
-      <Method Name="parserList_PropertyChanged" Hidden="true" />
-      <Method Name="pGrid_PropertyChanged" Hidden="true" />
-      <Method Name="pGridDataGrid_PropertyChanged" Hidden="true" />
-      <Field Name="pGridlastDataGrid" Hidden="true" />
-      <Method Name="previewExpander_Collapsed" Hidden="true" />
-      <Method Name="previewExpander_Expanded" Hidden="true" />
-      <Field Name="previewExpanderMinWidth" Hidden="true" />
-      <Field Name="previewExpanderWidth" Hidden="true" />
-      <Method Name="previewList_MouseDoubleClick" Hidden="true" />
-      <Method Name="projectTreeExpander_Collapsed" Hidden="true" />
-      <Method Name="projectTreeExpander_Expanded" Hidden="true" />
-      <Field Name="projectTreeExpanderMinWidth" Hidden="true" />
-      <Field Name="projectTreeExpanderWidth" Hidden="true" />
-      <Method Name="ProjectTreeView_SelectedItemChanged" Hidden="true" />
-      <Method Name="RemoveOptionsPanel" Hidden="true" />
-      <Method Name="saveMenu_Click" Hidden="true" />
-      <Method Name="sep_Click" Hidden="true" />
-      <Method Name="SetupLinkToolBarButtons" Hidden="true" />
-      <Method Name="SetupToolBarButtons" Hidden="true" />
-      <Method Name="ShowParserProperties" Hidden="true" />
-      <Method Name="UpdatePreviewPanel" Hidden="true" />
-      <Method Name="UpdateVisualization" Hidden="true" />
-      <Method Name="WinProc" Hidden="true" />
-      <Field Name="WM_EXITSIZEMOVE" Hidden="true" />
-    </Members>
     <TypeIdentifier>
       <HashCode>gwAElRAAECAAAQAkgIJAKFiMAAUYAgCBUAJAhICDAAA=</HashCode>
       <FileName>GUI\MainWindow.xaml.cs</FileName>
@@ -341,7 +270,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Pavel2.GUI.VisualizationLayer">
-    <Position X="4.75" Y="9" Width="2.25" />
+    <Position X="4.75" Y="8.75" Width="2.25" />
     <Members>
       <Field Name="visualizationData" Hidden="true" />
       <Method Name="VisualizationLayer" Hidden="true" />
