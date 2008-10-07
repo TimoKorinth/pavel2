@@ -55,10 +55,15 @@ namespace Pavel2.Framework {
             return null;
         }
 
-        //TODO: Automatisch alle die Parser implementieren holen; Reihenfolge nach Priorität
         private static void UpdateParserList() { 
             parserList.Clear();
-            parserList.Add(new CSVParser());
+            Type[] types = System.Reflection.Assembly.GetAssembly(typeof(Parser)).GetTypes();
+            foreach (Type t in types) {
+                if (t.IsSubclassOf(typeof(Parser))) {
+                    Parser p = (Parser)Activator.CreateInstance(t);
+                    parserList.Add(p);
+                }
+            }
         }
 
     }

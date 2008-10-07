@@ -327,14 +327,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Pavel2.GUI.ExplorerTree" Collapsed="true">
-    <Position X="7.25" Y="8" Width="1.5" />
+    <Position X="6.75" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAAAAAAEAAAAAQABAAAAAAAAAAAAAA=</HashCode>
       <FileName>GUI\ExplorerTree.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pavel2.GUI.ProjectTree" Collapsed="true">
-    <Position X="2.75" Y="8" Width="1.5" />
+    <Position X="3.25" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>kAQgSBCFEgCoBIgAQoMiEAEAggBKACAQAhAAUGAkAhA=</HashCode>
       <FileName>GUI\ProjectTree.xaml.cs</FileName>
