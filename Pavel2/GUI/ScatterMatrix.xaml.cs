@@ -218,6 +218,14 @@ namespace Pavel2.GUI {
                 Gl.glVertex2d(0, 1);
                 Gl.glEnd();
             } else {
+                Gl.glBegin(Gl.GL_LINES);
+                Gl.glVertex2d(0, 1);
+                Gl.glVertex2d(1, 1);
+                Gl.glEnd();
+                Gl.glBegin(Gl.GL_LINES);
+                Gl.glVertex2d(1, 0);
+                Gl.glVertex2d(1, 1);
+                Gl.glEnd();
                 for (int x = 0; x < dataGrid.Columns.Length; x++) {
                     for (int y = 0; y < dataGrid.Columns.Length; y++) {
                         Gl.glBegin(Gl.GL_LINES);
