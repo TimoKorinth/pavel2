@@ -9,10 +9,17 @@ using System.Globalization;
 namespace Pavel2.Framework {
     public class CSVParser : Parser {
 
-        Char delimiter = ';';
         Boolean hasHeaders = false;
         public enum DecimalChar { Comma, Point };
+        public enum DelimiterChar { Comma = (int)',', Point = (int)'.', Semicolon = (int)';', Tabular = (int)'\t', Space = (int)' ' };
         private DecimalChar currentDec = DecimalChar.Comma;
+        private DelimiterChar currentDel = DelimiterChar.Semicolon;
+
+        [Description("Delimiter")]
+        public DelimiterChar CurrentDel {
+            get { return currentDel; }
+            set { currentDel = value; }
+        }
 
         [Description("Decimal Character")]
         public DecimalChar CurrentDec {
@@ -31,11 +38,6 @@ namespace Pavel2.Framework {
             set { hasHeaders = value; }
         }
 
-        public Char Delimiter {
-            get { return delimiter; }
-            set { delimiter = value; }
-        }
-
         protected override void ParseAlgorithm() {
             String line;
             String[] lineSplit;
@@ -47,7 +49,7 @@ namespace Pavel2.Framework {
                 ci = new CultureInfo("en-US", false);
             }
             while ((line = stream.ReadLine()) != null) {
-                lineSplit = line.Split(delimiter);
+                lineSplit = line.Split((char)currentDel);
                 for (int i = 0; i < lineSplit.Length; i++) {
                     if (firstLine && hasHeaders) {
                         AddHeader(lineSplit[i], i);
