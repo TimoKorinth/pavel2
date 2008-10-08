@@ -32,6 +32,7 @@ namespace Pavel2.GUI
         private GridLength explorerExpanderWidth;
         private TreeViewItem lastItem;
         private PropertyGrid pGridlastDataGrid = new PropertyGrid();
+        private ParserOptions pOpts = new ParserOptions();
 
         #endregion
 
@@ -39,6 +40,8 @@ namespace Pavel2.GUI
 			this.InitializeComponent();
             this.Loaded += MainWindow_Loaded;
             this.StateChanged += MainWindow_StateChanged;
+            pOpts.parserPropertyGrid.PropertyChanged += pGrid_PropertyChanged;
+            pOpts.parserList.SelectionChanged += parserList_PropertyChanged;
 
             EmptyPreviewPanel();
             previewExpander.IsExpanded = false;
@@ -146,13 +149,6 @@ namespace Pavel2.GUI
                 optionsExpander.Visibility = Visibility.Collapsed;
                 return;
             }
-            foreach (UIElement el in stack.Children) {
-                if (el is ParserOptions) {
-                    ParserOptions pOpt = (ParserOptions)el;
-                    pOpt.parserPropertyGrid.PropertyChanged -= pGrid_PropertyChanged;
-                    pOpt.parserList.SelectionChanged -= parserList_PropertyChanged;
-                } 
-            }
             optionsExpander.Content = null;
             optionsExpander.Visibility = Visibility.Collapsed;
         }
@@ -162,7 +158,14 @@ namespace Pavel2.GUI
             if (stack == null) {
                 CreateOptionsPanel(element);
             } else {
-                if (element != null) stack.Children.Add(element);
+                if (element != null) {
+                    object o = LogicalTreeHelper.GetParent(element);
+                    if (o is StackPanel) {
+                        StackPanel tmp = o as StackPanel;
+                        tmp.Children.Remove(element);
+                    }
+                    stack.Children.Add(element);
+                }
             }
         }
 
@@ -409,10 +412,7 @@ namespace Pavel2.GUI
         public void ShowParserProperties() {
             if (projectTreeView.SelectedItem.Tag is DataProjectTreeItem) {
                 DataProjectTreeItem dPTI = (DataProjectTreeItem)projectTreeView.SelectedItem.Tag;
-                ParserOptions pOpts = new ParserOptions();
                 pOpts.SelectedObject = dPTI.Parser;
-                pOpts.parserPropertyGrid.PropertyChanged += pGrid_PropertyChanged;
-                pOpts.parserList.SelectionChanged += parserList_PropertyChanged;
                 AddToOptionsPanel(pOpts);
             }
         }

@@ -45,6 +45,11 @@ namespace Pavel2.GUI {
         }
 
         private void InitPropertyGrid() {
+            if (properties != null) {
+                foreach (Property p in properties) {
+                    p.PropertyChanged -= prop_PropertyChanged;
+                }
+            }
             properties = new List<Property>();
             foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(selectedObject)) {
                 if (!property.IsBrowsable) continue;
