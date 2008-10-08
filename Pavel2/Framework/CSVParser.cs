@@ -32,8 +32,7 @@ namespace Pavel2.Framework {
             String line;
             String[] lineSplit;
             Boolean firstLine = true;
-            //TODO: Trennzeichen richtig finden
-            CultureInfo ci = new CultureInfo("en-US", false);
+            CultureInfo ci = CultureInfo.InstalledUICulture;
             while ((line = stream.ReadLine()) != null) {
                 lineSplit = line.Split(delimiter);
                 for (int i = 0; i < lineSplit.Length; i++) {
