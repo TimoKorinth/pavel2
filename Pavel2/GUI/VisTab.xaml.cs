@@ -102,8 +102,8 @@ namespace Pavel2.GUI {
             MainData.MainWindow.Cursor = Cursors.Wait;
             loading.Visibility = Visibility.Visible;
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
-                ProjectTreeItem pTI = (ProjectTreeItem)state;
+            //Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
+            //    ProjectTreeItem pTI = (ProjectTreeItem)state;
                 pTI.LastVisualization.Render(pTI.DataGrid);
                 pTI.TakeScreenShot();
                 PropertyGrid pGrid = new PropertyGrid();
@@ -114,8 +114,8 @@ namespace Pavel2.GUI {
                 MainData.MainWindow.ShowParserProperties();
                 MainData.MainWindow.Cursor = Cursors.Arrow;
                 loading.Visibility = Visibility.Collapsed;
-                return null;
-            }), this.pTI);
+                //return null;
+            //}), this.pTI);
         }
 
         #region IDisposable Member
