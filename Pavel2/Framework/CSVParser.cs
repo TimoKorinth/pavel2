@@ -11,6 +11,14 @@ namespace Pavel2.Framework {
 
         Char delimiter = ';';
         Boolean hasHeaders = false;
+        public enum DecimalChar { Comma, Point };
+        private DecimalChar currentDec = DecimalChar.Comma;
+
+        [Description("Decimal Character")]
+        public DecimalChar CurrentDec {
+            get { return currentDec; }
+            set { currentDec = value; }
+        }
 
         [Browsable(false)]
         public override string Name {
@@ -33,6 +41,11 @@ namespace Pavel2.Framework {
             String[] lineSplit;
             Boolean firstLine = true;
             CultureInfo ci = CultureInfo.InstalledUICulture;
+            if (currentDec == DecimalChar.Comma) {
+                ci = new CultureInfo("de-DE", false);
+            } else if (currentDec == DecimalChar.Point) {
+                ci = new CultureInfo("en-US", false);
+            }
             while ((line = stream.ReadLine()) != null) {
                 lineSplit = line.Split(delimiter);
                 for (int i = 0; i < lineSplit.Length; i++) {
