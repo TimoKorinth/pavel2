@@ -56,23 +56,30 @@ namespace Pavel2.GUI {
 
         private void InitVisualizationTab() {
             visualizationTabControl.Items.Clear();
+
+            TabItem tableItem = new TabItem();
+            tableItem.Header = typeof(TableView).Name;
+            tableItem.Content = new TableView();
+            visualizationTabControl.Items.Add(tableItem);
+
             Type[] types = System.Reflection.Assembly.GetAssembly(typeof(Visualization)).GetTypes();
             foreach (Type t in types) {
                 Type tmp = t.GetInterface("Visualization");
                 if (tmp != null) {
-                    TabItem tabItem = new TabItem();
-                    tabItem.Header = t.Name;
-                    Visualization vis = (Visualization)Activator.CreateInstance(t);
-                    tabItem.Content = vis;
-                    if (vis is TableView) {
-                        visualizationTabControl.Items.Insert(0, tabItem);
-                    } else if (vis is Notes) {
-                        visualizationTabControl.Items.Insert(visualizationTabControl.Items.Count, tabItem);
-                    } else {
-                        visualizationTabControl.Items.Insert(visualizationTabControl.Items.Count - 1, tabItem);
+                    if (!t.Equals(typeof(TableView)) && !t.Equals(typeof(Notes))) {
+                        TabItem tabItem = new TabItem();
+                        tabItem.Header = t.Name;
+                        Visualization vis = (Visualization)Activator.CreateInstance(t);
+                        tabItem.Content = vis;
+                        visualizationTabControl.Items.Add(tabItem);
                     }
                 }
             }
+
+            TabItem notesItem = new TabItem();
+            notesItem.Header = typeof(Notes).Name;
+            notesItem.Content = new Notes();
+            visualizationTabControl.Items.Add(notesItem);
         }
 
         public void VisualizationTabFocus() {

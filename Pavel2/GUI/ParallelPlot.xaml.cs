@@ -346,6 +346,7 @@ namespace Pavel2.GUI {
         }
 
         private void SetLabelPanel() {
+            if (dataGrid.Columns.Length < 2) return;
             scaleGrid.Children.Clear();
             scaleGrid.ColumnDefinitions.Clear();
             scaleGrid.RowDefinitions.Clear();
