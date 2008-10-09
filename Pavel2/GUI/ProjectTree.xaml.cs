@@ -52,8 +52,8 @@ namespace Pavel2.GUI {
             TreeViewItem item = this.SelectedItem;
             if (item != null && item.Tag is DataProjectTreeItem) {
                 DataProjectTreeItem dPTI = (DataProjectTreeItem)item.Tag;
-                DataGrid dataGrid = dPTI.DataGrid;
-                MainData.RemoveColumns(dataGrid);
+                MainData.RemoveColumns(dPTI.DataGrid);
+                dPTI.DataGrid = null;
                 DataGrid d = ParserManagement.GetDataGrid(parser, file);
                 if (d != null) {
                     dPTI.DataGrid = d;
