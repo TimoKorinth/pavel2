@@ -14,6 +14,7 @@ namespace Pavel2.Framework {
     public class DataGrid {
 
         private Column[] columns;
+        private Column[] visColumns;
         private String[][] data;
         private double[][] dData;
         private int maxColumn;
@@ -190,6 +191,7 @@ namespace Pavel2.Framework {
             colList.Remove(col);
             colList.Insert(position, col);
             columns = colList.ToArray();
+            SetVisColArray();
             SetDataFields();
             if (ColumnChanged != null) {
                 ColumnChanged(this, new EventArgs());
@@ -209,6 +211,7 @@ namespace Pavel2.Framework {
             col.Visible = isVis;
             SetDataFields();
             HasChanged();
+            SetVisColArray();
             SetColVisButton();
             if (ColumnVisChanged != null) {
                 ColumnVisChanged(col, new EventArgs());
@@ -233,14 +236,21 @@ namespace Pavel2.Framework {
 
         [Browsable(false)]
         public Column[] Columns {
-            get { 
-                List<Column> tmp = new List<Column>();
-                foreach (Column col in columns) {
-                    if (col.Visible) tmp.Add(col);
-                }
-                return tmp.ToArray(); 
+            get {
+                if (visColumns == null) {
+                    SetVisColArray();
+                } 
+                return visColumns;
             }
             set { columns = value; }
+        }
+
+        private void SetVisColArray() {
+            List<Column> tmp = new List<Column>();
+            foreach (Column col in columns) {
+                if (col.Visible) tmp.Add(col);
+            }
+            visColumns = tmp.ToArray();
         }
 
         [Browsable(false)]
@@ -358,6 +368,7 @@ namespace Pavel2.Framework {
             SetDataFields();
             HasChanged();
             SetColVisButton();
+            SetVisColArray();
             MainData.MainWindow.UpdateVisualization();
         }
 
@@ -383,6 +394,7 @@ namespace Pavel2.Framework {
             this.columns = listTmp.ToArray();
             SetDataFields();
             HasChanged();
+            SetVisColArray();
         }
 
         public void SetDataFields() {

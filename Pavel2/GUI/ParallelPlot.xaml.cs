@@ -54,7 +54,6 @@ namespace Pavel2.GUI {
 
         public ParallelPlot() {
             InitializeComponent();
-            this.SizeChanged += ParallelPlot_SizeChanged;
             wfPA = new OpenGLRenderWind();
             host.Child = wfPA;
             Dispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(delegate(Object state) {
@@ -65,13 +64,6 @@ namespace Pavel2.GUI {
                 }
                 return null;
             }), null);
-        }
-
-        void ParallelPlot_SizeChanged(object sender, SizeChangedEventArgs e) {
-            for (int i = 0; i < thumbGrid.Children.Count; i++) {
-                Thumb t = (Thumb)thumbGrid.Children[i];
-                t.Margin = new Thickness(step * i * (thumbGrid.ActualWidth-10), 2, t.Margin.Right, 2);
-            }
         }
 
         private void DrawLines() {
@@ -658,7 +650,6 @@ namespace Pavel2.GUI {
 
         public void Dispose() {
             dataGrid = null;
-            this.SizeChanged -= ParallelPlot_SizeChanged;
             wfPA.DestroyContexts();
             wfPA = null;
             host.Child = null;
