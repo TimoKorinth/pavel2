@@ -20,11 +20,8 @@ The first project was developed as a student research project at Dortmund Univer
 ![Screenshot 6](http://farm4.static.flickr.com/3234/2899759902_d77afe9bfb_m.jpg)
 
 ## Videos:
-Quick Overview:
 [![Video 1](http://farm4.static.flickr.com/3295/2900080628_6165dba7de_o.jpg)](http://www.screencast.com/t/7qH7tkld2d)
 
-Analyse Data:
 [![Video 1](http://farm4.static.flickr.com/3030/2900465980_e78c5b7d84_o.jpg)](http://www.screencast.com/t/qSVe85MpzXL)
 
-Link Items:
 [![Video 1](http://farm4.static.flickr.com/3123/2902553710_6a4a0f9000_o.jpg)](http://www.screencast.com/t/moRksFJ26S)
