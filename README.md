@@ -1,6 +1,6 @@
 # Pavel²
 ## Intuitive Visualization of high-dimensional data
-Pavel² is a complete new designed Version of the Pavel Project (http://code.google.com/p/pavel/) and is a tool for interactively displaying and evaluating large sets of highdimensional data. The key task for Pavel² is the intuitive and easy Interaction with the program in combination with a rich User Interface based on the Windows Presentation Foundation (WPF).
+Pavel² is a complete new designed Version of the Pavel Project (https://github.com/TimoKorinth/pavel) and is a tool for interactively displaying and evaluating large sets of highdimensional data. The key task for Pavel² is the intuitive and easy Interaction with the program in combination with a rich User Interface based on the Windows Presentation Foundation (WPF).
 
 The first project was developed as a student research project at Dortmund University since in October 2006. When the project was nearing its end a year later, the software was usable but still left room for improvement. Especially the usability and navigation wasn't as good as it should be.
 
